@@ -98,7 +98,9 @@
 	<object class="MixerBusPanner" id="{5f85cd7b-e889-47ac-89df-668af3430340}" />
 	<object class="MixerBusEffectChain" id="{735e835c-a9f6-46a3-a62f-0834353bd4a4}">
 		<relationship name="effects">
+			<destination>{5aff9576-6952-4f2e-83ff-d460429b81a8}</destination>
 			<destination>{bd10e98e-542c-487e-a163-2c4d9e1b53e6}</destination>
+			<destination>{0529a2e8-3e0d-4edc-8991-61570c6f666e}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6ab8694f-be85-41fe-9ff4-5e58e5a18d0b}" />
@@ -125,7 +127,26 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{24b1ca1c-a61e-4088-bf3a-b35ebf66178a}" />
+	<object class="ConvolutionReverbEffect" id="{5aff9576-6952-4f2e-83ff-d460429b81a8}">
+		<property name="endFrame">
+			<value>286135</value>
+		</property>
+		<property name="wetLevel">
+			<value>-40</value>
+		</property>
+		<property name="dryLevel">
+			<value>0</value>
+		</property>
+		<relationship name="referenceableData">
+			<destination>{b9041112-a4d6-48d7-bac0-7b9e32fbe10d}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{bd10e98e-542c-487e-a163-2c4d9e1b53e6}" />
+	<object class="LimiterEffect" id="{0529a2e8-3e0d-4edc-8991-61570c6f666e}">
+		<property name="ceiling">
+			<value>-6</value>
+		</property>
+	</object>
 	<object class="RandomizerModulator" id="{9377e8ce-8300-442f-b487-61e5afd4d32f}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>startOffset</value>
