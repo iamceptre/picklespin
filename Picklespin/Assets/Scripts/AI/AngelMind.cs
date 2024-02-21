@@ -13,8 +13,12 @@ public class AngelMind : MonoBehaviour
     private FMOD.Studio.EventInstance angelInstance;
 
     private bool routineRunning = false;
+    private Renderer angelRenderer;
 
-
+    private void Start()
+    {
+        angelRenderer = gameObject.GetComponent<Renderer>();
+    }
 
     void Update()
     {
@@ -27,7 +31,8 @@ public class AngelMind : MonoBehaviour
         IEnumerator AfterHealedAction(){
             angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
             routineRunning = true;
-            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            //transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            angelRenderer.material.SetColor("_Color", Color.green);
             angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
             angelInstance.start();
             yield return null;

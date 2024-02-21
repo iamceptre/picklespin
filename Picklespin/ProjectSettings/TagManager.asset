@@ -5,16 +5,19 @@ TagManager:
   serializedVersion: 2
   tags:
   - Angel
+  - EvilEntity
+  - GameMind
+  - WinGate
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Hand
+  - 
   - Water
   - UI
   - Angel
-  - 
-  - 
+  - Player
+  - EvilEntity
   - 
   - 
   - 

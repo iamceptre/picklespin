@@ -1,0 +1,7 @@
+right mouse button - heal
+left mouse button - shoot 
+
+wsad - movement
+C - stealth
+L shift - sprint
+Space - jump
