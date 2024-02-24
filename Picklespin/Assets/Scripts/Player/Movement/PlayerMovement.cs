@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = Input.GetKey(KeyCode.LeftShift);
         }
 
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
+        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0; //change to Input.GetAxisRaw and do acceleration/deccelarion on your own to make start snappy and stopping a bit floaty
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);

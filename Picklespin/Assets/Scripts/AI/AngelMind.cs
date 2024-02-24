@@ -31,7 +31,6 @@ public class AngelMind : MonoBehaviour
         IEnumerator AfterHealedAction(){
             angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
             routineRunning = true;
-            //transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             angelRenderer.material.SetColor("_Color", Color.green);
             angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
             angelInstance.start();

@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
     private int damage = 30;
 
    private AngelMind angelMind;
-   [SerializeField]private EvilEntityMind evilEntityMind;
+   [SerializeField] private AiHealth aiHealth;
 
     void Awake()
     {
@@ -20,7 +20,6 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.CompareTag("Angel")) //Angel Damage
         {
             angelMind = collision.gameObject.GetComponent<AngelMind>();
-          //  Debug.Log("Hit Angel");
             angelMind.hp -= damage;
 
             if (angelMind.hp <= damage) {
@@ -31,13 +30,12 @@ public class Bullet : MonoBehaviour
 
         if (collision.gameObject.CompareTag("EvilEntity")) //Evil Dude Damage
         {
-            evilEntityMind = collision.gameObject.GetComponent<EvilEntityMind>();
-         //   Debug.Log("Hit Evil Dude");
-            evilEntityMind.hp -= damage;
+            aiHealth = collision.gameObject.GetComponent<AiHealth>();
+            aiHealth.hp -= damage;
 
-            if (evilEntityMind.hp <= damage)
+            if (aiHealth.hp <= damage)
             {
-                evilEntityMind.isDead = true;
+                aiHealth.hp = 0;
                 collision.gameObject.SetActive(false);
             }
         }
