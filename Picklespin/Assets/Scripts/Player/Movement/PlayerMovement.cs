@@ -2,7 +2,6 @@
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
-    public Transform hand;
     public Transform mainCamera;
     public Transform body;
     private Vector3 velocity = Vector3.zero;
@@ -35,8 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        hand.position = Vector3.SmoothDamp(hand.position, characterController.transform.position, ref velocity, smoothTime * Time.deltaTime * 100); //fix jitter
-
+      
         Vector3 forward = body.TransformDirection(Vector3.forward);
         Vector3 right = mainCamera.TransformDirection(Vector3.right);
 

@@ -5,7 +5,7 @@ public class AiVision : MonoBehaviour
 {
     public float radius;
     [Range(0, 360)]
-    public float angle; //make angle go 360 when player is closer than 5f
+    public float angle;
 
     [HideInInspector] public GameObject playerRef;
 
@@ -13,6 +13,9 @@ public class AiVision : MonoBehaviour
     private LayerMask obstructionMask;
 
     public bool seeingPlayer;
+    public bool playerJustHitMe = false;
+   [SerializeField] private bool playerIsVeryClose = false;
+    public float hitMeCooldown = 0;
 
     private void Start()
     {
@@ -21,30 +24,75 @@ public class AiVision : MonoBehaviour
         obstructionMask |= 0x1 << LayerMask.NameToLayer("Default");
     }
 
+    private void Update()
+    {
+        if (hitMeCooldown >= 0)
+        {
+            PlayerJustHitMeCooldown();
+        }
+    }
+
 
     public void FieldOfViewCheck()
     {
 
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
 
-        if (rangeChecks.Length != 0)
+
+        if (!playerJustHitMe && !playerIsVeryClose) //this shit makes the ai ignore everything and see you
         {
-            Transform target = rangeChecks[0].transform;
-            Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-            if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
+            if (rangeChecks.Length != 0)
             {
-                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                Transform target = rangeChecks[0].transform;
+                Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
-                    seeingPlayer = true;
+                isPlayerVeryCloseCheck();
+
+                if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
+                {
+                    float distanceToTarget = Vector3.Distance(transform.position, playerRef.transform.position);
+
+                    if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
+                        seeingPlayer = true;
+                    else
+                        seeingPlayer = false;
+                }
                 else
                     seeingPlayer = false;
             }
-            else
+            else if (seeingPlayer)
                 seeingPlayer = false;
         }
-        else if (seeingPlayer)
-            seeingPlayer = false;
+        else
+        {
+            seeingPlayer = true;
+        }
     }
+
+    public void PlayerJustHitMeCooldown()
+    {
+        hitMeCooldown -= Time.deltaTime;
+
+        if (hitMeCooldown<=0)
+        {
+            playerJustHitMe = false;
+        }
+    }
+
+
+   private void isPlayerVeryCloseCheck()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, playerRef.transform.position); //change it to Player Sound Radius Trigger with AI Hear Trigger
+
+        if (distanceToPlayer <= (radius * 0.5))
+        { 
+           // playerIsVeryClose = true;
+        }
+        else
+        {
+            playerIsVeryClose = false;
+        }
+    }
+
 }

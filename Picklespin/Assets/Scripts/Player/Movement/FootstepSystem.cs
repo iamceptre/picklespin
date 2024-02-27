@@ -6,10 +6,11 @@ public class FootstepSystem : MonoBehaviour
 {
     public CharacterController controller;
     public PlayerMovement playerMovement;
+    public CameraBob cameraBob;
 
-   [SerializeField] private float horizontalSpeed;
-   [SerializeField] private float verticalSpeed;
-   [SerializeField] private float overallSpeed;
+    public float horizontalSpeed;
+    public float verticalSpeed;
+    public float overallSpeed;
     public EventReference FootstepEvent;
     public EventReference JumpEvent;
 
@@ -78,7 +79,7 @@ public class FootstepSystem : MonoBehaviour
 
     }
 
-    IEnumerator SendStepSignal() //fix the delayed step when changing speed
+    IEnumerator SendStepSignal() //fix the delayed step when changing speed, add async Forced Update when speed is changed
     {
         if (movementKeyPressed && controller.isGrounded && !routineRunning && isstepping)
         {
@@ -89,10 +90,12 @@ public class FootstepSystem : MonoBehaviour
             {
                 fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
             }
+
+            cameraBob.bobSpeed = (1 / (fixedFootstepSpace + 0.0001f)) * 2;
+
             yield return new WaitForSeconds(Random.Range(0.0f, 0.032f)); //Humanizes footstep rhythm
 
             yield return new WaitForSeconds(fixedFootstepSpace);
-
 
             routineRunning = false;
             StartCoroutine(SendStepSignal());

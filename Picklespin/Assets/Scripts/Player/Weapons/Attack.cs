@@ -4,6 +4,7 @@ using FMODUnity;
 public class Attack : MonoBehaviour
 {
     public AmmoDisplay ammoDisplay;
+    public CameraShake cameraShake;
 
     private Ammo ammo;
     public int currentAmmoCost;
@@ -27,24 +28,31 @@ public class Attack : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (ammo.ammo >= currentAmmoCost) //Shooting
-            {
-                ammo.ammo -= currentAmmoCost;
-                var bullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-                bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
-                shootInstance = RuntimeManager.CreateInstance(shootEvent); //if audio event 3d, assign 3d space for the sounds
-                shootInstance.start();
-
-            }
-            else //Shoot Failing
-            {
-                shootInstance = RuntimeManager.CreateInstance(shootFailEvent);
-                shootInstance.start();
-            }
- 
+            Shoot(); 
         }
 
         
+    }
+
+    private void Shoot()
+    {
+        if (ammo.ammo >= currentAmmoCost) //Shooting
+        {
+            cameraShake.shakeDuration = 0.2f;
+            cameraShake.shakeMultiplier = 4;
+            CameraShake.Invoke();
+            ammo.ammo -= currentAmmoCost;
+            var bullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
+            shootInstance = RuntimeManager.CreateInstance(shootEvent); //if audio event 3d, assign 3d space for the sounds
+            shootInstance.start();
+
+        }
+        else //Shoot Failing
+        {
+            shootInstance = RuntimeManager.CreateInstance(shootFailEvent);
+            shootInstance.start();
+        }
     }
 
 

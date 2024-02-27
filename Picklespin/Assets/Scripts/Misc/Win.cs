@@ -1,16 +1,15 @@
 using FMODUnity;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Win : MonoBehaviour
 {
-    public Image winScreen;
+    public GameObject winScreen;
     public EventReference winEvent;
 
     public void PlayerWin()
     {
         RuntimeManager.PlayOneShot(winEvent);
-        winScreen.color = Color.white;
+        winScreen.SetActive(true);
         Time.timeScale = 0;
     }
 

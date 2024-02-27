@@ -1,6 +1,6 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AmmoDisplay : MonoBehaviour
 {
@@ -10,13 +10,21 @@ public class AmmoDisplay : MonoBehaviour
     private void Start()
     {
         ammoDisplayText = GetComponent<TMP_Text>();
+        StartCoroutine(RefreshText()); 
     }
 
     private void Update()
     {
-        // ammoDisplayText.text = (ammo.ammo.ToString());
-        ammoDisplayText.text = ("magicka: " + "<br>" + ammo.ammo);
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            StartCoroutine(RefreshText());  
+        }
+    }
 
+    public IEnumerator RefreshText()
+    {
+        ammoDisplayText.text = ("magicka: " + "<br>" + ammo.ammo + "/" + ammo.maxAmmo);
+        yield return null;
     }
 
 }

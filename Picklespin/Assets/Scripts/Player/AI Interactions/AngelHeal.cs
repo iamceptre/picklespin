@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using FMODUnity;
+using System;
+using UnityEngine.UI;
 
 public class AngelHeal : MonoBehaviour
 {
@@ -12,18 +14,26 @@ public class AngelHeal : MonoBehaviour
 
     private Material handOGMaterial;
     [SerializeField] private Material handHighlightMaterial;
-     private MeshRenderer handRenderer;
+    private MeshRenderer handRenderer;
+    public AmmoDisplay ammoDisplay;
+
+
+    [SerializeField] private ParticleSystem healParticle;
+    private ParticleSystem.EmissionModule healEmission;
+
+    [SerializeField] private GameObject healParticleStart;
+
+    [SerializeField] private Slider angelHPSlider;
 
 
     [SerializeField] private Transform mainCamera;
-    Ray ray;
+   // Ray ray;
     [SerializeField] private float range = 5f;
     [SerializeField] private bool isAimingAtAngel=false;
 
-    private Vector3 handStartPos;
-
-    public GameObject currentAngel;
-    public AngelMind angel;
+    [HideInInspector] public GameObject currentAngel;
+    [HideInInspector] public AngelMind angel;
+    private AiHealth aiHealth;
 
     public EventReference healingBeamEvent;
     private FMOD.Studio.EventInstance healingBeamInstance;
@@ -31,16 +41,12 @@ public class AngelHeal : MonoBehaviour
     private bool canPlayEvent=true;
 
     public FloatUpDown floatUpDown;
-
-    private Vector3 velocity = Vector3.zero;
-    public float smoothTime = 0.3F;
-
     private void Start()
     {
         ammo = GetComponent<Ammo>();
-        handStartPos = hand.transform.localPosition;
         handRenderer = hand.GetComponent<MeshRenderer>();
         handOGMaterial = handRenderer.material;
+        healEmission = healParticle.emission;
     }
 
     void Update()
@@ -67,8 +73,10 @@ public class AngelHeal : MonoBehaviour
         {
             Healing();
         }
-        else
+        else //if stop healing mid-through
         {
+            HealingParticleStop();
+            angelHPSlider.gameObject.SetActive(false);
             healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             healingBeamInstance.release();
             floatUpDown.enabled = false;
@@ -81,23 +89,11 @@ public class AngelHeal : MonoBehaviour
     IEnumerator StartAiming()
     {
         angel = currentAngel.GetComponent<AngelMind>();
+        aiHealth = currentAngel.GetComponent<AiHealth>();
         if (!angel.healed)
         {
             handRenderer.material = handHighlightMaterial;
             isAimingAtAngel = true;
-            // StartCoroutine(HandTowardsPlayer());
-        }
-        yield return null;
-    }
-
-    IEnumerator HandTowardsPlayer() //not working for now
-    {
-        //  hand.transform.localPosition = new Vector3(handStartPos.x, handStartPos.y - 0.1f, handStartPos.z);
-        if (hand.transform.localPosition != new Vector3(handStartPos.x, handStartPos.y - 0.1f, handStartPos.z))
-        {
-            hand.transform.localPosition = Vector3.SmoothDamp(hand.transform.localPosition, new Vector3(handStartPos.x, handStartPos.y - 0.1f, handStartPos.z), ref velocity, smoothTime * Time.deltaTime);
-            Debug.Log("Przesuwam reke");
-            StartCoroutine (HandTowardsPlayer());
         }
         yield return null;
     }
@@ -105,13 +101,13 @@ public class AngelHeal : MonoBehaviour
     IEnumerator StopAiming()
     {
         isAimingAtAngel = false;
-        hand.transform.localPosition = handStartPos;
         if (handRenderer.material != handOGMaterial)
         {
             handRenderer.material = handOGMaterial;
         }
         yield return null;
     }
+
 
     public void Healing()
     {
@@ -123,27 +119,60 @@ public class AngelHeal : MonoBehaviour
             canPlayEvent = false; //this should always be at the end of this event
         }
 
-        angel.hp += Time.deltaTime*16;
+        aiHealth.hp += Time.deltaTime*16;
+        angelHPSlider.gameObject.SetActive(true);
+        angelHPSlider.value = aiHealth.hp;
+        HealingParticleStart();
 
-        if (angel.hp >= 100) //when angel is healed
+        if (aiHealth.hp >= 100)
         {
-
-            if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
-            {
-                ammo.ammo = ammo.maxAmmo;
-            }
-            else
-            {
-                ammo.ammo += howMuchAmmoAngelGives;
-            }
-
-            healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            healingBeamInstance.release();
-            handRenderer.material = handOGMaterial;
-            angel.healed = true;
-            floatUpDown.enabled = false;
-            canPlayEvent = true; //this should always be at the end of this event
+            Healed();
         }
+    }
+
+    private void HealingParticleStart()
+    {
+        healParticle.transform.LookAt(currentAngel.transform.position);
+        if (!healParticle.isEmitting)
+        {
+            healParticleStart.SetActive(true);
+            healParticle.Play();
+            healEmission.enabled = true;
+        }
+    }
+
+    private void HealingParticleStop()
+    {
+        if (healParticle.isEmitting)
+        {
+            healEmission.enabled = false;
+           // healParticle.Stop();
+        }
+    }
+
+
+    private void Healed()
+    {
+
+        if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
+        {
+            ammo.ammo = ammo.maxAmmo;
+        }
+        else
+        {
+            ammo.ammo += howMuchAmmoAngelGives;
+        }
+        ammoDisplay.StartCoroutine(ammoDisplay.RefreshText());
+
+        HealingParticleStop();
+        angelHPSlider.gameObject.SetActive(false);
+        healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        healingBeamInstance.release();
+        handRenderer.material = handOGMaterial;
+        angel.healed = true;
+        floatUpDown.enabled = false;
+        canPlayEvent = true; //this should always be at the end of this event
+        angel.StartCoroutine(angel.AfterHealedAction());
     }
 
 }

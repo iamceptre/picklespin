@@ -1,47 +1,75 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Bullet : MonoBehaviour
 {
 
-    private int damage = 30;
+    private int originalDamage;
+    private int damage = 15;
 
-   private AngelMind angelMind;
-   [SerializeField] private AiHealth aiHealth;
+    private AiHealth aiHealth;
+    private AiVision aiVision;
+
+    [SerializeField] private GameObject explosionFX;
 
     void Awake()
     {
-        Destroy(gameObject,3);
+        Destroy(gameObject,10);
+        originalDamage = damage;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
 
+        RandomizeCritical(); 
 
-        if (collision.gameObject.CompareTag("Angel")) //Angel Damage
-        {
-            angelMind = collision.gameObject.GetComponent<AngelMind>();
-            angelMind.hp -= damage;
-
-            if (angelMind.hp <= damage) {
-                angelMind.isDead = true;
-                collision.gameObject.SetActive(false);
-            }
-        }
-
-        if (collision.gameObject.CompareTag("EvilEntity")) //Evil Dude Damage
+        //Debug.Log("you deal " + damage + " damage");
+        if (collision.gameObject) //Evil Dude Damage
         {
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
-            aiHealth.hp -= damage;
 
-            if (aiHealth.hp <= damage)
+            aiVision = collision.gameObject.GetComponent<AiVision>();
+
+            if (aiHealth != null)
             {
-                aiHealth.hp = 0;
-                collision.gameObject.SetActive(false);
+                aiHealth.hp -= damage;
+                HitGetsYouNoticed();
+
+                if (aiHealth.hp <= damage)
+                {
+                    aiHealth.hp = 0; //Death
+                    collision.gameObject.SetActive(false);
+                }
             }
+
         }
-
+        Instantiate(explosionFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
-    }
-}
 
-//make it just one damage event, that adapts to the AI that is being shot
+    }
+
+
+    private void RandomizeCritical()
+    {
+        if (Random.Range(0,10) >= 9) // 1/10 chance of critical
+        {
+            damage = originalDamage * 2;
+        }
+        else
+        {
+            damage = originalDamage;
+        }
+    }
+
+
+    private void HitGetsYouNoticed()
+    {
+        if (aiVision != null)
+        {
+            aiVision.hitMeCooldown = 10;
+            aiVision.playerJustHitMe = true;
+            //aiVision.PlayerJustHitMeCooldown();
+        }
+    }
+
+}

@@ -5,6 +5,7 @@ public class StateManager : MonoBehaviour
 
    public State currentState;
    [HideInInspector]public AiVision aiVision;
+    public AiHealth aiHealth;
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.25f;
  
@@ -16,13 +17,16 @@ public class StateManager : MonoBehaviour
 
     private void RunStateMachine()
     {
-
-        State nextState = currentState?.RunCurrentState();
-        aiVision.FieldOfViewCheck();
-
-        if (nextState != null)
+        if (aiHealth.hp > 0)
         {
-            SwitchToTheNextState(nextState);
+            State nextState = currentState?.RunCurrentState();
+            aiVision.FieldOfViewCheck();
+
+
+            if (nextState != null)
+            {
+                SwitchToTheNextState(nextState);
+            }
         }
     }
 
