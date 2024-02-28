@@ -246,9 +246,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1219504541}
   hand: {fileID: 445916676}
-  positionStrenght: {x: 0.01, y: 0.01, z: 0.01}
-  rotationStrenght: {x: 0.2, y: 0.2, z: 0.2}
-  shakeDuration: 0.15
+  positionStrenght: 0.03
+  rotationStrenght: 0.3
+  shakeDuration: 0.25
   shakeMultiplier: 0
 --- !u!114 &194906742
 MonoBehaviour:
@@ -6145,7 +6145,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.9785021, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

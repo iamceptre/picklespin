@@ -7,8 +7,8 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform hand;
 
-    [SerializeField] private Vector3 positionStrenght;
-    [SerializeField] private Vector3 rotationStrenght;
+    [SerializeField] private float positionStrenght;
+    [SerializeField] private float rotationStrenght;
 
     public float shakeDuration;
 
