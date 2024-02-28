@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraBob : MonoBehaviour {
@@ -25,12 +26,11 @@ public class CameraBob : MonoBehaviour {
 
     private void Update() {
 
-        if (characterController.isGrounded)
+        if (characterController.isGrounded) //make it not cut abruply after landing
         {
             Bob();
             //HandBob();
         }
-
     }
 
     private void Bob()
@@ -39,7 +39,7 @@ public class CameraBob : MonoBehaviour {
         tempPos.x = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed * 0.5f) * height * footstepSystem.horizontalSpeed;
 
         toBob.transform.localPosition = originalPosition + (tempPos);
-        toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x);
+        toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x * 0.5f );
     }
 
 private void HandBob()

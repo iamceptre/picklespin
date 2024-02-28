@@ -16,7 +16,7 @@ MonoBehaviour:
   safeModeOptions:
     logBehaviour: 2
     nestedTweenFailureBehaviour: 0
-  timeScale: 1.5
+  timeScale: 1
   unscaledTimeScale: 1
   useSmoothDeltaTime: 1
   maxSmoothUnscaledTime: 0.15

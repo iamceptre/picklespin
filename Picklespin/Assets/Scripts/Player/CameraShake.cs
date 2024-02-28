@@ -21,14 +21,20 @@ public class CameraShake : MonoBehaviour
         Shake?.Invoke();
     }
 
-    private void OnEnable() => Shake += DoCameraShake;
-    private void OnDisable() => Shake -= DoCameraShake;
 
-    private void DoCameraShake()
+    private void OnEnable() => Shake += DoCameraShakeShoot;
+    private void OnDisable() => Shake -= DoCameraShakeShoot;
+
+    private void DoLandShake()
     {
-       // mainCamera.DOShakePosition(shakeDuration, positionStrenght * shakeMultiplier);
-        mainCamera.DOShakeRotation(shakeDuration, rotationStrenght* shakeMultiplier);
-        hand.DOShakePosition(shakeDuration, positionStrenght* -0.1f);
+       hand.DOShakePosition(shakeDuration, positionStrenght* 9999);
+    }
+
+
+    private void DoCameraShakeShoot()
+    {
+        mainCamera.DOShakeRotation(shakeDuration, rotationStrenght * shakeMultiplier, 26, 90, true, ShakeRandomnessMode.Harmonic);
+        hand.DOShakePosition(shakeDuration * 1.3f, positionStrenght, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
     
 
