@@ -14,8 +14,7 @@ public class JumpLandCameraShakeTrigger : MonoBehaviour
         JumpUpDetection();
     }
 
-
-    private void JumpUpDetection()
+    public void JumpUpDetection()
     {
         if (Input.GetKey(KeyCode.Space) && !inAir)
         {
@@ -32,14 +31,13 @@ public class JumpLandCameraShakeTrigger : MonoBehaviour
         }
         else
         {
-            cameraShake.shakeMultiplier = Mathf.Round(Mathf.Abs(footstepSystem.overallSpeed))/6;
+            cameraShake.shakeMultiplier = Mathf.Round(Mathf.Abs(footstepSystem.overallSpeed))*0.5f;
         }
     }
 
     private void LandDetection()
     {
         if (!landed) {
-            //cameraShake.shakeMultiplier = Mathf.Abs(footstepSystem.verticalSpeed);
             CameraShake.Invoke();
             landed = true;
         }

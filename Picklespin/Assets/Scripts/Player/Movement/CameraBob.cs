@@ -5,10 +5,10 @@ public class CameraBob : MonoBehaviour {
     public CharacterController characterController;
     public FootstepSystem footstepSystem;
     
-    public float height = 0.5f;
+   [SerializeField] private float height = 0.5f;
     public float bobSpeed = 2;
 
-    public Transform hand;
+    [SerializeField] private Transform hand;
 
     private Vector3 originalPosition = new Vector3 ();
     private Vector3 originalHandPosition = new Vector3();
@@ -28,7 +28,7 @@ public class CameraBob : MonoBehaviour {
         if (characterController.isGrounded)
         {
             Bob();
-            HandBob();
+            //HandBob();
         }
 
     }
@@ -37,12 +37,15 @@ public class CameraBob : MonoBehaviour {
     {
         tempPos.y = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed) * height * 0.3f * footstepSystem.horizontalSpeed;
         tempPos.x = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed * 0.5f) * height * footstepSystem.horizontalSpeed;
+
         toBob.transform.localPosition = originalPosition + (tempPos);
+        toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x);
     }
 
 private void HandBob()
     {
-        hand.localPosition = originalHandPosition - (tempPos * 0.2f);
+        hand.localPosition = originalHandPosition - (tempPos * 0.9f);
+        //hand.transform.localEulerAngles = new Vector3(0, 0, -tempPos.x);
     }
 
 

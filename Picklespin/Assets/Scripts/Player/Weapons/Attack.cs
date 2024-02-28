@@ -38,7 +38,6 @@ public class Attack : MonoBehaviour
     {
         if (ammo.ammo >= currentAmmoCost) //Shooting
         {
-            cameraShake.shakeDuration = 0.2f;
             cameraShake.shakeMultiplier = 4;
             CameraShake.Invoke();
             ammo.ammo -= currentAmmoCost;

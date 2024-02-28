@@ -7,6 +7,6 @@ public class CopycattTransform : MonoBehaviour
     void Update()
     {
         transform.rotation = whereToCopyFrom.rotation;
-       // transform.position = whereToCopyFrom.position;
+        transform.position = whereToCopyFrom.position;
     }
 }

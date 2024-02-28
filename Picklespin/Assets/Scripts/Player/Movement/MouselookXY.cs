@@ -9,7 +9,6 @@ public class MouselookXY : MonoBehaviour
     public Transform mainCamera;
 
 
-
     void Update()         //Rotation Action
     {
         rotation.y += Input.GetAxis("Mouse X");

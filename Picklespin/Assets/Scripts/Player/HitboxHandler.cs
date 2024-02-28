@@ -17,7 +17,6 @@ public class HitboxHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("EvilEntity"))//Death from evil entity collision
         {
-            Debug.Log("You Dead MF");
             death.PlayerDeath();
         }
 

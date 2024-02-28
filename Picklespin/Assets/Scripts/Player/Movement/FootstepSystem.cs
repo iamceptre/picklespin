@@ -8,9 +8,10 @@ public class FootstepSystem : MonoBehaviour
     public PlayerMovement playerMovement;
     public CameraBob cameraBob;
 
-    public float horizontalSpeed;
-    public float verticalSpeed;
-    public float overallSpeed;
+    [HideInInspector] public float horizontalSpeed;
+    [HideInInspector] public float verticalSpeed;
+    [HideInInspector] public float overallSpeed;
+
     public EventReference FootstepEvent;
     public EventReference JumpEvent;
 
@@ -36,12 +37,10 @@ public class FootstepSystem : MonoBehaviour
         Vector3 horizontalVelocity = controller.velocity;
         horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
 
-        // The speed on the x-z plane ignoring any speed
+
         horizontalSpeed = horizontalVelocity.magnitude;
-    // The speed from gravity or jumping
-    verticalSpeed = controller.velocity.y;
-        // The overall speed
-   overallSpeed = controller.velocity.magnitude;
+        verticalSpeed = controller.velocity.y;
+        overallSpeed = controller.velocity.magnitude;
 
         if (!isstepping && controller.isGrounded && horizontalSpeed >= 1f)
         {
@@ -91,7 +90,7 @@ public class FootstepSystem : MonoBehaviour
                 fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
             }
 
-            cameraBob.bobSpeed = (1 / (fixedFootstepSpace + 0.0001f)) * 2;
+            cameraBob.bobSpeed = 1 / (fixedFootstepSpace + 0.0001f) * 2;
 
             yield return new WaitForSeconds(Random.Range(0.0f, 0.032f)); //Humanizes footstep rhythm
 
