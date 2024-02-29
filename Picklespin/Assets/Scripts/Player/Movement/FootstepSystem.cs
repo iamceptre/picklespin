@@ -18,16 +18,13 @@ public class FootstepSystem : MonoBehaviour
 
     [SerializeField]private bool isstepping;
 
-   private bool movementKeyPressed = false;
-   private bool routineRunning = false;
+    private bool routineRunning = false;
 
-  //  [SerializeField]public float footstepTimeSpace;
+    [Range(0, 2)] [SerializeField] public float fixedFootstepSpaceSmooth;
+    private float fixedFootstepSpace;
+    private float smoothVelocity; //for smoothdamp only
 
-
-  // [SerializeField] private float baseTimeSpace;
-  // [SerializeField] private float horizontalMul;
-
-    public float fixedFootstepSpace;
+    [HideInInspector]public float footstepSpaceCooldown;
 
    // private bool isJumping;
 
@@ -36,7 +33,6 @@ public class FootstepSystem : MonoBehaviour
     {
         Vector3 horizontalVelocity = controller.velocity;
         horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
-
 
         horizontalSpeed = horizontalVelocity.magnitude;
         verticalSpeed = controller.velocity.y;
@@ -55,51 +51,62 @@ public class FootstepSystem : MonoBehaviour
 
         if ((Input.GetKey(KeyCode.W)) || (Input.GetKey(KeyCode.S)) || (Input.GetKey(KeyCode.A)) || (Input.GetKey(KeyCode.D)))
         {
-            movementKeyPressed = true;
+            //any movement key pressed
+            FootstepCooldownCalculus();
         }
         else
         {
-            movementKeyPressed = false;
+            //no movement key pressed
+            footstepSpaceCooldown = 0f;
         }
 
-
-        if (movementKeyPressed && !routineRunning)
-        {
-            StartCoroutine(SendStepSignal());
-        }
-
-        if (!isstepping)
-        {
-            StopCoroutine(SendStepSignal());
-        }
-
-      // footstepTimeSpace = Mathf.Abs(1f - Mathf.Clamp((horizontalSpeed * 0.1f),0, 0.76f)); // footstep impulse generator based on speed
-
+        UpdateTimings();
 
     }
 
-    IEnumerator SendStepSignal() //fix the delayed step when changing speed, add async Forced Update when speed is changed
+    private void UpdateTimings()
     {
-        if (movementKeyPressed && controller.isGrounded && !routineRunning && isstepping)
+        fixedFootstepSpace = 0.8f; //crouch speed
+
+        if (!Input.GetKey(KeyCode.C))
+        {
+            fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
+        }
+
+        fixedFootstepSpaceSmooth = Mathf.SmoothDamp(fixedFootstepSpaceSmooth, fixedFootstepSpace, ref smoothVelocity, 0.1f);
+
+        if (cameraBob.bobSpeed != 0) {
+            cameraBob.bobSpeed = 2 / (fixedFootstepSpace); // change it to smooth when you figure out how to fix camera shake when calculating cameraBob
+        }
+    }
+
+
+    void FootstepCooldownCalculus()
+    {
+        if (footstepSpaceCooldown > 0)
+        {
+            footstepSpaceCooldown -= Time.deltaTime / fixedFootstepSpace; //and change it to smooth too, when you fix the issue 
+        }
+        else
+        {
+            StartCoroutine(SendStepSignalAsync());
+            footstepSpaceCooldown = 1;
+        }
+    }
+
+
+    public IEnumerator SendStepSignalAsync()
+    {
+        if (controller.isGrounded && !routineRunning)
         {
             routineRunning = true;
             RuntimeManager.PlayOneShot(FootstepEvent);
-            fixedFootstepSpace = 0.8f; //crouch speed
-            if (!Input.GetKey(KeyCode.C))
-            {
-                fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
-            }
-
-            cameraBob.bobSpeed = 1 / (fixedFootstepSpace + 0.0001f) * 2;
-
             yield return new WaitForSeconds(Random.Range(0.0f, 0.032f)); //Humanizes footstep rhythm
-
-            yield return new WaitForSeconds(fixedFootstepSpace);
-
+            yield return new WaitForSeconds(0.05f); //Prevents super fast footsteps when error
             routineRunning = false;
-            StartCoroutine(SendStepSignal());
         }
     }
+
 
     public IEnumerator SendJumpSignal()
     {

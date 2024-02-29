@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class JumpLandCameraShakeTrigger : MonoBehaviour
+public class JumpLandSignals : MonoBehaviour
 {
 
     public CharacterController characterController;
@@ -11,7 +11,7 @@ public class JumpLandCameraShakeTrigger : MonoBehaviour
 
     void Update()
     {
-        JumpUpDetection();
+        JumpUpDetection(); //Remove Update logic, use sending external signals from references instead
     }
 
     public void JumpUpDetection()
@@ -27,7 +27,7 @@ public class JumpLandCameraShakeTrigger : MonoBehaviour
         if (characterController.isGrounded)
         {
             inAir = false;
-            LandDetection();
+            SendLandSignal();
         }
         else
         {
@@ -35,7 +35,7 @@ public class JumpLandCameraShakeTrigger : MonoBehaviour
         }
     }
 
-    private void LandDetection()
+    private void SendLandSignal()
     {
         if (!landed) {
             CameraShake.Invoke();
