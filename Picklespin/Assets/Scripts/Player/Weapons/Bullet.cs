@@ -1,21 +1,29 @@
 using UnityEngine;
-using UnityEngine.AI;
+using FMODUnity;
 
 public class Bullet : MonoBehaviour
 {
 
     private int originalDamage;
-    private int damage = 15;
+    [SerializeField] private int damage = 15;
+    public int magickaCost = 30;
+    public int speed = 60;
 
     private AiHealth aiHealth;
     private AiVision aiVision;
 
     [SerializeField] private GameObject explosionFX;
+    [SerializeField] private EventReference mySound;
 
     void Awake()
     {
         Destroy(gameObject,10);
         originalDamage = damage;
+    }
+
+    private void Start()
+    {
+        RuntimeManager.PlayOneShot(mySound);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -24,10 +32,10 @@ public class Bullet : MonoBehaviour
         RandomizeCritical(); 
 
         //Debug.Log("you deal " + damage + " damage");
-        if (collision.gameObject) //Evil Dude Damage
+
+        if (collision.gameObject)
         {
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
-
             aiVision = collision.gameObject.GetComponent<AiVision>();
 
             if (aiHealth != null)
@@ -35,9 +43,9 @@ public class Bullet : MonoBehaviour
                 aiHealth.hp -= damage;
                 HitGetsYouNoticed();
 
-                if (aiHealth.hp <= damage)
+                if (aiHealth.hp <= damage) //Death
                 {
-                    aiHealth.hp = 0; //Death
+                    aiHealth.hp = 0;
                     collision.gameObject.SetActive(false);
                 }
             }
@@ -51,7 +59,7 @@ public class Bullet : MonoBehaviour
 
     private void RandomizeCritical()
     {
-        if (Random.Range(0,10) >= 9) // 1/10 chance of critical
+        if (Random.Range(0,10) >= 9) // 1/10 chance of doubling the damage
         {
             damage = originalDamage * 2;
         }

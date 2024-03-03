@@ -1,4 +1,0 @@
-repository "Picklespin@Team_Soundwich@cloud"
-  path "/"
-    br "/main"
-    co "/main"

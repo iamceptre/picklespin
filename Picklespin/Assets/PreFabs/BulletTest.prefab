@@ -243,7 +243,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 15
+  magickaCost: 30
+  speed: 60
   explosionFX: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
+  mySound:
+    Guid:
+      Data1: 1963473607
+      Data2: 1081434507
+      Data3: -643885943
+      Data4: -1090986781
+    Path: event:/PLACEHOLDER_UNCZ/shoot_test
 --- !u!199 &1491303106759170490
 ParticleSystemRenderer:
   serializedVersion: 6

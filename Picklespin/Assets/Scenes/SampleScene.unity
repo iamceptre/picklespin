@@ -591,7 +591,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &414487249
 Transform:
   m_ObjectHideFlags: 0
@@ -7089,20 +7089,21 @@ MonoBehaviour:
   overallSpeed: 0
   FootstepEvent:
     Guid:
-      Data1: -1893551285
-      Data2: 1269652776
-      Data3: 232153500
-      Data4: -1211225191
-    Path: event:/footstep_test
+      Data1: -410005874
+      Data2: 1253412229
+      Data3: -20814676
+      Data4: 1395785872
+    Path: event:/FS/SPRINT/GRATE/FS_SPRINT_GRATE
   JumpEvent:
     Guid:
       Data1: -1106843415
       Data2: 1252621103
       Data3: 1265779123
       Data4: -1979755532
-    Path: event:/jump
+    Path: event:/PLACEHOLDER_UNCZ/jump
   isstepping: 0
-  fixedFootstepSpace: 0
+  fixedFootstepSpaceSmooth: 0
+  footstepSpaceCooldown: 0
 --- !u!114 &1219504546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7162,26 +7163,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoDisplay: {fileID: 1423214763}
   cameraShake: {fileID: 194906741}
-  currentAmmoCost: 3
-  shootEvent:
-    Guid:
-      Data1: 1963473607
-      Data2: 1081434507
-      Data3: -643885943
-      Data4: -1090986781
-    Path: event:/shoot_test
   shootFailEvent:
     Guid:
       Data1: -2101537638
       Data2: 1215020877
       Data3: -238780997
       Data4: 73470007
-    Path: event:/shootFail_test
+    Path: event:/PLACEHOLDER_UNCZ/shootFail_test
   bulletSpawnPoint: {fileID: 963194228}
   bulletPrefab:
-  - {fileID: 7114823094463480090, guid: c8b327909721c264a85b78b06d0bf8d3, type: 3}
+  - {fileID: 7114823094463480090, guid: 431957f618268fa4593b8c125b9723d0, type: 3}
   selectedBullet: 0
-  bulletSpeed: 60
 --- !u!114 &1219504549
 MonoBehaviour:
   m_ObjectHideFlags: 0

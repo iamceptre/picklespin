@@ -7,16 +7,13 @@ public class Attack : MonoBehaviour
     public CameraShake cameraShake;
 
     private Ammo ammo;
-    public int currentAmmoCost;
 
-    public EventReference shootEvent;
-    public EventReference shootFailEvent;
-    private FMOD.Studio.EventInstance shootInstance;
+    [SerializeField] private EventReference shootFailEvent;
+    private FMOD.Studio.EventInstance spellcastEvent;
 
     [SerializeField] private Transform bulletSpawnPoint;
     public GameObject[] bulletPrefab;
-    public int selectedBullet;
-    public float bulletSpeed;
+    [SerializeField]private int selectedBullet;
 
     private void Start()
     {
@@ -25,32 +22,45 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
+        ChooseSpell();
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Shoot(); 
-        }
-
-        
+        } 
     }
 
     private void Shoot()
     {
-        if (ammo.ammo >= currentAmmoCost) //Shooting
+        Bullet bullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
+
+        if (ammo.ammo >= bullet.magickaCost) //Shooting
         {
             cameraShake.shakeMultiplier = 4;
-            CameraShake.Invoke();
-            ammo.ammo -= currentAmmoCost;
-            var bullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-            bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
-            shootInstance = RuntimeManager.CreateInstance(shootEvent); //if audio event 3d, assign 3d space for the sounds
-            shootInstance.start();
+            CameraShake.Invoke(); //REPLACE THE SHAKE WITH AN EVENT INVOKE OF SPECIFIC FUNTION IN CAMERA SHAKE CLASS
 
+            ammo.ammo -= bullet.magickaCost;
+            var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
         }
         else //Shoot Failing
         {
-            shootInstance = RuntimeManager.CreateInstance(shootFailEvent);
-            shootInstance.start();
+            spellcastEvent = RuntimeManager.CreateInstance(shootFailEvent);
+            spellcastEvent.start();
+        }
+    }
+
+
+    private void ChooseSpell()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedBullet = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedBullet = 1;
         }
     }
 

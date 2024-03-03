@@ -12,7 +12,7 @@ public class MouselookXY : MonoBehaviour
     void Update()         //Rotation Action
     {
         rotation.y += Input.GetAxis("Mouse X");
-        rotation.x -= Input.GetAxis("Mouse Y");
+        rotation.x -= Input.GetAxis("Mouse Y"); //clamp it!
 
         body.rotation = Quaternion.Euler(0, rotation.y * sensitivity, 0);
         mainCamera.rotation = Quaternion.Euler(Mathf.Clamp(rotation.x, -89/sensitivity, 89/sensitivity) * sensitivity, rotation.y * sensitivity, 0); //Fix Clamp being stuck 
