@@ -19,7 +19,7 @@ public class CameraShake : MonoBehaviour
 
     public void LandCameraShake()
     {
-        mainCamera.DOShakeRotation(landShakeStrenght*0.05f, 0.1f * landShakeStrenght, 26, 90, true, ShakeRandomnessMode.Harmonic);
+        mainCamera.DOShakeRotation(landShakeStrenght*0.05f + 0.05f, 0.1f * landShakeStrenght, 26, 90, true, ShakeRandomnessMode.Harmonic);
         hand.DOShakePosition(0.15f, 0.05f * landShakeStrenght, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 
