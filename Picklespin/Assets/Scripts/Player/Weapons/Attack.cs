@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.Events;
+using System.Collections;
 
 public class Attack : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class Attack : MonoBehaviour
     public GameObject[] bulletPrefab;
     public int selectedBullet;
 
+    [SerializeField] private float castCooldownTime = 0.5f;
+    private bool castCooldownAllow = true;
+
     private void Start()
     {
         ammo = GetComponent<Ammo>();
@@ -26,9 +30,10 @@ public class Attack : MonoBehaviour
     {
         ChooseSpell();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && castCooldownAllow)
         {
-            Shoot(); 
+            Shoot();
+            StartCoroutine(CastCooldown());
         } 
     }
 
@@ -36,18 +41,19 @@ public class Attack : MonoBehaviour
     {
         Bullet bullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
 
-        if (ammo.ammo >= bullet.magickaCost) //Shooting
-        {
-            castCameraShake.Invoke();
-            ammo.ammo -= bullet.magickaCost;
-            var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-            spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
-        }
-        else //Shoot Failing
-        {
-            spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
-            spellcastInstance.start();
-        }
+
+            if (ammo.ammo >= bullet.magickaCost) //Shooting
+            {
+                castCameraShake.Invoke();
+                ammo.ammo -= bullet.magickaCost;
+                var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+                spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
+            }
+            else //Shoot Failing
+            {
+                spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
+                spellcastInstance.start();
+            }
     }
 
 
@@ -71,6 +77,13 @@ public class Attack : MonoBehaviour
     {
         changeSelectedSpell.Invoke();
         RuntimeManager.PlayOneShot(bulletPrefab[selectedBullet].GetComponentInChildren<Bullet>().pullupSound);
+    }
+
+    IEnumerator CastCooldown()
+    {
+        castCooldownAllow = false;
+        yield return new WaitForSeconds(castCooldownTime);
+        castCooldownAllow = true;
     }
 
 }

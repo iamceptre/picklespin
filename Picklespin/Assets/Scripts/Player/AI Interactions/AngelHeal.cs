@@ -119,7 +119,7 @@ public class AngelHeal : MonoBehaviour
             canPlayEvent = false; //this should always be at the end of this event
         }
 
-        aiHealth.hp += Time.deltaTime*16;
+        aiHealth.hp += Time.deltaTime*25;
         angelHPSlider.gameObject.SetActive(true);
         angelHPSlider.value = aiHealth.hp;
         HealingParticleStart();
