@@ -1,5 +1,7 @@
 using UnityEngine;
 using FMODUnity;
+using FMOD.Studio;
+using UnityEngine.Events;
 
 public class Bullet : MonoBehaviour
 {
@@ -13,24 +15,31 @@ public class Bullet : MonoBehaviour
     private AiVision aiVision;
 
     [SerializeField] private GameObject explosionFX;
-    [SerializeField] private EventReference mySound;
+    [SerializeField] private EventReference castSound;
+    public EventReference pullupSound;
+    [SerializeField] private EventReference hitSound;
+    [SerializeField] private EventInstance hitInstance;
+
+    private Transform mainCamera;
+    [SerializeField] private CameraShake cameraShake;
+    
 
     void Awake()
     {
         Destroy(gameObject,10);
         originalDamage = damage;
+        cameraShake = GameObject.Find("CameraHandler").GetComponent<CameraShake>();
     }
 
     private void Start()
     {
-        RuntimeManager.PlayOneShot(mySound);
+        RuntimeManager.PlayOneShot(castSound);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
 
         RandomizeCritical(); 
-
         //Debug.Log("you deal " + damage + " damage");
 
         if (collision.gameObject)
@@ -51,7 +60,7 @@ public class Bullet : MonoBehaviour
             }
 
         }
-        Instantiate(explosionFX, transform.position, Quaternion.identity);
+        SpawnExplosion();
         Destroy(gameObject);
 
     }
@@ -78,6 +87,16 @@ public class Bullet : MonoBehaviour
             aiVision.playerJustHitMe = true;
             //aiVision.PlayerJustHitMeCooldown();
         }
+    }
+
+    private void SpawnExplosion()
+    {
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
+        Instantiate(explosionFX, Vector3.Lerp(transform.position, mainCamera.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
+        hitInstance = RuntimeManager.CreateInstance(hitSound);
+        RuntimeManager.AttachInstanceToGameObject(hitInstance, GetComponent<Transform>());
+        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, mainCamera.position));
+        hitInstance.start();
     }
 
 }

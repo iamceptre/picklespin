@@ -5,12 +5,14 @@ public class AttackPlayer : State
     private GameObject player;
 
     private NavMeshAgent agent;
-    public LoosingPlayer loosingPlayer;
-    public AiVision aiVision;
+    [SerializeField] private LoosingPlayer loosingPlayer;
+    private AiVision aiVision;
 
+    [SerializeField] private float attackSpeed = 8;
 
     private void Start()
     {
+        aiVision = GetComponentInParent<AiVision>();
         player = GameObject.FindGameObjectWithTag("MainCamera");
         agent = GetComponentInParent<NavMeshAgent>();
     }
@@ -34,6 +36,7 @@ public class AttackPlayer : State
 
     void RunToPlayer()
     {
+        agent.speed = attackSpeed;
         loosingPlayer.lostPlayer = false;
         agent.SetDestination(player.transform.position); //make it refresh not that often
     }

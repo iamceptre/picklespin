@@ -1,45 +1,67 @@
+using System.Collections;
 using UnityEngine;
+using FMODUnity;
 
 public class JumpLandSignals : MonoBehaviour
 {
-
+    public CameraShake cameraShake;
     public CharacterController characterController;
     public FootstepSystem footstepSystem;
-    public CameraShake cameraShake;
-    private bool inAir = false;
     private bool landed = true;
+    private bool routineRunning = false;
 
-    void Update()
+    [SerializeField] private EventReference landSoft;
+    [SerializeField] private EventReference landHard;
+
+
+    private void Update()
     {
-        JumpUpDetection(); //Remove Update logic, use sending external signals from references instead
+        JumpedOrSlipped();
     }
 
-    public void JumpUpDetection()
+    public void JumpedOrSlipped()
     {
-        if (Input.GetKey(KeyCode.Space) && !inAir)
-        {
-            cameraShake.shakeMultiplier = 0.5f;
-            //CameraShake.Invoke();
-            inAir = true;
-            landed = false;
-        }
-
         if (characterController.isGrounded)
         {
-            inAir = false;
-            SendLandSignal();
+            Landed();
         }
         else
         {
-            cameraShake.shakeMultiplier = footstepSystem.overallSpeed * 0.4f;
+            landed = false;
+            cameraShake.landShakeStrenght = Mathf.Clamp(footstepSystem.overallSpeed * 0.4f, 0, 10); //change it to vertical speed after fixing it not working
         }
     }
 
-    private void SendLandSignal()
+    private void Landed()
     {
-        if (!landed) {
-            CameraShake.Invoke();
-            landed = true;
+        if (!routineRunning && !landed)
+        {
+                StartCoroutine(LandedCooldown());
+                //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);
+                isLandingHardDecider();
+                cameraShake.LandCameraShake();
+                landed = true;
         }
     }
+
+
+    private IEnumerator LandedCooldown()
+    {
+            routineRunning = true;
+            yield return new WaitForSeconds(0.5f);
+            routineRunning = false;
+    }
+
+    private void isLandingHardDecider()
+    {
+        if (cameraShake.landShakeStrenght >= 5) //is landing hard treshold
+        {
+            RuntimeManager.PlayOneShot(landHard);
+        }
+        else
+        {
+            RuntimeManager.PlayOneShot(landSoft);
+        }
+    }
+
 }

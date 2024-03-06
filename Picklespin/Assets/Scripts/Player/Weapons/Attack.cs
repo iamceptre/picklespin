@@ -1,19 +1,21 @@
 using UnityEngine;
 using FMODUnity;
+using UnityEngine.Events;
 
 public class Attack : MonoBehaviour
 {
     public AmmoDisplay ammoDisplay;
-    public CameraShake cameraShake;
+   [SerializeField] private UnityEvent castCameraShake;
+   [SerializeField] private UnityEvent changeSelectedSpell;
 
     private Ammo ammo;
 
     [SerializeField] private EventReference shootFailEvent;
-    private FMOD.Studio.EventInstance spellcastEvent;
+    private FMOD.Studio.EventInstance spellcastInstance;
 
     [SerializeField] private Transform bulletSpawnPoint;
     public GameObject[] bulletPrefab;
-    [SerializeField]private int selectedBullet;
+    public int selectedBullet;
 
     private void Start()
     {
@@ -36,17 +38,15 @@ public class Attack : MonoBehaviour
 
         if (ammo.ammo >= bullet.magickaCost) //Shooting
         {
-            cameraShake.shakeMultiplier = 4;
-            CameraShake.Invoke(); //REPLACE THE SHAKE WITH AN EVENT INVOKE OF SPECIFIC FUNTION IN CAMERA SHAKE CLASS
-
+            castCameraShake.Invoke();
             ammo.ammo -= bullet.magickaCost;
             var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
         }
         else //Shoot Failing
         {
-            spellcastEvent = RuntimeManager.CreateInstance(shootFailEvent);
-            spellcastEvent.start();
+            spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
+            spellcastInstance.start();
         }
     }
 
@@ -56,13 +56,21 @@ public class Attack : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedBullet = 0;
+            SelectSpell();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectedBullet = 1;
+            SelectSpell();
         }
     }
 
+
+    private void SelectSpell()
+    {
+        changeSelectedSpell.Invoke();
+        RuntimeManager.PlayOneShot(bulletPrefab[selectedBullet].GetComponentInChildren<Bullet>().pullupSound);
+    }
 
 }

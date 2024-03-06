@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 1491303106759170490}
   - component: {fileID: 1130678391124836897}
   m_Layer: 0
-  m_Name: BaseSpell
+  m_Name: wicked energy ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +202,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3523914218313080419
 Rigidbody:
@@ -247,13 +247,27 @@ MonoBehaviour:
   magickaCost: 1
   speed: 60
   explosionFX: {fileID: 3298281406787399419, guid: 9809af22cedfdfe4a8f2f4940821d70a, type: 3}
-  mySound:
+  castSound:
     Guid:
       Data1: 1963473607
       Data2: 1081434507
       Data3: -643885943
       Data4: -1090986781
     Path: event:/PLACEHOLDER_UNCZ/shoot_test
+  pullupSound:
+    Guid:
+      Data1: 1498038090
+      Data2: 1299607637
+      Data3: -1224385138
+      Data4: -71727395
+    Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
+  hitSound:
+    Guid:
+      Data1: -1364902935
+      Data2: 1235094204
+      Data3: -745530716
+      Data4: -2104198156
+    Path: event:/PLACEHOLDER_UNCZ/spellHit
 --- !u!199 &1491303106759170490
 ParticleSystemRenderer:
   serializedVersion: 6

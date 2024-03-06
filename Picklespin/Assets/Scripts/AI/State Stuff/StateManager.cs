@@ -4,10 +4,10 @@ public class StateManager : MonoBehaviour
 {
 
    public State currentState;
-   [HideInInspector]public AiVision aiVision;
+   [HideInInspector] public AiVision aiVision;
     public AiHealth aiHealth;
 
-    [HideInInspector] public float RefreshEveryVarSeconds = 0.25f;
+    [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
  
     void Start()
     {

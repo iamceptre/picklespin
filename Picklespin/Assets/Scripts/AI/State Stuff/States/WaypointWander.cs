@@ -4,14 +4,16 @@ using UnityEngine.AI;
 public class WaypointWander : State
 {
     [SerializeField] private Transform[] waypoints;
-    [HideInInspector]public NavMeshAgent agent;
+    private NavMeshAgent agent;
     private int waypointIndex;
     [HideInInspector] public Vector3 target;
 
-    public AiVision aiVision;
-    public AttackPlayer attackPlayer;
+    private AiVision aiVision;
+    [SerializeField] private AttackPlayer attackPlayer;
 
     private bool canInc=true;
+
+    [SerializeField] private float idleSpeed = 3.5f; 
 
     public override State RunCurrentState()
     {
@@ -26,11 +28,11 @@ public class WaypointWander : State
         }
     }
 
-
     private void Awake()
     {
-        waypointIndex = 0;
         agent = GetComponentInParent<NavMeshAgent>();
+        aiVision = GetComponentInParent<AiVision>();
+        waypointIndex = 0;
         UpdateDestination();
     }
 
@@ -58,7 +60,8 @@ public class WaypointWander : State
     
     public void UpdateDestination()
     {
-            target = waypoints[waypointIndex].position;
+        agent.speed = idleSpeed;
+        target = waypoints[waypointIndex].position;
             agent.SetDestination(target);
     }
 

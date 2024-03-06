@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{a1629375-401f-49b6-9574-51f4e9040071}">
+		<property name="assetPath">
+			<value>se_crash_nights.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.9213378684807254</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y = jumpPower;
             footstepSystem.footstepSpaceCooldown = 0; //makes the footstep space consistent when we land
             footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
-            //Tell the Jump Land System that you jumped from here, so jump land system dont have the bool madness going on
         }
         else
         {

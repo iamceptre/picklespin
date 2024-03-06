@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 1491303106759170490}
   - component: {fileID: 1130678391124836897}
   m_Layer: 0
-  m_Name: BulletTest
+  m_Name: generic fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +202,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3523914218313080419
 Rigidbody:
@@ -247,13 +247,27 @@ MonoBehaviour:
   magickaCost: 30
   speed: 60
   explosionFX: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
-  mySound:
+  castSound:
     Guid:
       Data1: 1963473607
       Data2: 1081434507
       Data3: -643885943
       Data4: -1090986781
     Path: event:/PLACEHOLDER_UNCZ/shoot_test
+  pullupSound:
+    Guid:
+      Data1: 1585686292
+      Data2: 1201211164
+      Data3: -1681641856
+      Data4: -1589454864
+    Path: event:/PLACEHOLDER_UNCZ/fireball_pullup
+  hitSound:
+    Guid:
+      Data1: -1364902935
+      Data2: 1235094204
+      Data3: -745530716
+      Data4: -2104198156
+    Path: event:/PLACEHOLDER_UNCZ/spellHit
 --- !u!199 &1491303106759170490
 ParticleSystemRenderer:
   serializedVersion: 6
