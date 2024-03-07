@@ -25,7 +25,7 @@ public class CameraShake : MonoBehaviour
     {
         MakeShakeEqualOnEveryFPS();
         mainCamera.DOShakeRotation(landShakeStrenght*0.05f + 0.05f, 0.1f * landShakeStrenght * fpsCompensate, 26, 90, true, ShakeRandomnessMode.Harmonic);
-        hand.DOShakePosition(0.15f, 0.05f * landShakeStrenght, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+        hand.DOShakePosition(0.15f, 0.05f * landShakeStrenght * fpsCompensate, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 
 
@@ -47,7 +47,6 @@ public class CameraShake : MonoBehaviour
     private void MakeShakeEqualOnEveryFPS()
     {
         fpsCompensate = 1/(Time.smoothDeltaTime * 59.5f);
-        Debug.Log(fpsCompensate);
     }
 
 

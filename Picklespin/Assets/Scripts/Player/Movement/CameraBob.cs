@@ -16,6 +16,11 @@ public class CameraBob : MonoBehaviour {
 
     public Transform toBob;
 
+    private Vector3 handVelocity;
+    private Vector3 camVelocity;
+
+    [SerializeField] private float smoothing;
+
 
     private void Start(){
         originalPosition = toBob.localPosition;
@@ -27,7 +32,7 @@ public class CameraBob : MonoBehaviour {
 
         if (characterController.isGrounded) //make it not cut abruply after landing
         {
-            Bob();
+           Bob();
             HandBob();
         }
     }
@@ -37,14 +42,16 @@ public class CameraBob : MonoBehaviour {
         tempPos.y = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed) * height * 0.3f * footstepSystem.horizontalSpeed;
         tempPos.x = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed * 0.5f) * height * footstepSystem.horizontalSpeed;
 
-        toBob.transform.localPosition = originalPosition + (tempPos);
-        toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x * 0.5f );
+        //toBob.transform.localPosition = originalPosition + (tempPos);
+        toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, originalPosition + (tempPos), ref camVelocity, smoothing);
+
+        //toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x * 0.5f );
     }
 
 private void HandBob()
     {
-        hand.localPosition = originalHandPosition + (tempPos * 0.3f);
-        //hand.transform.localEulerAngles = new Vector3(0, 0, -tempPos.x*15);
+        //hand.localPosition = originalHandPosition + (tempPos * 0.3f);
+        hand.localPosition = Vector3.SmoothDamp(hand.localPosition, originalHandPosition + (tempPos * 0.3f), ref handVelocity, smoothing);
     }
 
 

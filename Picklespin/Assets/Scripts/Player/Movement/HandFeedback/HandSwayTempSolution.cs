@@ -11,5 +11,6 @@ public class HandSwayTempSolution : MonoBehaviour
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, mainCamera.rotation, Time.deltaTime * damping); //Clamp the max offset distance it so the hand wont get extreme offset when fast mouse move
         transform.position = Vector3.SmoothDamp(transform.position, body.position + new Vector3(0, 1, 0), ref velocity, 0.035f);
+        //transform.position = body.position + new Vector3(0, 1, 0);
     }
 }

@@ -6450,12 +6450,12 @@ Transform:
   m_GameObject: {fileID: 1121504032}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 445916676}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1219504541}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1121504034
 MonoBehaviour:
@@ -6889,6 +6889,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1121504033}
   - {fileID: 247348353}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7103,10 +7104,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 247348354}
   footstepSystem: {fileID: 1219504545}
-  height: 0.02
+  height: 0.025
   bobSpeed: 2
   hand: {fileID: 445916676}
   toBob: {fileID: 194906740}
+  smoothing: 0.04
 --- !u!114 &1219504550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13744,7 +13746,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 663375009}
   - {fileID: 705507995}
-  - {fileID: 1121504033}
   - {fileID: 1219504541}
   - {fileID: 750153417}
   - {fileID: 1133298434}
