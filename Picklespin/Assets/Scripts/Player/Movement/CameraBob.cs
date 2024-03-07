@@ -18,6 +18,7 @@ public class CameraBob : MonoBehaviour {
 
     private Vector3 handVelocity;
     private Vector3 camVelocity;
+    private Vector3 camRotVelocity;
 
     [SerializeField] private float smoothing;
 
@@ -45,7 +46,8 @@ public class CameraBob : MonoBehaviour {
         //toBob.transform.localPosition = originalPosition + (tempPos);
         toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, originalPosition + (tempPos), ref camVelocity, smoothing);
 
-        //toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x * 0.5f );
+        toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x * 0.5f );
+        //toBob.transform.localEulerAngles += Vector3.SmoothDamp(toBob.localEulerAngles, new Vector3(0, 0, -tempPos.x * 0.5f), ref camRotVelocity, smoothing);
     }
 
 private void HandBob()
