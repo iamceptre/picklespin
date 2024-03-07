@@ -18,7 +18,7 @@ public class Attack : MonoBehaviour
     public GameObject[] bulletPrefab;
     public int selectedBullet;
 
-    [SerializeField] private float castCooldownTime = 0.5f;
+    private float castCooldownTime = 0.1f;
     private bool castCooldownAllow = true;
 
     private void Start()
@@ -44,6 +44,7 @@ public class Attack : MonoBehaviour
 
             if (ammo.ammo >= bullet.magickaCost) //Shooting
             {
+                castCooldownTime = bullet.myCooldown;
                 castCameraShake.Invoke();
                 ammo.ammo -= bullet.magickaCost;
                 var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);

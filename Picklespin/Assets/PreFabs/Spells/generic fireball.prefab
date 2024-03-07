@@ -244,8 +244,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 15
-  magickaCost: 30
+  magickaCost: 10
   speed: 60
+  myCooldown: 0.3
   explosionFX: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
   castSound:
     Guid:
@@ -268,6 +269,7 @@ MonoBehaviour:
       Data3: -745530716
       Data4: -2104198156
     Path: event:/PLACEHOLDER_UNCZ/spellHit
+  cameraShake: {fileID: 0}
 --- !u!199 &1491303106759170490
 ParticleSystemRenderer:
   serializedVersion: 6

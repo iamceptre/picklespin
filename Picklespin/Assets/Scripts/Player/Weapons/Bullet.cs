@@ -1,7 +1,6 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using UnityEngine.Events;
 
 public class Bullet : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private int damage = 15;
     public int magickaCost = 30;
     public int speed = 60;
+    public float myCooldown;
 
     private AiHealth aiHealth;
     private AiVision aiVision;
