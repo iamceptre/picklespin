@@ -24,7 +24,7 @@ public class FootstepSystem : MonoBehaviour
     private float fixedFootstepSpace;
     private float smoothVelocity; //for smoothdamp only
 
-    [HideInInspector]public float footstepSpaceCooldown;
+    [HideInInspector] public float footstepSpaceCooldown;
 
    // private bool isJumping;
 

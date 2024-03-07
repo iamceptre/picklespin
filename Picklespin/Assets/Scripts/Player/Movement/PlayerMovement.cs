@@ -2,10 +2,10 @@
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
-    public Transform mainCamera;
-    public Transform body;
-   // private Vector3 velocity = Vector3.zero;
-   // public float smoothTime = 0.3F;
+    [SerializeField] private Transform mainCamera;
+    [SerializeField] private Transform body;
+    [SerializeField] private FootstepSystem footstepSystem;
+    [SerializeField] private StaminaBarDisplay staminaBarDisplay;
 
     public float walkSpeed;
     public float runSpeed;
@@ -14,15 +14,15 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight;
     public float crouchHeight;
     public float crouchSpeed;
+    [Range(0,100)] public float stamina = 100;
+    public float fatigability = 32; //lower the fatigability to sprint for longer
 
     private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
 
     private bool canMove = true;
 
-    [HideInInspector] public bool isRunning;
-
-    private FootstepSystem footstepSystem;
+    public bool isRunning;
 
 
     private void Start()
@@ -30,17 +30,28 @@ public class PlayerMovement : MonoBehaviour
         footstepSystem = GetComponent<FootstepSystem>();
     }
 
-
-
     void Update()
     {
       
         Vector3 forward = body.TransformDirection(Vector3.forward);
         Vector3 right = mainCamera.TransformDirection(Vector3.right);
 
-        if (characterController.isGrounded)
+        if (characterController.isGrounded && stamina >= 0)
         {
             isRunning = Input.GetKey(KeyCode.LeftShift);
+
+            if (isRunning)
+            {
+                if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) {
+                    StaminaDeplete();
+                }
+            }
+        }
+
+
+        if (characterController.isGrounded && stamina<100 && !isRunning)
+        {
+            StaminaRecovery();
         }
 
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
@@ -78,6 +89,34 @@ public class PlayerMovement : MonoBehaviour
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+
+    private void StaminaDeplete()
+    {
+        stamina -= Time.deltaTime * fatigability;
+        stamina = Mathf.Clamp(stamina, 0, 100);
+        if (stamina <= 0)
+        {
+            isRunning = false;
+        }
+        staminaBarDisplay.RefreshBarDisplay();
+    }
+
+    private void StaminaRecovery()
+    {
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) //if player is moving then the stamina recovery is slower 
+
+        {
+            stamina += Time.deltaTime * 8;
+        }
+        else
+        {
+            stamina += Time.deltaTime * 16;
+        }
+
+        stamina = Mathf.Clamp(stamina, 0, 100);
+        staminaBarDisplay.RefreshBarDisplay();
     }
 
 }

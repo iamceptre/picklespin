@@ -1,11 +1,17 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AmmoDisplay : MonoBehaviour
 {
-    public TMP_Text ammoDisplayText;
-    public Ammo ammo;
+    [SerializeField] private TMP_Text ammoDisplayText;
+    [SerializeField] private Ammo ammo;
+    [SerializeField]private Slider manaBar;
+
+    private float desiredManaBarPosition;
+    private float velocity;
+    
 
     private void Start()
     {
@@ -19,15 +25,18 @@ public class AmmoDisplay : MonoBehaviour
         {
             StartCoroutine(RefreshText());  
         }
+
+        manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPosition, ref velocity, 0.1f);
     }
 
     public IEnumerator RefreshText()
     {
-        ammoDisplayText.text = ("magicka: " + "<br>" + ammo.ammo + "/" + ammo.maxAmmo);
+        ammoDisplayText.text = (ammo.ammo + "/" + ammo.maxAmmo);
+        desiredManaBarPosition = (float)ammo.ammo / (float)ammo.maxAmmo;
         yield return null;
     }
 
 }
 
 
-//Make it refresh with delegates later on, to avoid a big mess
+//Make it refresh with events later on, to avoid a big mess
