@@ -13,7 +13,7 @@ public class HitboxHandler : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)  // change it to events
     {
         if (other.gameObject.CompareTag("EvilEntity"))//Death from evil entity collision
         {

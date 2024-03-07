@@ -28,7 +28,7 @@ public class CameraBob : MonoBehaviour {
         if (characterController.isGrounded) //make it not cut abruply after landing
         {
             Bob();
-            //HandBob();
+            HandBob();
         }
     }
 
@@ -43,8 +43,8 @@ public class CameraBob : MonoBehaviour {
 
 private void HandBob()
     {
-        hand.localPosition = originalHandPosition - (tempPos * 0.9f);
-        //hand.transform.localEulerAngles = new Vector3(0, 0, -tempPos.x);
+        hand.localPosition = originalHandPosition + (tempPos * 0.3f);
+        //hand.transform.localEulerAngles = new Vector3(0, 0, -tempPos.x*15);
     }
 
 

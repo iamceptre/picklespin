@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform mainCamera;
     public Transform body;
    // private Vector3 velocity = Vector3.zero;
-    public float smoothTime = 0.3F;
+   // public float smoothTime = 0.3F;
 
     public float walkSpeed;
     public float runSpeed;
