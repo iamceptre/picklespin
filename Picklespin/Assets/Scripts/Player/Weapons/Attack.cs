@@ -60,13 +60,13 @@ public class Attack : MonoBehaviour
 
     private void ChooseSpell()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && selectedBullet != 0)
         {
             selectedBullet = 0;
             SelectSpell();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && selectedBullet != 1)
         {
             selectedBullet = 1;
             SelectSpell();
