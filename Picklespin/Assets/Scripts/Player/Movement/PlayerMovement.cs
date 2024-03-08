@@ -1,4 +1,4 @@
-
+using System.Collections;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight;
     public float crouchHeight;
     public float crouchSpeed;
-    [Range(0,100)] public float stamina = 100;
+    [Range(0, 100)] public float stamina = 100;
     public float fatigability = 32; //lower the fatigability to sprint for longer
 
     private Vector3 moveDirection = Vector3.zero;
@@ -32,27 +32,34 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-      
+
         Vector3 forward = body.TransformDirection(Vector3.forward);
         Vector3 right = mainCamera.TransformDirection(Vector3.right);
 
-        if (characterController.isGrounded && stamina >= 0)
-        {
-            isRunning = Input.GetKey(KeyCode.LeftShift);
 
-            if (isRunning)
+
+
+        //SPRINTING LOGIC
+        if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift))
+        {
+            if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
             {
-                if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) {
-                    StaminaDeplete();
-                }
+                isRunning = true;
+                StaminaDeplete();
+            }
+            else
+            {
+                isRunning = false;
+                StaminaRecovery();
             }
         }
-
-
-        if (characterController.isGrounded && stamina<100 && !isRunning)
+        else
         {
+            isRunning = false;
             StaminaRecovery();
         }
+
+
 
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
@@ -64,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y = jumpPower;
             footstepSystem.footstepSpaceCooldown = 0; //makes the footstep space consistent when we land
             footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
+            StartCoroutine(JumpStaminaSmoothDeplete());
         }
         else
         {
@@ -117,6 +125,16 @@ public class PlayerMovement : MonoBehaviour
 
         stamina = Mathf.Clamp(stamina, 0, 100);
         staminaBarDisplay.RefreshBarDisplay();
+    }
+
+
+    private IEnumerator JumpStaminaSmoothDeplete()
+    {
+        for (int i = 0; i < fatigability; i++)
+        {
+            stamina--;
+            yield return null;
+        }
     }
 
 }
