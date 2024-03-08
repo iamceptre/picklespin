@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,12 +18,16 @@ public class PlayerMovement : MonoBehaviour
     [Range(0, 100)] public float stamina = 100;
     public float fatigability = 32; //lower the fatigability to sprint for longer
 
-    private Vector3 moveDirection = Vector3.zero;
+    [SerializeField]private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
 
     private bool canMove = true;
 
     public bool isRunning;
+
+    private bool anyMovementKeysPressed;
+
+    public float externalPushForce = 1; //1 means no difference at all
 
 
     private void Start()
@@ -36,13 +41,20 @@ public class PlayerMovement : MonoBehaviour
         Vector3 forward = body.TransformDirection(Vector3.forward);
         Vector3 right = mainCamera.TransformDirection(Vector3.right);
 
-
-
-
-        //SPRINTING LOGIC
-        if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
         {
-            if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+            anyMovementKeysPressed = true;
+        }
+        else
+        {
+            anyMovementKeysPressed = false;
+        }
+
+
+            //SPRINTING LOGIC
+            if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift))
+        {
+            if (anyMovementKeysPressed)
             {
                 isRunning = true;
                 StaminaDeplete();
@@ -64,14 +76,11 @@ public class PlayerMovement : MonoBehaviour
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        moveDirection = (forward * curSpeedX * externalPushForce) + (right * curSpeedY);
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
-            moveDirection.y = jumpPower;
-            footstepSystem.footstepSpaceCooldown = 0; //makes the footstep space consistent when we land
-            footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
-            StartCoroutine(JumpStaminaSmoothDeplete());
+            Jump();
         }
         else
         {
@@ -113,14 +122,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void StaminaRecovery()
     {
-        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) //if player is moving then the stamina recovery is slower 
+        if (characterController.isGrounded)
+        {
+            if (anyMovementKeysPressed)                                                  //if player is moving then the stamina recovery is slower 
 
-        {
-            stamina += Time.deltaTime * 8;
-        }
-        else
-        {
-            stamina += Time.deltaTime * 16;
+            {
+                stamina += Time.deltaTime * 8;
+            }
+            else
+            {
+                stamina += Time.deltaTime * 16;
+            }
         }
 
         stamina = Mathf.Clamp(stamina, 0, 100);
@@ -130,10 +142,43 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator JumpStaminaSmoothDeplete()
     {
-        for (int i = 0; i < fatigability; i++)
+        for (int i = 0; i < fatigability*0.5f; i++)
         {
             stamina--;
             yield return null;
+        }
+    }
+
+    private void Jump()
+    {
+        jumpPushForward();
+        moveDirection.y = jumpPower;
+        footstepSystem.footstepSpaceCooldown = 0;                                               //makes the footstep space consistent when we land
+        footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
+        StartCoroutine(JumpStaminaSmoothDeplete());
+    }
+
+    private void jumpPushForward()
+    {
+        if (anyMovementKeysPressed && stamina>15)
+        {
+            externalPushForce = 0.5f + footstepSystem.overallSpeed*0.12f;
+            //StartCoroutine(ExternalPushForceDamp());
+        }
+        else
+        {
+            externalPushForce = 1;
+        }
+
+    }
+
+    private IEnumerator ExternalPushForceDamp() //broken, after every jump the dampening gets faster wtf
+    {
+        while (externalPushForce>=1)
+        {
+            externalPushForce -= Time.deltaTime;
+            externalPushForce = Mathf.Clamp(externalPushForce, 1, 5);
+            yield return new WaitForEndOfFrame();
         }
     }
 

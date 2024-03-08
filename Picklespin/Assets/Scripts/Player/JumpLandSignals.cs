@@ -4,9 +4,11 @@ using FMODUnity;
 
 public class JumpLandSignals : MonoBehaviour
 {
-    public CameraShake cameraShake;
-    public CharacterController characterController;
-    public FootstepSystem footstepSystem;
+    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private CharacterController characterController;
+    [SerializeField] private FootstepSystem footstepSystem;
+    [SerializeField] private PlayerMovement playerMovement;
+
     private bool landed = true;
     private bool routineRunning = false;
 
@@ -40,6 +42,7 @@ public class JumpLandSignals : MonoBehaviour
                 //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);
                 isLandingHardDecider();
                 cameraShake.LandCameraShake();
+                playerMovement.externalPushForce = 1;
                 landed = true;
         }
     }
