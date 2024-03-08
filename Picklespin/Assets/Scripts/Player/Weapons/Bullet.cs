@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
     private AiHealth aiHealth;
     private AiVision aiVision;
 
+    [SerializeField] private GameObject spawnInHandParticle;
     [SerializeField] private GameObject explosionFX;
     [SerializeField] private EventReference castSound;
     public EventReference pullupSound;
@@ -22,6 +23,8 @@ public class Bullet : MonoBehaviour
 
     private Transform mainCamera;
     [SerializeField] private CameraShake cameraShake;
+
+    private Transform handCastingPoint;
     
 
     void Awake()
@@ -29,18 +32,20 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject,10);
         originalDamage = damage;
         cameraShake = GameObject.Find("CameraHandler").GetComponent<CameraShake>();
+        handCastingPoint = GameObject.FindGameObjectWithTag("CastingPoint").GetComponent<Transform>();
     }
 
     private void Start()
     {
         RuntimeManager.PlayOneShot(castSound);
+        Instantiate(spawnInHandParticle, handCastingPoint.position, Quaternion.identity);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
 
         RandomizeCritical(); 
-        Debug.Log("you deal " + damage + " damage");
+        //Debug.Log("you deal " + damage + " damage");
 
         if (collision.gameObject)
         {

@@ -8,6 +8,7 @@ TagManager:
   - EvilEntity
   - GameMind
   - WinGate
+  - CastingPoint
   layers:
   - Default
   - TransparentFX

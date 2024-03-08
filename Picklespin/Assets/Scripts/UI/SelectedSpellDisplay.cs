@@ -1,19 +1,20 @@
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using System.Collections;
+using System;
 
 public class SelectedSpellDisplay : MonoBehaviour
 {
 
     [SerializeField] private Attack attackScript;
     private TMP_Text selectedSpellText;
-    private Animation anim;
 
-
-    private void Start()
+    private void Awake()
     {
         selectedSpellText = GetComponent<TMP_Text>();
         selectedSpellText.text = attackScript.bulletPrefab[attackScript.selectedBullet].gameObject.name.ToString();
-        anim = GetComponent<Animation>();
+        UpdateText();
     }
 
 private void DisableMe()
@@ -27,9 +28,18 @@ private void DisableMe()
         {
             selectedSpellText.text = attackScript.bulletPrefab[attackScript.selectedBullet].gameObject.name.ToString();
         }
-            anim.Stop();
-            anim.Play();
 
+        var sequence = DOTween.Sequence();
+
+        selectedSpellText.DOKill();
+        StopAllCoroutines();
+        selectedSpellText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut); //fade IN
+    }
+
+
+    private void FadeOut()
+    {
+        selectedSpellText.DOFade(0, 1.2944f).SetEase(Ease.InSine).OnComplete(DisableMe);
     }
 
 }

@@ -247,6 +247,7 @@ MonoBehaviour:
   magickaCost: 1
   speed: 60
   myCooldown: 0.1
+  spawnInHandParticle: {fileID: 4342817449807727369, guid: 6b37d42c41301b148894b7f861d4a6c6, type: 3}
   explosionFX: {fileID: 3298281406787399419, guid: 9809af22cedfdfe4a8f2f4940821d70a, type: 3}
   castSound:
     Guid:
