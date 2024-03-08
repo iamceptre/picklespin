@@ -4912,7 +4912,7 @@ GameObject:
   - component: {fileID: 198175801688348628}
   - component: {fileID: 199922078765427110}
   m_Layer: 0
-  m_Name: TinyExplosion
+  m_Name: FireballExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5190,7 +5190,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
+      scalar: 8
       minScalar: 4
       maxCurve:
         serializedVersion: 2

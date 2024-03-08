@@ -127,11 +127,11 @@ public class PlayerMovement : MonoBehaviour
             if (anyMovementKeysPressed)                                                  //if player is moving then the stamina recovery is slower 
 
             {
-                stamina += Time.deltaTime * 8;
+                stamina += Time.deltaTime * 16;
             }
             else
             {
-                stamina += Time.deltaTime * 16;
+                stamina += Time.deltaTime * 32;
             }
         }
 
@@ -142,9 +142,9 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator JumpStaminaSmoothDeplete()
     {
-        for (int i = 0; i < fatigability*0.5f; i++)
+        for (int i = 0; i < fatigability*0.25f; i++)
         {
-            stamina--;
+            stamina -= (1+footstepSystem.overallSpeed)*0.22f;
             yield return null;
         }
     }
@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void jumpPushForward()
     {
-        if (anyMovementKeysPressed && stamina>15)
+        if (anyMovementKeysPressed && stamina>15) //Indicate on gui that you are low on stamina, lower than this amount
         {
             externalPushForce = 0.5f + footstepSystem.overallSpeed*0.12f;
             //StartCoroutine(ExternalPushForceDamp());
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private IEnumerator ExternalPushForceDamp() //broken, after every jump the dampening gets faster wtf
+    private IEnumerator ExternalPushForceDamp() //broken, after every jump the dampening gets faster, fix it
     {
         while (externalPushForce>=1)
         {

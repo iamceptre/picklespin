@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
     {
 
         RandomizeCritical(); 
-        //Debug.Log("you deal " + damage + " damage");
+        Debug.Log("you deal " + damage + " damage");
 
         if (collision.gameObject)
         {
@@ -95,7 +95,7 @@ public class Bullet : MonoBehaviour
         Instantiate(explosionFX, Vector3.Lerp(transform.position, mainCamera.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
         hitInstance = RuntimeManager.CreateInstance(hitSound);
         RuntimeManager.AttachInstanceToGameObject(hitInstance, GetComponent<Transform>());
-        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, mainCamera.position));
+        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, mainCamera.position),originalDamage);
         hitInstance.start();
     }
 

@@ -30,16 +30,17 @@ public class CameraShake : MonoBehaviour
 
 
 
-    public void ExplosionNearbyShake(float distanceFromExplosion) //maybe do a delay based on distance, so wait until the shockwave of an explosion gets to you
+    public void ExplosionNearbyShake(float distanceFromExplosion, float damage) //maybe do a delay based on distance, so wait until the shockwave of an explosion gets to you
     {
+        damage = damage * 0.05f;
+
         MakeShakeEqualOnEveryFPS();
 
         distanceFromExplosion = Mathf.Clamp(distanceFromExplosion, 5, 45);
+        float strenghtBasedOnDistance = (45 - distanceFromExplosion) * 0.01f * damage;
 
-        float strenghtBasedOnDistance = (45 - distanceFromExplosion) * 0.015f;
 
-
-        mainCamera.DOShakeRotation(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2), 26, 90, true, ShakeRandomnessMode.Harmonic);
+        mainCamera.DOShakeRotation(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2) + damage, 26, 90, true, ShakeRandomnessMode.Harmonic);
         hand.DOShakePosition(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2) * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 
