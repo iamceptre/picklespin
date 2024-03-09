@@ -6,6 +6,8 @@ public class StaminaBarDisplay : MonoBehaviour
 
     private Slider staminaSlider;
     [SerializeField] private PlayerMovement playerMovement;
+    private float velocity;
+    private float desiredStaminaDisplay;
 
     private void Awake()
     {
@@ -14,7 +16,14 @@ public class StaminaBarDisplay : MonoBehaviour
 
     public void RefreshBarDisplay()
     {
-       staminaSlider.value = playerMovement.stamina * 0.01f;
+       desiredStaminaDisplay = playerMovement.stamina * 0.01f;
+    }
+
+    private void Update()
+    {
+        if (staminaSlider.value != desiredStaminaDisplay) {
+            staminaSlider.value = Mathf.SmoothDamp(staminaSlider.value, desiredStaminaDisplay, ref velocity, 0.1f);
+        }
     }
 
 }

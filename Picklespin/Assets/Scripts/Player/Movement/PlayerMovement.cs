@@ -146,29 +146,20 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    private IEnumerator JumpStaminaSmoothDeplete()
-    {
-        for (int i = 0; i < fatigability*0.25f; i++)
-        {
-            stamina -= (1+footstepSystem.overallSpeed)*0.1f;
-            yield return null;
-        }
-    }
-
     private void Jump()
     {
+        stamina -= (1 + footstepSystem.overallSpeed) * 0.05f * fatigability;
         jumpPushForward();
         moveDirection.y = jumpPower;
         footstepSystem.footstepSpaceCooldown = 0;                                               //makes the footstep space consistent when we land
         footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
-        StartCoroutine(JumpStaminaSmoothDeplete());
     }
 
     private void jumpPushForward()
     {
-        if (anyMovementKeysPressed && stamina>15) //Indicate on gui that you are low on stamina, lower than this amount
+        if (anyMovementKeysPressed && stamina>5) //Indicate on gui that you are low on stamina, lower than this amount
         {
-            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.1618f;
+            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.17f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
@@ -179,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private IEnumerator ExternalPushForceDamp() //broken, after every jump the dampening gets faster, fix it
+    private IEnumerator ExternalPushForceDamp()
     {
         while (externalPushForce >= 1)
         {

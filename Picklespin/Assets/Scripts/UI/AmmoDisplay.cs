@@ -26,7 +26,9 @@ public class AmmoDisplay : MonoBehaviour
             StartCoroutine(RefreshText());  
         }
 
-        manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPosition, ref velocity, 0.1f);
+        if (manaBar.value != desiredManaBarPosition) {
+            manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPosition, ref velocity, 0.1f);
+        }
     }
 
     public IEnumerator RefreshText()

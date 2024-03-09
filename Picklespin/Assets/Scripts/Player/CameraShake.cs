@@ -10,8 +10,6 @@ public class CameraShake : MonoBehaviour
 
     private float fpsCompensate;
 
-
-
     public void ShootCameraShake()
     {
         MakeShakeEqualOnEveryFPS();
@@ -25,23 +23,26 @@ public class CameraShake : MonoBehaviour
     {
         MakeShakeEqualOnEveryFPS();
         mainCamera.DOShakeRotation(landShakeStrenght*0.03f + 0.05f, 0.1f * landShakeStrenght * fpsCompensate, 26, 90, true, ShakeRandomnessMode.Harmonic);
-        hand.DOShakePosition(0.15f, 0.02f * landShakeStrenght * fpsCompensate, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+        hand.DOShakePosition(0.15f, 0.005f * landShakeStrenght * fpsCompensate, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 
 
 
     public void ExplosionNearbyShake(float distanceFromExplosion, float damage) //maybe do a delay based on distance, so wait until the shockwave of an explosion gets to you
     {
-        damage = damage * 0.05f;
+        if (distanceFromExplosion < 45)
+        {
+            damage = damage * 0.05f;
 
-        MakeShakeEqualOnEveryFPS();
+            MakeShakeEqualOnEveryFPS();
 
-        distanceFromExplosion = Mathf.Clamp(distanceFromExplosion, 5, 45);
-        float strenghtBasedOnDistance = (45 - distanceFromExplosion) * 0.01f * damage;
+            distanceFromExplosion = Mathf.Clamp(distanceFromExplosion, 5, 45);
+            float strenghtBasedOnDistance = (45 - distanceFromExplosion) * 0.01f * damage;
 
 
-        mainCamera.DOShakeRotation(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2) + damage, 26, 90, true, ShakeRandomnessMode.Harmonic);
-        hand.DOShakePosition(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2) * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+            mainCamera.DOShakeRotation(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2) + damage, 26, 90, true, ShakeRandomnessMode.Harmonic);
+            hand.DOShakePosition(strenghtBasedOnDistance * fpsCompensate, strenghtBasedOnDistance * (fpsCompensate * 2) * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+        }
     }
 
 
