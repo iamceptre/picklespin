@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
@@ -27,7 +26,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool anyMovementKeysPressed;
 
-    public float externalPushForce = 1; //1 means no difference at all
+    [SerializeField] public float externalPushForce = 1; //1 means no difference at all
+
+    [Range(0,2)] [SerializeField] private int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
 
 
     private void Start()
@@ -51,11 +52,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-            //SPRINTING LOGIC
+            
             if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift))
         {
-            if (anyMovementKeysPressed)
+            if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
+                movementStateForFMOD = 2;
                 isRunning = true;
                 StaminaDeplete();
             }
@@ -94,12 +96,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.C) && canMove)
         {
+            movementStateForFMOD = 0;
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
         }
         else
         {
+            if (!isRunning) {
+                movementStateForFMOD = 1;
+            }
             characterController.height = defaultHeight;
             walkSpeed = 6f;
             runSpeed = 12f;
@@ -144,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
     {
         for (int i = 0; i < fatigability*0.25f; i++)
         {
-            stamina -= (1+footstepSystem.overallSpeed)*0.22f;
+            stamina -= (1+footstepSystem.overallSpeed)*0.1f;
             yield return null;
         }
     }
@@ -162,8 +168,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed && stamina>15) //Indicate on gui that you are low on stamina, lower than this amount
         {
-            externalPushForce = 0.5f + footstepSystem.overallSpeed*0.13f;
-            //StartCoroutine(ExternalPushForceDamp());
+            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.1618f;
+            StopAllCoroutines();
+            StartCoroutine(ExternalPushForceDamp());
         }
         else
         {
@@ -174,11 +181,11 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator ExternalPushForceDamp() //broken, after every jump the dampening gets faster, fix it
     {
-        while (externalPushForce>=1)
+        while (externalPushForce >= 1)
         {
             externalPushForce -= Time.deltaTime;
             externalPushForce = Mathf.Clamp(externalPushForce, 1, 5);
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
     }
 

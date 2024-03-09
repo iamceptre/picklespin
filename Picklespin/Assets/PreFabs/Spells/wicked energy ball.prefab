@@ -103,11 +103,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3730440565517659764}
+  - component: {fileID: 6800567688136975266}
   - component: {fileID: 9094262283420263568}
   - component: {fileID: 2008492278484370580}
   - component: {fileID: 3294087684524820873}
   - component: {fileID: 3523914218313080419}
-  - component: {fileID: 6800567688136975266}
   - component: {fileID: 1491303106759170490}
   - component: {fileID: 1130678391124836897}
   m_Layer: 0
@@ -133,6 +133,46 @@ Transform:
   - {fileID: 3135732170723765606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6800567688136975266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
+  magickaCost: 1
+  speed: 60
+  myCooldown: 0.1
+  spawnInHandParticle: {fileID: 4342817449807727369, guid: 6b37d42c41301b148894b7f861d4a6c6, type: 3}
+  explosionFX: {fileID: 3298281406787399419, guid: 9809af22cedfdfe4a8f2f4940821d70a, type: 3}
+  castSound:
+    Guid:
+      Data1: 1963473607
+      Data2: 1081434507
+      Data3: -643885943
+      Data4: -1090986781
+    Path: event:/PLACEHOLDER_UNCZ/shoot_test
+  pullupSound:
+    Guid:
+      Data1: 1498038090
+      Data2: 1299607637
+      Data3: -1224385138
+      Data4: -71727395
+    Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
+  hitSound:
+    Guid:
+      Data1: -1364902935
+      Data2: 1235094204
+      Data3: -745530716
+      Data4: -2104198156
+    Path: event:/PLACEHOLDER_UNCZ/spellHit
+  turbulenceStrength: 300
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -231,46 +271,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6800567688136975266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114823094463480090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 15
-  magickaCost: 1
-  speed: 60
-  myCooldown: 0.1
-  spawnInHandParticle: {fileID: 4342817449807727369, guid: 6b37d42c41301b148894b7f861d4a6c6, type: 3}
-  explosionFX: {fileID: 3298281406787399419, guid: 9809af22cedfdfe4a8f2f4940821d70a, type: 3}
-  castSound:
-    Guid:
-      Data1: 1963473607
-      Data2: 1081434507
-      Data3: -643885943
-      Data4: -1090986781
-    Path: event:/PLACEHOLDER_UNCZ/shoot_test
-  pullupSound:
-    Guid:
-      Data1: 1498038090
-      Data2: 1299607637
-      Data3: -1224385138
-      Data4: -71727395
-    Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
-  hitSound:
-    Guid:
-      Data1: -1364902935
-      Data2: 1235094204
-      Data3: -745530716
-      Data4: -2104198156
-    Path: event:/PLACEHOLDER_UNCZ/spellHit
-  cameraShake: {fileID: 0}
 --- !u!199 &1491303106759170490
 ParticleSystemRenderer:
   serializedVersion: 6

@@ -20,14 +20,12 @@ public class FootstepSystem : MonoBehaviour
 
     private bool routineRunning = false;
 
-    [Range(0, 2)] [SerializeField] public float fixedFootstepSpaceSmooth;
     private float fixedFootstepSpace;
-    private float smoothVelocity; //for smoothdamp only
+
+    private float smoothVelocity;
+    [Range(0, 2)] [HideInInspector] public float fixedFootstepSpaceSmooth;
 
     [HideInInspector] public float footstepSpaceCooldown;
-
-   // private bool isJumping;
-
 
     private void Update()
     {

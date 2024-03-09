@@ -22,10 +22,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private EventInstance hitInstance;
 
     private Transform mainCamera;
-    [SerializeField] private CameraShake cameraShake;
+    private CameraShake cameraShake;
 
     private Transform handCastingPoint;
-    
+    //[SerializeField] private float turbulenceStrength = 1f;
+
 
     void Awake()
     {
@@ -40,6 +41,7 @@ public class Bullet : MonoBehaviour
         RuntimeManager.PlayOneShot(castSound);
         Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -105,3 +107,32 @@ public class Bullet : MonoBehaviour
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+/*
+    private void Turbulence()
+    {
+        float turbulenceFreq;
+        turbulenceFreq = 15124;
+
+        // Generate random turbulence force
+        Vector3 turbulenceForce = new Vector3(
+            Mathf.PerlinNoise(Time.time * turbulenceFreq, 0) - 0.5f,
+            Mathf.PerlinNoise(0, Time.time * turbulenceFreq) - 0.5f,
+            0
+        ) * turbulenceStrength;
+
+        // Apply turbulence force to Rigidbody
+        GetComponent<Rigidbody>().AddForce(turbulenceForce);
+    }
+
+  */
