@@ -14,6 +14,7 @@ public class SelectedSpellDisplay : MonoBehaviour
     {
         selectedSpellText = GetComponent<TMP_Text>();
         selectedSpellText.text = attackScript.bulletPrefab[attackScript.selectedBullet].gameObject.name.ToString();
+        selectedSpellText.color = new Color(255,255,255,0);
         UpdateText();
     }
 

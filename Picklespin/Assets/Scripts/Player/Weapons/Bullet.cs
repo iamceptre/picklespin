@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         RuntimeManager.PlayOneShot(castSound);
-        Instantiate(spawnInHandParticle, handCastingPoint.position, Quaternion.identity);
+        Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
     }
 
     private void OnCollisionEnter(Collision collision)

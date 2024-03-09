@@ -162,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed && stamina>15) //Indicate on gui that you are low on stamina, lower than this amount
         {
-            externalPushForce = 0.5f + footstepSystem.overallSpeed*0.12f;
+            externalPushForce = 0.5f + footstepSystem.overallSpeed*0.13f;
             //StartCoroutine(ExternalPushForceDamp());
         }
         else

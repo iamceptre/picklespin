@@ -10,7 +10,7 @@ public class FootstepSystem : MonoBehaviour
 
     [HideInInspector] public float horizontalSpeed;
     [HideInInspector] public float verticalSpeed;
-    [HideInInspector] public float overallSpeed;
+    public float overallSpeed;
 
     public EventReference FootstepEvent;
     public EventReference JumpEvent;
