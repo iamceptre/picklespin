@@ -95,6 +95,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{55b41edc-634e-48cf-a4e7-7d024c95c7da}">
+		<property name="color">
+			<value>Blue</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{40545704-1ca2-4dc5-9378-1db0d2c9291b}</destination>
 		</relationship>

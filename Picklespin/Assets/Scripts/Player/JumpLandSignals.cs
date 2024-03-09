@@ -36,7 +36,7 @@ public class JumpLandSignals : MonoBehaviour
 
     private void Landed()
     {
-        if (!routineRunning && !landed && footstepSystem.overallSpeed!=0)
+        if (!routineRunning && !landed && footstepSystem.overallSpeed>=0.5f)
         {
                 StartCoroutine(LandedCooldown());
                 //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);

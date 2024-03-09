@@ -62,7 +62,7 @@ public class Bullet : MonoBehaviour
                 if (aiHealth.hp <= damage) //Death
                 {
                     aiHealth.hp = 0;
-                    collision.gameObject.SetActive(false);
+                    aiHealth.deathEvent.Invoke();
                 }
             }
 
