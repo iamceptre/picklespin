@@ -9,6 +9,8 @@ TagManager:
   - GameMind
   - WinGate
   - CastingPoint
+  - CameraHandler
+  - DamageUI
   layers:
   - Default
   - TransparentFX

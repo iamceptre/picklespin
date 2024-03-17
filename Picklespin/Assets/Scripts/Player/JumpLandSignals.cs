@@ -15,6 +15,13 @@ public class JumpLandSignals : MonoBehaviour
     [SerializeField] private EventReference landSoft;
     [SerializeField] private EventReference landHard;
 
+    private bool skipFirstSound;
+
+
+    private void Start()
+    {
+        skipFirstSound = true;
+    }
 
     private void Update()
     {
@@ -36,11 +43,16 @@ public class JumpLandSignals : MonoBehaviour
 
     private void Landed()
     {
+
         if (!routineRunning && !landed && footstepSystem.overallSpeed>=0.5f)
         {
                 StartCoroutine(LandedCooldown());
-                //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);
+            //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);
+            if (!skipFirstSound)
+            {
                 isLandingHardDecider();
+            }
+                skipFirstSound = false;
                 cameraShake.LandCameraShake();
                 playerMovement.externalPushForce = 1;
                 landed = true;

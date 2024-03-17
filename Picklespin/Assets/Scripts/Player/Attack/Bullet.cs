@@ -27,13 +27,16 @@ public class Bullet : MonoBehaviour
     private Transform handCastingPoint;
     //[SerializeField] private float turbulenceStrength = 1f;
 
+    private DamageUI damageUI;
+
 
     void Awake()
     {
         Destroy(gameObject,10);
         originalDamage = damage;
-        cameraShake = GameObject.Find("CameraHandler").GetComponent<CameraShake>();
+        cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>();
         handCastingPoint = GameObject.FindGameObjectWithTag("CastingPoint").GetComponent<Transform>();
+        damageUI = GameObject.FindGameObjectWithTag("DamageUI").GetComponent<DamageUI>();
     }
 
     private void Start()
@@ -45,17 +48,21 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
-        RandomizeCritical(); 
-        //Debug.Log("you deal " + damage + " damage");
-
         if (collision.gameObject)
         {
+            damageUI.gameObject.SetActive(true);
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
             aiVision = collision.gameObject.GetComponent<AiVision>();
 
-            if (aiHealth != null)
+            if (aiHealth != null) //Hit Registered
             {
+                RandomizeCritical();
+                damageUI.myText.enabled = true;
+                damageUI.myText.text = ("- " + damage);
+               // damageUI.whoHasBeenHit = collision.gameObject.transform;
+                damageUI.whereIshouldGo = collision.transform.position + new Vector3(0, 2.4f, 0);
+                damageUI.transform.position = damageUI.whereIshouldGo;
+                damageUI.AnimateDamageUI();
                 aiHealth.hp -= damage;
                 HitGetsYouNoticed();
 
@@ -78,10 +85,12 @@ public class Bullet : MonoBehaviour
         if (Random.Range(0,10) >= 9) // 1/10 chance of doubling the damage
         {
             damage = originalDamage * 2;
+            damageUI.WhenCritical();
         }
         else
         {
             damage = originalDamage;
+            damageUI.WhenNotCritical();
         }
     }
 
@@ -107,6 +116,7 @@ public class Bullet : MonoBehaviour
     }
 
 }
+ 
 
 
 

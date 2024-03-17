@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isRunning;
 
-    private bool anyMovementKeysPressed;
+   [HideInInspector] public bool anyMovementKeysPressed;
 
     [SerializeField] public float externalPushForce = 1; //1 means no difference at all
 
@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
         stamina -= (1 + footstepSystem.overallSpeed) * 0.05f * fatigability;
         jumpPushForward();
         moveDirection.y = jumpPower;
-        footstepSystem.footstepSpaceCooldown = 0;                                               //makes the footstep space consistent when we land
+        footstepSystem.StopAllCoroutines();
         footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
     }
 
