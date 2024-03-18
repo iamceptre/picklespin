@@ -18,8 +18,9 @@ public class ManaLightAnimation : MonoBehaviour
     {
         manaLight.enabled = true;
         manaLight.DOKill();
-        rectTransform.localScale = Vector3.zero;
-        rectTransform.DOScale(3, 0.2f).SetEase(Ease.InSine);
+        rectTransform.localScale = new Vector3(0, 0, 1);
+        rectTransform.DOScaleY(3, 1).SetEase(Ease.OutExpo);
+        rectTransform.DOScaleX(4, 1).SetEase(Ease.OutExpo);
         manaLight.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
     }
 
