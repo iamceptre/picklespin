@@ -25,7 +25,7 @@ public class FootstepSystem : MonoBehaviour
     private float smoothVelocity;
     [Range(0, 2)] [HideInInspector] public float fixedFootstepSpaceSmooth;
 
-    [HideInInspector] public float footstepSpaceCooldown;
+    [Range(0,1)] public float footstepSpaceCooldown;
 
     private void Update()
     {
@@ -88,6 +88,7 @@ public class FootstepSystem : MonoBehaviour
         else
         {
             StartCoroutine(SendStepSignalAsync());
+            routineRunning = false;
             footstepSpaceCooldown = 1;
         }
     }

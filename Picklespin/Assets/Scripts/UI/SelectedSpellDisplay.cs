@@ -33,7 +33,7 @@ private void DisableMe()
 
     private void Animate()
     {
-        var sequence = DOTween.Sequence();
+        //var sequence = DOTween.Sequence();
         selectedSpellText.DOKill();
         StopAllCoroutines();
         selectedSpellText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);

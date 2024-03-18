@@ -5,11 +5,11 @@ using System.Collections;
 
 public class Attack : MonoBehaviour
 {
-    public AmmoDisplay ammoDisplay;
    [SerializeField] private UnityEvent castCameraShake;
    [SerializeField] private UnityEvent changeSelectedSpell;
 
     private Ammo ammo;
+    [SerializeField] AmmoDisplay ammoDisplay;
 
     [SerializeField] private EventReference shootFailEvent;
     private FMOD.Studio.EventInstance spellcastInstance;
@@ -49,6 +49,7 @@ public class Attack : MonoBehaviour
                 ammo.ammo -= bullet.magickaCost;
                 var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
                 spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
+                ammoDisplay.RefreshManaValue();
             }
             else //Shoot Failing
             {

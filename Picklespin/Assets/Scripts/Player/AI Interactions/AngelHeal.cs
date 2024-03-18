@@ -40,8 +40,10 @@ public class AngelHeal : MonoBehaviour
 
     private bool canPlayEvent=true;
 
+    [SerializeField] private ManaLightAnimation manaLightAnimation;
+
     public FloatUpDown floatUpDown;
-    private void Start()
+    private void Awake()
     {
         ammo = GetComponent<Ammo>();
         handRenderer = hand.GetComponent<MeshRenderer>();
@@ -162,12 +164,13 @@ public class AngelHeal : MonoBehaviour
         {
             ammo.ammo += howMuchAmmoAngelGives;
         }
-        ammoDisplay.StartCoroutine(ammoDisplay.RefreshText());
-
+        //ammoDisplay.RefreshManaValue();
+        ammoDisplay.RefreshManaValueSmooth();
         HealingParticleStop();
         angelHPSlider.gameObject.SetActive(false);
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
+        manaLightAnimation.LightAnimation();
         handRenderer.material = handOGMaterial;
         angel.healed = true;
         floatUpDown.enabled = false;

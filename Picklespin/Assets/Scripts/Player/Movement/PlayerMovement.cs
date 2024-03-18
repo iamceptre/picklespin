@@ -148,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        stamina -= (1 + footstepSystem.overallSpeed) * 0.05f * fatigability;
+        stamina -= Mathf.Clamp((1 + footstepSystem.overallSpeed) * 0.05f * fatigability,10,100);
         jumpPushForward();
         moveDirection.y = jumpPower;
         footstepSystem.StopAllCoroutines();

@@ -38,15 +38,15 @@ public class DamageUI : MonoBehaviour
         myText.transform.DOScale(new Vector3(-1,1,1), 0);
         myText.DOFade(0,0);
 
-        myText.transform.DOMoveY(whereIshouldGo.y + 2, 1.57f).SetEase(Ease.InSine);
-        myText.transform.DOScale(new Vector3(-1.618f, 1.618f, 1.618f), 1.57f).SetEase(Ease.InSine);
+        myText.transform.DOMoveY(whereIshouldGo.y + 2, 1.2f).SetEase(Ease.InSine);
+        myText.transform.DOScale(new Vector3(-1.618f, 1.618f, 1.618f), 1.2f).SetEase(Ease.InSine);
         myText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
     }
 
 
     private void FadeOut()
     {
-        myText.DOFade(0, 1.37f).SetEase(Ease.InSine).OnComplete(DisableMe);
+        myText.DOFade(0, 1).SetEase(Ease.InSine).OnComplete(DisableMe);
     }
 
     private void DisableMe()

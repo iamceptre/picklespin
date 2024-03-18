@@ -8,37 +8,57 @@ public class AmmoDisplay : MonoBehaviour
     [SerializeField] private TMP_Text ammoDisplayText;
     [SerializeField] private Ammo ammo;
     [SerializeField]private Slider manaBar;
+    private float velocity;
 
     private float desiredManaBarPosition;
-    private float velocity;
+    private float desiredManaBarPositionTimes100;
+  
     
 
     private void Start()
     {
         ammoDisplayText = GetComponent<TMP_Text>();
-        StartCoroutine(RefreshText()); 
+        RefreshManaValue(); 
     }
 
-    private void Update()
+    public void RefreshManaValue()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            StartCoroutine(RefreshText());  
-        }
+        CommonRefreshCode();
+        manaBar.value = desiredManaBarPositionTimes100;
+    }
 
-        if (manaBar.value != desiredManaBarPosition) {
-            manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPosition, ref velocity, 0.1f);
+    public void RefreshManaValueSmooth()
+    {
+        CommonRefreshCode();
+        StartCoroutine(Smoother());
+    }
+
+
+    private IEnumerator Smoother()
+    {
+      //  Debug.Log("rutyna");
+        if (manaBar.value < desiredManaBarPositionTimes100-1)
+        {
+           // Debug.Log("damping");
+            manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPositionTimes100, ref velocity, 0.3f);
+            yield return null;
+            StartCoroutine(Smoother());
+        }
+        else
+        {
+            //Debug.Log("damped");
+            manaBar.value = desiredManaBarPositionTimes100;
+            yield return null;
+            StopAllCoroutines();
         }
     }
 
-    public IEnumerator RefreshText()
+
+    private void CommonRefreshCode()
     {
         ammoDisplayText.text = (ammo.ammo + "/" + ammo.maxAmmo);
         desiredManaBarPosition = (float)ammo.ammo / (float)ammo.maxAmmo;
-        yield return null;
+        desiredManaBarPositionTimes100 = desiredManaBarPosition * 100;
     }
 
 }
-
-
-//Make it refresh with events later on, to avoid a big mess
