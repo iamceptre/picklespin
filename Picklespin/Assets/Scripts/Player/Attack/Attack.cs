@@ -25,6 +25,8 @@ public class Attack : MonoBehaviour
     [SerializeField] private UnlockedSpells unlockedSpells;
     [SerializeField] private SpellCooldown spellCooldown;
 
+    [SerializeField] private NoManaLightAnimation noManaLightAnimation;
+
     private void Start()
     {
         ammo = GetComponent<Ammo>();
@@ -62,6 +64,7 @@ public class Attack : MonoBehaviour
             }
             else //Shoot Failing
             {
+                noManaLightAnimation.LightAnimation();
                 spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
                 spellcastInstance.start();
             }
@@ -78,8 +81,15 @@ public class Attack : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && selectedBullet != 1)
         {
-            selectedBullet = 1;
-            SelectSpell();
+            if (unlockedSpells.spellUnlocked[1] == true)
+            {
+                selectedBullet = 1;
+                SelectSpell();
+            }
+            else
+            {
+                RuntimeManager.PlayOneShot(spellLockedEvent);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3) && selectedBullet != 2)
