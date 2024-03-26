@@ -20,7 +20,6 @@ public class HearingRange : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("lazy update");
             if (hearingRange.radius != myRange * playerMovement.movementStateForFMOD)
             {
                 hearingRange.radius = myRange * playerMovement.movementStateForFMOD;
@@ -31,7 +30,6 @@ public class HearingRange : MonoBehaviour
 
     private IEnumerator ExtendedHearingRange()
     {
-        Debug.Log("jump");
         hearingRange.radius = 20;
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(LazyUpdate());

@@ -13,7 +13,9 @@ public class WaypointWander : State
 
     private bool canInc=true;
 
-    [SerializeField] private float idleSpeed = 3.5f; 
+    [SerializeField] private float idleSpeed = 3.5f;
+
+    private Vector3 startingPos;
 
     public override State RunCurrentState()
     {
@@ -23,7 +25,10 @@ public class WaypointWander : State
         }
         else
         {
-           RefreshWaypoint();
+            if (waypoints.Length > 0) //if any waypoints, then do the logic, if not, stay freezed
+            {
+                RefreshWaypoint();
+            }
            return this;
         }
     }
@@ -33,20 +38,30 @@ public class WaypointWander : State
         agent = GetComponentInParent<NavMeshAgent>();
         aiVision = GetComponentInParent<AiVision>();
         waypointIndex = 0;
-        UpdateDestination();
+        if (waypoints.Length > 0)
+        {
+            UpdateDestination();
+        }
+    }
+
+    private void Start()
+    {
+        startingPos = transform.position;
     }
 
 
     private void RefreshWaypoint()
     {
-        if (Vector3.Distance(transform.position, target) <= 1f)
-        {
-            Invoke("UpdateDestination", 2); 
 
-            if (canInc) {
-                IncreaseWaypoint();
-                canInc = false;
-            }
+            if (Vector3.Distance(transform.position, target) <= 1f)
+            {
+                Invoke("UpdateDestination", 2);
+
+                if (canInc)
+                {
+                    IncreaseWaypoint();
+                    canInc = false;
+                }
 
         }
 
@@ -61,7 +76,15 @@ public class WaypointWander : State
     public void UpdateDestination()
     {
         agent.speed = idleSpeed;
-        target = waypoints[waypointIndex].position;
+        if (waypoints.Length > 0)
+        {
+            target = waypoints[waypointIndex].position;
+        }
+        else
+        {
+            target = startingPos;
+
+        }
             agent.SetDestination(target);
     }
 

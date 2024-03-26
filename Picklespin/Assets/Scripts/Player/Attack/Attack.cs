@@ -12,6 +12,7 @@ public class Attack : MonoBehaviour
     [SerializeField] AmmoDisplay ammoDisplay;
 
     [SerializeField] private EventReference shootFailEvent;
+    [SerializeField] private EventReference spellLockedEvent;
     private FMOD.Studio.EventInstance spellcastInstance;
 
     [SerializeField] private Transform bulletSpawnPoint;
@@ -20,6 +21,8 @@ public class Attack : MonoBehaviour
 
     private float castCooldownTime = 0.1f;
     private bool castCooldownAllow = true;
+
+    [SerializeField] private UnlockedSpells unlockedSpells;
 
     private void Start()
     {
@@ -72,13 +75,27 @@ public class Attack : MonoBehaviour
             selectedBullet = 1;
             SelectSpell();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) && selectedBullet != 2)
+        {
+            if (unlockedSpells.spellUnlocked[2] == true)
+            {
+                selectedBullet = 2;
+                SelectSpell();
+            }
+            else
+            {
+                RuntimeManager.PlayOneShot(spellLockedEvent);
+            }
+
+        }
     }
 
 
     private void SelectSpell()
     {
-        changeSelectedSpell.Invoke();
-        RuntimeManager.PlayOneShot(bulletPrefab[selectedBullet].GetComponentInChildren<Bullet>().pullupSound);
+            changeSelectedSpell.Invoke();
+            RuntimeManager.PlayOneShot(bulletPrefab[selectedBullet].GetComponentInChildren<Bullet>().pullupSound);
     }
 
     IEnumerator CastCooldown()
