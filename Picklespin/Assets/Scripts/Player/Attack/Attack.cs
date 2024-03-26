@@ -19,10 +19,11 @@ public class Attack : MonoBehaviour
     public GameObject[] bulletPrefab;
     public int selectedBullet;
 
-    private float castCooldownTime = 0.1f;
+     [HideInInspector]public float castCooldownTime = 0.1f;
     private bool castCooldownAllow = true;
 
     [SerializeField] private UnlockedSpells unlockedSpells;
+    [SerializeField] private SpellCooldown spellCooldown;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class Attack : MonoBehaviour
         {
             Shoot();
             StartCoroutine(CastCooldown());
-        } 
+        }
     }
 
     private void Shoot()
@@ -50,7 +51,12 @@ public class Attack : MonoBehaviour
                 castCooldownTime = bullet.myCooldown;
                 shootEvent.Invoke();
                 ammo.ammo -= bullet.magickaCost;
-                var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+
+                spellCooldown.enabled = true;
+                spellCooldown.selectedSpellCooldownTime = bullet.myCooldown;
+                spellCooldown.StartCooldowning();
+
+            var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
                 spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
                 ammoDisplay.RefreshManaValue();
             }
