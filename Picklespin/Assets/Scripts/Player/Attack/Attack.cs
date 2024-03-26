@@ -5,7 +5,7 @@ using System.Collections;
 
 public class Attack : MonoBehaviour
 {
-   [SerializeField] private UnityEvent castCameraShake;
+   [SerializeField] private UnityEvent shootEvent;
    [SerializeField] private UnityEvent changeSelectedSpell;
 
     private Ammo ammo;
@@ -45,7 +45,7 @@ public class Attack : MonoBehaviour
             if (ammo.ammo >= bullet.magickaCost) //Shooting
             {
                 castCooldownTime = bullet.myCooldown;
-                castCameraShake.Invoke();
+                shootEvent.Invoke();
                 ammo.ammo -= bullet.magickaCost;
                 var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
                 spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;

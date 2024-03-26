@@ -20,7 +20,7 @@ public class ManaLightAnimation : MonoBehaviour
         manaLight.DOKill();
         rectTransform.localScale = new Vector3(0, 0, 1);
         rectTransform.DOScaleY(3, 1).SetEase(Ease.OutExpo);
-        rectTransform.DOScaleX(4, 1).SetEase(Ease.OutExpo);
+        rectTransform.DOScaleX(1.5f, 1).SetEase(Ease.OutExpo);
         manaLight.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
     }
 

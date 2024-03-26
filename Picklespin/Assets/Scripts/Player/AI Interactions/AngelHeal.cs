@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using FMODUnity;
-using System;
 using UnityEngine.UI;
 
 public class AngelHeal : MonoBehaviour

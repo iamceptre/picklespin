@@ -95,7 +95,7 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void HitGetsYouNoticed()
+    private void HitGetsYouNoticed() //make it notice all AIs around
     {
         if (aiVision != null)
         {

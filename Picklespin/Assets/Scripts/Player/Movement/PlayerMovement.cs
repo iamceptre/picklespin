@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] public float externalPushForce = 1; //1 means no difference at all
 
-    [Range(0,2)] [SerializeField] private int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
+    [Range(0,2)] public int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
 
 
     private void Start()
@@ -157,9 +157,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void jumpPushForward()
     {
-        if (anyMovementKeysPressed && stamina>5) //Indicate on gui that you are low on stamina, lower than this amount
+        if (anyMovementKeysPressed && stamina>2)
         {
-            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.17f;
+            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.175f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }

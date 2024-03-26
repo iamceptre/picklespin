@@ -28,6 +28,15 @@ public class BarEase : MonoBehaviour
            //Debug.Log("gui update");
 
           me.value = myValue; //Delay this line in time, efficiently in the future
+
+            if (myValue < 2)
+            {
+                me.fillRect.localScale = Vector3.zero;
+            }
+            else
+            {
+                me.fillRect.localScale = Vector3.one;
+            }
         }
     }
 

@@ -8,6 +8,7 @@ public class JumpLandSignals : MonoBehaviour
     [SerializeField] private CharacterController characterController;
     [SerializeField] private FootstepSystem footstepSystem;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private HearingRange hearingRange;
 
     private bool landed = true;
     private bool routineRunning = false;
@@ -54,6 +55,7 @@ public class JumpLandSignals : MonoBehaviour
             }
                 skipFirstSound = false;
                 cameraShake.LandCameraShake();
+                hearingRange.RunExtendedHearingRange();
                 playerMovement.externalPushForce = 1;
                 landed = true;
         }
