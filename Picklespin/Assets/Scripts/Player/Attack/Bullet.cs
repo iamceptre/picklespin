@@ -44,6 +44,7 @@ public class Bullet : MonoBehaviour
     {
         RuntimeManager.PlayOneShot(castSound);
         Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
+        transform.localEulerAngles = new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360));
     }
 
 

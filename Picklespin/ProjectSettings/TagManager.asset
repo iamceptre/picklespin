@@ -11,6 +11,7 @@ TagManager:
   - CastingPoint
   - CameraHandler
   - DamageUI
+  - SpelledLight
   layers:
   - Default
   - TransparentFX

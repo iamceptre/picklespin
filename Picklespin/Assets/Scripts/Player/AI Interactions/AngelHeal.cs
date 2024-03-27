@@ -45,7 +45,9 @@ public class AngelHeal : MonoBehaviour
     public FloatUpDown floatUpDown;
 
     [SerializeField] private UnityEvent showTip;
+    private bool showingTip;
     [SerializeField] private UnityEvent hideTip;
+    private bool hideingTip;
 
     private void Awake()
     {
@@ -99,26 +101,31 @@ public class AngelHeal : MonoBehaviour
 
     IEnumerator StartAiming()
     {
+        //Debug.Log("this should be fired once");
+
         angel = currentAngel.GetComponent<AngelMind>();
         aiHealth = currentAngel.GetComponent<AiHealth>();
         if (!angel.healed)
         {
             handRenderer.material = handHighlightMaterial;
-            isAimingAtAngel = true;
             showTip.Invoke();
+            isAimingAtAngel = true;
         }
         yield return null;
     }
 
     IEnumerator StopAiming()
     {
-        hideTip.Invoke();   
-        isAimingAtAngel = false;
-        if (handRenderer.material != handOGMaterial)
-        {
-            handRenderer.material = handOGMaterial;
+        if (isAimingAtAngel) {
+           // Debug.Log("this should be fired once");
+            hideTip.Invoke();
+            if (handRenderer.material != handOGMaterial)
+            {
+                handRenderer.material = handOGMaterial;
+            }
+            isAimingAtAngel = false;
+            yield return null;
         }
-        yield return null;
     }
 
 

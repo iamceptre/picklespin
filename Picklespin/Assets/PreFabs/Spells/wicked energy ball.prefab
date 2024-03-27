@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 1491303106759170490}
   - component: {fileID: 1130678391124836897}
   m_Layer: 0
-  m_Name: wicked energy ball
+  m_Name: Wicked Energy Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -30,7 +30,7 @@ public class CameraShake : MonoBehaviour
 
     public void ExplosionNearbyShake(float distanceFromExplosion, float damage) //maybe do a delay based on distance, so wait until the shockwave of an explosion gets to you
     {
-        if (distanceFromExplosion < 45)
+        if (distanceFromExplosion < 40 && damage>0)
         {
             damage = damage * 0.05f;
 

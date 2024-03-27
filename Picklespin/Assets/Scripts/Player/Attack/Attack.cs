@@ -3,7 +3,6 @@ using FMODUnity;
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class Attack : MonoBehaviour
 {

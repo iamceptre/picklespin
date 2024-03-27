@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 3523914218313080419}
   - component: {fileID: 442175283797774498}
   m_Layer: 0
-  m_Name: generic fireball
+  m_Name: Generic Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damage: 77
   magickaCost: 10
   speed: 30
   myCooldown: 2
