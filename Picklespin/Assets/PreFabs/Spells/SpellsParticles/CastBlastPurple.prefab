@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7218278025536148065}
   - component: {fileID: 6377796550842385462}
   - component: {fileID: 93289114106196902}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CastBlastPurple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4909,7 +4909,7 @@ GameObject:
   - component: {fileID: 6653033148748505469}
   - component: {fileID: 8920183378269538149}
   - component: {fileID: 513460121897890450}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sparkles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -24,8 +24,8 @@ public class AngelMind : MonoBehaviour
        public IEnumerator AfterHealedAction(){
             Instantiate(healedParticles, transform.position, Quaternion.identity);
             angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
-            angelRenderer.material.SetColor("_Color", Color.green);
             angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+            angelRenderer.material.SetColor("_Color", Color.green);
             angelInstance.start();
             yield return null;
         }

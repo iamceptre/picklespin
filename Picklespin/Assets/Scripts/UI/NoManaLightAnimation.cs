@@ -20,7 +20,7 @@ public class NoManaLightAnimation : MonoBehaviour
 
     private void FadeOut()
     {
-        manaLight.DOFade(0, 0.2f).SetEase(Ease.InSine).OnComplete(DisableMe);
+        manaLight.DOFade(0, 1f).SetEase(Ease.InSine).OnComplete(DisableMe);
     }
 
     private void DisableMe()

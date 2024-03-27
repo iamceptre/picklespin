@@ -148,7 +148,7 @@ MonoBehaviour:
   damage: 50
   magickaCost: 10
   speed: 30
-  myCooldown: 0.5
+  myCooldown: 2
   spawnInHandParticle: {fileID: 4342817449807727369, guid: 4fb8136e8035fc4468f5f5b3c86336f7, type: 3}
   explosionFX: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
   castSound:
@@ -172,6 +172,7 @@ MonoBehaviour:
       Data3: -745530716
       Data4: -2104198156
     Path: event:/PLACEHOLDER_UNCZ/spellHit
+  castDuration: 1
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0

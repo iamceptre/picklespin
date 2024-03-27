@@ -25,9 +25,10 @@ public class Bullet : MonoBehaviour
     private CameraShake cameraShake;
 
     private Transform handCastingPoint;
-    //[SerializeField] private float turbulenceStrength = 1f;
 
     private DamageUI damageUI;
+
+    public float castDuration;
 
 
     void Awake()
@@ -66,7 +67,7 @@ public class Bullet : MonoBehaviour
                 aiHealth.hp -= damage;
                 HitGetsYouNoticed();
 
-                if (aiHealth.hp <= damage) //Death
+                if (aiHealth.hp <= 0) //Death
                 {
                     aiHealth.hp = 0;
                     aiHealth.deathEvent.Invoke();
@@ -76,7 +77,6 @@ public class Bullet : MonoBehaviour
         }
         SpawnExplosion();
         Destroy(gameObject);
-
     }
 
 
@@ -116,33 +116,3 @@ public class Bullet : MonoBehaviour
     }
 
 }
- 
-
-
-
-
-
-
-
-
-
-
-
-/*
-    private void Turbulence()
-    {
-        float turbulenceFreq;
-        turbulenceFreq = 15124;
-
-        // Generate random turbulence force
-        Vector3 turbulenceForce = new Vector3(
-            Mathf.PerlinNoise(Time.time * turbulenceFreq, 0) - 0.5f,
-            Mathf.PerlinNoise(0, Time.time * turbulenceFreq) - 0.5f,
-            0
-        ) * turbulenceStrength;
-
-        // Apply turbulence force to Rigidbody
-        GetComponent<Rigidbody>().AddForce(turbulenceForce);
-    }
-
-  */

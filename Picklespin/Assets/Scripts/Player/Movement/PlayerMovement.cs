@@ -14,21 +14,17 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight;
     public float crouchHeight;
     public float crouchSpeed;
-    [Range(0, 100)] public float stamina = 100;
-    public float fatigability = 32; //lower the fatigability to sprint for longer
-
-    [SerializeField]private Vector3 moveDirection = Vector3.zero;
+    [HideInInspector] [Range(0, 100)] public float stamina = 100;
+    private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
-
     private bool canMove = true;
-
-    public bool isRunning;
-
-   [HideInInspector] public bool anyMovementKeysPressed;
-
-    [SerializeField] public float externalPushForce = 1; //1 means no difference at all
-
+    [HideInInspector] public bool isRunning;
+    [HideInInspector] public bool anyMovementKeysPressed;
+    [HideInInspector] public float externalPushForce = 1; //1 means no difference at all
     [Range(0,2)] public int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
+
+    [Header("Stats")]
+    public float fatigability = 32; //lower the fatigability to sprint for longer
 
 
     private void Start()

@@ -15,13 +15,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Door
   - Water
   - UI
   - Angel
   - Player
   - EvilEntity
-  - 
+  - PostProcess
   - 
   - 
   - 

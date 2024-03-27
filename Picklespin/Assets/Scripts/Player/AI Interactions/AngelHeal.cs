@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class AngelHeal : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class AngelHeal : MonoBehaviour
     [HideInInspector] public AngelMind angel;
     private AiHealth aiHealth;
 
-    public EventReference healingBeamEvent;
+    [SerializeField] private EventReference healingBeamEvent;
     private FMOD.Studio.EventInstance healingBeamInstance;
 
     private bool canPlayEvent=true;
@@ -42,12 +43,21 @@ public class AngelHeal : MonoBehaviour
     [SerializeField] private ManaLightAnimation manaLightAnimation;
 
     public FloatUpDown floatUpDown;
+
+    [SerializeField] private UnityEvent showTip;
+    [SerializeField] private UnityEvent hideTip;
+
     private void Awake()
     {
         ammo = GetComponent<Ammo>();
         handRenderer = hand.GetComponent<MeshRenderer>();
         handOGMaterial = handRenderer.material;
         healEmission = healParticle.emission;
+    }
+
+    private void Start()
+    {
+        hideTip.Invoke();
     }
 
     void Update()
@@ -95,12 +105,14 @@ public class AngelHeal : MonoBehaviour
         {
             handRenderer.material = handHighlightMaterial;
             isAimingAtAngel = true;
+            showTip.Invoke();
         }
         yield return null;
     }
 
     IEnumerator StopAiming()
     {
+        hideTip.Invoke();   
         isAimingAtAngel = false;
         if (handRenderer.material != handOGMaterial)
         {
@@ -116,6 +128,7 @@ public class AngelHeal : MonoBehaviour
         {
             healingBeamInstance = RuntimeManager.CreateInstance(healingBeamEvent); //create an audio source of beam + load it with healinBeamEvent sound
             healingBeamInstance.start();
+            hideTip.Invoke();
             floatUpDown.enabled = true;
             canPlayEvent = false; //this should always be at the end of this event
         }

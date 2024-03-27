@@ -8,7 +8,7 @@ public class SpellCooldown : MonoBehaviour
     [HideInInspector] public float selectedSpellCooldownTime;
     private float currentCooldown;
     private RectTransform myTransform;
-    private Vector3 startingScale;
+    [HideInInspector] public Vector3 startingScale;
 
     private void Awake()
     {

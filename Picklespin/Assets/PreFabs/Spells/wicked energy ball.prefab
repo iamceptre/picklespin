@@ -172,6 +172,7 @@ MonoBehaviour:
       Data3: -745530716
       Data4: -2104198156
     Path: event:/PLACEHOLDER_UNCZ/spellHit
+  castDuration: 0
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0
