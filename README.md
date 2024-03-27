@@ -5,7 +5,7 @@ thats the surprise !!!
 🥒
 
 
-cheat codes:
+cheat codes:.
 Arrow Up + 3 - Unlocks the third spell.
 
 Arrow Up + M - Refills Magicka.
