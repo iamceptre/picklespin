@@ -5,6 +5,8 @@ public class UnlockSpellCheat : MonoBehaviour
 {
 
     [SerializeField] private UnlockedSpells unlockedSpells;
+    [SerializeField] private Ammo ammo;
+
     [SerializeField] private EventReference cheatCodeSound;
     
     void Update()
@@ -17,7 +19,13 @@ public class UnlockSpellCheat : MonoBehaviour
                 unlockedSpells.spellUnlocked[2] = true;
                 RuntimeManager.PlayOneShot(cheatCodeSound);
             }
+
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                ammo.ammo = ammo.maxAmmo;
+                RuntimeManager.PlayOneShot(cheatCodeSound);
+            }
         }
-        
+
     }
 }

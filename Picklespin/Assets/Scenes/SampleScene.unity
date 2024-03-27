@@ -8898,6 +8898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockedSpells: {fileID: 1219504551}
+  ammo: {fileID: 1219504547}
   cheatCodeSound:
     Guid:
       Data1: 513474422
@@ -19454,7 +19455,7 @@ Transform:
   m_GameObject: {fileID: 2128197437}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 31.19, y: 2.5, z: 16}
+  m_LocalPosition: {x: 14, y: 2.5, z: 16}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24883,18 +24884,18 @@ MonoBehaviour:
     m_Bits: 8
   DoorOpenEvent:
     Guid:
-      Data1: 1432239271
-      Data2: 1091989782
-      Data3: -1196019521
-      Data4: 1292691733
-    Path: event:/PLACEHOLDER_UNCZ/random_fart
+      Data1: -1835022994
+      Data2: 1193558593
+      Data3: -46367315
+      Data4: -1625419879
+    Path: event:/PLACEHOLDER_UNCZ/door_open
   DoorCloseEvent:
     Guid:
-      Data1: 1225238315
-      Data2: 1131977981
-      Data3: 877919876
-      Data4: -853058563
-    Path: event:/PLACEHOLDER_UNCZ/ohh
+      Data1: 2074844658
+      Data2: 1207122337
+      Data3: -1680040567
+      Data4: 307002524
+    Path: event:/PLACEHOLDER_UNCZ/door_close
   showTooltipEvent:
     m_PersistentCalls:
       m_Calls:
