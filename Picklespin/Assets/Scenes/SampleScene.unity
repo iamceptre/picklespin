@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  m_FogColor: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -1675,7 +1675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &414487249
 Transform:
   m_ObjectHideFlags: 0
@@ -10543,11 +10543,11 @@ MonoBehaviour:
   footstepSystem: {fileID: 1219504545}
   staminaBarDisplay: {fileID: 2027566942}
   walkSpeed: 5
-  runSpeed: 8
+  runSpeed: 12
+  crouchSpeed: 3
   jumpPower: 7
   defaultHeight: 2
   crouchHeight: 2
-  crouchSpeed: 3
   stamina: 100
   characterController: {fileID: 247348354}
   isRunning: 0
@@ -10676,7 +10676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687060eb138d3794b803622cb4699efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammo: 100
+  ammo: 0
   maxAmmo: 150
 --- !u!114 &1219504548
 MonoBehaviour:
@@ -10821,12 +10821,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  disableFlicker:
+  CancelCasting:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 669481658}
         m_TargetAssemblyTypeName: UIFadeFlicker, Assembly-CSharp
         m_MethodName: StopFlicker
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1219504544}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: SpeedMeBackUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  StartCasting:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1219504544}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: SlowMeDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

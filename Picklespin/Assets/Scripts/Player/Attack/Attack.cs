@@ -38,7 +38,8 @@ public class Attack : MonoBehaviour
     private bool castLoaded = false;
 
    [SerializeField] private UnityEvent castingCompleted;
-   [SerializeField] private UnityEvent disableFlicker;
+   [SerializeField] private UnityEvent CancelCasting;
+   [SerializeField] private UnityEvent StartCasting;
 
     private Bullet bullet;
 
@@ -70,7 +71,7 @@ public class Attack : MonoBehaviour
             {
                 castingPercentage = 0;
                 castingSliderRectTransform.localScale = Vector3.zero;
-                disableFlicker.Invoke();
+                CancelCasting.Invoke();
             }
 
             if (castLoaded)
@@ -88,7 +89,7 @@ public class Attack : MonoBehaviour
 
     private void Shoot()
     {
-        disableFlicker.Invoke();
+        CancelCasting.Invoke();
         castLoaded = false;
         castingPercentage = 0;
         autofirePrevent = true;
@@ -194,8 +195,13 @@ public class Attack : MonoBehaviour
         {
             if (castingPercentage < currentlySelectedCastDuration)
             {
+                if (castingPercentage == 0)
+                {
+                    //one signal tick
+                    StartCasting.Invoke();
+                    castingSliderRectTransform.localScale = sliderScript.startingScale;
+                }
                 castLoaded = false;
-                castingSliderRectTransform.localScale = sliderScript.startingScale;
                 castingPercentage += Time.deltaTime;
                 castingSlider.value = castingPercentage / castDuration;
             }

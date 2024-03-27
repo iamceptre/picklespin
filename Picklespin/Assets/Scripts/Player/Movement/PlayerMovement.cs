@@ -9,11 +9,18 @@ public class PlayerMovement : MonoBehaviour
 
     public float walkSpeed;
     public float runSpeed;
+    public float crouchSpeed;
+
+    private float startWalkSpeed;
+    private float startRunSpeed;
+    private float startCrouchSpeed;
+
+    private bool isSlowedDown = false;
+
     public float jumpPower;
     private float gravity = 10;
     public float defaultHeight;
     public float crouchHeight;
-    public float crouchSpeed;
     [HideInInspector] [Range(0, 100)] public float stamina = 100;
     private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
@@ -30,6 +37,16 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         footstepSystem = GetComponent<FootstepSystem>();
+    }
+
+    public void SlowMeDown()
+    {
+        isSlowedDown = true;
+    }
+
+    public void SpeedMeBackUp()
+    {
+        isSlowedDown = false;
     }
 
     void Update()
@@ -90,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.C) && canMove)
+        if (Input.GetKey(KeyCode.C) && canMove || isSlowedDown)
         {
             movementStateForFMOD = 0;
             characterController.height = crouchHeight;
@@ -103,8 +120,8 @@ public class PlayerMovement : MonoBehaviour
                 movementStateForFMOD = 1;
             }
             characterController.height = defaultHeight;
-            walkSpeed = 6f;
-            runSpeed = 12f;
+                walkSpeed = 6f;
+                runSpeed = 12f;
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
