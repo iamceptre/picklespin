@@ -74,17 +74,27 @@ public class Attack : MonoBehaviour
                 CancelCasting.Invoke();
             }
 
-            if (castLoaded)
+            if (castLoaded && !Input.GetKey(KeyCode.Mouse1))
             {
                 Shoot();
             }
         }
         
 
-        if (Input.GetKey(KeyCode.Mouse0) && castCooldownAllow && currentlySelectedCastDuration != 0 && !autofirePrevent)
+        if (Input.GetKey(KeyCode.Mouse0) && castCooldownAllow && currentlySelectedCastDuration != 0 && !autofirePrevent && !Input.GetKey(KeyCode.Mouse1))
         {
             CastingSpell(currentlySelectedCastDuration); //long Casting
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Mouse1) && castLoaded)
+        {
+            castingPercentage = 0;
+            castingSliderRectTransform.localScale = Vector3.zero;
+            CancelCasting.Invoke();
+            autofirePrevent = false;
+        }
+
     }
 
     private void Shoot()
