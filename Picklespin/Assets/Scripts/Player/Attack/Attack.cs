@@ -150,37 +150,42 @@ public class Attack : MonoBehaviour
 
     private void ChooseSpell()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && selectedBullet != 0)
-        {
-            selectedBullet = 0;
-            SelectSpell();
-        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2) && selectedBullet != 1)
-        {
-            if (unlockedSpells.spellUnlocked[1] == true)
+        if (!Input.GetKey(KeyCode.Mouse0))
+        { 
+
+            if (Input.GetKeyDown(KeyCode.Alpha1) && selectedBullet != 0)
             {
-                selectedBullet = 1;
+                selectedBullet = 0;
                 SelectSpell();
             }
-            else
-            {
-                RuntimeManager.PlayOneShot(spellLockedEvent);
-                unlockedSpells.spellLockedIconAnimation(1);
-            }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3) && selectedBullet != 2)
-        {
-            if (unlockedSpells.spellUnlocked[2] == true)
+            if (Input.GetKeyDown(KeyCode.Alpha2) && selectedBullet != 1)
             {
-                selectedBullet = 2;
-                SelectSpell();
+                if (unlockedSpells.spellUnlocked[1] == true)
+                {
+                    selectedBullet = 1;
+                    SelectSpell();
+                }
+                else
+                {
+                    RuntimeManager.PlayOneShot(spellLockedEvent);
+                    unlockedSpells.spellLockedIconAnimation(1);
+                }
             }
-            else
+
+            if (Input.GetKeyDown(KeyCode.Alpha3) && selectedBullet != 2)
             {
-                RuntimeManager.PlayOneShot(spellLockedEvent);
-                unlockedSpells.spellLockedIconAnimation(2);
+                if (unlockedSpells.spellUnlocked[2] == true)
+                {
+                    selectedBullet = 2;
+                    SelectSpell();
+                }
+                else
+                {
+                    RuntimeManager.PlayOneShot(spellLockedEvent);
+                    unlockedSpells.spellLockedIconAnimation(2);
+                }
             }
 
         }

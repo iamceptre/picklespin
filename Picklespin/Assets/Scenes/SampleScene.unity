@@ -11535,7 +11535,7 @@ MonoBehaviour:
   - {fileID: 352919949}
   - {fileID: 1562503098}
   spellLockedIcon: {fileID: 1212433013}
-  spellUnlocked: 010101
+  spellUnlocked: 010000
   lockedSpellTint:
   - {fileID: 0}
   - {fileID: 1988890842}

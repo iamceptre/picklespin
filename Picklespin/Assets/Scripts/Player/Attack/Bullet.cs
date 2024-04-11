@@ -87,7 +87,7 @@ public class Bullet : MonoBehaviour
     {
         if (Random.Range(0,10) >= 9 || iWillBeCritical) // 1/10 chance of doubling the damage OR when low on magicka (iWillBeCritical is then set to true by Attack script)
         {
-            damage = originalDamage * 2;
+            damage = originalDamage * 3;
             damageUI.WhenCritical();
             RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
         }
