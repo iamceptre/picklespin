@@ -19,7 +19,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private EventReference castSound;
     public EventReference pullupSound;
     [SerializeField] private EventReference hitSound;
-    private EventReference criticalHitSound;
     [SerializeField] private EventInstance hitInstance;
 
     private Transform mainCamera;
@@ -30,6 +29,8 @@ public class Bullet : MonoBehaviour
     private DamageUI damageUI;
 
     public float castDuration;
+
+    public bool iWillBeCritical;
 
 
     void Awake()
@@ -84,7 +85,7 @@ public class Bullet : MonoBehaviour
 
     private void RandomizeCritical()
     {
-        if (Random.Range(0,10) >= 8) // 2/10 chance of doubling the damage
+        if (Random.Range(0,10) >= 9 || iWillBeCritical) // 1/10 chance of doubling the damage OR when low on magicka (iWillBeCritical is then set to true by Attack script)
         {
             damage = originalDamage * 2;
             damageUI.WhenCritical();

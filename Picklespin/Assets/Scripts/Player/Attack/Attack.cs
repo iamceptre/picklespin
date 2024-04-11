@@ -133,6 +133,16 @@ public class Attack : MonoBehaviour
 
         var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
+        Bullet spawnedBulletScript = spawnedBullet.GetComponent<Bullet>();
+
+        if (ammo.ammo <= ammo.maxAmmo*0.15f) { //WHEN MAGICKA IS BELOW 15% THE SHOT WILL ALWAYS BE CRITICAL
+            spawnedBulletScript.iWillBeCritical = true;
+        }
+        else
+        {
+            spawnedBulletScript.iWillBeCritical = false;
+        }
+
         ammoDisplay.RefreshManaValue();
         StartCoroutine(CastCooldown());
     }
