@@ -22,10 +22,9 @@ public class FootstepSystem : MonoBehaviour
 
     private float fixedFootstepSpace;
 
-    private float smoothVelocity;
-    [Range(0, 2)] [HideInInspector] public float fixedFootstepSpaceSmooth;
-
     [Range(0,1)] public float footstepSpaceCooldown;
+
+    private bool isCasting;
 
     private void Update()
     {
@@ -64,18 +63,33 @@ public class FootstepSystem : MonoBehaviour
 
     private void UpdateTimings()
     {
-        fixedFootstepSpace = 0.8f; //crouch speed
+        if (!isCasting) {
+            fixedFootstepSpace = 0.8f; //crouch speed
 
-        if (!Input.GetKey(KeyCode.C))
+            if (!Input.GetKey(KeyCode.C))
+            {
+                fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
+            }
+
+            if (cameraBob.bobSpeed != 0) {
+                cameraBob.bobSpeed = 2 / (fixedFootstepSpace);
+            }
+        }
+        else
         {
-            fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
+            fixedFootstepSpace = 0.8f;
+            cameraBob.bobSpeed = 2 / (fixedFootstepSpace);
         }
+    }
 
-        fixedFootstepSpaceSmooth = Mathf.SmoothDamp(fixedFootstepSpaceSmooth, fixedFootstepSpace, ref smoothVelocity, 0.1f);
+    public void SlowDownDuringCasting()
+    {
+        isCasting = true;
+    }
 
-        if (cameraBob.bobSpeed != 0) {
-            cameraBob.bobSpeed = 2 / (fixedFootstepSpace); // change it to smooth when you figure out how to fix camera shake when calculating cameraBob
-        }
+    public void SpeedMeBackUp()
+    {
+        isCasting = false;
     }
 
 
@@ -105,7 +119,6 @@ public class FootstepSystem : MonoBehaviour
             routineRunning = false;
         }
     }
-
 
     public IEnumerator SendJumpSignal()
     {

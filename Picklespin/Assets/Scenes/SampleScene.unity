@@ -11166,7 +11166,6 @@ MonoBehaviour:
       Data4: -1979755532
     Path: event:/PLACEHOLDER_UNCZ/jump
   isstepping: 0
-  fixedFootstepSpaceSmooth: 0
   footstepSpaceCooldown: 0
 --- !u!114 &1219504546
 MonoBehaviour:
@@ -11426,12 +11425,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1219504545}
+        m_TargetAssemblyTypeName: FootstepSystem, Assembly-CSharp
+        m_MethodName: SpeedMeBackUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   StartCasting:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1219504544}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: SlowMeDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1219504545}
+        m_TargetAssemblyTypeName: FootstepSystem, Assembly-CSharp
+        m_MethodName: SlowDownDuringCasting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11512,7 +11535,7 @@ MonoBehaviour:
   - {fileID: 352919949}
   - {fileID: 1562503098}
   spellLockedIcon: {fileID: 1212433013}
-  spellUnlocked: 010000
+  spellUnlocked: 010101
   lockedSpellTint:
   - {fileID: 0}
   - {fileID: 1988890842}

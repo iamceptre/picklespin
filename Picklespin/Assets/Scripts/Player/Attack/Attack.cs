@@ -192,14 +192,6 @@ public class Attack : MonoBehaviour
         castCooldownAllow = true;
     }
 
-    /*
-    private IEnumerator CastingSpell(float castDuration)
-    {
-            yield return new WaitForSeconds(castDuration);
-            Shoot();
-            StopAllCoroutines();
-    }
-    */
 
     private void CastingSpell(float castDuration)
     {

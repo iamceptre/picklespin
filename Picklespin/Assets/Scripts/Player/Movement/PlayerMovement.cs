@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
 
             
-            if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift))
+            if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift) && !isSlowedDown)
         {
             if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
