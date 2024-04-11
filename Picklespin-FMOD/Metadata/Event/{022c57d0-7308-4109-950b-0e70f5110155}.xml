@@ -5,7 +5,7 @@
 			<value>light_spell_hit</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{b82e73af-b42b-4497-ada3-c8d3e5aa4d48}</destination>
@@ -59,7 +59,14 @@
 			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{11f778ab-4057-4b3b-b2d8-1e109f83955b}" />
+	<object class="EventAutomatableProperties" id="{11f778ab-4057-4b3b-b2d8-1e109f83955b}">
+		<property name="minimumDistance">
+			<value>9</value>
+		</property>
+		<property name="maximumDistance">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{9abe118c-9daf-481e-b5a3-c8f85a99551a}" />
 	<object class="Timeline" id="{71f8787d-810f-48d3-86cb-0629164146cf}">
 		<property name="isProxyEnabled">
@@ -96,6 +103,7 @@
 	<object class="MixerBusEffectChain" id="{8ec09039-8f99-449e-82e9-a4cb2ebf2688}">
 		<relationship name="effects">
 			<destination>{30f0df5b-ee14-46a5-b812-783f763485a2}</destination>
+			<destination>{08bfc168-14d9-4000-ab00-6f37767bddb3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9fe41d49-7ccb-456a-922e-35074215b798}" />
@@ -109,4 +117,9 @@
 	</object>
 	<object class="MixerBusFader" id="{890f2c67-a1e6-4ced-8f99-f1df246b9a16}" />
 	<object class="MixerBusFader" id="{30f0df5b-ee14-46a5-b812-783f763485a2}" />
+	<object class="SpatialiserEffect" id="{08bfc168-14d9-4000-ab00-6f37767bddb3}">
+		<property name="distanceRolloffType">
+			<value>3</value>
+		</property>
+	</object>
 </objects>

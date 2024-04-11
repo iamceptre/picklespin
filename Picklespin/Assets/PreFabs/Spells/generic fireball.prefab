@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 77
-  magickaCost: 10
+  magickaCost: 20
   speed: 30
   myCooldown: 2
   spawnInHandParticle: {fileID: 4342817449807727369, guid: 4fb8136e8035fc4468f5f5b3c86336f7, type: 3}
@@ -172,6 +172,13 @@ MonoBehaviour:
       Data3: -745530716
       Data4: -2104198156
     Path: event:/PLACEHOLDER_UNCZ/spellHit
+  criticalHitSound:
+    Guid:
+      Data1: 1225238315
+      Data2: 1131977981
+      Data3: 877919876
+      Data4: -853058563
+    Path: event:/PLACEHOLDER_UNCZ/ohh
   castDuration: 1
 --- !u!33 &9094262283420263568
 MeshFilter:

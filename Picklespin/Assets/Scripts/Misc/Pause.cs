@@ -16,28 +16,28 @@ public class Pause : MonoBehaviour
         {
             if (!isPaused)
             {
-                isPaused = true;
                 PauseGame();
             }
             else
             {
-                isPaused = false;
                 UnpauseGame();
             }
         }
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         pauseEvent.Invoke();
         timescaleBeforePausing = Time.timeScale;
         Time.timeScale = 0;
+        isPaused = true;
     }
 
-    private void UnpauseGame()
+    public void UnpauseGame()
     {
         Time.timeScale = timescaleBeforePausing;
         unpauseEvent.Invoke();
+        isPaused = false;
     }
 
 }

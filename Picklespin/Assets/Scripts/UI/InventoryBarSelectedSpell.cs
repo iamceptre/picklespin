@@ -6,6 +6,7 @@ public class InventoryBarSelectedSpell : MonoBehaviour
     [SerializeField] private Image[] invSlot;
     [SerializeField] private Attack attack;
 
+
     public void SelectionChanged()
     {
 

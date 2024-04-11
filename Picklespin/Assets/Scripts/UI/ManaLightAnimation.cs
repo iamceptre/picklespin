@@ -26,7 +26,7 @@ public class ManaLightAnimation : MonoBehaviour
 
     private void FadeOut()
     {
-        manaLight.DOFade(0, 1.37f).SetEase(Ease.InSine).OnComplete(DisableMe);
+        manaLight.DOFade(0, 1.37f).SetEase(Ease.OutSine).OnComplete(DisableMe);
         rectTransform.DOScale(1, 1.37f).SetEase(Ease.InSine);
     }
 

@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
-  magickaCost: 1
+  damage: 5
+  magickaCost: 7
   speed: 60
   myCooldown: 0.1
   spawnInHandParticle: {fileID: 4342817449807727369, guid: 6b37d42c41301b148894b7f861d4a6c6, type: 3}

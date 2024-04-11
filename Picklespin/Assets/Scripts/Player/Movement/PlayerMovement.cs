@@ -11,10 +11,6 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed;
     public float crouchSpeed;
 
-    private float startWalkSpeed;
-    private float startRunSpeed;
-    private float startCrouchSpeed;
-
     private bool isSlowedDown = false;
 
     public float jumpPower;

@@ -14,9 +14,9 @@ public class UnlockSpellCheat : MonoBehaviour
 
         if(Input.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.C))
             {
-                unlockedSpells.spellUnlocked[2] = true;
+                unlockedSpells.UnlockASpell(2);
                 RuntimeManager.PlayOneShot(cheatCodeSound);
             }
 
