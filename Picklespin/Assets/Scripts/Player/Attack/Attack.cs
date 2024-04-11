@@ -156,6 +156,7 @@ public class Attack : MonoBehaviour
             else
             {
                 RuntimeManager.PlayOneShot(spellLockedEvent);
+                unlockedSpells.spellLockedIconAnimation(1);
             }
         }
 
@@ -169,6 +170,7 @@ public class Attack : MonoBehaviour
             else
             {
                 RuntimeManager.PlayOneShot(spellLockedEvent);
+                unlockedSpells.spellLockedIconAnimation(2);
             }
 
         }
