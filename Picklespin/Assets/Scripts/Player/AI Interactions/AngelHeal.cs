@@ -10,6 +10,9 @@ public class AngelHeal : MonoBehaviour
     private Ammo ammo;
     private int howMuchAmmoAngelGives = 100;
 
+    [SerializeField] AngelHealingMinigame minigame;
+    [HideInInspector] public float healboost = 1;
+
     [SerializeField] private GameObject hand;
 
     private Material handOGMaterial;
@@ -55,6 +58,7 @@ public class AngelHeal : MonoBehaviour
         handRenderer = hand.GetComponent<MeshRenderer>();
         handOGMaterial = handRenderer.material;
         healEmission = healParticle.emission;
+        minigame.enabled = false;
     }
 
     private void Start()
@@ -90,6 +94,7 @@ public class AngelHeal : MonoBehaviour
         {
             HealingParticleStop();
             angelHPSlider.gameObject.SetActive(false);
+            minigame.enabled = false;
             healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             healingBeamInstance.release();
             floatUpDown.enabled = false;
@@ -137,10 +142,12 @@ public class AngelHeal : MonoBehaviour
             healingBeamInstance.start();
             hideTip.Invoke();
             floatUpDown.enabled = true;
+            minigame.enabled = true;
+            minigame.InitializeMinigame();
             canPlayEvent = false; //this should always be at the end of this event
         }
 
-        aiHealth.hp += Time.deltaTime*25;
+        aiHealth.hp += Time.deltaTime * 15 * healboost;
         angelHPSlider.gameObject.SetActive(true);
         angelHPSlider.value = aiHealth.hp;
         HealingParticleStart();
@@ -187,6 +194,7 @@ public class AngelHeal : MonoBehaviour
         ammoDisplay.RefreshManaValueSmooth();
         HealingParticleStop();
         angelHPSlider.gameObject.SetActive(false);
+        minigame.enabled = false;
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
         manaLightAnimation.LightAnimation();
