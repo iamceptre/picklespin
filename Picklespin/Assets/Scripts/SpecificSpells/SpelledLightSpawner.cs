@@ -15,8 +15,8 @@ public class SpelledLightSpawner : MonoBehaviour
     {
             foreach (GameObject one in previousOnes)
             {
-            LightSpell lightSpell = one.GetComponent<LightSpell>();
-            lightSpell.Die();
+                LightSpell lightSpell = one.GetComponent<LightSpell>();
+                lightSpell.FadeOut();
             }
 
         StartCoroutine(WaitAndSpawn());
@@ -26,6 +26,7 @@ public class SpelledLightSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         Instantiate(lightToSpawn,transform.position, Quaternion.identity);
+        Destroy(gameObject);
         yield return null;
     }
 }

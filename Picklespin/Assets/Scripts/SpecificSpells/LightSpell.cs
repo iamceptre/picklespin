@@ -12,20 +12,13 @@ public class LightSpell : MonoBehaviour
 
     void Start()
     {
+        myLight.DOKill();
         myLight.color = new Color(0, 0, 0);
         FadeIn();
 
         if (myTransform != null)
         {
             myTransform.DOShakePosition(lightDuration, 0.1f, 5, 90, false, false, ShakeRandomnessMode.Harmonic);
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            FadeOut();
         }
     }
 
@@ -46,15 +39,19 @@ public class LightSpell : MonoBehaviour
         yield return null;
     }
 
-    void FadeOut()
+    public void FadeOut()
     {
         if (myLight != null)
         {
             myLight.DOColor(new Color(0, 0, 0), 1).OnComplete(Die);
         }
+        else
+        {
+            myLight.DOKill();
+        }
     }
 
-   public void Die()
+   private void Die()
     {
         myTransform.DOKill();
         myLight.DOKill();

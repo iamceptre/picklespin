@@ -42,7 +42,7 @@ public class UnlockedSpells : MonoBehaviour
 
     private void spellIconFadeIn(int spellID)
     {
-        spellIcon[spellID].color = new Color(255,255,255,0);
+        spellIcon[spellID].DOFade(0, 0);
         spellIcon[spellID].DOFade(1, 0.5f);
     }
 
