@@ -168,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed && stamina>2)
         {
-            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.175f;
+            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.2f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }

@@ -54,6 +54,6 @@ public class RoundSystem : MonoBehaviour
 
     void UpdateText()
     {
-        roundText.text = "Round " + roundNumber;
+        roundText.text = "round " + roundNumber;
     }
 }
