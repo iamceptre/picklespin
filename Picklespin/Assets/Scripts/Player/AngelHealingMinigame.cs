@@ -11,6 +11,8 @@ public class AngelHealingMinigame : MonoBehaviour
     [SerializeField] private EventReference healBoostSound;
     [SerializeField] private EventReference failedSound;
 
+    [HideInInspector] public AiHealth aiHealth;
+
     private Slider angelHPslider;
     [SerializeField] private Image sliderFill;
     private Color sliderStartingColor;
@@ -110,12 +112,19 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         if (!missed && !tooLate)
         {
-            angelHeal.healboost = 0.5f;
-            sliderFill.DOColor(Color.gray, 0.4f);
+            //angelHeal.healboost = 0.5f;
+            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 1, 0.4f).SetEase(Ease.InOutExpo);
+            sliderFill.DOColor(Color.red, 0.4f).OnComplete(RevertSliderColor);
             Reddify();
             RuntimeManager.PlayOneShot(failedSound);
             missed = true;
         }
+    }
+
+    private void RevertSliderColor()
+    {
+        //aiHealth.hp = 1;
+        sliderFill.DOColor(sliderStartingColor, 0.4f);
     }
 
 

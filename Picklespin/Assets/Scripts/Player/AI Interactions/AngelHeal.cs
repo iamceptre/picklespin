@@ -48,9 +48,9 @@ public class AngelHeal : MonoBehaviour
     public FloatUpDown floatUpDown;
 
     [SerializeField] private UnityEvent showTip;
-    private bool showingTip;
+    //private bool showingTip;
     [SerializeField] private UnityEvent hideTip;
-    private bool hideingTip;
+    //private bool hideingTip;
 
     private void Awake()
     {
@@ -110,6 +110,7 @@ public class AngelHeal : MonoBehaviour
 
         angel = currentAngel.GetComponent<AngelMind>();
         aiHealth = currentAngel.GetComponent<AiHealth>();
+        minigame.aiHealth = aiHealth;
         if (!angel.healed)
         {
             handRenderer.material = handHighlightMaterial;
