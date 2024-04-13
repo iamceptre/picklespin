@@ -14,6 +14,8 @@ public class SelectedSpellDisplay : MonoBehaviour
         selectedSpellText.text = attackScript.bulletPrefab[attackScript.selectedBullet].gameObject.name.ToString();
         selectedSpellText.color = new Color(255,255,255,0);
         UpdateText();
+        selectedSpellText.DOKill();
+        selectedSpellText.DOFade(0, 0);
     }
 
 private void DisableMe()

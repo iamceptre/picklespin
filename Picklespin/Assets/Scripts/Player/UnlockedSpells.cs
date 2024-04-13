@@ -15,6 +15,9 @@ public class UnlockedSpells : MonoBehaviour
     [SerializeField] private Image spellLockedIcon;
     private RectTransform lockedRect;
 
+    [SerializeField] private Image alreadyUnlockedIcon;
+    private RectTransform alreadyUnlockedRect;
+
     public bool[] spellUnlocked;
 
     [SerializeField] private GameObject[] lockedSpellTint; //unserialize, get objects using Find Function
@@ -28,6 +31,7 @@ public class UnlockedSpells : MonoBehaviour
     {
         lightRect = spellUnlockedLight.GetComponent<RectTransform>();
         lockedRect = spellLockedIcon.GetComponent<RectTransform>();
+        alreadyUnlockedRect = alreadyUnlockedIcon.GetComponent<RectTransform>();
     }
 
     public void UnlockASpell(int spellID)
@@ -38,17 +42,18 @@ public class UnlockedSpells : MonoBehaviour
         else
         {
             spellUnlocked[spellID] = true;
+
+            lockedSpellTint[spellID].SetActive(false);
+            RuntimeManager.PlayOneShot(spellUnlockedSound);
+
+            spellUnlockedLight.enabled = true;
+            spellUnlockLight();
+            lightRect.anchoredPosition = invSlotRect[spellID].anchoredPosition;
+
+            spellIcon[spellID].enabled = true; //fade in
+            spellIconFadeIn(spellID);
         }
 
-        lockedSpellTint[spellID].SetActive(false);
-        RuntimeManager.PlayOneShot(spellUnlockedSound);
-
-        spellUnlockedLight.enabled = true;
-        spellUnlockLight();
-        lightRect.anchoredPosition = invSlotRect[spellID].anchoredPosition;
-
-        spellIcon[spellID].enabled = true; //fade in
-        spellIconFadeIn(spellID);
     }
 
     private void spellIconFadeIn(int spellID)
@@ -63,8 +68,8 @@ public class UnlockedSpells : MonoBehaviour
         spellUnlockedLight.DOKill();
         lightRect.DOKill();
         lightRect.localScale = Vector3.zero;
-        lightRect.DOScaleY(1f, 0.3f).SetEase(Ease.OutExpo);
-        lightRect.DOScaleX(1f, 1).SetEase(Ease.OutExpo);
+        lightRect.DOScaleY(1.5f, 0.3f).SetEase(Ease.OutExpo);
+        lightRect.DOScaleX(1.5f, 1).SetEase(Ease.OutExpo);
         spellUnlockedLight.DOFade(1, 0.1f).OnComplete(LightFadeOut);
     }
 
@@ -119,6 +124,29 @@ public class UnlockedSpells : MonoBehaviour
     private void DisableLock()
     {
         spellLockedIcon.enabled = false;
+    }
+
+    public void SelectingUnlockedAuraAnimation(int spellID)
+    {
+        alreadyUnlockedIcon.enabled = true;
+        alreadyUnlockedIcon.DOKill();
+        alreadyUnlockedRect.DOKill();
+        alreadyUnlockedIcon.DOFade(0, 0);
+        alreadyUnlockedRect.anchoredPosition = invSlotRect[spellID].anchoredPosition - new Vector2(1.5f,-1);
+        alreadyUnlockedRect.localScale = new Vector2(0.6f, 0.6f);
+        alreadyUnlockedIcon.DOFade(0.6f, 0.1f).OnComplete(AlreadyUnlockedFadeOut);
+        alreadyUnlockedRect.DOScale(0.8f, 0.35f);
+    }
+
+
+    private void AlreadyUnlockedFadeOut()
+    {
+        alreadyUnlockedIcon.DOFade(0, 0.3f).OnComplete(DisableAlreadyUnlocked);
+    }
+
+    private void DisableAlreadyUnlocked()
+    {
+        alreadyUnlockedIcon.enabled = false;
     }
 
 }

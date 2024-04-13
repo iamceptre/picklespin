@@ -154,16 +154,18 @@ public class Attack : MonoBehaviour
         if (!Input.GetKey(KeyCode.Mouse0))
         { 
 
-            if (Input.GetKeyDown(KeyCode.Alpha1) && selectedBullet != 0)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                selectedBullet = 0;
-                SelectSpell();
+                    unlockedSpells.SelectingUnlockedAuraAnimation(0);
+                    selectedBullet = 0;
+                    SelectSpell();
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2) && selectedBullet != 1)
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 if (unlockedSpells.spellUnlocked[1] == true)
                 {
+                    unlockedSpells.SelectingUnlockedAuraAnimation(1);
                     selectedBullet = 1;
                     SelectSpell();
                 }
@@ -174,10 +176,11 @@ public class Attack : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha3) && selectedBullet != 2)
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 if (unlockedSpells.spellUnlocked[2] == true)
                 {
+                    unlockedSpells.SelectingUnlockedAuraAnimation(2);
                     selectedBullet = 2;
                     SelectSpell();
                 }

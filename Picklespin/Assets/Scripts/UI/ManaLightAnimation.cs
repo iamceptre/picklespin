@@ -1,9 +1,13 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using TMPro;
 
 public class ManaLightAnimation : MonoBehaviour
 {
+    [SerializeField] private TMP_Text manaPlusPlus;
+    private RectTransform manaPlusPlusRect;
+    private float manaPlusPlusStartingPos;
 
     private Image manaLight;
     private RectTransform rectTransform;
@@ -12,6 +16,12 @@ public class ManaLightAnimation : MonoBehaviour
     {
         manaLight = GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
+
+        if (manaPlusPlus != null) {
+            manaPlusPlusRect = manaPlusPlus.GetComponent<RectTransform>();
+            manaPlusPlus.enabled = false;
+            manaPlusPlusStartingPos = manaPlusPlusRect.localPosition.y;
+        }
     }
 
     public void LightAnimation()
@@ -22,6 +32,12 @@ public class ManaLightAnimation : MonoBehaviour
         rectTransform.DOScaleY(3, 1).SetEase(Ease.OutExpo);
         rectTransform.DOScaleX(1.5f, 1).SetEase(Ease.OutExpo);
         manaLight.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
+
+        if (manaPlusPlus != null)
+        {
+            ManaPlusPlusAnimation();
+        }
+
     }
 
     private void FadeOut()
@@ -33,6 +49,27 @@ public class ManaLightAnimation : MonoBehaviour
     private void DisableMe()
     {
         manaLight.enabled = false;
+    }
+
+    private void ManaPlusPlusAnimation()
+    {
+        manaPlusPlus.enabled = true;
+        manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
+        manaPlusPlus.DOKill();
+        manaPlusPlusRect.DOKill();
+        manaPlusPlus.DOFade(0, 0);
+        manaPlusPlusRect.DOLocalMoveY(manaPlusPlusStartingPos + 50, 1.35f);
+        manaPlusPlus.DOFade(1, 0.2f).OnComplete(ManaPlusPlusFadeOut);
+    }
+
+    private void ManaPlusPlusFadeOut()
+    {
+        manaPlusPlus.DOFade(0, 1.35f).OnComplete(DisableManaPlusPlus);
+    }
+
+    private void DisableManaPlusPlus()
+    {
+        manaPlusPlus.enabled = false;
     }
 
 }
