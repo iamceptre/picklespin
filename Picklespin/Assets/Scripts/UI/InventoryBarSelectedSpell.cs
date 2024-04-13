@@ -42,7 +42,7 @@ public class InventoryBarSelectedSpell : MonoBehaviour
         for (int i = 0; i < invSlot.Length; i++)
         {
             invSlot[i].color = Color.gray;
-            invSlotSpellIcon[i].color = Color.gray;
+            invSlotSpellIcon[i].color = Color.black;
         }
 
         invSlot[attack.selectedBullet].color = Color.white;

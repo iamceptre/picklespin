@@ -184,7 +184,6 @@ public class AngelHeal : MonoBehaviour
     private void Healed()
     {
         GiveMana();
-        ammoDisplay.RefreshManaValueSmooth();
         HealingParticleStop();
         angelHPSlider.gameObject.SetActive(false);
         minigame.enabled = false;
@@ -202,13 +201,13 @@ public class AngelHeal : MonoBehaviour
     {
         if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
         {
-            //ammo.ammo = ammo.maxAmmo;
-            DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.maxAmmo, 0.5f).SetEase(Ease.OutExpo);
+            ammo.ammo = ammo.maxAmmo;
+           // DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.maxAmmo, 0.5f).SetEase(Ease.OutExpo);
         }
         else
         {
-            //ammo.ammo += howMuchAmmoAngelGives;
-            DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.ammo+50, 0.5f).SetEase(Ease.OutExpo);
+            ammo.ammo += howMuchAmmoAngelGives;
+           // DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.ammo+50, 0.5f).SetEase(Ease.OutExpo);
         }
 
         ammoDisplay.RefreshManaValueSmooth();

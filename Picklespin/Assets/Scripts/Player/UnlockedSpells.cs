@@ -50,7 +50,7 @@ public class UnlockedSpells : MonoBehaviour
             spellUnlockLight();
             lightRect.anchoredPosition = invSlotRect[spellID].anchoredPosition;
 
-            spellIcon[spellID].enabled = true; //fade in
+            spellIcon[spellID].enabled = true;
             spellIconFadeIn(spellID);
         }
 
@@ -133,7 +133,7 @@ public class UnlockedSpells : MonoBehaviour
         alreadyUnlockedRect.DOKill();
         alreadyUnlockedIcon.DOFade(0, 0);
         alreadyUnlockedRect.anchoredPosition = invSlotRect[spellID].anchoredPosition - new Vector2(1.5f,-1);
-        alreadyUnlockedRect.localScale = new Vector2(0.6f, 0.6f);
+        alreadyUnlockedRect.localScale = new Vector2(0.5f, 0.5f);
         alreadyUnlockedIcon.DOFade(0.6f, 0.1f).OnComplete(AlreadyUnlockedFadeOut);
         alreadyUnlockedRect.DOScale(0.8f, 0.35f);
     }
