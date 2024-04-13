@@ -7,14 +7,10 @@ public class WaypointWander : State
     private NavMeshAgent agent;
     private int waypointIndex;
     [HideInInspector] public Vector3 target;
-
     private AiVision aiVision;
     [SerializeField] private AttackPlayer attackPlayer;
-
     private bool canInc=true;
-
     [SerializeField] private float idleSpeed = 3.5f;
-
     private Vector3 startingPos;
 
     public override State RunCurrentState()
@@ -38,6 +34,7 @@ public class WaypointWander : State
         agent = GetComponentInParent<NavMeshAgent>();
         aiVision = GetComponentInParent<AiVision>();
         waypointIndex = 0;
+
         if (waypoints.Length > 0)
         {
             UpdateDestination();
@@ -53,7 +50,7 @@ public class WaypointWander : State
     private void RefreshWaypoint()
     {
 
-            if (Vector3.Distance(transform.position, target) <= 1f)
+            if (Vector3.Distance(transform.position, target) < 1)
             {
                 Invoke("UpdateDestination", 2);
 
@@ -72,7 +69,6 @@ public class WaypointWander : State
 
     }
 
-    
     public void UpdateDestination()
     {
         agent.speed = idleSpeed;
@@ -88,13 +84,11 @@ public class WaypointWander : State
             agent.SetDestination(target);
     }
 
-
-    void IncreaseWaypoint() {
+    private void IncreaseWaypoint() {
         waypointIndex++;
         if(waypointIndex == waypoints.Length) {
             waypointIndex = 0;
        } 
     }
-
 
 }

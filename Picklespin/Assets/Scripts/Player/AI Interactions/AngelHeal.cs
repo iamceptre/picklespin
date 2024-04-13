@@ -3,6 +3,7 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
 {
@@ -182,16 +183,7 @@ public class AngelHeal : MonoBehaviour
 
     private void Healed()
     {
-
-        if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
-        {
-            ammo.ammo = ammo.maxAmmo;
-        }
-        else
-        {
-            ammo.ammo += howMuchAmmoAngelGives;
-        }
-        //ammoDisplay.RefreshManaValue();
+        GiveMana();
         ammoDisplay.RefreshManaValueSmooth();
         HealingParticleStop();
         angelHPSlider.gameObject.SetActive(false);
@@ -202,8 +194,25 @@ public class AngelHeal : MonoBehaviour
         handRenderer.material = handOGMaterial;
         angel.healed = true;
         floatUpDown.enabled = false;
-        canPlayEvent = true; //this should always be at the end of this event
         angel.StartCoroutine(angel.AfterHealedAction());
+        canPlayEvent = true; //this should always be at the end of this event
+    }
+
+    private void GiveMana()
+    {
+        if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
+        {
+            //ammo.ammo = ammo.maxAmmo;
+            DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.maxAmmo, 0.5f).SetEase(Ease.OutExpo);
+        }
+        else
+        {
+            //ammo.ammo += howMuchAmmoAngelGives;
+            DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.ammo+50, 0.5f).SetEase(Ease.OutExpo);
+        }
+
+        ammoDisplay.RefreshManaValueSmooth();
+        manaLightAnimation.LightAnimation();
     }
 
 }

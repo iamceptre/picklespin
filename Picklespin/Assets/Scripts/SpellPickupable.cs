@@ -1,6 +1,5 @@
 using UnityEngine;
 using DG.Tweening;
-using System.Collections;
 
 public class SpellPickupable : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class SpellPickupable : MonoBehaviour
     private Renderer rend;
     private ParticleSystem particle;
     private ParticleSystem.EmissionModule emission;
+    private Collider myCollider;
 
 
     private void Awake()
@@ -18,6 +18,7 @@ public class SpellPickupable : MonoBehaviour
         myLight = gameObject.GetComponentInChildren<Light>();
         rend = gameObject.GetComponent<Renderer>();
         particle = gameObject.GetComponentInChildren<ParticleSystem>();
+        myCollider = gameObject.GetComponent<Collider>();
 
         if (particle != null)
         {
@@ -31,6 +32,7 @@ public class SpellPickupable : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             unlockedSpells.UnlockASpell(spellID);
+            myCollider.enabled = false;
             FadeOut();
         }
 

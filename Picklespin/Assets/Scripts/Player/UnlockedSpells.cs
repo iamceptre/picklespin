@@ -5,6 +5,10 @@ using DG.Tweening;
 
 public class UnlockedSpells : MonoBehaviour
 {
+    [SerializeField] private Ammo ammo;
+    [SerializeField] private AmmoDisplay ammoDisplay;
+    [SerializeField] private ManaLightAnimation manaLightAnimation;
+
     [SerializeField] private RectTransform[] invSlotRect;
     [SerializeField] private Image[] spellIcon;
 
@@ -28,7 +32,14 @@ public class UnlockedSpells : MonoBehaviour
 
     public void UnlockASpell(int spellID)
     {
-        spellUnlocked[spellID] = true;
+        if (spellUnlocked[spellID]) {
+            ManaBonus();
+        }
+        else
+        {
+            spellUnlocked[spellID] = true;
+        }
+
         lockedSpellTint[spellID].SetActive(false);
         RuntimeManager.PlayOneShot(spellUnlockedSound);
 
@@ -65,6 +76,26 @@ public class UnlockedSpells : MonoBehaviour
     private void DisableLight()
     {
         spellUnlockedLight.enabled = false;
+    }
+
+    private void ManaBonus()
+    {
+
+        //gives 50 mana for now
+
+            if (ammo.maxAmmo - ammo.ammo <= 50)
+            {
+                ammo.ammo = ammo.maxAmmo;
+
+            }
+            else
+            {
+                ammo.ammo += 50;
+            }
+
+            ammoDisplay.RefreshManaValueSmooth();
+            manaLightAnimation.LightAnimation();
+        
     }
 
 

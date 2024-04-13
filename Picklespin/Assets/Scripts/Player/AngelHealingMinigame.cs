@@ -3,8 +3,6 @@ using UnityEngine.UI;
 using DG.Tweening;
 using FMODUnity;
 
-//MAKE IT REMEMBER IF ANGEL WAS MISSED
-
 public class AngelHealingMinigame : MonoBehaviour
 {
 
@@ -39,7 +37,7 @@ public class AngelHealingMinigame : MonoBehaviour
 
     public void InitializeMinigame()
     {
-        if (!tooLate) { // && angel not fucked
+        if (!tooLate) {
             sliderFill.color = sliderStartingColor;
             inTurboRange = false;
             turboArea.enabled = true;
@@ -63,7 +61,7 @@ public class AngelHealingMinigame : MonoBehaviour
    private void Update()
     {
 
-        if (angelHPslider.value >= 34 && angelHPslider.value <= 41) 
+        if (angelHPslider.value >= 34 && angelHPslider.value <= 45) 
         {
             EnterRange();
         }
@@ -113,7 +111,7 @@ public class AngelHealingMinigame : MonoBehaviour
         if (!missed && !tooLate)
         {
             //angelHeal.healboost = 0.5f;
-            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 1, 0.4f).SetEase(Ease.InOutExpo);
+            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 1, 0.4f).SetEase(Ease.OutExpo);
             sliderFill.DOColor(Color.red, 0.4f).OnComplete(RevertSliderColor);
             Reddify();
             RuntimeManager.PlayOneShot(failedSound);
@@ -174,7 +172,9 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             boostLight.LightAnimation();
             FadeOut();
-            angelHeal.healboost = 4; //make it smooth with tweening instead
+            //angelHeal.healboost = 4;
+            angelHeal.healboost = 0;
+            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f).SetEase(Ease.OutSine);
             RuntimeManager.PlayOneShot(healBoostSound);
 
             boosted = true;

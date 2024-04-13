@@ -12,6 +12,7 @@ TagManager:
   - CameraHandler
   - DamageUI
   - SpelledLight
+  - Waypoint
   layers:
   - Default
   - TransparentFX
