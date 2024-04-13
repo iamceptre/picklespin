@@ -68,14 +68,14 @@ public class UnlockedSpells : MonoBehaviour
         spellUnlockedLight.DOKill();
         lightRect.DOKill();
         lightRect.localScale = Vector3.zero;
-        lightRect.DOScaleY(1.5f, 0.3f).SetEase(Ease.OutExpo);
-        lightRect.DOScaleX(1.5f, 1).SetEase(Ease.OutExpo);
+        lightRect.DOScaleY(1f, 0.3f).SetEase(Ease.OutExpo);
+        lightRect.DOScaleX(1f, 1).SetEase(Ease.OutExpo);
         spellUnlockedLight.DOFade(1, 0.1f).OnComplete(LightFadeOut);
     }
 
     private void LightFadeOut()
     {
-        spellUnlockedLight.DOFade(0, 1.37f).OnComplete(DisableLight);
+        spellUnlockedLight.DOFade(0, 2.5f).OnComplete(DisableLight);
     }
 
     private void DisableLight()
@@ -135,7 +135,7 @@ public class UnlockedSpells : MonoBehaviour
         alreadyUnlockedRect.anchoredPosition = invSlotRect[spellID].anchoredPosition - new Vector2(1.5f,-1);
         alreadyUnlockedRect.localScale = new Vector2(0.5f, 0.5f);
         alreadyUnlockedIcon.DOFade(0.6f, 0.1f).OnComplete(AlreadyUnlockedFadeOut);
-        alreadyUnlockedRect.DOScale(0.8f, 0.35f);
+        alreadyUnlockedRect.DOScale(0.7f, 0.35f);
     }
 
 
