@@ -3,7 +3,7 @@ using FMODUnity;
 
 public class Pickupable_Mana : MonoBehaviour
 {
-
+    [SerializeField] private ItemAfterPickingUp itemAfterPickingUp;
     private Ammo ammo;
     private AmmoDisplay ammoDisplay;
     private BarLightsAnimation barLightsAnimation;
@@ -12,6 +12,7 @@ public class Pickupable_Mana : MonoBehaviour
 
     [SerializeField] EventReference pickupSoundEvent;
     //[SerializeField] EventReference pickupSoundEventFull;
+
 
     private void Start()
     {
@@ -22,28 +23,16 @@ public class Pickupable_Mana : MonoBehaviour
 
     public void GiveManaToPlayer()
     {
-
-        if (ammo.ammo != ammo.maxAmmo)
+        if (ammo.ammo < ammo.maxAmmo)
         {
-            if ((ammo.ammo += howMuchManaIGive) < ammo.maxAmmo)
-            {
-                ammo.ammo += howMuchManaIGive;
-            }
-            else
-            {
-                ammo.ammo = ammo.maxAmmo;
-                //RuntimeManager.PlayOneShot(pickupSoundEventFull);
-            }
+            ammo.ammo += howMuchManaIGive;
+            ammo.ammo = Mathf.Clamp(ammo.ammo, 0, ammo.maxAmmo);
             RuntimeManager.PlayOneShot(pickupSoundEvent);
             ammoDisplay.RefreshManaValueSmooth();
             barLightsAnimation.PlaySelectedBarAnimation(2); //hp = 0, stamina = 1, mana = 2
+            itemAfterPickingUp.Pickup();
         }
-        else
-        {
-            Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
-
-
     }
+
 }
+

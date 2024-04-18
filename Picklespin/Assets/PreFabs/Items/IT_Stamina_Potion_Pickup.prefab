@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3456602627146614957}
   - component: {fileID: 4693432895049683469}
   - component: {fileID: 795687396003462228}
+  - component: {fileID: 4255623640530740593}
   m_Layer: 0
   m_Name: IT_Stamina_Potion_Pickup
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2642113547353334448}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: 0.5, z: -9}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
@@ -237,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b7e0a58742670428a437bdbaf042e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemAfterPickingUp: {fileID: 4255623640530740593}
   howMuchStaminaIGive: 100
   pickupSoundEvent:
     Guid:
@@ -245,3 +247,15 @@ MonoBehaviour:
       Data3: -636784227
       Data4: 154598932
     Path: event:/PLACEHOLDER_UNCZ/angel_healed
+--- !u!114 &4255623640530740593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2642113547353334448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f4865ec34cb7b40bac5499360c081a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

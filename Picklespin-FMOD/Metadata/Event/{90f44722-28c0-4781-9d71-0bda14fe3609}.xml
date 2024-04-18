@@ -5,7 +5,7 @@
 			<value>angel_healed</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{b82e73af-b42b-4497-ada3-c8d3e5aa4d48}</destination>
@@ -109,7 +109,6 @@
 	<object class="MixerBusEffectChain" id="{7395e9a4-1f26-42fd-b683-efddf8b2ec7f}">
 		<relationship name="effects">
 			<destination>{97b6ca07-aa1c-4e5d-aaa8-6f9ff317b7a6}</destination>
-			<destination>{bc3e89eb-c653-4f0e-962a-751feeddf526}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9e95494b-86b7-441e-9340-f4ded7ec2954}" />
@@ -120,5 +119,4 @@
 	</object>
 	<object class="MixerBusFader" id="{a6d2d10f-ba64-4619-aa22-c8a3d3b1cb66}" />
 	<object class="MixerBusFader" id="{97b6ca07-aa1c-4e5d-aaa8-6f9ff317b7a6}" />
-	<object class="SpatialiserEffect" id="{bc3e89eb-c653-4f0e-962a-751feeddf526}" />
 </objects>

@@ -15,6 +15,7 @@ public class SpellSpawner : MonoBehaviour
     private int rrrandom;
 
 
+
     public void SpawnSpellsLo()
     {
         for (int i = 0; i < howManyToSpawn; i++)

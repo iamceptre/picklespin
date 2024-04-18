@@ -48,7 +48,7 @@ public class LoosingPlayer : State
         }
         else
         {
-            waypointWander.UpdateDestination(); // WHY IT FUCKING NULL ERRORS 
+            waypointWander.UpdateDestination(); //IT NULL NO MATTER FUCKING WHAT WTF
             return waypointWander;
         }
     }

@@ -3,10 +3,10 @@ using FMODUnity;
 
 public class Pickupable_Stamina : MonoBehaviour
 {
+    [SerializeField] private ItemAfterPickingUp itemAfterPickingUp;
     private PlayerMovement playerMovement;
     private BarLightsAnimation barLightsAnimation;
     [SerializeField] private int howMuchStaminaIGive;
-
     [SerializeField] private EventReference pickupSoundEvent;
 
     private void Start()
@@ -30,11 +30,7 @@ public class Pickupable_Stamina : MonoBehaviour
             }
             barLightsAnimation.PlaySelectedBarAnimation(1); //hp = 0, stamina = 1, mana = 2
             RuntimeManager.PlayOneShot(pickupSoundEvent);
-        }
-        else
-        {
-            Instantiate(gameObject, gameObject.transform.position, Quaternion.identity);
-            Destroy(gameObject);//kill tweens
+            itemAfterPickingUp.Pickup();
         }
     }
 }

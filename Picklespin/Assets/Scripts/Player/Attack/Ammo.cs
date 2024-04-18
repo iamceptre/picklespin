@@ -3,7 +3,7 @@ using UnityEngine;
 public class Ammo : MonoBehaviour
 {
 
-    public int ammo;
+    public int ammo; //Current ammo
     public int maxAmmo;
 
     public static Ammo instance { get; private set; }
