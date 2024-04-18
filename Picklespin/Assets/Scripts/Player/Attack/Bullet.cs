@@ -5,6 +5,8 @@ using FMOD.Studio;
 public class Bullet : MonoBehaviour
 {
 
+    public GameObject CastingParticle;
+
     private int originalDamage;
     [SerializeField] private int damage = 15;
     public int magickaCost = 30;

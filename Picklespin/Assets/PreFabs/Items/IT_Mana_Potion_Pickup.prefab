@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemAfterPickingUp: {fileID: 3284596184831570677}
-  howMuchManaIGive: 20
+  howMuchManaIGive: 25
   pickupSoundEvent:
     Guid:
       Data1: -1863039198

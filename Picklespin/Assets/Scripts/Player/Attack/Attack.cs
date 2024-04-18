@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class Attack : MonoBehaviour
 {
+    public static Attack instance { get; private set; }
+
+    [SerializeField] private Transform handCastingPoint;
+
     [SerializeField] private UnityEvent shootEvent;
     [SerializeField] private UnityEvent changeSelectedSpell;
 
@@ -29,7 +33,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private NoManaLightAnimation noManaLightAnimation;
 
     //Long Casting
-    private float castingPercentage = 0;
+    [HideInInspector] public float castingPercentage = 0;
     private float currentlySelectedCastDuration;
     private bool autofirePrevent;
     [SerializeField] private Slider castingSlider;
@@ -49,6 +53,16 @@ public class Attack : MonoBehaviour
         bullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
         castingSliderRectTransform = castingSlider.GetComponent<RectTransform>();
         sliderScript = castingSlider.GetComponent<SpellCooldown>();
+
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
     }
 
     void Update()
@@ -220,10 +234,12 @@ public class Attack : MonoBehaviour
                 if (castingPercentage == 0)
                 {
                     //one signal tick
+                    var spawnedCastingParticle = Instantiate(bullet.CastingParticle, handCastingPoint);
                     StartCasting.Invoke();
                     castingSliderRectTransform.localScale = sliderScript.startingScale;
                 }
-                castLoaded = false;
+                //constant ticks during casting
+                castLoaded = false; 
                 castingPercentage += Time.deltaTime;
                 castingSlider.value = castingPercentage / castDuration;
             }
