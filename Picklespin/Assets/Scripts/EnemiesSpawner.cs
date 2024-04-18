@@ -6,16 +6,12 @@ public class EnemiesSpawner : MonoBehaviour
     public int howManyToSpawn;
 
     [SerializeField] private GameObject evilEntity;
-    [SerializeField] private Transform[] waypoints;
-    [SerializeField] private GameObject waypointsFolder;
+    [SerializeField] private Transform[] spawnPoints;
 
     private Transform t_spawnPoint;
     private Vector3 t_spawnPosVector;
 
-    private void Awake()
-    {
-        waypoints = waypointsFolder.GetComponentsInChildren<Transform>(); //make it so Waypoints parent folder (0,0,0) is not on this array
-    }
+
 
     public void SpawnEnemiesEasy()
     {
@@ -39,8 +35,8 @@ public class EnemiesSpawner : MonoBehaviour
 
     private void RandomizeSpawnPoint()
     {
-        int randPoint = Random.Range(0, waypoints.Length);
-        t_spawnPoint = waypoints[randPoint];
+        int randPoint = Random.Range(0, spawnPoints.Length);
+        t_spawnPoint = spawnPoints[randPoint];
         t_spawnPosVector = t_spawnPoint.position + new Vector3(Random.Range(0, 0.5f), Random.Range(0, 0.5f), Random.Range(0, 0.5f));
     }
 

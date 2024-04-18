@@ -24,6 +24,12 @@ public class LoosingPlayer : State
         agent = GetComponentInParent<NavMeshAgent>();
         aiVision = GetComponentInParent<AiVision>();
         stateManager = GetComponentInParent<StateManager>();
+
+        if (waypointWander == null)
+        {
+            waypointWander = GetComponentInParent<WaypointWander>();
+        }
+
     }
 
     public override State RunCurrentState()
@@ -42,7 +48,7 @@ public class LoosingPlayer : State
         }
         else
         {
-            waypointWander.UpdateDestination(); //later make AI return to the closest waypoint intead of the last one, make a FindClosestWaypoint function and run it here
+            waypointWander.UpdateDestination(); // WHY IT FUCKING NULL ERRORS 
             return waypointWander;
         }
     }

@@ -36,13 +36,13 @@ public class InventoryBarSelectedSpell : MonoBehaviour
     }
 
 
-    public void SelectionChanged()
+    public void SelectionChanged() //its called from attack script
     {
 
         for (int i = 0; i < invSlot.Length; i++)
         {
             invSlot[i].color = Color.gray;
-            invSlotSpellIcon[i].color = Color.black;
+            invSlotSpellIcon[i].color = new Color(0.35f, 0.35f, 0.35f);
         }
 
         invSlot[attack.selectedBullet].color = Color.white;

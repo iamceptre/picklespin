@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
+  waypointIndex: 0
   target: {x: 0, y: 0, z: 0}
   attackPlayer: {fileID: 9126885967048436367}
   idleSpeed: 3.5
-  imStuck: 0
 --- !u!1 &898117745708906709
 GameObject:
   m_ObjectHideFlags: 0

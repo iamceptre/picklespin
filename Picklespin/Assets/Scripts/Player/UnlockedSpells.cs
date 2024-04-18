@@ -86,7 +86,7 @@ public class UnlockedSpells : MonoBehaviour
     private void ManaBonus()
     {
 
-        //gives 50 mana for now
+            //gives 50 mana for now
 
             if (ammo.maxAmmo - ammo.ammo <= 50)
             {

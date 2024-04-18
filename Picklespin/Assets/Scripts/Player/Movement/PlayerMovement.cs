@@ -2,6 +2,10 @@ using System.Collections;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
+
+    [HideInInspector] public static PlayerMovement instance { get; private set; } 
+
+
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform body;
     [SerializeField] private FootstepSystem footstepSystem;
@@ -29,6 +33,18 @@ public class PlayerMovement : MonoBehaviour
     [Header("Stats")]
     public float fatigability = 32; //lower the fatigability to sprint for longer
 
+    private void Awake() //SINGLETON ! :D
+    {
+        if (instance != null && instance != this )
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
+    }
 
     private void Start()
     {
