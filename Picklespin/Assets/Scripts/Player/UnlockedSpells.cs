@@ -99,7 +99,7 @@ public class UnlockedSpells : MonoBehaviour
             }
 
             ammoDisplay.RefreshManaValueSmooth();
-            manaLightAnimation.LightAnimation();
+            manaLightAnimation.LightAnimation(50);
         
     }
 

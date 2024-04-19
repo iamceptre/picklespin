@@ -3,11 +3,11 @@ using UnityEngine;
 public class GetParticleSizeFromCastPercentage : MonoBehaviour
 {
 
-    private ParticleSystem particleSystem;
+    private ParticleSystem ps;
     private Attack attack;
     private void Awake()
     {
-        particleSystem = GetComponent<ParticleSystem>();
+        ps = GetComponent<ParticleSystem>();
     }
 
     private void Start()
@@ -17,6 +17,7 @@ public class GetParticleSizeFromCastPercentage : MonoBehaviour
 
     void Update()
     {
-        particleSystem.startSize = attack.castingPercentage * 5;
+        var main = ps.main;
+        main.startSizeMultiplier = attack.castingPercentage * 2;
     }
 }

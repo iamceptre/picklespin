@@ -24,7 +24,7 @@ public class ManaLightAnimation : MonoBehaviour
         }
     }
 
-    public void LightAnimation()
+    public void LightAnimation(float howMuchWasGiven)
     {
         manaLight.enabled = true;
         manaLight.DOKill();
@@ -35,7 +35,7 @@ public class ManaLightAnimation : MonoBehaviour
 
         if (manaPlusPlus != null)
         {
-            ManaPlusPlusAnimation();
+            ManaPlusPlusAnimation(howMuchWasGiven);
         }
 
     }
@@ -51,9 +51,10 @@ public class ManaLightAnimation : MonoBehaviour
         manaLight.enabled = false;
     }
 
-    private void ManaPlusPlusAnimation()
+    private void ManaPlusPlusAnimation(float howMuchWasGiven)
     {
         manaPlusPlus.enabled = true;
+        manaPlusPlus.text = "+ " + howMuchWasGiven;
         manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();

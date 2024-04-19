@@ -189,7 +189,7 @@ public class AngelHeal : MonoBehaviour
         minigame.enabled = false;
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
-        manaLightAnimation.LightAnimation();
+        //manaLightAnimation.LightAnimation();
         handRenderer.material = handOGMaterial;
         angel.healed = true;
         floatUpDown.enabled = false;
@@ -211,7 +211,7 @@ public class AngelHeal : MonoBehaviour
         }
 
         ammoDisplay.RefreshManaValueSmooth();
-        manaLightAnimation.LightAnimation();
+        manaLightAnimation.LightAnimation(howMuchAmmoAngelGives);
     }
 
 }

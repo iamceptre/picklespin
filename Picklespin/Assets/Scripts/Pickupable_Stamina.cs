@@ -28,7 +28,7 @@ public class Pickupable_Stamina : MonoBehaviour
             {
                 playerMovement.stamina = 100;
             }
-            barLightsAnimation.PlaySelectedBarAnimation(1); //hp = 0, stamina = 1, mana = 2
+            barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive); //hp = 0, stamina = 1, mana = 2
             RuntimeManager.PlayOneShot(pickupSoundEvent);
             itemAfterPickingUp.Pickup();
         }

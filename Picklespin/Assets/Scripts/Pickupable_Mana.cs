@@ -29,7 +29,7 @@ public class Pickupable_Mana : MonoBehaviour
             ammo.ammo = Mathf.Clamp(ammo.ammo, 0, ammo.maxAmmo);
             RuntimeManager.PlayOneShot(pickupSoundEvent);
             ammoDisplay.RefreshManaValueSmooth();
-            barLightsAnimation.PlaySelectedBarAnimation(2); //hp = 0, stamina = 1, mana = 2
+            barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive); //hp = 0, stamina = 1, mana = 2
             itemAfterPickingUp.Pickup();
         }
     }

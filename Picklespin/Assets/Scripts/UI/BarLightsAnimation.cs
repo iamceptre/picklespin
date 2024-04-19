@@ -21,21 +21,21 @@ public class BarLightsAnimation : MonoBehaviour
         }
     }
 
-    public void PlaySelectedBarAnimation(int selectedBar) //hp = 0, stamina = 1, mana = 2
+    public void PlaySelectedBarAnimation(int selectedBar, float howMuchWasGiven) //hp = 0, stamina = 1, mana = 2
     {
         if (selectedBar == 0)
         {
-            hpLightAnimation.LightAnimation();
+            hpLightAnimation.LightAnimation(howMuchWasGiven);
         }
 
         if (selectedBar == 1)
         {
-            staminaLightAnimation.LightAnimation();
+            staminaLightAnimation.LightAnimation(howMuchWasGiven);
         }
 
         if (selectedBar == 2)
         {
-            manaLightAnimation.LightAnimation();
+            manaLightAnimation.LightAnimation(howMuchWasGiven);
         }
 
     }
