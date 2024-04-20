@@ -54,7 +54,7 @@ public class ManaLightAnimation : MonoBehaviour
     private void ManaPlusPlusAnimation(float howMuchWasGiven)
     {
         manaPlusPlus.enabled = true;
-        manaPlusPlus.text = "+ " + howMuchWasGiven;
+        manaPlusPlus.text = "<b>+ " + howMuchWasGiven;
         manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();

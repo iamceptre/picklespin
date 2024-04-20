@@ -117,13 +117,10 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection.y -= gravity * Time.deltaTime;
 
-            //if hit ceiling, bounce off
-            if ((characterController.collisionFlags & CollisionFlags.Above) != 0)
+            //if hit ceiling, stop jumping
+            if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0)
             {
-                if (moveDirection.y > 0)
-                {
-                    moveDirection.y = -(moveDirection.y * 0.3f);
-                }
+                    moveDirection.y = 0;
             }
 
         }
