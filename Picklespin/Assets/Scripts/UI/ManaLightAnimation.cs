@@ -59,13 +59,13 @@ public class ManaLightAnimation : MonoBehaviour
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();
         manaPlusPlus.DOFade(0, 0);
-        manaPlusPlusRect.DOLocalMoveY(manaPlusPlusStartingPos + 50, 1.35f);
+        manaPlusPlusRect.DOLocalMoveY(manaPlusPlusStartingPos + 50, 2);
         manaPlusPlus.DOFade(1, 0.2f).OnComplete(ManaPlusPlusFadeOut);
     }
 
     private void ManaPlusPlusFadeOut()
     {
-        manaPlusPlus.DOFade(0, 1.35f).OnComplete(DisableManaPlusPlus);
+        manaPlusPlus.DOFade(0, 2).OnComplete(DisableManaPlusPlus);
     }
 
     private void DisableManaPlusPlus()

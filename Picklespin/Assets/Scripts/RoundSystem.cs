@@ -56,4 +56,9 @@ public class RoundSystem : MonoBehaviour
     {
         roundText.text = "round " + roundNumber;
     }
+
+    public void FinalRound()
+    {
+        roundText.text = "finality";
+    }
 }

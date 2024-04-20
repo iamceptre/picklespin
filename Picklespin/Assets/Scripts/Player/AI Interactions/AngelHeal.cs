@@ -73,7 +73,7 @@ public class AngelHeal : MonoBehaviour
         Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(direction * range));
 
 
-        if (Physics.Raycast(ray, out RaycastHit hit, range))
+        if (Physics.Raycast(ray, out RaycastHit hit, range) || healboost == 0)
         {
             if (hit.collider.tag == "Angel" && !isAimingAtAngel)
             {
@@ -87,7 +87,7 @@ public class AngelHeal : MonoBehaviour
             StartCoroutine(StopAiming());
         }
 
-        if (Input.GetKey(KeyCode.Mouse1) && isAimingAtAngel && !angel.healed)
+        if (Input.GetKey(KeyCode.Mouse1) && isAimingAtAngel && !angel.healed || healboost == 0)
         {
             Healing();
         }

@@ -36,8 +36,15 @@ public class Pickupable_Item : MonoBehaviour
     private void PickupableAnimation()
     {
         transform.DOMoveY(startingYPos + 0.3f, 1).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-        transform.DORotate(new Vector3(360, 360, 0), 1).SetLoops(-1);
-        myLight.DOIntensity(myLightIntensitivity * 0.5f, 1).SetLoops(-1, LoopType.Yoyo);
+
+        if (myLight != null) {
+            myLight.DOIntensity(myLightIntensitivity * 0.5f, 1).SetLoops(-1, LoopType.Yoyo);
+        }
+    }
+
+    private void Update()
+    {
+        transform.Rotate(Vector3.up, Time.deltaTime * 30 , Space.Self);
     }
 
 

@@ -11,6 +11,8 @@ public class SpellPickupable : MonoBehaviour
     private ParticleSystem.EmissionModule emission;
     private Collider myCollider;
 
+    private Ammo ammo;
+
 
     private void Awake()
     {
@@ -26,14 +28,32 @@ public class SpellPickupable : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        ammo = Ammo.instance;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
 
         if (other.gameObject.CompareTag("Player"))
         {
-            unlockedSpells.UnlockASpell(spellID);
-            myCollider.enabled = false;
-            FadeOut();
+            if (!unlockedSpells.spellUnlocked[spellID]) //when pickuped spell is not unlocked
+            {
+                unlockedSpells.UnlockASpell(spellID);
+                myCollider.enabled = false;
+                FadeOut();
+            }
+            else //when picking up already unlocked spell
+            {
+                if (ammo.ammo < ammo.maxAmmo) 
+                {
+                    unlockedSpells.UnlockASpell(spellID);
+                    myCollider.enabled = false;
+                    FadeOut();
+                }
+            }
+
         }
 
     }

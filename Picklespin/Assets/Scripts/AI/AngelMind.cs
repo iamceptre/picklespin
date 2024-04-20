@@ -11,7 +11,7 @@ public class AngelMind : MonoBehaviour
     public EventReference angelHealedEvent;
     private FMOD.Studio.EventInstance angelInstance;
 
-    [SerializeField] private GameObject healedParticles;
+    [SerializeField] private ParticleSystem healedParticles;
 
     private Renderer angelRenderer;
 
@@ -22,7 +22,8 @@ public class AngelMind : MonoBehaviour
 
 
        public IEnumerator AfterHealedAction(){
-            Instantiate(healedParticles, transform.position, Quaternion.identity);
+            //Instantiate(healedParticles, transform.position, Quaternion.identity);
+            healedParticles.Play();
             angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
             angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
             angelRenderer.material.SetColor("_Color", Color.green);

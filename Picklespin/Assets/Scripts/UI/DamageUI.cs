@@ -13,6 +13,8 @@ public class DamageUI : MonoBehaviour
     private Color damageUIstartColor;
     private float damageUIstartFontSize;
 
+    [SerializeField] private LookAtY lookAt;
+
     private void Start()
     {
         damageUIstartFontSize = myText.fontSize;
@@ -22,9 +24,12 @@ public class DamageUI : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (myText.enabled) {
-            transform.LookAt(mainCamera);
-           // transform.position = whoHasBeenHit.position + new Vector3(0, 2.5f, 0); //Continous Position Update
+        if (myText.enabled && lookAt.enabled == false) {
+            lookAt.enabled = true;
+        }
+        else
+        {
+            lookAt.enabled = false;
         }
     }
 
@@ -33,7 +38,7 @@ public class DamageUI : MonoBehaviour
         var startingYpos = myText.transform.position.y;
         var sequence = DOTween.Sequence();
 
-        myText.DOKill(); //resets before animating again
+        myText.DOKill();
         myText.transform.DOMoveY(whereIshouldGo.y, 0);
         myText.transform.DOScale(new Vector3(-1,1,1), 0);
         myText.DOFade(0,0);

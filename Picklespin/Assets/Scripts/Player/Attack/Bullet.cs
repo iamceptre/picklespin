@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
     private Transform handCastingPoint;
 
     private DamageUI damageUI;
+    private AiHealthUiBar aiHealthUI;
 
     public float castDuration;
 
@@ -54,22 +55,33 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+
         if (collision.gameObject)
         {
             damageUI.gameObject.SetActive(true);
+
+
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
             aiVision = collision.gameObject.GetComponent<AiVision>();
+            aiHealthUI = collision.gameObject.GetComponent<AiHealthUiBar>(); //make it execute only when new enemy is hit
+
 
             if (aiHealth != null) //Hit Registered
             {
                 RandomizeCritical();
+
                 damageUI.myText.enabled = true;
                 damageUI.myText.text = ("- " + damage);
-               // damageUI.whoHasBeenHit = collision.gameObject.transform;
                 damageUI.whereIshouldGo = collision.transform.position + new Vector3(0, 2.4f, 0);
                 damageUI.transform.position = damageUI.whereIshouldGo;
                 damageUI.AnimateDamageUI();
+
                 aiHealth.hp -= damage;
+
+                if (aiHealthUI != null) {
+                    aiHealthUI.RefreshBar();
+                }
+
                 HitGetsYouNoticed();
 
                 if (aiHealth.hp <= 0) //Death
@@ -89,7 +101,7 @@ public class Bullet : MonoBehaviour
     {
         if (Random.Range(0,10) >= 9 || iWillBeCritical) // 1/10 chance of doubling the damage OR when low on magicka (iWillBeCritical is then set to true by Attack script)
         {
-            damage = originalDamage * 3;
+            damage = originalDamage * 4;
             damageUI.WhenCritical();
             RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
         }

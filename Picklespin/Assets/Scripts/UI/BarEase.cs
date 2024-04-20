@@ -7,6 +7,7 @@ public class BarEase : MonoBehaviour
     [HideInInspector] public Slider me;
     private float velocity;
     private float myValue;
+    [SerializeField] private Image easeFill;
 
 
     private void Awake()
@@ -16,28 +17,25 @@ public class BarEase : MonoBehaviour
 
     private void Start()
     {
-        me.value = sliderToFollow.value-1;
+        //me.value = sliderToFollow.value-1;
+        //easeFill.enabled = false;
     }
 
     private void LateUpdate()
     {
-        myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f);
 
-        if (myValue > sliderToFollow.value)
-        {
-           //Debug.Log("gui update");
+        myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f); //delay it in time
 
-          me.value = myValue; //Delay this line in time, efficiently in the future
-
-            if (myValue < 2)
-            {
-                me.fillRect.localScale = Vector3.zero;
-            }
-            else
-            {
-                me.fillRect.localScale = Vector3.one;
-            }
+        if (myValue > sliderToFollow.value + 0.1f) {
+            
+            me.value = myValue;
+            easeFill.enabled = true;
         }
+        else
+        {
+            easeFill.enabled = false;
+        }
+
     }
 
 }
