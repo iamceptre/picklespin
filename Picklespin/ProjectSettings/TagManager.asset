@@ -13,6 +13,7 @@ TagManager:
   - DamageUI
   - SpelledLight
   - Waypoint
+  - AngelTrigger
   layers:
   - Default
   - TransparentFX

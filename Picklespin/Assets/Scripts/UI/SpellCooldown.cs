@@ -7,18 +7,13 @@ public class SpellCooldown : MonoBehaviour
     private Slider me;
     [HideInInspector] public float selectedSpellCooldownTime;
     private float currentCooldown;
-    private RectTransform myTransform;
-    [HideInInspector] public Vector3 startingScale;
+    [SerializeField] private GameObject[] myComponents;
 
     private void Awake()
     {
         me = GetComponent<Slider>();
-        myTransform = GetComponent<RectTransform>();
     }
-    private void Start()
-    {
-        startingScale = myTransform.localScale;
-    }
+
 
     [SerializeField]private Attack attack;
     void Update()
@@ -28,14 +23,30 @@ public class SpellCooldown : MonoBehaviour
 
         if (me.value <= 0)
         {
-            myTransform.localScale = Vector3.zero;
+            DisableComponents();
             enabled = false;
         }
     }
 
     public void StartCooldowning()
     {
-        myTransform.localScale = startingScale;
+        EnableComponents();
         currentCooldown = selectedSpellCooldownTime;
+    }
+
+    public void EnableComponents()
+    {
+        for (int i = 0; i < myComponents.Length; i++)
+        {
+            myComponents[i].SetActive(true);
+        }
+    }
+
+    public void DisableComponents()
+    {
+        for (int i = 0; i < myComponents.Length; i++)
+        {
+            myComponents[i].SetActive(false);
+        }
     }
 }

@@ -14,11 +14,18 @@ public class UnlockSpellCheat : MonoBehaviour
 
         if(Input.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 unlockedSpells.UnlockASpell(2);
                 RuntimeManager.PlayOneShot(cheatCodeSound);
             }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                unlockedSpells.UnlockASpell(1);
+                RuntimeManager.PlayOneShot(cheatCodeSound);
+            }
+
 
             if (Input.GetKeyDown(KeyCode.M))
             {

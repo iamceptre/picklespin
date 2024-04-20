@@ -3,7 +3,6 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
 {
@@ -31,7 +30,7 @@ public class AngelHeal : MonoBehaviour
 
 
     [SerializeField] private Transform mainCamera;
-   // Ray ray;
+   
     [SerializeField] private float range = 5f;
     [SerializeField] private bool isAimingAtAngel=false;
 
@@ -49,9 +48,9 @@ public class AngelHeal : MonoBehaviour
     public FloatUpDown floatUpDown;
 
     [SerializeField] private UnityEvent showTip;
-    //private bool showingTip;
+    
     [SerializeField] private UnityEvent hideTip;
-    //private bool hideingTip;
+    
 
     private void Awake()
     {
@@ -75,15 +74,17 @@ public class AngelHeal : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, range) || healboost == 0)
         {
-            if (hit.collider.tag == "Angel" && !isAimingAtAngel)
+            if (hit.collider.tag == "Angel" && !isAimingAtAngel && !angel.healed)
             {
                 currentAngel = hit.collider.gameObject;
+                StopAllCoroutines();
                 StartCoroutine(StartAiming());
             }
 
         }
         else
         {
+            StopAllCoroutines();
             StartCoroutine(StopAiming());
         }
 
@@ -108,23 +109,25 @@ public class AngelHeal : MonoBehaviour
     IEnumerator StartAiming()
     {
         //Debug.Log("this should be fired once");
+        //tested, fires only once
 
         angel = currentAngel.GetComponent<AngelMind>();
         aiHealth = currentAngel.GetComponent<AiHealth>();
         minigame.aiHealth = aiHealth;
-        if (!angel.healed)
-        {
+
             handRenderer.material = handHighlightMaterial;
             showTip.Invoke();
             isAimingAtAngel = true;
-        }
+        
         yield return null;
     }
 
     IEnumerator StopAiming()
     {
         if (isAimingAtAngel) {
-           // Debug.Log("this should be fired once");
+            //Debug.Log("this should be fired once");
+            //tested, fires only once
+
             hideTip.Invoke();
             if (handRenderer.material != handOGMaterial)
             {
@@ -189,7 +192,6 @@ public class AngelHeal : MonoBehaviour
         minigame.enabled = false;
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
-        //manaLightAnimation.LightAnimation();
         handRenderer.material = handOGMaterial;
         angel.healed = true;
         floatUpDown.enabled = false;
@@ -202,12 +204,10 @@ public class AngelHeal : MonoBehaviour
         if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
         {
             ammo.ammo = ammo.maxAmmo;
-           // DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.maxAmmo, 0.5f).SetEase(Ease.OutExpo);
         }
         else
         {
             ammo.ammo += howMuchAmmoAngelGives;
-           // DOTween.To(() => ammo.ammo, x => ammo.ammo = x, ammo.ammo+50, 0.5f).SetEase(Ease.OutExpo);
         }
 
         ammoDisplay.RefreshManaValueSmooth();

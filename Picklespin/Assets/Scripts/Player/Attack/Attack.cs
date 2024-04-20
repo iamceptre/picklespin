@@ -84,7 +84,7 @@ public class Attack : MonoBehaviour
             if (castCooldownAllow)
             {
                 castingPercentage = 0;
-                castingSliderRectTransform.localScale = Vector3.zero;
+                spellCooldown.DisableComponents();
                 CancelCasting.Invoke();
             }
 
@@ -104,7 +104,7 @@ public class Attack : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1) && castLoaded)
         {
             castingPercentage = 0;
-            castingSliderRectTransform.localScale = Vector3.zero;
+            spellCooldown.DisableComponents();
             CancelCasting.Invoke();
             autofirePrevent = false;
         }
@@ -236,7 +236,7 @@ public class Attack : MonoBehaviour
                     //one signal tick
                     var spawnedCastingParticle = Instantiate(bullet.CastingParticle, handCastingPoint);
                     StartCasting.Invoke();
-                    castingSliderRectTransform.localScale = sliderScript.startingScale;
+                    spellCooldown.EnableComponents();
                 }
                 //constant ticks during casting
                 castLoaded = false; 
