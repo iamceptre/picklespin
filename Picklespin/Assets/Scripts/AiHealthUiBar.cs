@@ -39,7 +39,7 @@ public class AiHealthUiBar : MonoBehaviour
     }
 
 
-    private void FadeOut()
+    public void FadeOut()
     {
 
         bgImage.DOFade(0, 0.5f);

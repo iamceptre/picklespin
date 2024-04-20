@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class InventoryBarSelectedSpell : MonoBehaviour
 {
     [SerializeField] private Image[] invSlot;
     [SerializeField] private Image[] invSlotSpellIcon;
-    [SerializeField] private RectTransform[] invNumbers;
+    [SerializeField] private RectTransform[] invNumbersRect;
     [SerializeField] private Attack attack;
 
     private float invNumberStartPos;
@@ -14,7 +15,7 @@ public class InventoryBarSelectedSpell : MonoBehaviour
     private void Start()
     {
         SelectionChanged();
-        invNumberStartPos = invNumbers[0].localPosition.y;
+        invNumberStartPos = invNumbersRect[0].localPosition.y;
     }
 
     private void Update()
@@ -49,11 +50,11 @@ public class InventoryBarSelectedSpell : MonoBehaviour
         invSlotSpellIcon[attack.selectedBullet].color = Color.white;
     }
 
-    public void NumberBump(int spellID)
+    private void NumberBump(int spellID)
     {
-        invNumbers[spellID].DOKill();
-        invNumbers[spellID].localPosition = new Vector2(invNumbers[spellID].localPosition.x, invNumberStartPos);
-        invNumbers[spellID].DOLocalMoveY(invNumbers[spellID].localPosition.y - 10, 0.1f).SetLoops(2,LoopType.Yoyo);
+        invNumbersRect[spellID].DOKill();
+        invNumbersRect[spellID].localPosition = new Vector2(invNumbersRect[spellID].localPosition.x, invNumberStartPos);
+        invNumbersRect[spellID].DOLocalMoveY(invNumbersRect[spellID].localPosition.y - 10, 0.1f).SetLoops(2,LoopType.Yoyo);
     }
 
 }

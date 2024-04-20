@@ -77,8 +77,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-            
-            if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift) && !isSlowedDown)
+        if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift) && !isSlowedDown)
         {
             if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
@@ -117,6 +116,16 @@ public class PlayerMovement : MonoBehaviour
         if (!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
+
+            //if hit ceiling, bounce off
+            if ((characterController.collisionFlags & CollisionFlags.Above) != 0)
+            {
+                if (moveDirection.y > 0)
+                {
+                    moveDirection.y = -(moveDirection.y * 0.3f);
+                }
+            }
+
         }
 
         if (Input.GetKey(KeyCode.C) && canMove || isSlowedDown)
