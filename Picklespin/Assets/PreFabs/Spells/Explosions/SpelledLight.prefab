@@ -109,4 +109,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myLight: {fileID: 5840896863137146513}
   myTransform: {fileID: 847563350964627899}
-  lightDuration: 20
+  lightDuration: 15

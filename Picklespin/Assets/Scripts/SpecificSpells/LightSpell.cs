@@ -45,10 +45,6 @@ public class LightSpell : MonoBehaviour
         {
             myLight.DOColor(new Color(0, 0, 0), 1).OnComplete(Die);
         }
-        else
-        {
-            myLight.DOKill();
-        }
     }
 
    private void Die()

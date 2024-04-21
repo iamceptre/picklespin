@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using Unity.VisualScripting;
 
 public class Bullet : MonoBehaviour
 {
@@ -8,14 +9,19 @@ public class Bullet : MonoBehaviour
     public GameObject CastingParticle;
 
     private int originalDamage;
+
+    [Header("Stats")]
     [SerializeField] private int damage = 15;
     public int magickaCost = 30;
     public int speed = 60;
     public float myCooldown;
+    public float castDuration;
+    public bool destroyOnHit = true;
 
     private AiHealth aiHealth;
     private AiVision aiVision;
 
+    [Header("Assets")]
     [SerializeField] private GameObject spawnInHandParticle;
     [SerializeField] private GameObject explosionFX;
     [SerializeField] private EventReference castSound;
@@ -31,9 +37,10 @@ public class Bullet : MonoBehaviour
     private DamageUI damageUI;
     private AiHealthUiBar aiHealthUI;
 
-    public float castDuration;
 
+    [Header("Misc")]
     public bool iWillBeCritical;
+    public bool hitSomething = false;
 
 
     void Awake()
@@ -55,9 +62,10 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
+        hitSomething = true;
         if (collision.gameObject)
         {
+            hitSomething = true;
             damageUI.gameObject.SetActive(true);
 
 
@@ -93,7 +101,9 @@ public class Bullet : MonoBehaviour
 
         }
         SpawnExplosion();
-        Destroy(gameObject);
+        if (destroyOnHit) {
+            Destroy(gameObject);
+        }
     }
 
 

@@ -49,10 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CastingParticle: {fileID: 0}
   damage: 0
   magickaCost: 4
   speed: 15
   myCooldown: 1
+  castDuration: 0
+  destroyOnHit: 0
   spawnInHandParticle: {fileID: 4342817449807727369, guid: 6b37d42c41301b148894b7f861d4a6c6, type: 3}
   explosionFX: {fileID: 3637562483227823339, guid: 31a4916a7511f684491a8f1510313f58, type: 3}
   castSound:
@@ -76,8 +79,8 @@ MonoBehaviour:
       Data3: 1879968661
       Data4: 1426133493
     Path: event:/PLACEHOLDER_UNCZ/light_spell_hit
-  castDuration: 0
   iWillBeCritical: 0
+  hitSomething: 0
 --- !u!33 &7222242048214855591
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -283,3 +286,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52585dea4a3da0b4eae81fae1e91ccc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 0}

@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float externalPushForce = 1; //1 means no difference at all
     [Range(0,2)] public int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
 
+    private CharacterControllerVelocity speedometer;
+
     [Header("Stats")]
     public float fatigability = 32; //lower the fatigability to sprint for longer
 
@@ -49,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         footstepSystem = GetComponent<FootstepSystem>();
+        speedometer = CharacterControllerVelocity.instance;
     }
 
     public void SlowMeDown()
@@ -179,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        stamina -= Mathf.Clamp((1 + footstepSystem.overallSpeed) * 0.05f * fatigability,10,100);
+        stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability,10,100);
         jumpPushForward();
         moveDirection.y = jumpPower;
         footstepSystem.StopAllCoroutines();
@@ -190,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed && stamina>2)
         {
-            externalPushForce = 0.5f + footstepSystem.overallSpeed * 0.2f;
+            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.2f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }

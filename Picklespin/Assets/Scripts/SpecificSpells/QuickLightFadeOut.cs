@@ -3,10 +3,37 @@ using DG.Tweening;
 
 public class QuickLightFadeOut : MonoBehaviour
 {
-    void Start()
+    private Light me;
+    [SerializeField] private Bullet bullet;
+    private bool faded=false;
+    void Awake()
     {
-        Light light = GetComponent<Light>();
-        light.DOColor(Color.black, 1f);
+        me = GetComponent<Light>();
+    }
+
+    private void Start()
+    {
+        bullet = transform.parent.GetComponent<Bullet>();
+        me.DOColor(Color.black, 1.5f).OnComplete(() =>
+        {
+            faded = true;
+        });
+    }
+
+    private void Update()
+    {
+        if (bullet.hitSomething && gameObject.transform.parent != null)
+        {
+            gameObject.transform.parent = null;
+            Debug.Log("odlacz");
+            Destroy(bullet.gameObject);
+        }
+
+        if (faded && gameObject.transform.parent == null)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
 }

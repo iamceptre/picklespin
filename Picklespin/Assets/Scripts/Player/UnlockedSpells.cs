@@ -5,8 +5,8 @@ using DG.Tweening;
 
 public class UnlockedSpells : MonoBehaviour
 {
-    [SerializeField] private Ammo ammo;
-    [SerializeField] private AmmoDisplay ammoDisplay;
+    private Ammo ammo;
+    private AmmoDisplay ammoDisplay;
     [SerializeField] private ManaLightAnimation manaLightAnimation;
 
     [SerializeField] private RectTransform[] invSlotRect;
@@ -32,6 +32,12 @@ public class UnlockedSpells : MonoBehaviour
         lightRect = spellUnlockedLight.GetComponent<RectTransform>();
         lockedRect = spellLockedIcon.GetComponent<RectTransform>();
         alreadyUnlockedRect = alreadyUnlockedIcon.GetComponent<RectTransform>();
+    }
+
+    private void Start()
+    {
+        ammo = Ammo.instance;
+        ammoDisplay = AmmoDisplay.instance;
     }
 
     public void UnlockASpell(int spellID)

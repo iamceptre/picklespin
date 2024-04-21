@@ -16,12 +16,15 @@ public class JumpLandSignals : MonoBehaviour
     [SerializeField] private EventReference landSoft;
     [SerializeField] private EventReference landHard;
 
+    private CharacterControllerVelocity speedometer;
+
     private bool skipFirstSound;
 
 
     private void Start()
     {
         skipFirstSound = true;
+        speedometer = CharacterControllerVelocity.instance;
     }
 
     private void Update()
@@ -38,14 +41,14 @@ public class JumpLandSignals : MonoBehaviour
         else
         {
             landed = false;
-            cameraShake.landShakeStrenght = Mathf.Clamp(footstepSystem.overallSpeed * 0.4f, 0, 10); //change it to vertical speed after fixing it not working
+            cameraShake.landShakeStrenght = Mathf.Clamp(speedometer.verticalVelocity * 0.4f, 0, 10);
         }
     }
 
     private void Landed()
     {
 
-        if (!routineRunning && !landed && footstepSystem.overallSpeed>=0.5f)
+        if (!routineRunning && !landed && speedometer.verticalVelocity > 0.5f)
         {
                 StartCoroutine(LandedCooldown());
             //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);
@@ -71,7 +74,7 @@ public class JumpLandSignals : MonoBehaviour
 
     private void isLandingHardDecider()
     {
-        if (cameraShake.landShakeStrenght >= 5) //is landing hard treshold
+        if (speedometer.verticalVelocity >= 10) //is landing hard treshold
         {
             RuntimeManager.PlayOneShot(landHard);
         }

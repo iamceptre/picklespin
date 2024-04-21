@@ -4,16 +4,12 @@ using FMODUnity;
 
 public class FootstepSystem : MonoBehaviour
 {
-    public CharacterController controller;
-    public PlayerMovement playerMovement;
-    public CameraBob cameraBob;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private CameraBob cameraBob;
 
-    [HideInInspector] public float horizontalSpeed;
-    [HideInInspector] public float verticalSpeed;
-    public float overallSpeed;
-
-    public EventReference FootstepEvent;
-    public EventReference JumpEvent;
+    [SerializeField] private EventReference FootstepEvent;
+    [SerializeField] private EventReference JumpEvent;
 
 
     [SerializeField]private bool isstepping;
@@ -26,21 +22,22 @@ public class FootstepSystem : MonoBehaviour
 
     private bool isCasting;
 
+    private CharacterControllerVelocity speedometer;
+
+
+    private void Start()
+    {
+        speedometer = CharacterControllerVelocity.instance;
+    }
+
     private void Update()
     {
-        Vector3 horizontalVelocity = controller.velocity;
-        horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
-
-        horizontalSpeed = horizontalVelocity.magnitude;
-        verticalSpeed = controller.velocity.y;
-        overallSpeed = controller.velocity.magnitude;
-
-        if (!isstepping && controller.isGrounded && horizontalSpeed >= 1f)
+        if (!isstepping && controller.isGrounded && speedometer.horizontalVelocity > 1f)
         {
             isstepping = true;
         }
 
-       if (isstepping && horizontalSpeed <= 1f || !controller.isGrounded)
+       if (isstepping && speedometer.horizontalVelocity < 1f || !controller.isGrounded)
       {
            isstepping = false;
       }
