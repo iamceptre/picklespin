@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RoundSystem : MonoBehaviour
 {
+    public static RoundSystem instance;
+
     [SerializeField] private TMP_Text roundText;
     private int roundNumber;
     private float timer;
@@ -14,12 +16,25 @@ public class RoundSystem : MonoBehaviour
     [SerializeField] private UnityEvent[] RoundEvent;
     [SerializeField] private UnityEvent LastRoundEvent;
 
+    [SerializeField] private TMP_Text newRoundText;
+    private NewRoundDisplayText newRoundDisplayText;
+
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
         timer = roundDuration;
     }
     private void Start()
     {
+        newRoundDisplayText = NewRoundDisplayText.instance;
         UpdateText();
     }
 
@@ -46,7 +61,9 @@ public class RoundSystem : MonoBehaviour
         {
             LastRoundEvent.Invoke(); //if you reach the last round, it will repeat forever
         }
-
+            newRoundDisplayText.gameObject.SetActive(true);
+            newRoundText.text = "Round " + (roundNumber + 1) + " begins";
+            newRoundDisplayText.Animate();
             roundNumber++;
             UpdateText();
             timer = roundDuration;

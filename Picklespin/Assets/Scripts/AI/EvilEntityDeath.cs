@@ -9,11 +9,19 @@ public class EvilEntityDeath : MonoBehaviour
     private EventInstance evilEntityDeathSoundReference;
     [SerializeField] private GameObject aiUi;
     [SerializeField] private UnityEvent deathEvent;
+    [SerializeField] private AiHealthUiBar AiHealthUiBar;
     public void Die()
     {
-        deathEvent.Invoke();
+
+        if (aiUi == null)
+        {
+            aiUi = transform.Find("AI_UI").gameObject;
+        }
+
+        deathEvent.Invoke(); //custom death behaviour
         aiUi.transform.SetParent(null);
-        aiUi.transform.position += new Vector3(0,0.8f);
+        AiHealthUiBar.FadeOut();
+        aiUi.transform.position += new Vector3(0,0.75f);
         gameObject.SetActive(false);
         evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
         RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());

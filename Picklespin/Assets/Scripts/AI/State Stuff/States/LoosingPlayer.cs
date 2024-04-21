@@ -5,7 +5,9 @@ public class LoosingPlayer : State
 {
 
     [SerializeField] private AttackPlayer attackPlayer;
+
     [SerializeField] private WaypointWander waypointWander;
+    [SerializeField] private WaypointsForSpawner waypointWanderForSpawnedOnes;
 
     private AiVision aiVision;
     private StateManager stateManager;
@@ -25,9 +27,10 @@ public class LoosingPlayer : State
         aiVision = GetComponentInParent<AiVision>();
         stateManager = GetComponentInParent<StateManager>();
 
-        if (waypointWander == null)
+        if (waypointWander == null) //it means that the ai was spawned
         {
-            waypointWander = GetComponentInParent<WaypointWander>();
+            var parent = transform.parent.gameObject;
+            waypointWanderForSpawnedOnes = parent.GetComponentInChildren<WaypointsForSpawner>();
         }
 
     }
@@ -48,8 +51,20 @@ public class LoosingPlayer : State
         }
         else
         {
-            waypointWander.UpdateDestination(); //IT NULL NO MATTER FUCKING WHAT WTF
+            spawnedNullFix();
             return waypointWander;
+        }
+    }
+
+    void spawnedNullFix()
+    {
+        if (waypointWander == null)
+        {
+            waypointWanderForSpawnedOnes.UpdateDestination();
+        }
+        else
+        {
+            waypointWander.UpdateDestination();
         }
     }
 

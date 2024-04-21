@@ -37,8 +37,7 @@ public class Attack : MonoBehaviour
     private float currentlySelectedCastDuration;
     private bool autofirePrevent;
     [SerializeField] private Slider castingSlider;
-    private RectTransform castingSliderRectTransform;
-    private SpellCooldown sliderScript;
+
     private bool castLoaded = false;
 
    [SerializeField] private UnityEvent castingCompleted;
@@ -51,8 +50,6 @@ public class Attack : MonoBehaviour
     {
         ammo = GetComponent<Ammo>();
         bullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
-        castingSliderRectTransform = castingSlider.GetComponent<RectTransform>();
-        sliderScript = castingSlider.GetComponent<SpellCooldown>();
 
         if (instance != null && instance != this)
         {
@@ -162,7 +159,7 @@ public class Attack : MonoBehaviour
     }
 
 
-    private void ChooseSpell()
+    private void ChooseSpell() //Move it to a separate class, or to Inventory bar selected spell
     {
 
         if (!Input.GetKey(KeyCode.Mouse0))

@@ -859,6 +859,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  AiHealthUiBar: {fileID: 9053904069157180353}
 --- !u!114 &9053904069157180353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,6 +974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPlayer: {fileID: 9126885967048436367}
   waypointWander: {fileID: 0}
+  waypointWanderForSpawnedOnes: {fileID: 0}
   currentTimedown: 5
   loosingTimedown: 3
   lostPlayer: 1
