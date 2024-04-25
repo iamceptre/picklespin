@@ -73,6 +73,7 @@ public class AiHealthUiBar : MonoBehaviour
             bgImage.enabled = true;
             fillImage.DOFade(1, 0f);
             bgImage.DOFade(1, 0f);
+            barEase.FadeIn();
         }
     }
 

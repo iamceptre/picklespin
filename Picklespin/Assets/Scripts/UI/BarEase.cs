@@ -46,4 +46,9 @@ public class BarEase : MonoBehaviour
         easeFill.DOFade(0, 0.5f);
     }
 
+    public void FadeIn()
+    {
+        easeFill.DOFade(1, 0.2f);
+    }
+
 }
