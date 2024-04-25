@@ -1,7 +1,6 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using UnityEditor.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
@@ -29,7 +28,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private EventReference hitSound;
     [SerializeField] private EventInstance hitInstance;
 
-    [Header("Special Effetcts")]
+    [Header("Special Effects")]
     [SerializeField] private SetOnFire setOnFire;
 
     private Transform mainCamera;
@@ -42,8 +41,8 @@ public class Bullet : MonoBehaviour
 
 
     [Header("Misc")]
-    public bool iWillBeCritical;
-    public bool hitSomething = false;
+    [HideInInspector] public bool iWillBeCritical;
+    [HideInInspector] public bool hitSomething = false;
 
 
     void Awake()
@@ -85,7 +84,7 @@ public class Bullet : MonoBehaviour
 
                 aiHealth.hp -= damage;
 
-                if (aiHealth.hp <= 0) { 
+                if (aiHealth.hp <= 0) {
                     collision.collider.enabled = false;
                     aiHealth.deathEvent.Invoke();
                 }
@@ -119,16 +118,25 @@ public class Bullet : MonoBehaviour
         damageUI.AnimateDamageUI();
     }
 
-
-    private void ApplySpecialEffect(Collision collision) {
-
+    private void ApplySpecialEffect(Collision collision)
+    {
         if (setOnFire != null)
         {
-            var addedEffect = collision.gameObject.AddComponent<SetOnFire>();
-            addedEffect.effectAudio = setOnFire.effectAudio;
-            addedEffect.particleObject = setOnFire.particleObject;
-        }
+            var addedEffect = collision.gameObject.GetComponent<SetOnFire>();
 
+            if (addedEffect == null)
+            {
+                addedEffect = collision.gameObject.AddComponent<SetOnFire>();
+                addedEffect.effectAudio = setOnFire.effectAudio;
+                addedEffect.ParticleObject = setOnFire.ParticleObject;
+                addedEffect.killedByBurnEffect = setOnFire.killedByBurnEffect;
+                addedEffect.StartFire();
+            }
+            else
+            {
+                addedEffect.ResetCountdowns(); //FIX THIS REMOVNIG THE OBJECT COMPLETELY
+            }
+        }
     }
 
 

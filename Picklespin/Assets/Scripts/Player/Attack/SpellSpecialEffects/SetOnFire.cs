@@ -5,74 +5,71 @@ using FMOD.Studio;
 
 public class SetOnFire : MonoBehaviour
 {
-    private DamageUI damageUI;
+    [Header("Assets")]
+
     public EventReference effectAudio;
     private EventInstance effectAudioInstance;
+    public GameObject ParticleObject;
+    public GameObject killedByBurnEffect; //both particle and sound
 
-    public GameObject particleObject;
-    private GameObject spawnedParticlesObject;
-    private ParticleSystem effectParticle;
+    [Header("Debug/Don't touch")]
+    [SerializeField] private ParticleSystem effectParticle;
+    private ParticleSystem.MainModule particleMain;
+    private bool imOnFire = false;
+    private bool killedFromBurning = false;
+    private DamageUI damageUI;
 
-    private IEnumerator fireCooldownRoutine;
     private IEnumerator killer;
 
     [SerializeField] private int howMuchDamageIdeal = 2;
-
-
 
     private AiHealth cachedAiHP;
     private AiHealthUiBar cachedAiHpBar;
     private EvilEntityDeath cachedDeathScirpt;
 
-    private void Awake()
-    {
-        fireCooldownRoutine = FireCooldown();
-    }
+    private GameObject spawnedParticle;
 
-    void Start()
+    [SerializeField] [Range(0,10)] private float countdownTimer = 0;
+
+    public void StartFire()
     {
         damageUI = DamageUI.instance;
-        FireUp();
+        Invoke("FireUp", 0.2f);
     }
 
-    public void FireUp() //call it when got hit
+    public void ResetCountdowns()
     {
-        StopCoroutine(fireCooldownRoutine);
-        StartCoroutine(fireCooldownRoutine);
+        countdownTimer = 0;
+    }
 
-        if (spawnedParticlesObject == null)
+    private void FireUp()
+    {
+        spawnedParticle = Instantiate(ParticleObject, transform.position, Quaternion.identity);
+        spawnedParticle.transform.parent = transform;
+        effectParticle = spawnedParticle.GetComponentInChildren<ParticleSystem>();
+        particleMain = effectParticle.main;
+        particleMain.loop = true;
+
+        if (!imOnFire)
         {
-            spawnedParticlesObject = Instantiate(particleObject, transform.position, Quaternion.identity);
-            spawnedParticlesObject.transform.parent = transform;
-            effectParticle = spawnedParticlesObject.GetComponent<ParticleSystem>();
-
             effectAudioInstance = RuntimeManager.CreateInstance(effectAudio);
             effectAudioInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
             effectAudioInstance.start();
+            AiLinkUp();
         }
-
-        AiLinkUp();
+        imOnFire = true;
     }
 
 
     private void AiLinkUp()
     {
-        if (TryGetComponent<AiHealth>(out AiHealth aiHealth))
-        {
-            cachedAiHP = aiHealth;
-            killer = DecreaseHPoverTime();
-            StartCoroutine(killer);
+        cachedAiHP = gameObject.GetComponent<AiHealth>();
+        cachedAiHpBar = GetComponentInChildren<AiHealthUiBar>();
+        cachedDeathScirpt = GetComponentInParent<EvilEntityDeath>();
 
-
-            if(TryGetComponent<EvilEntityDeath>(out EvilEntityDeath deathScript))
-            {
-                cachedDeathScirpt = deathScript;
-            }
-
-            cachedAiHpBar = gameObject.GetComponentInChildren<AiHealthUiBar>();
-
-        }
-
+        killer = DecreaseHPoverTime();
+        StopCoroutine(killer);
+        StartCoroutine(killer);
     }
 
     private IEnumerator DecreaseHPoverTime()
@@ -89,56 +86,74 @@ public class SetOnFire : MonoBehaviour
 
     private void KillFromFire()
     {
-        if (cachedAiHP.hp <= 1) { 
+        if (cachedAiHP.hp <= 0 && !killedFromBurning)
+        {
+            imOnFire = false;
+            effectAudioInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            effectAudioInstance.release();
             cachedDeathScirpt.Die();
+            killedFromBurning = true;
         }
+    }
+
+    public void PanicKill()
+    {
+        Debug.Log("Died from burn");
+        StopAllCoroutines();
+        effectAudioInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        effectAudioInstance.release();
+        transform.parent = null;
+        Instantiate(killedByBurnEffect, transform.position - new Vector3(0, 2), Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private void AiHpBarRefresher()
     {
-        if (cachedAiHpBar != null) {
+        if (cachedAiHpBar != null)
+        {
             cachedAiHpBar.RefreshBar();
         }
 
         if (damageUI != null)
         {
             damageUI.gameObject.SetActive(true);
-            damageUI.myText.enabled = true; 
+            damageUI.myText.enabled = true;
             damageUI.myText.text = ("- " + howMuchDamageIdeal);
-            damageUI.whereIshouldGo =  transform.position + new Vector3(0, 2.4f, 0);
+            damageUI.whereIshouldGo = transform.position + new Vector3(0, 2.4f, 0);
             damageUI.transform.position = damageUI.whereIshouldGo;
+            damageUI.WhenNotCritical();
             damageUI.AnimateDamageUI();
         }
 
     }
 
-    private IEnumerator FireCooldown()
+
+    private void Update()
     {
-        yield return new WaitForSeconds(10);
+        countdownTimer += Time.deltaTime;
 
-        if (killer != null) {
-            StopCoroutine(killer);
+        if (countdownTimer >= 10)
+        {
+            if (killer != null)
+            {
+                StopCoroutine(killer);
+            }
+
+            ShutFireDown();
         }
-
-        ShutFireDown();
     }
 
     public void ShutFireDown()
     {
-        var mainModule = effectParticle.main;
-        var emissionModule = effectParticle.emission;
-
-        mainModule.loop = false;
-        emissionModule.enabled = false;
-
-        spawnedParticlesObject.transform.parent = null;
-
-        effectParticle.Stop();
-
+        transform.parent = null;
+        imOnFire = false;
         effectAudioInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         effectAudioInstance.release();
+        particleMain.loop = false;
 
+        effectParticle.Stop();
         StopAllCoroutines();
+        Destroy(this);
     }
 
 }

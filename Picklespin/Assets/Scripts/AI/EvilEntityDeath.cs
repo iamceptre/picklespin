@@ -15,22 +15,30 @@ public class EvilEntityDeath : MonoBehaviour
         aiHealthUiBar.Detach();
         aiHealthUiBar.FadeOut();
 
-        CheckAndDisableEffects();
-
         deathEvent.Invoke(); //custom death behaviour
     
-        evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
-        RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
-        evilEntityDeathSoundReference.start();
-        Destroy(gameObject);
+        CheckAndDisableFire(); //if ai is burning then its dying from burninig, if theres no fire, just dies
     }
 
-    private void CheckAndDisableEffects()
+
+    private void CheckAndDisableFire()
     {
-        if (TryGetComponent<SetOnFire>(out SetOnFire setOnFire))
+        var setOnFire = gameObject.GetComponentInChildren<SetOnFire>();
+
+        if (setOnFire != null)
         {
-            setOnFire.ShutFireDown();
+            var setOnFireScirpt = setOnFire.GetComponent<SetOnFire>();
+            //if ai is dying from fire, not spellhit
+            setOnFireScirpt.PanicKill();
+        }
+        else
+        {
+            evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
+            RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
+            evilEntityDeathSoundReference.start();
+            Destroy(gameObject);
         }
     }
+
 
 }
