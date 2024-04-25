@@ -10,6 +10,9 @@ public class StateManager : MonoBehaviour
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
 
+    private float randomTimeOffset;
+    private float actualRefreshRate;
+
     private void Awake()
     {
         aiVision = GetComponent<AiVision>();
@@ -17,6 +20,8 @@ public class StateManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(RefreshAI());
+        randomTimeOffset = Random.Range(0, 0.05f);
+        actualRefreshRate = RefreshEveryVarSeconds + randomTimeOffset;
     }
 
 
@@ -24,7 +29,9 @@ public class StateManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(RefreshEveryVarSeconds);
+            yield return new WaitForSeconds(actualRefreshRate);
+
+            //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
             RunStateMachine();
         }
     }
