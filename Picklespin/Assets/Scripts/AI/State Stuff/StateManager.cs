@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -8,11 +9,24 @@ public class StateManager : MonoBehaviour
     public AiHealth aiHealth;
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
- 
+
+    private void Awake()
+    {
+        aiVision = GetComponent<AiVision>();
+    }
     void Start()
     {
-      InvokeRepeating("RunStateMachine",0 , RefreshEveryVarSeconds);
-        aiVision = GetComponent<AiVision>();
+        StartCoroutine(RefreshAI());
+    }
+
+
+    private IEnumerator RefreshAI()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(RefreshEveryVarSeconds);
+            RunStateMachine();
+        }
     }
 
     private void RunStateMachine()

@@ -7,24 +7,30 @@ public class EvilEntityDeath : MonoBehaviour
 {
     [SerializeField] private EventReference evilEntityDeathSound;
     private EventInstance evilEntityDeathSoundReference;
-    [SerializeField] private GameObject aiUi;
     [SerializeField] private UnityEvent deathEvent;
-    [SerializeField] private AiHealthUiBar AiHealthUiBar;
+    [SerializeField] private AiHealthUiBar aiHealthUiBar;
+
     public void Die()
     {
+        aiHealthUiBar.Detach();
+        aiHealthUiBar.FadeOut();
 
-        if (aiUi == null)
-        {
-            aiUi = transform.Find("AI_UI").gameObject;
-        }
+        CheckAndDisableEffects();
 
         deathEvent.Invoke(); //custom death behaviour
-        aiUi.transform.SetParent(null);
-        AiHealthUiBar.FadeOut();
-        aiUi.transform.position += new Vector3(0,0.75f);
-        gameObject.SetActive(false);
+    
         evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
         RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
         evilEntityDeathSoundReference.start();
+        Destroy(gameObject);
     }
+
+    private void CheckAndDisableEffects()
+    {
+        if (TryGetComponent<SetOnFire>(out SetOnFire setOnFire))
+        {
+            setOnFire.ShutFireDown();
+        }
+    }
+
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
@@ -29,6 +29,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private EventReference hitSound;
     [SerializeField] private EventInstance hitInstance;
 
+    [Header("Special Effetcts")]
+    [SerializeField] private SetOnFire setOnFire;
+
     private Transform mainCamera;
     private CameraShake cameraShake;
 
@@ -49,7 +52,7 @@ public class Bullet : MonoBehaviour
         originalDamage = damage;
         cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>();
         handCastingPoint = GameObject.FindGameObjectWithTag("CastingPoint").GetComponent<Transform>();
-        damageUI = GameObject.FindGameObjectWithTag("DamageUI").GetComponent<DamageUI>();
+        damageUI = DamageUI.instance;
     }
 
     private void Start()
@@ -70,21 +73,26 @@ public class Bullet : MonoBehaviour
 
 
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
-            aiVision = collision.gameObject.GetComponent<AiVision>();
-            aiHealthUI = collision.gameObject.GetComponent<AiHealthUiBar>(); //make it execute only when new enemy is hit
 
 
             if (aiHealth != null) //Hit Registered
             {
-                RandomizeCritical();
+                aiVision = collision.gameObject.GetComponent<AiVision>();
+                aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
 
-                damageUI.myText.enabled = true;
-                damageUI.myText.text = ("- " + damage);
-                damageUI.whereIshouldGo = collision.transform.position + new Vector3(0, 2.4f, 0);
-                damageUI.transform.position = damageUI.whereIshouldGo;
-                damageUI.AnimateDamageUI();
+                RandomizeCritical();
+                DamageUIText(collision);
 
                 aiHealth.hp -= damage;
+
+                if (aiHealth.hp <= 0) { 
+                    collision.collider.enabled = false;
+                    aiHealth.deathEvent.Invoke();
+                }
+                else
+                {
+                    ApplySpecialEffect(collision);
+                }
 
                 if (aiHealthUI != null) {
                     aiHealthUI.RefreshBar();
@@ -92,11 +100,6 @@ public class Bullet : MonoBehaviour
 
                 HitGetsYouNoticed();
 
-                if (aiHealth.hp <= 0) //Death
-                {
-                    aiHealth.hp = 0;
-                    aiHealth.deathEvent.Invoke();
-                }
             }
 
         }
@@ -104,6 +107,28 @@ public class Bullet : MonoBehaviour
         if (destroyOnHit) {
             Destroy(gameObject);
         }
+    }
+
+
+    private void DamageUIText(Collision collision)
+    {
+        damageUI.myText.enabled = true; // CHANGE THIS BULLSHIT PLEASE
+        damageUI.myText.text = ("- " + damage);
+        damageUI.whereIshouldGo = collision.transform.position + new Vector3(0, 2.4f, 0);
+        damageUI.transform.position = damageUI.whereIshouldGo;
+        damageUI.AnimateDamageUI();
+    }
+
+
+    private void ApplySpecialEffect(Collision collision) {
+
+        if (setOnFire != null)
+        {
+            var addedEffect = collision.gameObject.AddComponent<SetOnFire>();
+            addedEffect.effectAudio = setOnFire.effectAudio;
+            addedEffect.particleObject = setOnFire.particleObject;
+        }
+
     }
 
 
