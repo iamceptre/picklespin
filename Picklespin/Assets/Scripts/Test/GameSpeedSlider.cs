@@ -13,7 +13,7 @@ public class GameSpeedSlider : MonoBehaviour
 
     public void ApplyNewSpeed()
     {
-        Time.timeScale = me.value;
+        Time.timeScale = me.value*2;
     }
 
 }

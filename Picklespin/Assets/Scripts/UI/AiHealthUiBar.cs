@@ -11,6 +11,7 @@ public class AiHealthUiBar : MonoBehaviour
     [SerializeField] private Image bgImage;
 
     [SerializeField] private GameObject wholeCanvas;
+    [SerializeField] private BarEase barEase;
 
     private void Awake()
     {
@@ -44,6 +45,7 @@ public class AiHealthUiBar : MonoBehaviour
         StopAllCoroutines();
         bgImage.DOKill();
         fillImage.DOKill();
+        barEase.FadeOut();  
 
         fillImage.DOFade(0, 0.5f);
 
