@@ -3,26 +3,17 @@ using UnityEngine;
 public class HitboxHandler : MonoBehaviour
 {
     private Death death;
-    private Win win;
-
     private void Start()
     {
-        GameObject gameMind = GameObject.FindGameObjectWithTag("GameMind");
-        death = gameMind.GetComponent<Death>();
-        win = gameMind.GetComponent<Win>();
+        death = Death.instance; 
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EvilEntity"))//Death from evil entity collision
+        if (other.gameObject.CompareTag("EvilEntity"))
         {
-            death.PlayerDeath();
-        }
-
-        if (other.gameObject.CompareTag("WinGate"))
-        {
-            win.PlayerWin();
+            death.PlayerDeath(); //change it so enemies takes your HP from THEIR class
         }
     }
 

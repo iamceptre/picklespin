@@ -20,7 +20,7 @@ public class EnemiesSpawner : MonoBehaviour
         for (int i = 0; i < howManyToSpawn; i++)
         {
             RandomizeSpawnPoint();
-            Invoke("ScatterInstatiateTiming", i * 0.25f);
+            Invoke("ScatterInstatiateTiming", i * 0.1f);
         }
     }
 

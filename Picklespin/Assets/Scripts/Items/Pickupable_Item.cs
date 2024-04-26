@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class Pickupable_Item : MonoBehaviour
 {
 

@@ -16,6 +16,10 @@ public class ItemAfterPickingUp : MonoBehaviour
         myCollider = GetComponent<Collider>();
         myLight = GetComponent<Light>();
         rend = GetComponent<Renderer>();
+        if (rend == null)
+        {
+            rend = GetComponentInChildren<Renderer>();
+        }
         particle = GetComponent<ParticleSystem>();
 
         if (particle != null)
@@ -35,7 +39,13 @@ public class ItemAfterPickingUp : MonoBehaviour
 
     private void FadeOut()
     {
-        rend.enabled = false;
+
+        if (rend != null)
+        {
+            rend.enabled = false;
+        }
+
+
         if (particle != null)
         {
             emission.enabled = false;

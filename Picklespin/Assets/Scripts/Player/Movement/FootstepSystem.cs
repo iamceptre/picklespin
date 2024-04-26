@@ -12,38 +12,29 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private EventReference JumpEvent;
 
 
-    [SerializeField]private bool isstepping;
+    [SerializeField] private bool isstepping;
 
     private bool routineRunning = false;
 
     private float fixedFootstepSpace;
 
-    [Range(0,1)] public float footstepSpaceCooldown;
+    [Range(0, 1)] public float footstepSpaceCooldown;
 
     private bool isCasting;
 
-    private CharacterControllerVelocity speedometer;
+    //private CharacterControllerVelocity speedometer;
 
 
     private void Start()
     {
-        speedometer = CharacterControllerVelocity.instance;
+       // speedometer = CharacterControllerVelocity.instance;
     }
 
     private void Update()
     {
-        if (!isstepping && controller.isGrounded && speedometer.horizontalVelocity > 1f)
-        {
-            isstepping = true;
-        }
 
-       if (isstepping && speedometer.horizontalVelocity < 1f || !controller.isGrounded)
-      {
-           isstepping = false;
-      }
-
-
-        if ((Input.GetKey(KeyCode.W)) || (Input.GetKey(KeyCode.S)) || (Input.GetKey(KeyCode.A)) || (Input.GetKey(KeyCode.D)))
+       
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
             //any movement key pressed
             FootstepCooldownCalculus();
@@ -53,6 +44,19 @@ public class FootstepSystem : MonoBehaviour
             //no movement key pressed
             footstepSpaceCooldown = 0f;
         }
+        
+
+        /*
+        //better compatibility but not as responsive
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
+            FootstepCooldownCalculus();
+        }
+        else
+        {
+            footstepSpaceCooldown = 0f;
+        }
+        */
 
         UpdateTimings();
 
@@ -60,7 +64,8 @@ public class FootstepSystem : MonoBehaviour
 
     private void UpdateTimings()
     {
-        if (!isCasting) {
+        if (!isCasting)
+        {
             fixedFootstepSpace = 0.8f; //crouch speed
 
             if (!Input.GetKey(KeyCode.C))
@@ -68,7 +73,8 @@ public class FootstepSystem : MonoBehaviour
                 fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
             }
 
-            if (cameraBob.bobSpeed != 0) {
+            if (cameraBob.bobSpeed != 0)
+            {
                 cameraBob.bobSpeed = 2 / (fixedFootstepSpace);
             }
         }
@@ -112,7 +118,6 @@ public class FootstepSystem : MonoBehaviour
             routineRunning = true;
             RuntimeManager.PlayOneShot(FootstepEvent);
             yield return new WaitForSeconds(Random.Range(0.0f, 0.032f)); //Humanizes footstep rhythm
-            yield return new WaitForSeconds(0.05f); //Prevents super fast footsteps when error
             routineRunning = false;
         }
     }

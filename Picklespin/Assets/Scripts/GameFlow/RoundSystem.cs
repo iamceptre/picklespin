@@ -55,14 +55,17 @@ public class RoundSystem : MonoBehaviour
     private void NextRound()
     {
         if (roundNumber<RoundEvent.Length) {
+            newRoundDisplayText.gameObject.SetActive(true);
+            newRoundText.text = "Round " + (roundNumber + 1) + " begins";
             RoundEvent[roundNumber].Invoke();
         }
         else
         {
-            LastRoundEvent.Invoke(); //if you reach the last round, it will repeat forever
-        }
             newRoundDisplayText.gameObject.SetActive(true);
-            newRoundText.text = "Round " + (roundNumber + 1) + " begins";
+            newRoundText.text = "You reached the end";
+
+            LastRoundEvent.Invoke();
+        }
             newRoundDisplayText.Animate();
             roundNumber++;
             UpdateText();
@@ -74,8 +77,4 @@ public class RoundSystem : MonoBehaviour
         roundText.text = "round " + roundNumber;
     }
 
-    public void FinalRound()
-    {
-        roundText.text = "finality";
-    }
 }

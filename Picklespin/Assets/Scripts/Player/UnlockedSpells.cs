@@ -17,6 +17,7 @@ public class UnlockedSpells : MonoBehaviour
 
     [SerializeField] private Image alreadyUnlockedIcon;
     private RectTransform alreadyUnlockedRect;
+    [SerializeField] private RectTransform currentlySelectedSlotIndicator;
 
     public bool[] spellUnlocked;
 
@@ -74,14 +75,15 @@ public class UnlockedSpells : MonoBehaviour
         spellUnlockedLight.DOKill();
         lightRect.DOKill();
         lightRect.localScale = Vector3.zero;
-        lightRect.DOScaleY(1f, 0.3f).SetEase(Ease.OutExpo);
-        lightRect.DOScaleX(1f, 1).SetEase(Ease.OutExpo);
+        lightRect.DOScaleY(2, 0.3f).SetEase(Ease.OutExpo);
+        lightRect.DOScaleX(2, 1).SetEase(Ease.OutExpo);
         spellUnlockedLight.DOFade(1, 0.1f).OnComplete(LightFadeOut);
     }
 
     private void LightFadeOut()
     {
-        spellUnlockedLight.DOFade(0, 2.5f).OnComplete(DisableLight);
+        lightRect.DOScaleX(0.1f, 3).SetEase(Ease.InSine);
+        spellUnlockedLight.DOFade(0, 4).OnComplete(DisableLight);
     }
 
     private void DisableLight()
@@ -142,6 +144,8 @@ public class UnlockedSpells : MonoBehaviour
         alreadyUnlockedRect.localScale = new Vector2(0.5f, 0.5f);
         alreadyUnlockedIcon.DOFade(0.6f, 0.1f).OnComplete(AlreadyUnlockedFadeOut);
         alreadyUnlockedRect.DOScale(0.7f, 0.35f);
+
+        currentlySelectedSlotIndicator.DOMoveX(alreadyUnlockedRect.position.x, 0.1f).SetEase(Ease.OutExpo);
     }
 
 
