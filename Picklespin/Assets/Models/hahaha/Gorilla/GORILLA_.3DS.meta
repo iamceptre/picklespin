@@ -3,72 +3,12 @@ guid: e134f8646dd97c84cab23f26a77edf25
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-arm
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-ear
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-eye
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-fac
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-foo
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-for
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-han
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-hea
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-leg
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-thi
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-tho
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: gori-tru
-    second: {fileID: 2100000, guid: ea8f1f18033d2ab47980e5924ab4f0a3, type: 2}
+  externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -157,7 +97,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
