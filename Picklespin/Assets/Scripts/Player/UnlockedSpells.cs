@@ -75,14 +75,13 @@ public class UnlockedSpells : MonoBehaviour
         spellUnlockedLight.DOKill();
         lightRect.DOKill();
         lightRect.localScale = Vector3.zero;
-        lightRect.DOScaleY(2, 0.3f).SetEase(Ease.OutExpo);
-        lightRect.DOScaleX(2, 1).SetEase(Ease.OutExpo);
+        lightRect.DOScaleY(1, 0.3f).SetEase(Ease.OutExpo);
+        lightRect.DOScaleX(1, 1).SetEase(Ease.OutExpo);
         spellUnlockedLight.DOFade(1, 0.1f).OnComplete(LightFadeOut);
     }
 
     private void LightFadeOut()
     {
-        lightRect.DOScaleX(0.1f, 3).SetEase(Ease.InSine);
         spellUnlockedLight.DOFade(0, 4).OnComplete(DisableLight);
     }
 

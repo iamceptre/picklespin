@@ -1,19 +1,19 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class UIFadeFlicker : MonoBehaviour
+public class TextFadeFlicker : MonoBehaviour
 {
 
-    private Image me;
+    private TMP_Text me;
     private float startingAlpha;
-    private bool isFlickering;
 
     [SerializeField] private bool playOnAwake = false;
+    [SerializeField] private float animationTime;
 
     private void Awake()
     {
-        me = GetComponent<Image>();
+        me = GetComponent<TMP_Text>();
         startingAlpha = me.color.a;
 
         if (playOnAwake)
@@ -24,28 +24,21 @@ public class UIFadeFlicker : MonoBehaviour
 
     public void StartFlicker()
     {
+        me.color = new Color(me.color.r, me.color.g, me.color.b, 0);
         me.DOKill();
-        if (!isFlickering) {
-            FadeIn();
-        }
+        Flicker();
     }
 
     public void StopFlicker()
     {
         me.DOKill();
-        isFlickering = false;
         me.color = new Color(me.color.r, me.color.g, me.color.b, startingAlpha);
-        enabled = false;
     }
 
-    private void FadeIn()
+    private void Flicker()
     {
-        me.DOFade(1, 0.1f).OnComplete(FadeOut);
+        me.DOFade(1, animationTime).SetLoops(-1, LoopType.Yoyo);
     }
 
-    private void FadeOut()
-    {
-        me.DOFade(0f, 0.1f).OnComplete(FadeIn);
-    }
 
 }

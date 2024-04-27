@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Pause : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class Pause : MonoBehaviour
         timescaleBeforePausing = Time.timeScale;
         Time.timeScale = 0;
         isPaused = true;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void UnpauseGame()
@@ -38,6 +40,7 @@ public class Pause : MonoBehaviour
         Time.timeScale = timescaleBeforePausing;
         unpauseEvent.Invoke();
         isPaused = false;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
 }

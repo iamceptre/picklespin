@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7296072136351230666}
   - component: {fileID: 8959228563045662640}
   m_Layer: 0
-  m_Name: WinGateKey TEst
+  m_Name: WinGateKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

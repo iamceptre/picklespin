@@ -3,7 +3,6 @@ using DG.Tweening;
 
 public class SizeFloat : MonoBehaviour
 {
-    private Vector3 startingSize;
     private Transform myTransform;
 
     [SerializeField] private float animationTime = 1f;
@@ -14,17 +13,13 @@ public class SizeFloat : MonoBehaviour
         myTransform = transform;
     }
 
-    void Start()
-    {
-        startingSize = myTransform.localScale;
-    }
 
 
     public void Animate()
     {
         myTransform.DOKill();
-        myTransform.localScale = startingSize;
-        myTransform.DOScale(startingSize + new Vector3(howMuchToScaleIn, howMuchToScaleIn, howMuchToScaleIn), animationTime).SetLoops(-1, LoopType.Yoyo);
+        myTransform.localScale = Vector3.one;
+        myTransform.DOScale(Vector3.one + new Vector3(howMuchToScaleIn, howMuchToScaleIn, howMuchToScaleIn), animationTime).SetLoops(-1, LoopType.Yoyo);
     }
 
     public void KillTween()

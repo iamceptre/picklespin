@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
-public class NewRoundDisplayText : MonoBehaviour
+public class KeyHasBeenSpawned : MonoBehaviour
 {
-    public static NewRoundDisplayText instance;
+    public static KeyHasBeenSpawned instance;
 
     private TMP_Text myText;
     private RectTransform myRectTransform;
@@ -27,6 +28,7 @@ public class NewRoundDisplayText : MonoBehaviour
     private void Start()
     {
         myText.DOFade(0, 0);
+        gameObject.SetActive(false);
     }
 
 
@@ -35,15 +37,23 @@ public class NewRoundDisplayText : MonoBehaviour
         myText.DOKill();
         myText.DOFade(0, 0);
         myRectTransform.localScale = Vector3.one;
-        myText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
-        myRectTransform.DOScale(1.1f, 2);
+        StartCoroutine(WaitAndAnimate());
+    }
+
+    private IEnumerator WaitAndAnimate()
+    {
+        yield return new WaitForSeconds(0.2f);
+        myText.DOFade(1, 0.32f).SetEase(Ease.InSine).OnComplete(FadeOut);
+        myRectTransform.DOScale(1.1f, 3.2f);
     }
 
     private void FadeOut()
     {
-        myText.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(() =>
+        myText.DOFade(0, 3.2f).SetEase(Ease.InSine).OnComplete(() =>
         {
-            gameObject.SetActive(false);
+            myText.DOKill();
+            myRectTransform.DOKill();
+            Destroy(gameObject); //Destroys itself cuz there will be only one time a key is spawned during gamplay
         });
     }
 
