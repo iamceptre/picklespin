@@ -7,7 +7,9 @@ public class UIFadeFlicker : MonoBehaviour
 
     private Image me;
     private float startingAlpha;
-    private bool isFlickering;
+    private bool isFlickering=false;
+
+    [SerializeField] private float animationTime = 0.1f;
 
     [SerializeField] private bool playOnAwake = false;
 
@@ -40,12 +42,12 @@ public class UIFadeFlicker : MonoBehaviour
 
     private void FadeIn()
     {
-        me.DOFade(1, 0.1f).OnComplete(FadeOut);
+        me.DOFade(1, animationTime).OnComplete(FadeOut);
     }
 
     private void FadeOut()
     {
-        me.DOFade(0f, 0.1f).OnComplete(FadeIn);
+        me.DOFade(0f, animationTime).OnComplete(FadeIn);
     }
 
 }

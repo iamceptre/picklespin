@@ -9,7 +9,8 @@ public class TextFadeFlicker : MonoBehaviour
     private float startingAlpha;
 
     [SerializeField] private bool playOnAwake = false;
-    [SerializeField] private float animationTime;
+    public float animationTime;
+
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class TextFadeFlicker : MonoBehaviour
             StartFlicker();
         }
     }
+
 
     public void StartFlicker()
     {
@@ -38,6 +40,13 @@ public class TextFadeFlicker : MonoBehaviour
     private void Flicker()
     {
         me.DOFade(1, animationTime).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    public void RestartTweening()
+    {
+        me.DOKill();
+        me.color = new Color(me.color.r, me.color.g, me.color.b, 0);
+        Flicker();
     }
 
 
