@@ -16546,7 +16546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 247348354}
-  height: 0.025
+  height: 0.02
   bobSpeed: 2
   hand: {fileID: 445916676}
   toBob: {fileID: 194906740}

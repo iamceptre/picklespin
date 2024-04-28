@@ -80,6 +80,7 @@ public class WaypointsForSpawner : State
                 {
                     IncreaseWaypoint();
                     canInc = false;
+                    Invoke("CanInc", waitOnWaypointTime * 0.5f);
                 }
         }
 
@@ -91,6 +92,10 @@ public class WaypointsForSpawner : State
 
     }
 
+    private void CanInc()
+    {
+        canInc = true;
+    }
    
 
     private IEnumerator StuckCheck()
