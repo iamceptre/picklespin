@@ -4,8 +4,7 @@ using UnityEngine.AI;
 
 public class WaypointsForSpawner : State
 {
-     private GameObject[] cachedObj;
-     private Transform[] cachedPoint;
+     public Transform[] cachedPoint;
      [SerializeField] private Transform[] waypoints;
 
     private NavMeshAgent agent;
@@ -46,16 +45,6 @@ public class WaypointsForSpawner : State
         agent = GetComponentInParent<NavMeshAgent>();
         aiVision = GetComponentInParent<AiVision>();
         waypointIndex = 0;
-
-        cachedObj = GameObject.FindGameObjectsWithTag("Waypoint");
-        cachedPoint = new Transform[cachedObj.Length];
-
-        for (int i = 0; i < cachedObj.Length; i++)
-        {
-            cachedPoint[i] = cachedObj[i].transform;
-        }
-
-        RandomizeWaypoints();
     }
 
 
@@ -63,6 +52,7 @@ public class WaypointsForSpawner : State
     private void Start()
     {
         startingPos = transform.position;
+        RandomizeWaypoints();
     }
 
 

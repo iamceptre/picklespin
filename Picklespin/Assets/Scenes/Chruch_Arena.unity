@@ -3075,7 +3075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &414487249
 Transform:
   m_ObjectHideFlags: 0
@@ -3876,11 +3876,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6770340404796153653, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6770340404796153653, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7728972764580947282, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3924,11 +3924,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8304254288818047161, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8304254288818047161, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18582,7 +18582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundText: {fileID: 1632216764}
-  roundDuration: 30
+  roundDuration: 1
   roundTimerGUI: {fileID: 248409637}
   RoundEvent:
   - m_PersistentCalls:
@@ -21978,6 +21978,11 @@ MonoBehaviour:
   howManyToSpawn: 5
   evilEntity: {fileID: 5576000824764681535, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
   spawnPoints:
+  - {fileID: 669251491}
+  - {fileID: 1765918124}
+  - {fileID: 2124008300}
+  - {fileID: 224334319}
+  waypointsToPass:
   - {fileID: 669251491}
   - {fileID: 1765918124}
   - {fileID: 2124008300}
@@ -35365,11 +35370,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6770340404796153653, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6770340404796153653, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7728972764580947282, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_LocalPosition.x
@@ -35413,11 +35418,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8304254288818047161, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8304254288818047161, guid: fc168a40df1bcda4aaa9c8d6ab5afc38, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -7,6 +7,8 @@ public class EnemiesSpawner : MonoBehaviour
     [SerializeField] private GameObject evilEntity;
     [SerializeField] private Transform[] spawnPoints;
 
+    [SerializeField] private Transform[] waypointsToPass;
+
     public void SpawnEnemiesEasy()
     {
         for (int i = 0; i < howManyToSpawn; i++)
@@ -20,6 +22,7 @@ public class EnemiesSpawner : MonoBehaviour
         int randPoint = Random.Range(0, spawnPoints.Length);
         Vector3 randomOffset = Random.insideUnitSphere * 0.5f; 
         Vector3 spawnPosition = spawnPoints[randPoint].position + randomOffset;
-        Instantiate(evilEntity, spawnPosition, Quaternion.identity);
+        var spawnedOne =  Instantiate(evilEntity, spawnPosition, Quaternion.identity);
+        spawnedOne.gameObject.GetComponentInChildren<WaypointsForSpawner>().cachedPoint = waypointsToPass;
     }
 }
