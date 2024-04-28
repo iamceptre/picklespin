@@ -226,15 +226,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0)
         {
-            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.24f;
+            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.25f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
         else
         {
             if (speedometer.horizontalVelocity>8) {
-                //fail bhop because of not strafing
-                externalPushForce = Mathf.Clamp(externalPushForce * 0.6f, 1, 7);
+                //fail bhop penalty
+                externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.13f;
+                externalPushForce = Mathf.Clamp(externalPushForce, 1, 7);
             }
         }
 
