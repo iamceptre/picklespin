@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1990126293486748229}
   - component: {fileID: 1091045550492625763}
   - component: {fileID: 3413647426289646331}
-  - component: {fileID: 9175398419300844916}
+  - component: {fileID: 1333612512838579436}
   m_Layer: 0
   m_Name: DiedFromBurnParticle
   m_TagString: Untagged
@@ -4843,7 +4843,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &9175398419300844916
+--- !u!114 &1333612512838579436
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4852,13 +4852,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 5085288267478614331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb8c31774c7cb7e4cb2adfe536c8a0e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound:
+  CollisionTag: 
+  EventReference:
     Guid:
       Data1: -884647199
       Data2: 1215442518
       Data3: 1483587242
       Data4: -658792486
     Path: event:/PLACEHOLDER_UNCZ/died_from_burn
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 8.6
+  OverrideMaxDistance: 90

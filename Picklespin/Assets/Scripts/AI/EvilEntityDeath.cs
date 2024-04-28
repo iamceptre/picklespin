@@ -10,6 +10,14 @@ public class EvilEntityDeath : MonoBehaviour
     [SerializeField] private UnityEvent deathEvent;
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
 
+    private void Awake()
+    {
+        if (aiHealthUiBar == null)
+        {
+            aiHealthUiBar = gameObject.GetComponent<AiHealthUiBar>(); 
+        }
+    }
+
     public void Die()
     {
         aiHealthUiBar.Detach();

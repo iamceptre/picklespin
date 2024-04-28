@@ -6,7 +6,6 @@ public class StateManager : MonoBehaviour
 
    public State currentState;
    [HideInInspector] public AiVision aiVision;
-    public AiHealth aiHealth;
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
 
@@ -38,8 +37,6 @@ public class StateManager : MonoBehaviour
 
     private void RunStateMachine()
     {
-        if (aiHealth.hp > 0)
-        {
             State nextState = currentState?.RunCurrentState();
             aiVision.FieldOfViewCheck();
 
@@ -48,7 +45,7 @@ public class StateManager : MonoBehaviour
             {
                 SwitchToTheNextState(nextState);
             }
-        }
+        
     }
 
     private void SwitchToTheNextState(State nextState)

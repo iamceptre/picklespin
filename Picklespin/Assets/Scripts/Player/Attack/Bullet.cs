@@ -5,8 +5,6 @@ using FMOD.Studio;
 public class Bullet : MonoBehaviour
 {
 
-    public GameObject CastingParticle;
-
     private int originalDamage;
 
     [Header("Stats")]
@@ -27,35 +25,38 @@ public class Bullet : MonoBehaviour
     public EventReference pullupSound;
     [SerializeField] private EventReference hitSound;
     [SerializeField] private EventInstance hitInstance;
+    [Tooltip("long casting particle")] public GameObject CastingParticle;
 
     [Header("Special Effects")]
     [SerializeField] private SetOnFire setOnFire;
 
     private Transform mainCamera;
-    private CameraShake cameraShake;
 
     private Transform handCastingPoint;
 
-    private DamageUI damageUI;
+    [Header("References")]
     private AiHealthUiBar aiHealthUI;
+    private CameraShake cameraShake;
+    private DamageUI_Spawner damageUiSpawner;
 
 
     [Header("Misc")]
     [HideInInspector] public bool iWillBeCritical;
     [HideInInspector] public bool hitSomething = false;
+    private bool wasLastHitCritical = false;
 
 
     void Awake()
     {
         Destroy(gameObject,10);
         originalDamage = damage;
-        cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>();
+        cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>(); //replace it, tag is very inefficient
         handCastingPoint = GameObject.FindGameObjectWithTag("CastingPoint").GetComponent<Transform>();
-        damageUI = DamageUI.instance;
     }
 
     private void Start()
     {
+        damageUiSpawner = DamageUI_Spawner.instance;
         RuntimeManager.PlayOneShot(castSound);
         Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
         transform.localEulerAngles = new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360));
@@ -68,8 +69,6 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject)
         {
             hitSomething = true;
-            damageUI.gameObject.SetActive(true);
-
 
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
 
@@ -80,9 +79,10 @@ public class Bullet : MonoBehaviour
                 aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
 
                 RandomizeCritical();
-                DamageUIText(collision);
 
                 aiHealth.hp -= damage;
+
+                damageUiSpawner.Spawn(collision.transform.position, damage, wasLastHitCritical);
 
                 if (aiHealth.hp <= 0) {
                     collision.collider.enabled = false;
@@ -109,15 +109,6 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void DamageUIText(Collision collision)
-    {
-        damageUI.myText.enabled = true; // CHANGE THIS BULLSHIT PLEASE
-        damageUI.myText.text = ("- " + damage);
-        damageUI.whereIshouldGo = collision.transform.position + new Vector3(0, 2.4f, 0);
-        damageUI.transform.position = damageUI.whereIshouldGo;
-        damageUI.AnimateDamageUI();
-    }
-
     private void ApplySpecialEffect(Collision collision)
     {
         if (setOnFire != null)
@@ -134,7 +125,7 @@ public class Bullet : MonoBehaviour
             }
             else
             {
-                addedEffect.ResetCountdowns(); //FIX THIS REMOVNIG THE OBJECT COMPLETELY
+                addedEffect.ResetCountdowns();
             }
         }
     }
@@ -145,13 +136,13 @@ public class Bullet : MonoBehaviour
         if (Random.Range(0,10) >= 9 || iWillBeCritical) // 1/10 chance of doubling the damage OR when low on magicka (iWillBeCritical is then set to true by Attack script)
         {
             damage = originalDamage * 4;
-            damageUI.WhenCritical();
+            wasLastHitCritical = true;
             RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
         }
         else
         {
             damage = originalDamage;
-            damageUI.WhenNotCritical();
+            wasLastHitCritical = false;
         }
     }
 
@@ -162,7 +153,6 @@ public class Bullet : MonoBehaviour
         {
             aiVision.hitMeCooldown = 10;
             aiVision.playerJustHitMe = true;
-            //aiVision.PlayerJustHitMeCooldown();
         }
     }
 
