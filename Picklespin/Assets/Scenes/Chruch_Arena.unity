@@ -906,6 +906,7 @@ GameObject:
   - component: {fileID: 119255927}
   - component: {fileID: 119255929}
   - component: {fileID: 119255928}
+  - component: {fileID: 119255930}
   m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
@@ -970,6 +971,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 119255926}
   m_CullTransparentMesh: 1
+--- !u!114 &119255930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119255926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e301139f5abd604ca741c92918c6db4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationTime: 0.1
+  playOnAwake: 0
 --- !u!1 &140419086
 GameObject:
   m_ObjectHideFlags: 0
@@ -10712,6 +10727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e301139f5abd604ca741c92918c6db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationTime: 0.1
   playOnAwake: 0
 --- !u!1 &679730386
 GameObject:
@@ -13250,6 +13266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 821301420}
   - component: {fileID: 821301421}
+  - component: {fileID: 821301422}
   m_Layer: 0
   m_Name: Cheats
   m_TagString: Untagged
@@ -13293,6 +13310,19 @@ MonoBehaviour:
       Data3: -1438075253
       Data4: 797762368
     Path: event:/TEST/cheatActivated
+--- !u!114 &821301422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821301419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece5b2ab977154145b8908e858f997ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gorilla: {fileID: 45826089}
 --- !u!1 &821583909
 GameObject:
   m_ObjectHideFlags: 0
@@ -15207,6 +15237,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -15247,7 +15278,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 200
-  field of view: 85
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -15294,6 +15325,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f9c473c3f4c994aba5ada4d8dd4abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intensitivity: 0.6
+  smoothness: 0.1
 --- !u!1 &975343399
 GameObject:
   m_ObjectHideFlags: 0
@@ -17187,6 +17232,7 @@ GameObject:
   - component: {fileID: 1219504552}
   - component: {fileID: 1219504553}
   - component: {fileID: 1219504554}
+  - component: {fileID: 1219504555}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -17242,6 +17288,7 @@ MonoBehaviour:
   body: {fileID: 247348353}
   footstepSystem: {fileID: 1219504545}
   staminaBarDisplay: {fileID: 2027566942}
+  bhop: {fileID: 1219504555}
   walkSpeed: 5
   runSpeed: 12
   crouchSpeed: 3
@@ -17254,7 +17301,7 @@ MonoBehaviour:
   anyMovementKeysPressed: 0
   externalPushForce: 1
   movementStateForFMOD: 1
-  fatigability: 20
+  fatigability: 10
 --- !u!114 &1219504545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17727,6 +17774,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   maxHp: 100
+--- !u!114 &1219504555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219504540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c59f6b7f2a80dd4181709a2f0a27028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 247348354}
+  canBhop: 0
+  timeWindowToBhop: 0.1
 --- !u!1001 &1219971557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19819,7 +19881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1477207485
 Transform:
   m_ObjectHideFlags: 0
@@ -23283,7 +23345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1652197992
 Transform:
   m_ObjectHideFlags: 0
@@ -25271,6 +25333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mySlider: {fileID: 60327225}
   sliderFill: {fileID: 119255928}
+  textFadeFlicker: {fileID: 1192299349}
   countdownSpeed: 0.1
   countdownDelayTime: 3
   enableWithMe:

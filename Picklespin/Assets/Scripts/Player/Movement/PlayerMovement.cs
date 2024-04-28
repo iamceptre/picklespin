@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform body;
     [SerializeField] private FootstepSystem footstepSystem;
     [SerializeField] private StaminaBarDisplay staminaBarDisplay;
+    [SerializeField] private Bhop bhop;
 
     public float walkSpeed;
     public float runSpeed;
@@ -182,8 +183,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability,10,100);
-        jumpPushForward();
+        if (bhop != null && bhop.canBhop)
+        {
+            BhopJump();
+        }
+        else
+        {
+            stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100);
+            jumpPushForward();
+            moveDirection.y = jumpPower;
+            footstepSystem.StopAllCoroutines();
+            footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
+        }
+    }
+
+    private void BhopJump()
+    {
+        //maybe a gui that tells you that you bhopped
+        stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100) * 0.3f; //eats less stamina than usual jump
+        jumpPushForwardBhop();
         moveDirection.y = jumpPower;
         footstepSystem.StopAllCoroutines();
         footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
@@ -193,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed && stamina>2)
         {
-            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.2f;
+            externalPushForce = 0.4f + speedometer.horizontalVelocity * 0.2f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
@@ -204,12 +222,32 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void jumpPushForwardBhop()
+    {
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.23f;
+            StopAllCoroutines();
+            StartCoroutine(ExternalPushForceDamp());
+        }
+        else
+        {
+            if (speedometer.horizontalVelocity>8) {
+                //fail bhop because of not strafing
+                externalPushForce = 1;
+            }
+        }
+
+    }
+
+
+
     private IEnumerator ExternalPushForceDamp()
     {
         while (externalPushForce >= 1)
         {
             externalPushForce -= Time.deltaTime;
-            externalPushForce = Mathf.Clamp(externalPushForce, 1, 5);
+            externalPushForce = Mathf.Clamp(externalPushForce, 1, 7);
             yield return null;
         }
     }

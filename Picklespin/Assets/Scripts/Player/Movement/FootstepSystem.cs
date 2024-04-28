@@ -33,22 +33,8 @@ public class FootstepSystem : MonoBehaviour
     private void Update()
     {
 
-       
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            //any movement key pressed
-            FootstepCooldownCalculus();
-        }
-        else
-        {
-            //no movement key pressed
-            footstepSpaceCooldown = 0f;
-        }
         
-
-        /*
-        //better compatibility but not as responsive
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             FootstepCooldownCalculus();
         }
@@ -56,7 +42,7 @@ public class FootstepSystem : MonoBehaviour
         {
             footstepSpaceCooldown = 0f;
         }
-        */
+       
 
         UpdateTimings();
 
@@ -98,22 +84,29 @@ public class FootstepSystem : MonoBehaviour
 
     void FootstepCooldownCalculus()
     {
-        if (footstepSpaceCooldown > 0)
+        if (controller.isGrounded)
         {
-            footstepSpaceCooldown -= Time.deltaTime / fixedFootstepSpace; //and change it to smooth too, when you fix the issue 
+            if (footstepSpaceCooldown > 0)
+            {
+                footstepSpaceCooldown -= Time.deltaTime / fixedFootstepSpace; //and change it to smooth too, when you fix the issue 
+            }
+            else
+            {
+                StartCoroutine(SendStepSignalAsync());
+                routineRunning = false;
+                footstepSpaceCooldown = 1;
+            }
         }
         else
         {
-            StartCoroutine(SendStepSignalAsync());
-            routineRunning = false;
-            footstepSpaceCooldown = 1;
+            footstepSpaceCooldown = 0.3f; //resets the countdown when in air, so after landing, you get consistent rhythm
         }
     }
 
 
     public IEnumerator SendStepSignalAsync()
     {
-        if (controller.isGrounded && !routineRunning)
+        if (!routineRunning)
         {
             routineRunning = true;
             RuntimeManager.PlayOneShot(FootstepEvent);
