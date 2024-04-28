@@ -226,7 +226,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0)
         {
-            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.23f;
+            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.24f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
@@ -234,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (speedometer.horizontalVelocity>8) {
                 //fail bhop because of not strafing
-                externalPushForce = 1;
+                externalPushForce = Mathf.Clamp(externalPushForce * 0.6f, 1, 7);
             }
         }
 

@@ -24,7 +24,7 @@ public class GorillaCheat : MonoBehaviour
 
                     if (targetIndex == targetWord.Length)
                     {
-                        DoSomething();
+                        ActivateCheat();
                         ResetInput();
                     }
                 }
@@ -42,7 +42,7 @@ public class GorillaCheat : MonoBehaviour
         targetIndex = 0;
     }
 
-    void DoSomething()
+    void ActivateCheat()
     {
        gorilla.SetActive(true);
        enabled = false;
