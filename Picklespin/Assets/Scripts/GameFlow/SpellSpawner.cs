@@ -10,7 +10,7 @@ public class SpellSpawner : MonoBehaviour
 
     [SerializeField] private Transform[] spawnPoints;
 
-    [SerializeField] private List<int> generatedNumbers;
+    private List<int> generatedNumbers = new List<int>();
 
     private int rrrandom;
 

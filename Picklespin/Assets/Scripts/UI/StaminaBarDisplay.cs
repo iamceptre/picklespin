@@ -12,11 +12,18 @@ public class StaminaBarDisplay : MonoBehaviour
        staminaSlider = GetComponent<Slider>();
     }
 
+    private void Start()
+    {
+        RefreshBarDisplay();
+    }
+
     public void RefreshBarDisplay()
     {
         if (staminaSlider.value != playerMovement.stamina) {
             staminaSlider.value = playerMovement.stamina;
         }
     }
+
+    //add smoother
 
 }

@@ -11,7 +11,6 @@ public class AmmoDisplay : MonoBehaviour
     private float velocity;
 
     private float desiredManaBarPosition;
-    private float desiredManaBarPositionTimes100;
 
     public static AmmoDisplay instance { get; private set; }
 
@@ -38,7 +37,7 @@ public class AmmoDisplay : MonoBehaviour
     public void RefreshManaValue()
     {
         CommonRefreshCode();
-        manaBar.value = desiredManaBarPositionTimes100;
+        manaBar.value = desiredManaBarPosition;
     }
 
     public void RefreshManaValueSmooth()
@@ -47,23 +46,12 @@ public class AmmoDisplay : MonoBehaviour
         StartCoroutine(Smoother());
     }
 
-
     private IEnumerator Smoother()
     {
-      //  Debug.Log("rutyna");
-        if (manaBar.value < desiredManaBarPositionTimes100-1)
+        while (manaBar.value < desiredManaBarPosition - 1)
         {
-           // Debug.Log("damping");
-            manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPositionTimes100, ref velocity, 0.3f);
+            manaBar.value = Mathf.SmoothDamp(manaBar.value, desiredManaBarPosition, ref velocity, 0.3f);
             yield return null;
-            StartCoroutine(Smoother());
-        }
-        else
-        {
-            //Debug.Log("damped");
-            manaBar.value = desiredManaBarPositionTimes100;
-            yield return null;
-            StopAllCoroutines();
         }
     }
 
@@ -71,8 +59,7 @@ public class AmmoDisplay : MonoBehaviour
     private void CommonRefreshCode()
     {
         ammoDisplayText.text = (ammo.ammo + "/" + ammo.maxAmmo);
-        desiredManaBarPosition = (float)ammo.ammo / (float)ammo.maxAmmo;
-        desiredManaBarPositionTimes100 = desiredManaBarPosition * 100;
+        desiredManaBarPosition = ((float)ammo.ammo / (float)ammo.maxAmmo)*100;
     }
 
 }

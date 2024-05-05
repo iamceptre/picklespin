@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.AI;
 public class AttackPlayer : State
 {
-    private GameObject player;
+    private PlayerHP playerHP;
+    private HpBarDisplay hpBarDisplay;
+    private PublicPlayerTransform playerTransform;
 
     private NavMeshAgent agent;
     [SerializeField] private LoosingPlayer loosingPlayer;
@@ -12,9 +14,11 @@ public class AttackPlayer : State
 
     private void Start()
     {
+        playerTransform = PublicPlayerTransform.instance;
+        playerHP = PlayerHP.instance;
         aiVision = GetComponentInParent<AiVision>();
-        player = GameObject.FindGameObjectWithTag("MainCamera");
         agent = GetComponentInParent<NavMeshAgent>();
+        hpBarDisplay = HpBarDisplay.instance;
     }
 
 
@@ -38,7 +42,18 @@ public class AttackPlayer : State
     {
         agent.speed = attackSpeed;
         loosingPlayer.lostPlayer = false;
-        agent.SetDestination(player.transform.position); //make it refresh not that often
+        agent.SetDestination(playerTransform.PlayerTransform.position);
+        AttackWhenClose();
+    }
+
+    void AttackWhenClose()
+    {
+        if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 2)
+        {
+            playerHP.hp -= 10;
+            hpBarDisplay.RefreshHPBar();
+            playerHP.PlayerHurtSound();
+        }
     }
 
 }

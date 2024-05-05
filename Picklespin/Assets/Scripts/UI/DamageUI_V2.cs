@@ -29,13 +29,13 @@ public class DamageUI_V2 : MonoBehaviour
 
         if (isCritical)
         {
-            myText.text = "- <b>" + howMuchDamageDealt + " hp";
+            myText.text = "- <b>" + howMuchDamageDealt;
             myText.color = new Color(255, 215, 0);
             myText.fontSize = damageUIstartFontSize * 1.618f;
         }
         else
         {
-            myText.text = "- " + howMuchDamageDealt + " hp";
+            myText.text = "- " + howMuchDamageDealt;
             myText.color = damageUIstartColor;
             myText.fontSize = damageUIstartFontSize;
         }

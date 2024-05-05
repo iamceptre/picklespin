@@ -23,7 +23,7 @@ public class BarEase : MonoBehaviour
         easeFill.enabled = true;
     }
 
-    private void Update()
+    private void Update() //change it so each bar calls a routine that loops until easing is needed and then it disables itself
     {
         if (sliderToFollow.value<sliderToFollow.maxValue) {
             myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f); //delay it in time
