@@ -86,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
             if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
                 movementStateForFMOD = 2;
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
                 isRunning = true;
                 StaminaDeplete();
             }
@@ -132,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.C) && canMove || isSlowedDown)
         {
             movementStateForFMOD = 0;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
@@ -140,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!isRunning) {
                 movementStateForFMOD = 1;
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
             }
             characterController.height = defaultHeight;
                 walkSpeed = 6f;

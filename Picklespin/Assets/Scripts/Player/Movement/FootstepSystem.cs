@@ -22,14 +22,6 @@ public class FootstepSystem : MonoBehaviour
 
     private bool isCasting;
 
-    //private CharacterControllerVelocity speedometer;
-
-
-    private void Start()
-    {
-       // speedometer = CharacterControllerVelocity.instance;
-    }
-
     private void Update()
     {
 
