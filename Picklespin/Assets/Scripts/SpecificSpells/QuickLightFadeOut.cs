@@ -25,7 +25,6 @@ public class QuickLightFadeOut : MonoBehaviour
         if (bullet.hitSomething && gameObject.transform.parent != null)
         {
             gameObject.transform.parent = null;
-            Debug.Log("odlacz");
             Destroy(bullet.gameObject);
         }
 

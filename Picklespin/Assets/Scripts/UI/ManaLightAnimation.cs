@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class ManaLightAnimation : MonoBehaviour
 {
@@ -59,13 +60,22 @@ public class ManaLightAnimation : MonoBehaviour
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();
         manaPlusPlus.DOFade(0, 0);
-        manaPlusPlusRect.DOLocalMoveY(manaPlusPlusStartingPos + 50, 2);
-        manaPlusPlus.DOFade(1, 0.2f).OnComplete(ManaPlusPlusFadeOut);
+        manaPlusPlus.DOFade(1, 0.4f).OnComplete(() =>
+        {
+            StartCoroutine(WaitAndFadeOut());
+        });
+    }
+
+    private IEnumerator WaitAndFadeOut()
+    {
+        yield return new WaitForSeconds(2);
+        ManaPlusPlusFadeOut();
     }
 
     private void ManaPlusPlusFadeOut()
     {
-        manaPlusPlus.DOFade(0, 2).OnComplete(DisableManaPlusPlus);
+        manaPlusPlusRect.DOLocalMoveY(manaPlusPlusStartingPos + 50, 2).SetEase(Ease.InSine);
+        manaPlusPlus.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(DisableManaPlusPlus);
     }
 
     private void DisableManaPlusPlus()

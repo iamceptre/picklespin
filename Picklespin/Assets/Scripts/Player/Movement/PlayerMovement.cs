@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform body;
     [SerializeField] private FootstepSystem footstepSystem;
     [SerializeField] private StaminaBarDisplay staminaBarDisplay;
+    [SerializeField] private Bhop bhop;
 
     public float walkSpeed;
     public float runSpeed;
@@ -85,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
             if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
                 movementStateForFMOD = 2;
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
                 isRunning = true;
                 StaminaDeplete();
             }
@@ -131,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.C) && canMove || isSlowedDown)
         {
             movementStateForFMOD = 0;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
@@ -139,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!isRunning) {
                 movementStateForFMOD = 1;
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
             }
             characterController.height = defaultHeight;
                 walkSpeed = 6f;
@@ -182,8 +186,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability,10,100);
-        jumpPushForward();
+        if (bhop != null && bhop.canBhop)
+        {
+            BhopJump();
+        }
+        else
+        {
+            stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100);
+            jumpPushForward();
+            moveDirection.y = jumpPower;
+            footstepSystem.StopAllCoroutines();
+            footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
+        }
+    }
+
+    private void BhopJump()
+    {
+        //maybe a gui that tells you that you bhopped
+        stamina -= Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100) * 0.3f; //eats less stamina than usual jump
+        jumpPushForwardBhop();
         moveDirection.y = jumpPower;
         footstepSystem.StopAllCoroutines();
         footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
@@ -193,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed && stamina>2)
         {
-            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.2f;
+            externalPushForce = 0.4f + speedometer.horizontalVelocity * 0.2f;
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
@@ -204,12 +225,33 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void jumpPushForwardBhop()
+    {
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.25f;
+            StopAllCoroutines();
+            StartCoroutine(ExternalPushForceDamp());
+        }
+        else
+        {
+            if (speedometer.horizontalVelocity>8) {
+                //fail bhop penalty
+                externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.13f;
+                externalPushForce = Mathf.Clamp(externalPushForce, 1, 7);
+            }
+        }
+
+    }
+
+
+
     private IEnumerator ExternalPushForceDamp()
     {
         while (externalPushForce >= 1)
         {
             externalPushForce -= Time.deltaTime;
-            externalPushForce = Mathf.Clamp(externalPushForce, 1, 5);
+            externalPushForce = Mathf.Clamp(externalPushForce, 1, 7);
             yield return null;
         }
     }

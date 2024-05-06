@@ -3,7 +3,12 @@ guid: 4bf8988eb3b173e47952f8d1f4dd6e8d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - CastingParticle: {instanceID: 0}
+  - spawnInHandParticle: {instanceID: 0}
+  - explosionFX: {instanceID: 0}
+  - damageUi: {fileID: 2583684299047286458, guid: a5b9cee72a9d0944fbd5c29ee11ccc00, type: 3}
+  - setOnFire: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

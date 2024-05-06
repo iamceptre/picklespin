@@ -7,24 +7,46 @@ public class EvilEntityDeath : MonoBehaviour
 {
     [SerializeField] private EventReference evilEntityDeathSound;
     private EventInstance evilEntityDeathSoundReference;
-    [SerializeField] private GameObject aiUi;
     [SerializeField] private UnityEvent deathEvent;
-    [SerializeField] private AiHealthUiBar AiHealthUiBar;
+    [SerializeField] private AiHealthUiBar aiHealthUiBar;
+
+    private void Awake()
+    {
+        if (aiHealthUiBar == null)
+        {
+            aiHealthUiBar = gameObject.GetComponent<AiHealthUiBar>(); 
+        }
+    }
+
     public void Die()
     {
-
-        if (aiUi == null)
-        {
-            aiUi = transform.Find("AI_UI").gameObject;
-        }
+        aiHealthUiBar.Detach();
+        aiHealthUiBar.FadeOut();
 
         deathEvent.Invoke(); //custom death behaviour
-        aiUi.transform.SetParent(null);
-        AiHealthUiBar.FadeOut();
-        aiUi.transform.position += new Vector3(0,0.75f);
-        gameObject.SetActive(false);
-        evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
-        RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
-        evilEntityDeathSoundReference.start();
+    
+        CheckAndDisableFire(); //if ai is burning then its dying from burninig, if theres no fire, just dies
     }
+
+
+    private void CheckAndDisableFire()
+    {
+        var setOnFire = gameObject.GetComponentInChildren<SetOnFire>();
+
+        if (setOnFire != null)
+        {
+            var setOnFireScirpt = setOnFire.GetComponent<SetOnFire>();
+            //if ai is dying from fire, not spellhit
+            setOnFireScirpt.PanicKill();
+        }
+        else
+        {
+            evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
+            RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
+            evilEntityDeathSoundReference.start();
+            Destroy(gameObject);
+        }
+    }
+
+
 }

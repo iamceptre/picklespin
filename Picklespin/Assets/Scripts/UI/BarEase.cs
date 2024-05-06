@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class BarEase : MonoBehaviour
 {
@@ -17,25 +18,37 @@ public class BarEase : MonoBehaviour
 
     private void Start()
     {
-        //me.value = sliderToFollow.value-1;
-        //easeFill.enabled = false;
+        me.value = sliderToFollow.maxValue;
+        myValue = sliderToFollow.maxValue;
+        easeFill.enabled = true;
     }
 
-    private void LateUpdate()
+    private void Update() //change it so each bar calls a routine that loops until easing is needed and then it disables itself
     {
-
-        myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f); //delay it in time
-
-        if (myValue > sliderToFollow.value + 0.1f) {
-            
-            me.value = myValue;
-            easeFill.enabled = true;
+        if (sliderToFollow.value<sliderToFollow.maxValue) {
+            myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f); //delay it in time
         }
-        else
+
+
+        if (myValue-0.1f <= sliderToFollow.value)
         {
             easeFill.enabled = false;
         }
+        else
+        {
+            easeFill.enabled = true;
+            me.value = myValue;
+        }   
+    }
 
+    public void FadeOut()
+    {
+        easeFill.DOFade(0, 0.5f);
+    }
+
+    public void FadeIn()
+    {
+        easeFill.DOFade(1, 0.2f);
     }
 
 }

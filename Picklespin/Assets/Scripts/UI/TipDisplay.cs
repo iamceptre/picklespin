@@ -12,6 +12,11 @@ public class TipDisplay : MonoBehaviour
         myText = GetComponent<TMP_Text>();
     }
 
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
 
     public void ShowTip()
     {
@@ -23,13 +28,11 @@ public class TipDisplay : MonoBehaviour
 
     public void HideTip()
     {
-         myText.DOFade(0, 0.63f).OnComplete(DisableMe);
-    }
-
-    private void DisableMe()
-    {
-        myText.enabled = false;
-        gameObject.SetActive(false);    
+         myText.DOFade(0, 0.63f).OnComplete(() =>
+         {
+             myText.enabled = false;
+             gameObject.SetActive(false);
+         });
     }
 
 }

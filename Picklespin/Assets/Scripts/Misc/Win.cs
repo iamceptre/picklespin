@@ -3,10 +3,25 @@ using UnityEngine;
 
 public class Win : MonoBehaviour
 {
+    public static Win instance;
+
     public GameObject winScreen;
     public EventReference winEvent;
 
-    public void PlayerWin()
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
+    }
+
+    public void WinFunction()
     {
         RuntimeManager.PlayOneShot(winEvent);
         winScreen.SetActive(true);

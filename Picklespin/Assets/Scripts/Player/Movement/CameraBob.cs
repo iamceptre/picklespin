@@ -3,7 +3,6 @@ using UnityEngine;
 public class CameraBob : MonoBehaviour {
 
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private FootstepSystem footstepSystem;
     
    [SerializeField] private float height = 0.5f;
     public float bobSpeed = 2;
@@ -18,7 +17,6 @@ public class CameraBob : MonoBehaviour {
 
     private Vector3 handVelocity;
     private Vector3 camVelocity;
-    private Vector3 camRotVelocity;
 
     [SerializeField] private float smoothing;
 
@@ -34,7 +32,7 @@ public class CameraBob : MonoBehaviour {
 
     private void Update() {
 
-        if (characterController.isGrounded) //make it not cut abruply after landing
+        if (characterController.isGrounded)
         {
            Bob();
             HandBob();
@@ -46,16 +44,15 @@ public class CameraBob : MonoBehaviour {
         tempPos.y = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed) * height * 0.3f * speedometer.horizontalVelocity;
         tempPos.x = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed * 0.5f) * height * speedometer.horizontalVelocity;
 
-        //toBob.transform.localPosition = originalPosition + (tempPos);
+
         toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, originalPosition + (tempPos), ref camVelocity, smoothing);
 
         toBob.transform.localEulerAngles += new Vector3(0,0, -tempPos.x * 0.5f );
-        //toBob.transform.localEulerAngles += Vector3.SmoothDamp(toBob.localEulerAngles, new Vector3(0, 0, -tempPos.x * 0.5f), ref camRotVelocity, smoothing);
+
     }
 
 private void HandBob()
     {
-        //hand.localPosition = originalHandPosition + (tempPos * 0.3f);
         hand.localPosition = Vector3.SmoothDamp(hand.localPosition, originalHandPosition + (tempPos * 0.3f), ref handVelocity, smoothing);
     }
 

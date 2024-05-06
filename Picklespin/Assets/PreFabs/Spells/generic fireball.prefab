@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 1250395660635522415}
   - component: {fileID: 466317432375677160}
   - component: {fileID: -6051330145731548996}
+  - component: {fileID: 7520822979644434691}
   m_Layer: 0
   m_Name: Generic Fireball
   m_TagString: Untagged
@@ -147,10 +148,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CastingParticle: {fileID: 7949908593669574268, guid: 3c0d6ca3c8cd9a645866f0c2d47d564d, type: 3}
-  damage: 77
+  damage: 20
   magickaCost: 20
   speed: 30
   myCooldown: 2
+  castDuration: 1
+  destroyOnHit: 1
   spawnInHandParticle: {fileID: 4342817449807727369, guid: 4fb8136e8035fc4468f5f5b3c86336f7, type: 3}
   explosionFX: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
   castSound:
@@ -174,9 +177,9 @@ MonoBehaviour:
       Data3: -745530716
       Data4: -2104198156
     Path: event:/PLACEHOLDER_UNCZ/spellHit
-  handCastingPoint: {fileID: 0}
-  castDuration: 1
+  setOnFire: {fileID: 7520822979644434691}
   iWillBeCritical: 0
+  hitSomething: 0
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5098,3 +5101,27 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &7520822979644434691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce318fb99ca6bf48b015a2035e77313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectAudio:
+    Guid:
+      Data1: 415102918
+      Data2: 1145276465
+      Data3: 395432623
+      Data4: -2120870790
+    Path: event:/PLACEHOLDER_UNCZ/set_on_fire_loop
+  ParticleObject: {fileID: 88596927381914609, guid: 79650234c7dae354aadbadc903906c57, type: 3}
+  killedByBurnEffect: {fileID: 5085288267478614331, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+  effectParticle: {fileID: 0}
+  howMuchDamageIdeal: 20
+  countdownTimer: 0

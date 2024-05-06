@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -5,20 +6,37 @@ public class StateManager : MonoBehaviour
 
    public State currentState;
    [HideInInspector] public AiVision aiVision;
-    public AiHealth aiHealth;
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
- 
+
+    private float randomTimeOffset;
+    private float actualRefreshRate;
+
+    private void Awake()
+    {
+        aiVision = GetComponent<AiVision>();
+    }
     void Start()
     {
-      InvokeRepeating("RunStateMachine",0 , RefreshEveryVarSeconds);
-        aiVision = GetComponent<AiVision>();
+        StartCoroutine(RefreshAI());
+        randomTimeOffset = Random.Range(0, 0.05f);
+        actualRefreshRate = RefreshEveryVarSeconds + randomTimeOffset;
+    }
+
+
+    private IEnumerator RefreshAI()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(actualRefreshRate);
+
+            //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
+            RunStateMachine();
+        }
     }
 
     private void RunStateMachine()
     {
-        if (aiHealth.hp > 0)
-        {
             State nextState = currentState?.RunCurrentState();
             aiVision.FieldOfViewCheck();
 
@@ -27,7 +45,7 @@ public class StateManager : MonoBehaviour
             {
                 SwitchToTheNextState(nextState);
             }
-        }
+        
     }
 
     private void SwitchToTheNextState(State nextState)

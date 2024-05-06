@@ -1,12 +1,9 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using Unity.VisualScripting;
 
 public class Bullet : MonoBehaviour
 {
-
-    public GameObject CastingParticle;
 
     private int originalDamage;
 
@@ -28,32 +25,38 @@ public class Bullet : MonoBehaviour
     public EventReference pullupSound;
     [SerializeField] private EventReference hitSound;
     [SerializeField] private EventInstance hitInstance;
+    [Tooltip("long casting particle")] public GameObject CastingParticle;
+
+    [Header("Special Effects")]
+    [SerializeField] private SetOnFire setOnFire;
 
     private Transform mainCamera;
-    private CameraShake cameraShake;
 
     private Transform handCastingPoint;
 
-    private DamageUI damageUI;
+    [Header("References")]
     private AiHealthUiBar aiHealthUI;
+    private CameraShake cameraShake;
+    private DamageUI_Spawner damageUiSpawner;
 
 
     [Header("Misc")]
-    public bool iWillBeCritical;
-    public bool hitSomething = false;
+    [HideInInspector] public bool iWillBeCritical;
+    [HideInInspector] public bool hitSomething = false;
+    private bool wasLastHitCritical = false;
 
 
     void Awake()
     {
         Destroy(gameObject,10);
         originalDamage = damage;
-        cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>();
+        cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>(); //replace it, tag is very inefficient
         handCastingPoint = GameObject.FindGameObjectWithTag("CastingPoint").GetComponent<Transform>();
-        damageUI = GameObject.FindGameObjectWithTag("DamageUI").GetComponent<DamageUI>();
     }
 
     private void Start()
     {
+        damageUiSpawner = DamageUI_Spawner.instance;
         RuntimeManager.PlayOneShot(castSound);
         Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
         transform.localEulerAngles = new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360));
@@ -66,25 +69,29 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject)
         {
             hitSomething = true;
-            damageUI.gameObject.SetActive(true);
-
 
             aiHealth = collision.gameObject.GetComponent<AiHealth>();
-            aiVision = collision.gameObject.GetComponent<AiVision>();
-            aiHealthUI = collision.gameObject.GetComponent<AiHealthUiBar>(); //make it execute only when new enemy is hit
 
 
             if (aiHealth != null) //Hit Registered
             {
+                aiVision = collision.gameObject.GetComponent<AiVision>();
+                aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
+
                 RandomizeCritical();
 
-                damageUI.myText.enabled = true;
-                damageUI.myText.text = ("- " + damage);
-                damageUI.whereIshouldGo = collision.transform.position + new Vector3(0, 2.4f, 0);
-                damageUI.transform.position = damageUI.whereIshouldGo;
-                damageUI.AnimateDamageUI();
-
                 aiHealth.hp -= damage;
+
+                damageUiSpawner.Spawn(collision.transform.position, damage, wasLastHitCritical);
+
+                if (aiHealth.hp <= 0) {
+                    collision.collider.enabled = false;
+                    aiHealth.deathEvent.Invoke();
+                }
+                else
+                {
+                    ApplySpecialEffect(collision);
+                }
 
                 if (aiHealthUI != null) {
                     aiHealthUI.RefreshBar();
@@ -92,11 +99,6 @@ public class Bullet : MonoBehaviour
 
                 HitGetsYouNoticed();
 
-                if (aiHealth.hp <= 0) //Death
-                {
-                    aiHealth.hp = 0;
-                    aiHealth.deathEvent.Invoke();
-                }
             }
 
         }
@@ -107,18 +109,40 @@ public class Bullet : MonoBehaviour
     }
 
 
+    private void ApplySpecialEffect(Collision collision)
+    {
+        if (setOnFire != null)
+        {
+            var addedEffect = collision.gameObject.GetComponent<SetOnFire>();
+
+            if (addedEffect == null)
+            {
+                addedEffect = collision.gameObject.AddComponent<SetOnFire>();
+                addedEffect.effectAudio = setOnFire.effectAudio;
+                addedEffect.ParticleObject = setOnFire.ParticleObject;
+                addedEffect.killedByBurnEffect = setOnFire.killedByBurnEffect;
+                addedEffect.StartFire();
+            }
+            else
+            {
+                addedEffect.ResetCountdowns();
+            }
+        }
+    }
+
+
     private void RandomizeCritical()
     {
         if (Random.Range(0,10) >= 9 || iWillBeCritical) // 1/10 chance of doubling the damage OR when low on magicka (iWillBeCritical is then set to true by Attack script)
         {
             damage = originalDamage * 4;
-            damageUI.WhenCritical();
+            wasLastHitCritical = true;
             RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
         }
         else
         {
             damage = originalDamage;
-            damageUI.WhenNotCritical();
+            wasLastHitCritical = false;
         }
     }
 
@@ -129,7 +153,6 @@ public class Bullet : MonoBehaviour
         {
             aiVision.hitMeCooldown = 10;
             aiVision.playerJustHitMe = true;
-            //aiVision.PlayerJustHitMeCooldown();
         }
     }
 

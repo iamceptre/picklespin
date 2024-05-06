@@ -8,7 +8,7 @@ public class LookAtY : MonoBehaviour
     {
         if (whatToLookAt == null)
         {
-            whatToLookAt = GameObject.FindGameObjectWithTag("MainCamera").transform;
+            whatToLookAt = Camera.main.transform;
         }
     }
 
