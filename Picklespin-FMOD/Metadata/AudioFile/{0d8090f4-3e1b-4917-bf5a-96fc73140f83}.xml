@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{0d8090f4-3e1b-4917-bf5a-96fc73140f83}">
+		<property name="assetPath">
+			<value>In_Game/Player/Movement/Footsteps/Concrete/Sneak/FS_S_7.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

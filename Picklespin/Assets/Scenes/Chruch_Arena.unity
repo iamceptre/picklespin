@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1669240188}
-  m_IndirectSpecularColor: {r: 0.14222455, g: 0.1620763, b: 0.2384735, a: 1}
+  m_IndirectSpecularColor: {r: 0.14222416, g: 0.16207662, b: 0.23847353, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -37387,11 +37387,11 @@ MonoBehaviour:
   cameraBob: {fileID: 1219504549}
   FootstepEvent:
     Guid:
-      Data1: -410005874
-      Data2: 1253412229
-      Data3: -20814676
-      Data4: 1395785872
-    Path: event:/FS/SPRINT/GRATE/FS_SPRINT_GRATE
+      Data1: 548234927
+      Data2: 1285259886
+      Data3: -1830773072
+      Data4: -1623151415
+    Path: event:/PLAYER/MOVEMENT/FS/FS
   JumpEvent:
     Guid:
       Data1: -1106843415
@@ -37751,18 +37751,18 @@ MonoBehaviour:
   hearingRange: {fileID: 1636884996}
   landSoft:
     Guid:
-      Data1: 1182155550
-      Data2: 1287779335
-      Data3: 134303365
-      Data4: -1355438363
-    Path: event:/PLACEHOLDER_UNCZ/land_soft
+      Data1: -1968101940
+      Data2: 1282864544
+      Data3: 1412082085
+      Data4: -1001601851
+    Path: event:/PLAYER/MOVEMENT/JUMP/LAND/LAND_LOW
   landHard:
     Guid:
-      Data1: 1025499154
-      Data2: 1165153387
-      Data3: -1160651608
-      Data4: 1802532623
-    Path: event:/PLACEHOLDER_UNCZ/land_hard
+      Data1: 2007143140
+      Data2: 1341616359
+      Data3: -1358015316
+      Data4: 1681319050
+    Path: event:/PLAYER/MOVEMENT/JUMP/LAND/LAND_HIGH
 --- !u!114 &1219504551
 MonoBehaviour:
   m_ObjectHideFlags: 0

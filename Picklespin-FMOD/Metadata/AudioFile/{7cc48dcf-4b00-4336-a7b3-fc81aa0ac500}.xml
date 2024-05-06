@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7cc48dcf-4b00-4336-a7b3-fc81aa0ac500}">
+		<property name="assetPath">
+			<value>In_Game/Player/Movement/Clothes/Walk/C_W_5.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.5</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

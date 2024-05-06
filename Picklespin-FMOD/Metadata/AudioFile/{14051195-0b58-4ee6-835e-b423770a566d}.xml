@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{14051195-0b58-4ee6-835e-b423770a566d}">
+		<property name="assetPath">
+			<value>In_Game/Player/Movement/Footsteps/Concrete/Jump_Low/FS_JL_4.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.625</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>
