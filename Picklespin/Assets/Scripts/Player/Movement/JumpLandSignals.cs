@@ -7,7 +7,7 @@ public class JumpLandSignals : MonoBehaviour
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private FootstepSystem footstepSystem;
-    [SerializeField] private PlayerMovement playerMovement;
+    private PlayerMovement playerMovement;
     [SerializeField] private HearingRange hearingRange;
 
     private bool landed = true;
@@ -20,11 +20,15 @@ public class JumpLandSignals : MonoBehaviour
 
     private bool skipFirstSound;
 
+    private bool isFallingLongEnough = true;
+
+    private IEnumerator fallingTimerRoutine;
 
     private void Start()
     {
         skipFirstSound = true;
         speedometer = CharacterControllerVelocity.instance;
+        playerMovement = PlayerMovement.instance;  
     }
 
     private void Update()
@@ -40,9 +44,28 @@ public class JumpLandSignals : MonoBehaviour
         }
         else
         {
+            if (landed)
+            {
+                RoutineTimerManager();
+            }
+
             landed = false;
             cameraShake.landShakeStrenght = Mathf.Clamp(speedometer.verticalVelocity * 0.4f, 0, 10);
         }
+    }
+
+
+    private void RoutineTimerManager()
+    {
+        isFallingLongEnough = false;
+        if (fallingTimerRoutine != null)
+        {
+            StopCoroutine(fallingTimerRoutine);
+            fallingTimerRoutine = null;
+        }
+
+        fallingTimerRoutine = FallingTimer(0.5f);
+        StartCoroutine(fallingTimerRoutine);
     }
 
     private void Landed()
@@ -51,7 +74,7 @@ public class JumpLandSignals : MonoBehaviour
         if (!routineRunning && !landed && speedometer.verticalVelocity > 0.5f)
         {
                 StartCoroutine(LandedCooldown());
-            //Debug.Log("Falling Velocity is " + cameraShake.landShakeStrenght);
+
             if (!skipFirstSound)
             {
                 isLandingHardDecider();
@@ -64,6 +87,12 @@ public class JumpLandSignals : MonoBehaviour
         }
     }
 
+    private IEnumerator FallingTimer(float neededFallTime)        //lets the landing sound play only if falling is greather than ...
+    {
+        yield return new WaitForSeconds(neededFallTime);
+        isFallingLongEnough = true;
+    }
+
 
     private IEnumerator LandedCooldown()
     {
@@ -74,14 +103,21 @@ public class JumpLandSignals : MonoBehaviour
 
     private void isLandingHardDecider()
     {
-        if (speedometer.verticalVelocity >= 10) //is landing hard treshold
+        if (isFallingLongEnough)
         {
-            RuntimeManager.PlayOneShot(landHard);
+            isFallingLongEnough = false;
+
+            if (speedometer.verticalVelocity >= 10) //is landing hard treshold
+            {
+                RuntimeManager.PlayOneShot(landHard);
+            }
+            else
+            {
+                RuntimeManager.PlayOneShot(landSoft);
+            }
+
         }
-        else
-        {
-            RuntimeManager.PlayOneShot(landSoft);
-        }
+
     }
 
 }

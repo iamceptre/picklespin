@@ -11,6 +11,10 @@ public class DamageUI_V2 : MonoBehaviour
     private float damageUIstartFontSize;
 
 
+
+    private Color criticalColor = new Color(255, 215, 0);
+
+
     private void Awake()
     {
         myText = GetComponent<TMP_Text>();
@@ -30,19 +34,28 @@ public class DamageUI_V2 : MonoBehaviour
         if (isCritical)
         {
             myText.text = "- <b>" + howMuchDamageDealt;
-            myText.color = new Color(255, 215, 0);
+            myText.color = criticalColor;
             myText.fontSize = damageUIstartFontSize * 1.618f;
         }
         else
         {
             myText.text = "- " + howMuchDamageDealt;
-            myText.color = damageUIstartColor;
+            FadeInFlashColor();
+            //myText.color = damageUIstartColor;
             myText.fontSize = damageUIstartFontSize;
         }
 
         myText_Transform.DOMoveY(whereIshouldGo.y + 2, 1.2f).SetEase(Ease.InSine);
         myText_Transform.DOScale(new Vector3(-1.62f, 1.62f, 1.62f), 1.2f).SetEase(Ease.InSine);
         myText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
+    }
+
+
+    private void FadeInFlashColor()
+    {
+        myText.color = Color.white;
+        myText.DOKill();
+        myText.DOColor(damageUIstartColor, 0.5f);
     }
 
 
