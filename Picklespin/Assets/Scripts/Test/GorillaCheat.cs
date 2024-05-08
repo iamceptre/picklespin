@@ -8,7 +8,12 @@ public class GorillaCheat : MonoBehaviour
 
     [SerializeField] private GameObject gorilla;
 
-    [SerializeField] private CheatActivatedFeedback cheatActivatedFeedback;
+    private CheatActivatedFeedback cheatActivatedFeedback;
+
+    private void Start()
+    {
+        cheatActivatedFeedback = CheatActivatedFeedback.instance;
+    }
 
     void Update()
     {

@@ -6,9 +6,24 @@ using UnityEngine;
 
 public class CheatActivatedFeedback : MonoBehaviour
 {
+    public static CheatActivatedFeedback instance;
+
     [SerializeField] private EventReference cheatCodeSound;
     [SerializeField] private TMP_Text cheatText;
     [SerializeField] private GameObject cheatPanel;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
     public void Do(string cheatName)
     {
         RuntimeManager.PlayOneShot(cheatCodeSound);

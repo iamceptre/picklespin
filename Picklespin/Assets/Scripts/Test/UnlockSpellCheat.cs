@@ -6,8 +6,13 @@ public class UnlockSpellCheat : MonoBehaviour
     [SerializeField] private UnlockedSpells unlockedSpells;
     [SerializeField] private Ammo ammo;
 
-    [SerializeField] private CheatActivatedFeedback cheatActivatedFeedback;
-    
+    private CheatActivatedFeedback cheatActivatedFeedback;
+
+    private void Start()
+    {
+        cheatActivatedFeedback = CheatActivatedFeedback.instance;
+    }
+
     void Update()
     {
 
