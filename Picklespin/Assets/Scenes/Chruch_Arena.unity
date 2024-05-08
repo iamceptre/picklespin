@@ -36849,7 +36849,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unlockedSpells: {fileID: 1219504551}
   ammo: {fileID: 1219504547}
-  cheatActivatedFeedback: {fileID: 821301423}
 --- !u!114 &821301422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36863,7 +36862,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gorilla: {fileID: 45826089}
-  cheatActivatedFeedback: {fileID: 821301423}
 --- !u!114 &821301423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52307,6 +52305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb2e0ebb4956c340ae8b8ee4e35c879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  howMuchAmmoAngelGives: 100
   minigame: {fileID: 519067404}
   healboost: 1
   hand: {fileID: 1569683174}
@@ -53563,6 +53562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angelHeal: {fileID: 1219504546}
   angelHPGUI: {fileID: 519067401}
+  minigame: {fileID: 519067404}
 --- !u!114 &1248664959
 MonoBehaviour:
   m_ObjectHideFlags: 0

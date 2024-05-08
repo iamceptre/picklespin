@@ -8,7 +8,7 @@ public class AngelHeal : MonoBehaviour
 {
 
     private Ammo ammo;
-    private int howMuchAmmoAngelGives = 100;
+    [SerializeField] private int howMuchAmmoAngelGives = 100;
 
     [SerializeField] AngelHealingMinigame minigame;
     [HideInInspector] public float healboost = 1;
@@ -190,16 +190,17 @@ public class AngelHeal : MonoBehaviour
 
     private void Healed()
     {
+        angel.healed = true;
         GiveMana();
         HealingParticleStop();
-        angelHPSlider.gameObject.SetActive(false);
-        minigame.enabled = false;
+
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
         handRenderer.material = handOGMaterial;
-        angel.healed = true;
         floatUpDown.enabled = false;
         angel.StartCoroutine(angel.AfterHealedAction());
+        minigame.enabled = false;
+        angelHPSlider.gameObject.SetActive(false);
         canPlayEvent = true; //this should always be at the end of this event
     }
 
