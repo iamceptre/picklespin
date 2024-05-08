@@ -1,115 +1,130 @@
 using System.Collections;
 using UnityEngine;
 using FMODUnity;
+using FMOD.Studio;
 
 public class FootstepSystem : MonoBehaviour
 {
+    public static FootstepSystem instance { private set; get; }
+
+
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private CameraBob cameraBob;
 
-    [SerializeField] private EventReference FootstepEvent;
-    [SerializeField] private EventReference JumpEvent;
+    [SerializeField] private EventReference footstepEvent;
+    public EventInstance footstepInstance;
+    [SerializeField] private EventReference jumpEvent;
+
+    private IEnumerator footstepTimerRoutine;
 
 
     [SerializeField] private bool isstepping;
 
-    private bool routineRunning = false;
+    private bool isRoutineRunning = false;
 
-    private float fixedFootstepSpace;
+    public float fixedFootstepSpace;
+    private float cachedFixedFootstepSpace;
 
-    [Range(0, 1)] public float footstepSpaceCooldown;
+    [HideInInspector] public bool isFootstepIgnored = false;
 
-    private bool isCasting;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        fixedFootstepSpace = 0.6f; //walk speed
+        footstepTimerRoutine = FootstepTimer();
+        cachedFixedFootstepSpace = fixedFootstepSpace;
+        footstepInstance = RuntimeManager.CreateInstance(footstepEvent);
+    }
 
     private void Update()
     {
-
-        
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if (playerMovement.anyMovementKeysPressed == true && controller.isGrounded) //after making state character controller, replace this if with just call from a given movement state class
         {
-            FootstepCooldownCalculus();
-        }
-        else
-        {
-            footstepSpaceCooldown = 0f;
-        }
-       
-
-        UpdateTimings();
-
-    }
-
-    private void UpdateTimings()
-    {
-        if (!isCasting)
-        {
-            fixedFootstepSpace = 0.8f; //crouch speed
-
-            if (!Input.GetKey(KeyCode.C))
+            if (!isRoutineRunning)
             {
-                fixedFootstepSpace = (playerMovement.isRunning ? 0.22f : 0.6f); // run or walk speed
-            }
-
-            if (cameraBob.bobSpeed != 0)
-            {
-                cameraBob.bobSpeed = 2 / (fixedFootstepSpace);
+                isRoutineRunning = true;
+                StartCoroutine(footstepTimerRoutine);
             }
         }
         else
         {
-            fixedFootstepSpace = 0.8f;
-            cameraBob.bobSpeed = 2 / (fixedFootstepSpace);
+            StopCoroutine(footstepTimerRoutine);
+            isRoutineRunning = false;
         }
-    }
-
-    public void SlowDownDuringCasting()
-    {
-        isCasting = true;
-    }
-
-    public void SpeedMeBackUp()
-    {
-        isCasting = false;
-    }
 
 
-    void FootstepCooldownCalculus()
-    {
-        if (controller.isGrounded)
+        if (fixedFootstepSpace != cachedFixedFootstepSpace)
         {
-            if (footstepSpaceCooldown > 0)
+            RefreshFootstepTimer();
+        }
+
+        cachedFixedFootstepSpace = fixedFootstepSpace;
+
+    }
+
+    private IEnumerator FootstepTimer()
+    {
+        while (isRoutineRunning) {
+            if (playerMovement.anyMovementKeysPressed == true)
             {
-                footstepSpaceCooldown -= Time.deltaTime / fixedFootstepSpace; //and change it to smooth too, when you fix the issue 
+                PlayFoostepSound();
+                yield return new WaitForSeconds(fixedFootstepSpace);
             }
             else
             {
-                StartCoroutine(SendStepSignalAsync());
-                routineRunning = false;
-                footstepSpaceCooldown = 1;
+                footstepInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
-        else
+    }
+
+
+
+    private void PlayFoostepSound()
+    {
+        if (!isFootstepIgnored)
         {
-            footstepSpaceCooldown = 0.3f; //resets the countdown when in air, so after landing, you get consistent rhythm
+            footstepInstance.start();
         }
     }
 
 
-    public IEnumerator SendStepSignalAsync()
+    public IEnumerator IgnoreOneFootstep()
     {
-        if (!routineRunning)
+        if (playerMovement.anyMovementKeysPressed)
         {
-            routineRunning = true;
-            RuntimeManager.PlayOneShot(FootstepEvent);
-            yield return new WaitForSeconds(Random.Range(0.0f, 0.032f)); //Humanizes footstep rhythm
-            routineRunning = false;
+            isFootstepIgnored = true;
+            yield return null;
+            isFootstepIgnored = false;
         }
     }
 
-    public IEnumerator SendJumpSignal()
+
+
+    public void RefreshFootstepTimer()
     {
-        RuntimeManager.PlayOneShot(JumpEvent);
+        if (playerMovement.anyMovementKeysPressed && controller.isGrounded) {
+            isRoutineRunning = false;
+            StopCoroutine(footstepTimerRoutine);
+            isRoutineRunning = true;
+            StartCoroutine(footstepTimerRoutine);
+        }
+    }
+
+    public IEnumerator SendJumpSignal() //change it to void tf
+    {
+        RuntimeManager.PlayOneShot(jumpEvent);
         yield return null;
     }
 

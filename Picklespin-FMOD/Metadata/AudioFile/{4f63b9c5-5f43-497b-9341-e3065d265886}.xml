@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{368bd689-e4bc-44ee-82ee-ac47528ccbe6}">
+	<object class="AudioFile" id="{4f63b9c5-5f43-497b-9341-e3065d265886}">
 		<property name="assetPath">
-			<value>Clothes/Sneak/C_S_3.wav</value>
+			<value>In_Game/Impulse_Responses/Church/IR_CHURCH_MAIN_HALL_OPEN_SHORTER.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
@@ -11,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>0.59375</value>
+			<value>2.7943750000000001</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>

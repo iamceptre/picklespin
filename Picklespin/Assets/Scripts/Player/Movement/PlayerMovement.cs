@@ -2,21 +2,23 @@ using System.Collections;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
-
     [HideInInspector] public static PlayerMovement instance { get; private set; } 
 
 
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform body;
-    [SerializeField] private FootstepSystem footstepSystem;
+    private FootstepSystem footstepSystem;
     [SerializeField] private StaminaBarDisplay staminaBarDisplay;
     [SerializeField] private Bhop bhop;
+    private CameraBob cameraBob;
 
     public float walkSpeed;
     public float runSpeed;
     public float crouchSpeed;
 
     private bool isSlowedDown = false;
+
+    
 
     public float jumpPower;
     private float gravity = 10;
@@ -36,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Stats")]
     public float fatigability = 32; //lower the fatigability to sprint for longer
 
-    private void Awake() //SINGLETON ! :D
+    private void Awake()
     {
         if (instance != null && instance != this )
         {
@@ -51,18 +53,62 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        footstepSystem = GetComponent<FootstepSystem>();
+        footstepSystem = FootstepSystem.instance;
         speedometer = CharacterControllerVelocity.instance;
+        cameraBob = CameraBob.instance;
+        movementStateForFMOD = 1;
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
+        footstepSystem.fixedFootstepSpace = 0.6f;//walk speed
+        SetCameraBobSpeed();
+
     }
 
     public void SlowMeDown()
     {
+        SetSneakSingleTick();
         isSlowedDown = true;
     }
 
     public void SpeedMeBackUp()
     {
+        SetWalkSingleTick();
         isSlowedDown = false;
+    }
+
+    private void SetWalkSingleTick()
+    {
+        if (movementStateForFMOD != 1 && !Input.GetKey(KeyCode.C) && anyMovementKeysPressed)
+        {
+            movementStateForFMOD = 1;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
+            footstepSystem.fixedFootstepSpace = 0.6f;//walk speed
+            SetCameraBobSpeed();
+            isRunning = false;
+        }
+    }
+
+    private void SetRunSingleTick()
+    {
+        if (movementStateForFMOD != 2 && stamina > 5 && anyMovementKeysPressed)
+        {
+            movementStateForFMOD = 2;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
+            footstepSystem.fixedFootstepSpace = 0.22f; //run speed
+            SetCameraBobSpeed();
+            isRunning = true;
+        }
+    }
+
+    private void SetSneakSingleTick()
+    {
+        if (movementStateForFMOD != 0 && anyMovementKeysPressed)
+        {
+            movementStateForFMOD = 0;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
+            footstepSystem.fixedFootstepSpace = 0.8f; //sneak speed
+            SetCameraBobSpeed();
+            isRunning = false;
+        }
     }
 
     void Update()
@@ -85,20 +131,18 @@ public class PlayerMovement : MonoBehaviour
         {
             if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
-                movementStateForFMOD = 2;
-                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
-                isRunning = true;
+                SetRunSingleTick();
                 StaminaDeplete();
             }
             else
             {
-                isRunning = false;
+                SetWalkSingleTick();
                 StaminaRecovery();
             }
         }
         else
         {
-            isRunning = false;
+            SetWalkSingleTick();
             StaminaRecovery();
         }
 
@@ -130,26 +174,37 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKey(KeyCode.C) && canMove || isSlowedDown)
+        if (Input.GetKeyDown(KeyCode.C) && canMove || isSlowedDown)
         {
-            movementStateForFMOD = 0;
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
+            SetSneakSingleTick();
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
         }
-        else
+
+        if (Input.GetKeyUp(KeyCode.C) && canMove || isSlowedDown)
         {
-            if (!isRunning) {
-                movementStateForFMOD = 1;
-                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
+            if (!isRunning)
+            {
+                SetWalkSingleTick();
             }
             characterController.height = defaultHeight;
-                walkSpeed = 6f;
-                runSpeed = 12f;
+            walkSpeed = 6f;
+            runSpeed = 12f;
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
+
+
+    }
+
+
+    private void SetCameraBobSpeed()
+    {
+        if (cameraBob.bobSpeed != 0)
+        {
+            cameraBob.bobSpeed = 2 / (footstepSystem.fixedFootstepSpace);
+        }
     }
 
 
@@ -159,6 +214,7 @@ public class PlayerMovement : MonoBehaviour
         stamina = Mathf.Clamp(stamina, 0, 100);
         if (stamina <= 0)
         {
+            SetWalkSingleTick();
             isRunning = false;
         }
         staminaBarDisplay.RefreshBarDisplay();
@@ -186,6 +242,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+        footstepSystem.footstepInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         if (bhop != null && bhop.canBhop)
         {
             BhopJump();

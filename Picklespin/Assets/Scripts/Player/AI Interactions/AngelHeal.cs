@@ -71,12 +71,10 @@ public class AngelHeal : MonoBehaviour
         Vector3 direction = Vector3.forward;
         Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(direction * range));
 
-
         if (Physics.Raycast(ray, out RaycastHit hit, range) || healboost == 0)
         {
             if (hit.collider.tag == "Angel" && !isAimingAtAngel && !angel.healed)
             {
-                currentAngel = hit.collider.gameObject;
                 StopAllCoroutines();
                 StartCoroutine(StartAiming());
             }
@@ -215,8 +213,3 @@ public class AngelHeal : MonoBehaviour
     }
 
 }
-
-
-
-
-//Make the whole script activate only when close to an angel for an optimisation reasons

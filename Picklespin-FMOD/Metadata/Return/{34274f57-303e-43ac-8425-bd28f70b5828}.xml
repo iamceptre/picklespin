@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerReturn" id="{34274f57-303e-43ac-8425-bd28f70b5828}">
+		<property name="name">
+			<value>Church_Reverb_Main_Hall</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{6c44fb0a-2604-402c-8c7a-a8389f2f033b}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{c2bcec46-1539-4dad-84d1-748fd5e8f046}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{6c44fb0a-2604-402c-8c7a-a8389f2f033b}">
+		<relationship name="effects">
+			<destination>{52b27eb7-3c6d-480a-a68b-09357993248b}</destination>
+			<destination>{40a69689-bf1a-4feb-a9fc-c2e9b8eeeb54}</destination>
+			<destination>{eb8bc034-fe59-4ddc-8e5f-6416b6038ef4}</destination>
+			<destination>{62eaf4e6-4b36-4880-b055-d7a180be304b}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{c2bcec46-1539-4dad-84d1-748fd5e8f046}" />
+	<object class="DelayEffect" id="{52b27eb7-3c6d-480a-a68b-09357993248b}">
+		<property name="delay">
+			<value>42</value>
+		</property>
+		<property name="feedback">
+			<value>0</value>
+		</property>
+		<property name="dryLevel">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="ThreeEQEffect" id="{40a69689-bf1a-4feb-a9fc-c2e9b8eeeb54}">
+		<property name="lowGain">
+			<value>-11</value>
+		</property>
+		<property name="lowCrossover">
+			<value>140</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
+	<object class="ConvolutionReverbEffect" id="{eb8bc034-fe59-4ddc-8e5f-6416b6038ef4}">
+		<property name="endFrame">
+			<value>131552</value>
+		</property>
+		<relationship name="referenceableData">
+			<destination>{4f63b9c5-5f43-497b-9341-e3065d265886}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusFader" id="{62eaf4e6-4b36-4880-b055-d7a180be304b}" />
+</objects>

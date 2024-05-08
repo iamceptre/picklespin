@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{a89b5490-c709-4de0-8468-c055f3ac668b}">
 		<property name="assetPath">
-			<value>IR/Mountains, distant.wav</value>
+			<value>In_Game/Impulse_Responses/Mountains, distant.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

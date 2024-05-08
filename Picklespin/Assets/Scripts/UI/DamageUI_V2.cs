@@ -55,7 +55,7 @@ public class DamageUI_V2 : MonoBehaviour
     {
         myText.color = Color.white;
         myText.DOKill();
-        myText.DOColor(damageUIstartColor, 0.5f);
+        myText.DOColor(damageUIstartColor, 0.15f);
     }
 
 

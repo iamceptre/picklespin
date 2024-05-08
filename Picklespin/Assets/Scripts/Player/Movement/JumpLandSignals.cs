@@ -73,11 +73,13 @@ public class JumpLandSignals : MonoBehaviour
 
         if (!routineRunning && !landed && speedometer.verticalVelocity > 0.5f)
         {
-                StartCoroutine(LandedCooldown());
+            StartCoroutine(LandedCooldown());
 
             if (!skipFirstSound)
             {
                 isLandingHardDecider();
+                footstepSystem.RefreshFootstepTimer();
+                footstepSystem.StartCoroutine(footstepSystem.IgnoreOneFootstep());
             }
                 skipFirstSound = false;
                 cameraShake.LandCameraShake();
