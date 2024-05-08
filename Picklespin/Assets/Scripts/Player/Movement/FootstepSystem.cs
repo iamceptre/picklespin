@@ -79,8 +79,9 @@ public class FootstepSystem : MonoBehaviour
         while (isRoutineRunning) {
             if (playerMovement.anyMovementKeysPressed == true)
             {
+                float randomHumanize = Random.Range(0, 0.032f);
                 PlayFoostepSound();
-                yield return new WaitForSeconds(fixedFootstepSpace);
+                yield return new WaitForSeconds(fixedFootstepSpace + randomHumanize);
             }
             else
             {

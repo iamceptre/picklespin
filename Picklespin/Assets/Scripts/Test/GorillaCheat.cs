@@ -8,6 +8,8 @@ public class GorillaCheat : MonoBehaviour
 
     [SerializeField] private GameObject gorilla;
 
+    [SerializeField] private CheatActivatedFeedback cheatActivatedFeedback;
+
     void Update()
     {
         if (Input.anyKeyDown && targetIndex < targetWord.Length)
@@ -44,6 +46,7 @@ public class GorillaCheat : MonoBehaviour
 
     void ActivateCheat()
     {
+        cheatActivatedFeedback.Do("gorilla");
        gorilla.SetActive(true);
        enabled = false;
     }

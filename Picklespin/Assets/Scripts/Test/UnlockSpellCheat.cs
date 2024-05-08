@@ -1,5 +1,4 @@
 using UnityEngine;
-using FMODUnity;
 
 public class UnlockSpellCheat : MonoBehaviour
 {
@@ -7,7 +6,7 @@ public class UnlockSpellCheat : MonoBehaviour
     [SerializeField] private UnlockedSpells unlockedSpells;
     [SerializeField] private Ammo ammo;
 
-    [SerializeField] private EventReference cheatCodeSound;
+    [SerializeField] private CheatActivatedFeedback cheatActivatedFeedback;
     
     void Update()
     {
@@ -17,20 +16,20 @@ public class UnlockSpellCheat : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 unlockedSpells.UnlockASpell(2);
-                RuntimeManager.PlayOneShot(cheatCodeSound);
+                cheatActivatedFeedback.Do("unlock light spell");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 unlockedSpells.UnlockASpell(1);
-                RuntimeManager.PlayOneShot(cheatCodeSound);
+                cheatActivatedFeedback.Do("unlock fireball");
             }
 
 
             if (Input.GetKeyDown(KeyCode.M))
             {
                 ammo.ammo = ammo.maxAmmo;
-                RuntimeManager.PlayOneShot(cheatCodeSound);
+                cheatActivatedFeedback.Do("full mana");
             }
         }
 
