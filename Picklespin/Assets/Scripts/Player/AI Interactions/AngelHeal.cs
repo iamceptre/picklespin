@@ -68,37 +68,43 @@ public class AngelHeal : MonoBehaviour
 
     void Update()
     {
-        Vector3 direction = Vector3.forward;
-        Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(direction * range));
+        if (!minigame.boosted) {
+            Vector3 direction = Vector3.forward;
+            Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(direction * range));
 
-        if (Physics.Raycast(ray, out RaycastHit hit, range) || healboost == 0)
-        {
-            if (hit.collider.tag == "Angel" && !isAimingAtAngel && !angel.healed)
+            if (Physics.Raycast(ray, out RaycastHit hit, range) || healboost == 0)
+            {
+                if (hit.collider.tag == "Angel" && !isAimingAtAngel && !angel.healed)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(StartAiming());
+                }
+
+            }
+            else
             {
                 StopAllCoroutines();
-                StartCoroutine(StartAiming());
+                StartCoroutine(StopAiming());
             }
 
+            if (Input.GetKey(KeyCode.Mouse1) && isAimingAtAngel && !angel.healed || healboost == 0)
+            {
+                Healing();
+            }
+            else //if stop healing mid-through
+            {
+                HealingParticleStop();
+                angelHPSlider.gameObject.SetActive(false);
+                minigame.enabled = false;
+                healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                healingBeamInstance.release();
+                floatUpDown.enabled = false;
+                canPlayEvent = true; //this should always be at the end of this event
+            }
         }
         else
         {
-            StopAllCoroutines();
-            StartCoroutine(StopAiming());
-        }
-
-        if (Input.GetKey(KeyCode.Mouse1) && isAimingAtAngel && !angel.healed || healboost == 0)
-        {
             Healing();
-        }
-        else //if stop healing mid-through
-        {
-            HealingParticleStop();
-            angelHPSlider.gameObject.SetActive(false);
-            minigame.enabled = false;
-            healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            healingBeamInstance.release();
-            floatUpDown.enabled = false;
-            canPlayEvent = true; //this should always be at the end of this event
         }
 
     }

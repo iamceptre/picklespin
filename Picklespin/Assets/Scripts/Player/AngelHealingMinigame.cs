@@ -22,7 +22,7 @@ public class AngelHealingMinigame : MonoBehaviour
     [SerializeField] private Image turboArea;
     private Color turboAreaColor;
 
-    private bool boosted = false;
+    public bool boosted = false;
     private bool missed = false;
     private bool tooLate = false;
 
