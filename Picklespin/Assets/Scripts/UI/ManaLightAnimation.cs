@@ -25,7 +25,7 @@ public class ManaLightAnimation : MonoBehaviour
         }
     }
 
-    public void LightAnimation(float howMuchWasGiven)
+    public void LightAnimation(float howMuchWasGiven, bool maxxed)
     {
         manaLight.enabled = true;
         manaLight.DOKill();
@@ -36,7 +36,7 @@ public class ManaLightAnimation : MonoBehaviour
 
         if (manaPlusPlus != null)
         {
-            ManaPlusPlusAnimation(howMuchWasGiven);
+            ManaPlusPlusAnimation(howMuchWasGiven, maxxed);
         }
 
     }
@@ -52,16 +52,28 @@ public class ManaLightAnimation : MonoBehaviour
         manaLight.enabled = false;
     }
 
-    private void ManaPlusPlusAnimation(float howMuchWasGiven)
+    private void ManaPlusPlusAnimation(float howMuchWasGiven, bool maxxed)
     {
+        manaPlusPlus.color = new Color(manaPlusPlus.color.r, manaPlusPlus.color.g, manaPlusPlus.color.b, 0);
         manaPlusPlus.enabled = true;
-        manaPlusPlus.text = "<b>+ " + howMuchWasGiven;
+        manaPlusPlus.color = new Color(manaPlusPlus.color.r, manaPlusPlus.color.g, manaPlusPlus.color.b, 0);
+
+        if (maxxed)
+        {
+            manaPlusPlus.text = "<b>+ " + howMuchWasGiven + "</b> *";
+        }
+        else
+        {
+            manaPlusPlus.text = "<b>+ " + howMuchWasGiven;
+        }
+
         manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();
         manaPlusPlus.DOFade(0, 0);
         manaPlusPlus.DOFade(1, 0.4f).OnComplete(() =>
         {
+            StopAllCoroutines();
             StartCoroutine(WaitAndFadeOut());
         });
     }

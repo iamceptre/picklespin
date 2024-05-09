@@ -7,9 +7,6 @@ using UnityEngine.Events;
 public class AngelHeal : MonoBehaviour
 {
 
-    private Ammo ammo;
-    [SerializeField] private int howMuchAmmoAngelGives = 100;
-
     [SerializeField] AngelHealingMinigame minigame;
     [HideInInspector] public float healboost = 1;
 
@@ -54,7 +51,6 @@ public class AngelHeal : MonoBehaviour
 
     private void Awake()
     {
-        ammo = GetComponent<Ammo>();
         handRenderer = hand.GetComponent<MeshRenderer>();
         handOGMaterial = handRenderer.material;
         healEmission = healParticle.emission;
@@ -191,32 +187,16 @@ public class AngelHeal : MonoBehaviour
     private void Healed()
     {
         angel.healed = true;
-        GiveMana();
         HealingParticleStop();
 
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
         handRenderer.material = handOGMaterial;
         floatUpDown.enabled = false;
-        angel.StartCoroutine(angel.AfterHealedAction());
+        angel.AfterHealedAction();
         minigame.enabled = false;
         angelHPSlider.gameObject.SetActive(false);
         canPlayEvent = true; //this should always be at the end of this event
-    }
-
-    private void GiveMana()
-    {
-        if (ammo.maxAmmo - ammo.ammo <= howMuchAmmoAngelGives)
-        {
-            ammo.ammo = ammo.maxAmmo;
-        }
-        else
-        {
-            ammo.ammo += howMuchAmmoAngelGives;
-        }
-
-        ammoDisplay.RefreshManaValueSmooth();
-        manaLightAnimation.LightAnimation(howMuchAmmoAngelGives);
     }
 
 }

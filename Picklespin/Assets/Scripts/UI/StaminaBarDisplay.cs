@@ -1,29 +1,29 @@
 using UnityEngine;
-using UnityEngine.UI;
-
 public class StaminaBarDisplay : MonoBehaviour
 {
-    private Slider staminaSlider;
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private BarEase barEase;
+    public static StaminaBarDisplay instance { get; private set; }
+    [SerializeField] private PlayerBarDisplay playerBarDisplay;
+
 
     private void Awake()
     {
-       staminaSlider = GetComponent<Slider>();
-    }
-
-    private void Start()
-    {
-        RefreshBarDisplay();
-    }
-
-    public void RefreshBarDisplay()
-    {
-        if (staminaSlider.value != playerMovement.stamina) {
-            staminaSlider.value = playerMovement.stamina;
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
         }
     }
+    private void Start()
+    {
+        Refresh(false);
+    }
 
-    //add smoother
+    public void Refresh(bool smooth)
+    {
+        playerBarDisplay.Refresh(smooth);
+    }
 
 }

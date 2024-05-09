@@ -51,7 +51,7 @@ public class AttackPlayer : State
         if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 2)
         {
             playerHP.hp -= 10;
-            hpBarDisplay.RefreshHPBar();
+            hpBarDisplay.Refresh(false);
             playerHP.PlayerHurtSound();
         }
     }

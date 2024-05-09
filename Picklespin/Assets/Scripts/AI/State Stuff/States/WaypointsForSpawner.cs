@@ -4,15 +4,15 @@ using UnityEngine.AI;
 
 public class WaypointsForSpawner : State
 {
-     public Transform[] cachedPoint;
-     [SerializeField] private Transform[] waypoints;
+    public Transform[] cachedPoint;
+    [SerializeField] private Transform[] waypoints;
 
     private NavMeshAgent agent;
     [SerializeField] private int waypointIndex;
     [HideInInspector] public Vector3 target;
     private AiVision aiVision;
     [SerializeField] private AttackPlayer attackPlayer;
-    private bool canInc=true;
+    private bool canIncrement = true;
     [SerializeField] private float idleSpeed = 3.5f;
     private Vector3 startingPos;
 
@@ -22,7 +22,7 @@ public class WaypointsForSpawner : State
 
     private float waitOnWaypointTime = 2;
 
-    bool imStuck;
+    //bool imStuck;
 
     private int rrrandom;
     private int previousNumber = -1;
@@ -35,8 +35,8 @@ public class WaypointsForSpawner : State
         }
         else
         {
-           RefreshWaypoint();
-           return this;
+            RefreshWaypoint();
+            return this;
         }
     }
 
@@ -55,60 +55,59 @@ public class WaypointsForSpawner : State
         RandomizeWaypoints();
     }
 
+    private void CalculateVelocity()
+    {
+        velocityVector = transform.position - previousPosition;
+        velocity = velocityVector.magnitude;
+        previousPosition = transform.position;
+    }
+
 
     private void RefreshWaypoint()
     {
 
-        velocityVector = transform.position - previousPosition;
-        velocity = velocityVector.magnitude;
-        previousPosition = transform.position;
+        //CalculateVelocity();
+        //StuckCheck();
 
+        if (Vector3.Distance(transform.position, target) < 1 && canIncrement)
+        {
+            Invoke("UpdateDestination", waitOnWaypointTime);
+            IncreaseWaypoint();
+        }
+
+        if (Vector3.Distance(transform.position, target) > 2 && !canIncrement)
+        {
+            canIncrement = true;
+        }
+
+    }
+
+
+    private void StuckCheck()
+    {
         if (velocity < 0.2)
         {
-            StartCoroutine(StuckCheck());
+            StartCoroutine(StuckCheckTimer());
         }
         else
         {
             StopAllCoroutines();
         }
-
-        if (Vector3.Distance(transform.position, target) < 1 || imStuck)
-            {
-                Invoke("UpdateDestination", waitOnWaypointTime);
-
-                if (canInc)
-                {
-                    IncreaseWaypoint();
-                    canInc = false;
-                    Invoke("CanInc", waitOnWaypointTime * 0.5f);
-                }
-        }
-
-
-        if (Vector3.Distance(transform.position, target) > 8)
-        {
-            canInc = true;
-        }
-
     }
 
-    private void CanInc()
-    {
-        canInc = true;
-    }
-   
 
-    private IEnumerator StuckCheck()
+    private IEnumerator StuckCheckTimer()
     {
         yield return new WaitForSeconds(1);
-        imStuck = true;
-        canInc = true;
+        //imStuck = true;
+        canIncrement = true;
     }
 
-    
+
     public void UpdateDestination()
     {
         agent.speed = idleSpeed;
+
         if (waypoints.Length > 0)
         {
             target = waypoints[waypointIndex].position;
@@ -118,14 +117,16 @@ public class WaypointsForSpawner : State
             target = startingPos;
 
         }
-            agent.SetDestination(target);
+        agent.SetDestination(target);
     }
 
 
-    private void IncreaseWaypoint() {
+    private void IncreaseWaypoint()
+    {
+        canIncrement = false;
         waypointIndex++;
-        imStuck = false;
-        if (waypointIndex == waypoints.Length) 
+        //imStuck = false;
+        if (waypointIndex == waypoints.Length)
         {
             waypointIndex = 0;
         }
@@ -136,10 +137,10 @@ public class WaypointsForSpawner : State
         waypoints = new Transform[cachedPoint.Length];
 
         for (int i = 0; i < cachedPoint.Length; i++)
-         {
+        {
             RoundRobin();
             waypoints[i] = cachedPoint[rrrandom];
-         }
+        }
 
         RefreshWaypoint();
         UpdateDestination();
@@ -147,13 +148,12 @@ public class WaypointsForSpawner : State
 
     private void RoundRobin()
     {
-        //ROUND ROBIN TIME BABYYYY!
         do
         {
             rrrandom = Random.Range(0, cachedPoint.Length);
-        } while (rrrandom == previousNumber); 
+        } while (rrrandom == previousNumber);
 
-        previousNumber = rrrandom; 
+        previousNumber = rrrandom;
     }
 
 

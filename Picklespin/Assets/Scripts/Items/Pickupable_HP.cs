@@ -26,13 +26,10 @@ public class Pickupable_HP : MonoBehaviour
     {
         if (playerHP.hp < playerHP.maxHp)
         {
-            playerHP.hp += howMuchHPIGive;
-            playerHP.hp = Mathf.Clamp(playerHP.hp, 0, playerHP.maxHp);
-            RuntimeManager.PlayOneShot(pickupSoundEvent);
-            hpBarDisplay.RefreshHPBarSmooth();
-            barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive); //hp = 0, stamina = 1, mana = 2
+            playerHP.GiveHPToPlayer(howMuchHPIGive);
             itemAfterPickingUp.Pickup();
         }
+        RuntimeManager.PlayOneShot(pickupSoundEvent);
     }
 
 }

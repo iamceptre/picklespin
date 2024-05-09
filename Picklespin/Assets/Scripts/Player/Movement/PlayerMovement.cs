@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isSlowedDown = false;
 
-    
+    private BarLightsAnimation barLightsAnimation;
 
     public float jumpPower;
     private float gravity = 10;
@@ -56,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         footstepSystem = FootstepSystem.instance;
         speedometer = CharacterControllerVelocity.instance;
         cameraBob = CameraBob.instance;
+        barLightsAnimation = BarLightsAnimation.instance;
         movementStateForFMOD = 1;
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
         footstepSystem.fixedFootstepSpace = 0.6f;//walk speed
@@ -217,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
             SetWalkSingleTick();
             isRunning = false;
         }
-        staminaBarDisplay.RefreshBarDisplay();
+        staminaBarDisplay.Refresh(false);
     }
 
     private void StaminaRecovery()
@@ -236,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         stamina = Mathf.Clamp(stamina, 0, 100);
-        staminaBarDisplay.RefreshBarDisplay();
+        staminaBarDisplay.Refresh(false);
     }
 
 
@@ -311,6 +312,27 @@ public class PlayerMovement : MonoBehaviour
             externalPushForce = Mathf.Clamp(externalPushForce, 1, 7);
             yield return null;
         }
+    }
+
+
+    public void GiveStaminaToPlayer(int howMuchStaminaIGive)
+    {
+
+
+        if (stamina + howMuchStaminaIGive <= 100)
+            {
+                stamina += howMuchStaminaIGive;
+                barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, false); //hp = 0, stamina = 1, mana = 2
+            }
+            else
+            {
+                stamina = 100;
+                barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, true); //hp = 0, stamina = 1, mana = 2
+            }
+
+        staminaBarDisplay.Refresh(false);
+
+        //RuntimeManager.PlayOneShot(manaAqquiredSound);
     }
 
 }

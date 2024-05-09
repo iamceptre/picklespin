@@ -14,7 +14,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private UnityEvent changeSelectedSpell;
 
     private Ammo ammo;
-    [SerializeField] AmmoDisplay ammoDisplay;
+    AmmoDisplay ammoDisplay;
 
     [SerializeField] private EventReference shootFailEvent;
     [SerializeField] private EventReference spellLockedEvent;
@@ -60,6 +60,12 @@ public class Attack : MonoBehaviour
             instance = this;
         }
 
+    }
+
+
+    private void Start()
+    {
+        ammoDisplay = AmmoDisplay.instance;
     }
 
     void Update()
@@ -154,7 +160,7 @@ public class Attack : MonoBehaviour
             spawnedBulletScript.iWillBeCritical = false;
         }
 
-        ammoDisplay.RefreshManaValue();
+        ammoDisplay.Refresh(false);
         StartCoroutine(CastCooldown());
     }
 

@@ -1,9 +1,11 @@
 using UnityEngine;
 using FMODUnity;
-using System.Collections;
 
 public class AngelMind : MonoBehaviour
 {
+    private PlayerHP playerHP;
+    private Ammo ammo;
+    private PlayerMovement playerMovement;
 
     public bool healed = false;
     public bool isDead = false;
@@ -18,19 +20,43 @@ public class AngelMind : MonoBehaviour
     private void Start()
     {
         angelRenderer = gameObject.GetComponent<Renderer>();
+        playerHP = PlayerHP.instance;
+        ammo = Ammo.instance;
+        playerMovement = PlayerMovement.instance;   
     }
 
 
-       public IEnumerator AfterHealedAction(){
+    public void AfterHealedAction()
+    {
 
-        if (healedParticles != null) {
+        if (healedParticles != null)
+        {
             healedParticles.Play();
         }
-            angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
-            angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
-            angelRenderer.material.SetColor("_Color", Color.green);
-            angelInstance.start();
-            yield return null;
-        }
+        angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
+        angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+        angelRenderer.material.SetColor("_Color", Color.green);
+        angelInstance.start();
+
+        GiveHPToPlayer();
+        Invoke("GiveStaminaToPlayer", 0.2f);
+        Invoke("GiveManaToPlayer", 0.4f);
+    }
+
+
+    private void GiveHPToPlayer()
+    {
+        playerHP.GiveHPToPlayer(Random.Range(80, 100));
+    }
+
+    private void GiveStaminaToPlayer()
+    {
+        playerMovement.GiveStaminaToPlayer(Random.Range(80, 100));
+    }
+
+    private void GiveManaToPlayer()
+    {
+        ammo.GiveManaToPlayer(Random.Range(80, 100)); 
+    }
 
 }

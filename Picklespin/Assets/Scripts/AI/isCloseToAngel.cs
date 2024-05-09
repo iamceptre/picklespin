@@ -7,6 +7,7 @@ public class isCloseToAngel : MonoBehaviour
     [SerializeField] private AngelHeal angelHeal;
     [SerializeField] private GameObject angelHPGUI;
     [SerializeField] private AngelHealingMinigame minigame;
+    [SerializeField] private GameObject helperArrow;
 
     private bool enabledGUI;
 
@@ -15,6 +16,7 @@ public class isCloseToAngel : MonoBehaviour
         if (other.gameObject.name == "AngelScriptAcivationTrigger")
         {
             angelHeal.enabled = true;
+            helperArrow.SetActive(false);
 
             if (!enabledGUI)
             {

@@ -5,32 +5,20 @@ public class Pickupable_Stamina : MonoBehaviour
 {
     [SerializeField] private ItemAfterPickingUp itemAfterPickingUp;
     private PlayerMovement playerMovement;
-    private BarLightsAnimation barLightsAnimation;
     [SerializeField] private int howMuchStaminaIGive;
     [SerializeField] private EventReference pickupSoundEvent;
+    private StaminaBarDisplay staminaBarDisplay;
 
     private void Start()
     {
         playerMovement = PlayerMovement.instance;
-        barLightsAnimation = BarLightsAnimation.instance;
+        staminaBarDisplay = StaminaBarDisplay.instance;
     }
 
     public void GiveStaminaToPlayer()
     {
-        if (playerMovement.stamina < 90) {
-
-            if ((playerMovement.stamina += howMuchStaminaIGive) < 100) //100 is a constant value for now in the playerMovement script
-            {
-                playerMovement.stamina += howMuchStaminaIGive; // Maybe do a tween later
-
-            }
-            else
-            {
-                playerMovement.stamina = 100;
-            }
-            barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive); //hp = 0, stamina = 1, mana = 2
-            RuntimeManager.PlayOneShot(pickupSoundEvent);
-            itemAfterPickingUp.Pickup();
-        }
+        playerMovement.GiveStaminaToPlayer(howMuchStaminaIGive);
+        RuntimeManager.PlayOneShot(pickupSoundEvent);
+        itemAfterPickingUp.Pickup();
     }
 }

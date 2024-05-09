@@ -43,7 +43,8 @@ public class UnlockedSpells : MonoBehaviour
 
     public void UnlockASpell(int spellID)
     {
-        if (spellUnlocked[spellID]) {
+        if (spellUnlocked[spellID])
+        {
             ManaBonus();
         }
         else
@@ -93,21 +94,23 @@ public class UnlockedSpells : MonoBehaviour
     private void ManaBonus()
     {
 
-            //gives 50 mana for now
+        //gives 50 mana for now
 
-            if (ammo.maxAmmo - ammo.ammo <= 50)
-            {
-                ammo.ammo = ammo.maxAmmo;
+        if (ammo.maxAmmo - ammo.ammo <= 50)
+        {
+            ammo.ammo = ammo.maxAmmo;
+            manaLightAnimation.LightAnimation(50, true);
 
-            }
-            else
-            {
-                ammo.ammo += 50;
-            }
+        }
+        else
+        {
+            ammo.ammo += 50;
+            manaLightAnimation.LightAnimation(50, false);
+        }
 
-            ammoDisplay.RefreshManaValueSmooth();
-            manaLightAnimation.LightAnimation(50);
-        
+        ammoDisplay.Refresh(true);
+
+
     }
 
 
@@ -139,7 +142,7 @@ public class UnlockedSpells : MonoBehaviour
         alreadyUnlockedIcon.DOKill();
         alreadyUnlockedRect.DOKill();
         alreadyUnlockedIcon.DOFade(0, 0);
-        alreadyUnlockedRect.anchoredPosition = invSlotRect[spellID].anchoredPosition - new Vector2(1.5f,-1);
+        alreadyUnlockedRect.anchoredPosition = invSlotRect[spellID].anchoredPosition - new Vector2(1.5f, -1);
         alreadyUnlockedRect.localScale = new Vector2(0.5f, 0.5f);
         alreadyUnlockedIcon.DOFade(0.6f, 0.1f).OnComplete(AlreadyUnlockedFadeOut);
         alreadyUnlockedRect.DOScale(0.7f, 0.35f);
