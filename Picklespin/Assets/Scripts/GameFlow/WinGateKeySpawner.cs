@@ -4,13 +4,7 @@ public class WinGateKeySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject winGateKey;
     [SerializeField] private Transform[] spawnPoints;
-
-    [SerializeField] private GameObject enableAfterPickingUpTheKey;
-
-    private WinGateKeyItem keyItemScript;
     private KeyHasBeenSpawned keySpawnedTip;
-
-    private bool alreadySpawnedAKey = false;
 
     private void Start()
     {
@@ -20,14 +14,12 @@ public class WinGateKeySpawner : MonoBehaviour
 
     public void SpawnWinGateKey()
     {
-        if (!alreadySpawnedAKey)
+        if (!winGateKey.activeInHierarchy)
         {
-            var spawnedKey = Instantiate(winGateKey, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
-            spawnedKey.transform.SetParent(transform);
+            winGateKey.transform.position = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+            winGateKey.SetActive(true);
             keySpawnedTip.gameObject.SetActive(true);
             keySpawnedTip.Animate();
-            keyItemScript = spawnedKey.GetComponent<WinGateKeyItem>();
-            keyItemScript.toEnable = enableAfterPickingUpTheKey;
         }
     }
 

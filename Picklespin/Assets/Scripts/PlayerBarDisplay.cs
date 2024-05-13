@@ -71,7 +71,6 @@ public class PlayerBarDisplay : MonoBehaviour
         if (playerHP != null)
         {
             desiredBarPosition = ((float)playerHP.hp / (float)playerHP.maxHp) * 100;
-            Debug.Log(desiredBarPosition);
         }
 
         if (playerMovement != null)

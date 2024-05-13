@@ -65,6 +65,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 120025150802992930}
+        m_TargetAssemblyTypeName: WinGateKeyItem, Assembly-CSharp
+        m_MethodName: GiveKey
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &120025150802992930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +97,7 @@ MonoBehaviour:
       Data3: 686543251
       Data4: 1031727946
     Path: event:/PLACEHOLDER_UNCZ/healingBoost
+  toEnable: {fileID: 0}
 --- !u!114 &387723364033454137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +129,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2}
+  m_Size: {x: 3, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7296072136351230666
 Rigidbody:
@@ -235,7 +248,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7382659634028177984}
@@ -247,7 +260,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6857886220122081348}
-  m_Mesh: {fileID: -5495902117074765545, guid: 6f3d8a4f9d86867419eb7d56ce2d8a45, type: 3}
+  m_Mesh: {fileID: 7265974592398154989, guid: 50721f2eb7e46894090f12911cec0aec, type: 3}
 --- !u!23 &6686476113195830739
 MeshRenderer:
   m_ObjectHideFlags: 0

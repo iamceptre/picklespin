@@ -41,7 +41,7 @@ public class PlayerHP : MonoBehaviour
     }
 
 
-    public void CheckIfPlayerIsDead()
+    private void CheckIfPlayerIsDead()
     {
         if (hp <= 0)
         {
@@ -54,6 +54,7 @@ public class PlayerHP : MonoBehaviour
     {
         RuntimeManager.PlayOneShot(hurtSound);
         PlayerHurtVisual();
+        CheckIfPlayerIsDead();
     }
 
     public void PlayerHurtVisual()

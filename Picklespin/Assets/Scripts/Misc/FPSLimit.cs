@@ -14,7 +14,7 @@ public class FPSLimit : MonoBehaviour
         if (framerateLimit == 0)
         {
             Application.targetFrameRate = Mathf.FloorToInt((float)currentResolution.refreshRateRatio.value);
-            Debug.Log("fps cap set to: " + Application.targetFrameRate +" (which is your monitor refresh rate)");
+            //Debug.Log("fps cap set to: " + Application.targetFrameRate +" (which is your monitor refresh rate)");
         }
         else
         {
