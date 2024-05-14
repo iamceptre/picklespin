@@ -17,7 +17,7 @@ public class ParticleMoveTowards : MonoBehaviour
 
         if (targetPoint == null)
         {
-           targetPoint = publicPlayerTransform.PlayerTransform;
+            targetPoint = publicPlayerTransform.PlayerTransform;
         }
 
         myParticleSystem = GetComponent<ParticleSystem>();

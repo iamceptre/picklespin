@@ -5,6 +5,8 @@ public class ManaSuckParticlesSpawner : MonoBehaviour
     public static ManaSuckParticlesSpawner instance { get; private set; }
     [SerializeField] private ParticleSystem manaSuckParticle;
 
+    [SerializeField] private Transform target;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -18,9 +20,11 @@ public class ManaSuckParticlesSpawner : MonoBehaviour
     }
     public void Spawn(Vector3 spawnPoint, int HowMuchManaWasGiven)
     {
+        spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y + 1.5f, spawnPoint.z);
         var spawnedParticles = Instantiate(manaSuckParticle, spawnPoint, Quaternion.identity);
         var emission = spawnedParticles.emission;
-        emission.rateOverTime = HowMuchManaWasGiven;
+        var main = spawnedParticles.main;
+        emission.rateOverTime = HowMuchManaWasGiven/main.duration;
         spawnedParticles.Play();
     }
 
