@@ -4,7 +4,6 @@ using FMODUnity;
 public class Death : MonoBehaviour
 {
     public static Death instance;
-
     public GameObject deathScreen;
     public EventReference deathEvent;
 
@@ -20,7 +19,6 @@ public class Death : MonoBehaviour
         }
 
     }
-
 
     public void PlayerDeath()
     {

@@ -4,26 +4,41 @@ using UnityEngine.UI;
 
 public class EscapeTimer : MonoBehaviour
 {
+    public static EscapeTimer instance { get; private set; }
+
     private Color sexyRed = new Color(0.76f, 0.235f, 0.235f);
     private Color startingColor;
     private bool startedColoring = false;
 
     [SerializeField] private Slider mySlider;
     [SerializeField] private Image sliderFill;
-    private Death death;
 
     UIFadeFlicker sliderFillFlicker;
     private bool startedFlickering = false;
 
     [SerializeField] private TextFadeFlicker textFadeFlicker;
+    private PortalAfterClosing portalAfterClosing;
 
-    [SerializeField] private float countdownSpeed = 1;
+     public float countdownSpeed = 1;
     [SerializeField] private float countdownDelayTime = 2;
 
     [SerializeField] private GameObject[] enableWithMe;
     [SerializeField] private GameObject[] disableWithMe;
 
     private IEnumerator colorRoutine;
+
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
 
     private void EnableOtherObjects()
@@ -46,9 +61,9 @@ public class EscapeTimer : MonoBehaviour
    private IEnumerator Start()
     {
 
-        colorRoutine = ColorTheFill();
+        portalAfterClosing = PortalAfterClosing.instance;
 
-        death = Death.instance;
+        colorRoutine = ColorTheFill();
 
         startingColor = sliderFill.color;
 
@@ -80,7 +95,7 @@ public class EscapeTimer : MonoBehaviour
             if (mySlider.value <= 0)
             {
                 StopAllCoroutines();
-                death.PlayerDeath();
+                portalAfterClosing.PortalClosed();
                 enabled = false;
             }
 
