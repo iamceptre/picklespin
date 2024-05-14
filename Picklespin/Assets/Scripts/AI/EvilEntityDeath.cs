@@ -5,10 +5,14 @@ using UnityEngine.Events;
 
 public class EvilEntityDeath : MonoBehaviour
 {
+    ManaSuckParticlesSpawner manaSuckParticlesSpawner;
     [SerializeField] private EventReference evilEntityDeathSound;
     private EventInstance evilEntityDeathSoundReference;
     [SerializeField] private UnityEvent deathEvent;
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
+
+    private int howMuchManaIGiveAfterDying = 10;
+    private Ammo ammo;
 
     private void Awake()
     {
@@ -18,10 +22,19 @@ public class EvilEntityDeath : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        manaSuckParticlesSpawner = ManaSuckParticlesSpawner.instance;
+        ammo = Ammo.instance;
+    }
+
     public void Die()
     {
         aiHealthUiBar.Detach();
         aiHealthUiBar.FadeOut();
+
+        ammo.GiveManaToPlayer(howMuchManaIGiveAfterDying);
+        manaSuckParticlesSpawner.Spawn(transform.position, howMuchManaIGiveAfterDying);
 
         deathEvent.Invoke(); //custom death behaviour
     
@@ -31,11 +44,10 @@ public class EvilEntityDeath : MonoBehaviour
 
     private void CheckAndDisableFire()
     {
-        var setOnFire = gameObject.GetComponentInChildren<SetOnFire>();
+        var setOnFireScirpt = gameObject.GetComponent<SetOnFire>();
 
-        if (setOnFire != null)
+        if (setOnFireScirpt != null)
         {
-            var setOnFireScirpt = setOnFire.GetComponent<SetOnFire>();
             //if ai is dying from fire, not spellhit
             setOnFireScirpt.PanicKill();
         }

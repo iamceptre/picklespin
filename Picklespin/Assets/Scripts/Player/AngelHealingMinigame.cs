@@ -22,6 +22,10 @@ public class AngelHealingMinigame : MonoBehaviour
     [SerializeField] private Image turboArea;
     private Color turboAreaColor;
 
+    private float turboAreaLeftEdgePosition;
+    private float turboAreaRightEdgePosition;
+    private float turboAreaWidth = 10;
+
     public bool boosted = false;
     private bool missed = false;
     private bool tooLate = false;
@@ -33,6 +37,23 @@ public class AngelHealingMinigame : MonoBehaviour
         sliderStartingColor = sliderFill.color;
         angelHPslider = GetComponent<Slider>(); 
         turboAreaColor = turboArea.color;
+    }
+
+    private void Start()
+    {
+        RandomizeTurboAreaPosition();
+    }
+
+    public void RandomizeTurboAreaPosition()
+    {
+        float halfOfWidth = turboAreaWidth * 0.5f;
+        float turboAreaRandomizedPosition = Random.Range(20, 50);
+        turboAreaLeftEdgePosition = turboAreaRandomizedPosition - halfOfWidth;
+        turboAreaRightEdgePosition = turboAreaRandomizedPosition + halfOfWidth;
+        float desiredTurboAreaPositionX = Mathf.Lerp(-147, 147, turboAreaRandomizedPosition * 0.01f);
+        RectTransform myTransform = turboArea.rectTransform;
+        myTransform.localPosition = new Vector2(desiredTurboAreaPositionX, 0);
+        scrollTip.rectTransform.localPosition = new Vector2(desiredTurboAreaPositionX, scrollTip.rectTransform.localPosition.y);
     }
 
     public void InitializeMinigame()
@@ -61,7 +82,7 @@ public class AngelHealingMinigame : MonoBehaviour
    private void Update()
     {
 
-        if (angelHPslider.value >= 34 && angelHPslider.value <= 45) 
+        if (angelHPslider.value >= turboAreaLeftEdgePosition && angelHPslider.value <= turboAreaRightEdgePosition) 
         {
             EnterRange();
         }
@@ -131,7 +152,7 @@ public class AngelHealingMinigame : MonoBehaviour
         turboArea.DOKill();
         scrollTip.DOKill();
         turboArea.DOFade(0, 0.2f);
-        scrollTip.DOFade(0, 0.4f).OnComplete(DisableScript);
+        scrollTip.DOFade(0, 0.2f).OnComplete(DisableScript);
     }
 
     private void Reddify()
@@ -146,8 +167,8 @@ public class AngelHealingMinigame : MonoBehaviour
         scrollTip.DOKill();
         turboArea.color = new Color(turboArea.color.r, turboArea.color.g, turboArea.color.b, 0);
         scrollTip.color = new Color(scrollTip.color.r, scrollTip.color.g, scrollTip.color.b, 0);
-        turboArea.DOFade(1, 0.1f);
-        scrollTip.DOFade(0.62f, 0.2f).OnComplete(TipFloat);
+        turboArea.DOFade(1, 0.05f);
+        scrollTip.DOFade(0.62f, 0.1f).OnComplete(TipFloat);
     }
     
     private void TipFloat()

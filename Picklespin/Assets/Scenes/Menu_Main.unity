@@ -321,7 +321,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &152864027
 RectTransform:
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startFromTransparent: 1
-  fadeInOpacity: 0.05
+  fadeInOpacity: 0.1
   animationTime: 4
 --- !u!1 &192487932
 GameObject:
@@ -579,7 +579,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &372673718
 RectTransform:
@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startFromTransparent: 1
-  fadeInOpacity: 0.05
+  fadeInOpacity: 0.1
   animationTime: 3
 --- !u!1 &611195786
 GameObject:
@@ -670,7 +670,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &611195787
 RectTransform:
@@ -742,7 +742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startFromTransparent: 1
-  fadeInOpacity: 0.05
+  fadeInOpacity: 0.1
   animationTime: 1
 --- !u!1 &640237891
 GameObject:
@@ -754,11 +754,11 @@ GameObject:
   m_Component:
   - component: {fileID: 640237892}
   m_Layer: 5
-  m_Name: BloodOverlays
+  m_Name: PulsatingOverlays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &640237892
 RectTransform:

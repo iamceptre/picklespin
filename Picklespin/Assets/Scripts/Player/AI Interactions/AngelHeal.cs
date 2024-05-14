@@ -65,8 +65,8 @@ public class AngelHeal : MonoBehaviour
     void Update()
     {
         if (!minigame.boosted) {
-            Vector3 direction = Vector3.forward;
-            Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(direction * range));
+
+            Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(Vector3.forward * range));
 
             if (Physics.Raycast(ray, out RaycastHit hit, range) || healboost == 0)
             {
@@ -179,7 +179,6 @@ public class AngelHeal : MonoBehaviour
         if (healParticle.isEmitting)
         {
             healEmission.enabled = false;
-           // healParticle.Stop();
         }
     }
 
