@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class Door : MonoBehaviour
 {
     //LOGIC
+    [SerializeField] private bool isLocked = false;
     private bool isOpened;
     private Transform mainCamera;
     private Ray ray;
@@ -20,6 +21,7 @@ public class Door : MonoBehaviour
     //SOUND
     [SerializeField] private EventReference DoorOpenEvent;
     [SerializeField] private EventReference DoorCloseEvent;
+    [SerializeField] private EventReference DoorLockedEvent;
      private EventInstance DoorSoundInstance;
 
     //TOOLTIP
@@ -48,11 +50,27 @@ public class Door : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 5, layerMask)) {
                 if (hit.collider.Equals(myCollider))
                 {
-                    OpenCloseDecider();
+                    LockedCheck();
                 }
             }
         }
 }
+
+
+    private void LockedCheck()
+    {
+        if (!isLocked)
+        {
+            OpenCloseDecider();
+        }
+        else
+        {
+            DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            DoorSoundInstance.release();
+            DoorSoundInstance = RuntimeManager.CreateInstance(DoorLockedEvent);
+            DoorSoundInstance.start();
+        }
+    }
 
 
     private void OpenCloseDecider()

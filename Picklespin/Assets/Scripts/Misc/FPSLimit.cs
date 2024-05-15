@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FPSLimit : MonoBehaviour
 {
-    [Range(0,300)]
+    [Range(0,999)]
     [Tooltip("when set to 0, caps fps at monitor's refresh rate")]
     public int framerateLimit = 0;
 
