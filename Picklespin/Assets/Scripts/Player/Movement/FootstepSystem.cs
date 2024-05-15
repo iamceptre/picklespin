@@ -12,6 +12,7 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
 
     [SerializeField] private EventReference footstepEvent;
+    [SerializeField] private EventReference evenFootstepLayerEvent;  
     public EventInstance footstepInstance;
     [SerializeField] private EventReference jumpEvent;
 
@@ -26,6 +27,8 @@ public class FootstepSystem : MonoBehaviour
     private float cachedFixedFootstepSpace;
 
     [HideInInspector] public bool isFootstepIgnored = false;
+
+    private int footstepCount = 0;
 
 
     private void Awake()
@@ -55,6 +58,7 @@ public class FootstepSystem : MonoBehaviour
             if (!isRoutineRunning)
             {
                 isRoutineRunning = true;
+                footstepCount = 0;
                 StartCoroutine(footstepTimerRoutine);
             }
         }
@@ -80,6 +84,7 @@ public class FootstepSystem : MonoBehaviour
             if (playerMovement.anyMovementKeysPressed == true)
             {
                 float randomHumanize = Random.Range(0, 0.032f);
+                footstepCount++;
                 PlayFoostepSound();
                 yield return new WaitForSeconds(fixedFootstepSpace + randomHumanize);
             }
@@ -98,6 +103,12 @@ public class FootstepSystem : MonoBehaviour
         {
             footstepInstance.start();
         }
+
+        if (footstepCount % 2 == 0)
+        {
+            RuntimeManager.PlayOneShot(evenFootstepLayerEvent);
+        }
+
     }
 
 
