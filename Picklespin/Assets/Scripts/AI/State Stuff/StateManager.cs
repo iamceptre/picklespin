@@ -53,4 +53,9 @@ public class StateManager : MonoBehaviour
         currentState = nextState;    
     }
 
+    public void KillMyBrain()
+    {
+        Destroy(this);
+    }
+
 }
