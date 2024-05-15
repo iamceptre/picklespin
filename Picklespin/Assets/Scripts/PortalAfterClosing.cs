@@ -22,6 +22,9 @@ public class PortalAfterClosing : MonoBehaviour
 
     [SerializeField] private CanvasGroup[] canvasToFadeOut;
 
+    [SerializeField] private CanvasGroup failedScreenCanvasGroup;
+    private Tween myTween;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -86,17 +89,18 @@ public class PortalAfterClosing : MonoBehaviour
     {
         while (true)
         {
-            main.startSizeMultiplier += Time.deltaTime*100;
+            main.startSizeMultiplier += Time.deltaTime * 100;
             yield return null;
         }
     }
 
     private IEnumerator SlowDownTimeAnDesaturate()
     {
-        while (Time.timeScale > 0.1) {
+        while (Time.timeScale > 0.1)
+        {
             Time.timeScale -= Time.deltaTime;
             ppColorGrading.saturation.value -= Time.deltaTime * 100;
-            ppColorGrading.postExposure.value += Time.deltaTime*2;
+            ppColorGrading.postExposure.value += Time.deltaTime * 2;
             yield return null;
         }
     }
@@ -104,9 +108,13 @@ public class PortalAfterClosing : MonoBehaviour
 
     private IEnumerator ActivateFailScreen()
     {
-        yield return new WaitForSeconds(1.15f);
+        yield return new WaitForSeconds(1);
         PortalClosedScreen.SetActive(true);
-        pause.PauseGamePortalClosedFail();
+        myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>
+        {
+            pause.PauseGamePortalClosedFail();
+        });
+        myTween.SetUpdate(UpdateType.Normal, true);
     }
 
 }

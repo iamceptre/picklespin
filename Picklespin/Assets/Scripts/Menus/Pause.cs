@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class Pause : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class Pause : MonoBehaviour
     [SerializeField] private GameObject PauseMenu;
     [SerializeField] private UnityEvent pauseEvent;
     [SerializeField] private UnityEvent unpauseEvent;
-
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -49,10 +49,11 @@ public class Pause : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 
+
     public void UnpauseGame()
     {
-        Time.timeScale = timescaleBeforePausing;
         unpauseEvent.Invoke();
+        Time.timeScale = timescaleBeforePausing;
         isPaused = false;
         EventSystem.current.SetSelectedGameObject(null);
     }

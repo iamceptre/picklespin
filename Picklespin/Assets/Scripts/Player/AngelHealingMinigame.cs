@@ -17,9 +17,9 @@ public class AngelHealingMinigame : MonoBehaviour
     private bool inTurboRange = false;
 
     [SerializeField] private AngelHeal angelHeal;
-    [SerializeField] private Image scrollTip;
+    public Image scrollTip;
     private float scrollTipStartYPos;
-    [SerializeField] private Image turboArea;
+    public Image turboArea;
     private Color turboAreaColor;
 
     private float turboAreaLeftEdgePosition;
@@ -151,8 +151,14 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         turboArea.DOKill();
         scrollTip.DOKill();
-        turboArea.DOFade(0, 0.2f);
-        scrollTip.DOFade(0, 0.2f).OnComplete(DisableScript);
+
+        scrollTip.DOFade(0, 0.08f).OnComplete(DisableScript);
+
+        turboArea.DOFade(0, 0.1f).OnComplete(() =>
+        {
+            turboArea.enabled = false;
+            scrollTip.enabled = false;
+        });
     }
 
     private void Reddify()
@@ -163,11 +169,11 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private void FadeIn()
     {
-        turboArea.DOKill();
+       // turboArea.DOKill();
         scrollTip.DOKill();
-        turboArea.color = new Color(turboArea.color.r, turboArea.color.g, turboArea.color.b, 0);
-        scrollTip.color = new Color(scrollTip.color.r, scrollTip.color.g, scrollTip.color.b, 0);
-        turboArea.DOFade(1, 0.05f);
+       // turboArea.color = new Color(turboArea.color.r, turboArea.color.g, turboArea.color.b, 0);
+       // scrollTip.color = new Color(scrollTip.color.r, scrollTip.color.g, scrollTip.color.b, 0);
+       // turboArea.DOFade(1, 0.05f);
         scrollTip.DOFade(0.62f, 0.1f).OnComplete(TipFloat);
     }
     

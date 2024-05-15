@@ -14668,7 +14668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5485262571077170820}
   - component: {fileID: 177356616992089187}
-  - component: {fileID: 8810750034402452323}
+  - component: {fileID: 4238786617811524524}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -14753,20 +14753,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!111 &8810750034402452323
-Animation:
+--- !u!114 &4238786617811524524
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7317777259858359032}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 6ce6251e740c9a148a8c59b2de94f9f0, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 6ce6251e740c9a148a8c59b2de94f9f0, type: 2}
-  - {fileID: 7400000, guid: 6f03dbec71c106c4c9c263dd10ff1c79, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9f523abede353148a08d0abdb5c7a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peakLightIntensity: 5
+  peakLightRange: 60
+  lightFadeOutTime: 2.5

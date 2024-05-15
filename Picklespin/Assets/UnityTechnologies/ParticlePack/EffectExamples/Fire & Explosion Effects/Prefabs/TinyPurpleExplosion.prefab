@@ -9768,7 +9768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9148159053873415728}
   - component: {fileID: 6381701037546120920}
-  - component: {fileID: 8453340164514976523}
+  - component: {fileID: 5269568735793334813}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -9803,8 +9803,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.3528639, g: 0.25943398, b: 1, a: 1}
-  m_Intensity: 1.5
-  m_Range: 50
+  m_Intensity: 0
+  m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -9853,23 +9853,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!111 &8453340164514976523
-Animation:
+--- !u!114 &5269568735793334813
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4063444288417910444}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 6ce6251e740c9a148a8c59b2de94f9f0, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 6ce6251e740c9a148a8c59b2de94f9f0, type: 2}
-  - {fileID: 7400000, guid: 6f03dbec71c106c4c9c263dd10ff1c79, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9f523abede353148a08d0abdb5c7a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5026953797488605073
 GameObject:
   m_ObjectHideFlags: 0

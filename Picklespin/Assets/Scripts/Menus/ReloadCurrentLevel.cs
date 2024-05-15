@@ -9,5 +9,6 @@ public class ReloadCurrentLevel : MonoBehaviour
         DOTween.KillAll();
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+        Time.timeScale = 1;
     }
 }

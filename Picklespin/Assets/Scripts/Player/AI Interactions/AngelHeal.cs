@@ -3,6 +3,7 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
 {
@@ -15,8 +16,6 @@ public class AngelHeal : MonoBehaviour
     private Material handOGMaterial;
     [SerializeField] private Material handHighlightMaterial;
     private MeshRenderer handRenderer;
-    public AmmoDisplay ammoDisplay;
-
 
     [SerializeField] private ParticleSystem healParticle;
     private ParticleSystem.EmissionModule healEmission;
@@ -47,7 +46,11 @@ public class AngelHeal : MonoBehaviour
     [SerializeField] private UnityEvent showTip;
     
     [SerializeField] private UnityEvent hideTip;
-    
+
+
+    [SerializeField] private CanvasGroup angelHPCanvasGroup;
+    [SerializeField] private float guiFadeTimes = 0.1f;
+
 
     private void Awake()
     {
@@ -89,13 +92,7 @@ public class AngelHeal : MonoBehaviour
             }
             else //if stop healing mid-through
             {
-                HealingParticleStop();
-                angelHPSlider.gameObject.SetActive(false);
-                minigame.enabled = false;
-                healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                healingBeamInstance.release();
-                floatUpDown.enabled = false;
-                canPlayEvent = true; //this should always be at the end of this event
+                CancelHealing();
             }
         }
         else
@@ -103,6 +100,20 @@ public class AngelHeal : MonoBehaviour
             Healing();
         }
 
+    }
+
+
+    private void CancelHealing()
+    {
+        if (!canPlayEvent) {
+            HealingParticleStop();
+            FadeOutGui();
+            minigame.enabled = false;
+            healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            healingBeamInstance.release();
+            floatUpDown.enabled = false;
+            canPlayEvent = true;
+        }
     }
 
 
@@ -141,26 +152,30 @@ public class AngelHeal : MonoBehaviour
 
     public void Healing()
     {
-        if (canPlayEvent) //running the event only once
+        if (!angel.healed)
         {
-            healingBeamInstance = RuntimeManager.CreateInstance(healingBeamEvent); //create an audio source of beam + load it with healinBeamEvent sound
-            healingBeamInstance.start();
-            hideTip.Invoke();
-            floatUpDown.enabled = true;
-            minigame.enabled = true;
-            minigame.InitializeMinigame();
-            canPlayEvent = false; //this should always be at the end of this event
+            if (canPlayEvent) //running the event only once
+            {
+                canPlayEvent = false;
+                healingBeamInstance = RuntimeManager.CreateInstance(healingBeamEvent); //create an audio source of beam + load it with healinBeamEvent sound
+                healingBeamInstance.start();
+                hideTip.Invoke();
+                floatUpDown.enabled = true;
+                minigame.enabled = true;
+                minigame.InitializeMinigame();
+                FadeInGui();
+            }
+
+            aiHealth.hp += Time.deltaTime * 15 * healboost;
+            angelHPSlider.value = aiHealth.hp;
+            HealingParticleStart();
+
+            if (aiHealth.hp >= 100)
+            {
+                Healed();
+            }
         }
 
-        aiHealth.hp += Time.deltaTime * 15 * healboost;
-        angelHPSlider.gameObject.SetActive(true);
-        angelHPSlider.value = aiHealth.hp;
-        HealingParticleStart();
-
-        if (aiHealth.hp >= 100)
-        {
-            Healed();
-        }
     }
 
     private void HealingParticleStart()
@@ -185,17 +200,40 @@ public class AngelHeal : MonoBehaviour
 
     private void Healed()
     {
-        angel.healed = true;
+        if (!canPlayEvent)
+        {
         HealingParticleStop();
-
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
         handRenderer.material = handOGMaterial;
         floatUpDown.enabled = false;
         angel.AfterHealedAction();
         minigame.enabled = false;
-        angelHPSlider.gameObject.SetActive(false);
-        canPlayEvent = true; //this should always be at the end of this event
+        FadeOutGui();
+        canPlayEvent = true;
+        angel.healed = true;
+        }
+    }
+
+
+    private void FadeOutGui()
+    {
+        angelHPCanvasGroup.DOKill();
+        angelHPCanvasGroup.alpha = 1;
+        angelHPCanvasGroup.DOFade(0, guiFadeTimes*1.618f).OnComplete(() =>
+        {
+            angelHPSlider.gameObject.SetActive(false);
+        });
+    }
+
+    private void FadeInGui()
+    {
+        if (!angel.healed) {
+            angelHPCanvasGroup.DOKill();
+            angelHPCanvasGroup.alpha = 0;
+            angelHPSlider.gameObject.SetActive(true);
+            angelHPCanvasGroup.DOFade(1, guiFadeTimes);
+        }
     }
 
 }
