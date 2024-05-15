@@ -1,15 +1,19 @@
+using System.Collections;
 using UnityEngine;
 
 public class ParticleMoveTowards : MonoBehaviour
 {
     [SerializeField] private Transform targetPoint;
     private ParticleSystem myParticleSystem;
+    private ParticleSystem.MainModule mainModule;
 
     private PublicPlayerTransform publicPlayerTransform;
 
     private ParticleSystem.Particle[] particles;
 
     private int numParticlesAlive;
+
+    private float velocityMultiplier = 0;
 
     void Start()
     {
@@ -21,7 +25,9 @@ public class ParticleMoveTowards : MonoBehaviour
         }
 
         myParticleSystem = GetComponent<ParticleSystem>();
+        mainModule = myParticleSystem.main;
         particles = new ParticleSystem.Particle[myParticleSystem.main.maxParticles];
+        StartCoroutine(LazyStart());
     }
 
     void Update()
@@ -44,6 +50,17 @@ public class ParticleMoveTowards : MonoBehaviour
         myParticleSystem.SetParticles(particles, numParticlesAlive);
 
 
+    }
+
+
+    private IEnumerator LazyStart()
+    {
+        while (velocityMultiplier<1)
+        {
+            velocityMultiplier += Time.deltaTime;
+            mainModule.simulationSpeed = velocityMultiplier;
+            yield return null;
+        }
     }
 
 

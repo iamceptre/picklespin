@@ -13,11 +13,8 @@ public class EvilEntityDeath : MonoBehaviour
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
 
     [SerializeField] private Material deadMaterial;
-    private float dissolveProgress; //1 is visible, 0 is not
-    private Renderer myRenderer;
-    private BoxCollider myCollider;
-    private StateManager myStateManager;
 
+    private Dissolver dissolver;
 
     private int howMuchManaIGiveAfterDying = 10;
     private Ammo ammo;
@@ -28,10 +25,6 @@ public class EvilEntityDeath : MonoBehaviour
         {
             aiHealthUiBar = gameObject.GetComponent<AiHealthUiBar>();
         }
-
-        myRenderer = gameObject.GetComponentInChildren<Renderer>();
-        myCollider = gameObject.GetComponent<BoxCollider>();
-        myStateManager = gameObject.GetComponent<StateManager>();
     }
 
     private void Start()
@@ -68,39 +61,11 @@ public class EvilEntityDeath : MonoBehaviour
             evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
             RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
             evilEntityDeathSoundReference.start();
-            DissolvePurple();
+            //Need to shut down ai here
+            dissolver = gameObject.GetComponent<Dissolver>();
+            dissolver.StartDissolve();
         }
     }
 
-
-    private void DissolvePurple()
-    {
-        //neds to disable ai here
-        myCollider.enabled = false;
-        myStateManager.KillMyBrain();
-
-        myRenderer.material = deadMaterial;
-        dissolveProgress = 0.7f;
-        StartCoroutine(Dissolver());
-    }
-
-
-
-    private IEnumerator Dissolver()
-    {
-        while (true)
-        {
-            dissolveProgress -= Time.deltaTime * 0.7f;
-            myRenderer.material.SetFloat("_Progress", dissolveProgress);
-
-            if (dissolveProgress<=0)
-            {
-                StopAllCoroutines();
-                Destroy(gameObject);
-            }
-
-            yield return null;
-        }
-    }
 
 }
