@@ -2,7 +2,6 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Events;
-using System.Collections;
 
 public class EvilEntityDeath : MonoBehaviour
 {
@@ -11,8 +10,6 @@ public class EvilEntityDeath : MonoBehaviour
     private EventInstance evilEntityDeathSoundReference;
     [SerializeField] private UnityEvent deathEvent;
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
-
-    [SerializeField] private Material deadMaterial;
 
     private Dissolver dissolver;
 
