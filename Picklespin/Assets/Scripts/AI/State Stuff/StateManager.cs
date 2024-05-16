@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StateManager : MonoBehaviour
 {
 
    public State currentState;
    [HideInInspector] public AiVision aiVision;
+    //private NavMeshAgent agent;
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
 
@@ -15,6 +17,7 @@ public class StateManager : MonoBehaviour
     private void Awake()
     {
         aiVision = GetComponent<AiVision>();
+        //agent = GetComponent<NavMeshAgent>();
     }
     void Start()
     {
@@ -28,10 +31,10 @@ public class StateManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(actualRefreshRate);
-
-            //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
+            //if(agent.enabled)
             RunStateMachine();
+            yield return new WaitForSeconds(actualRefreshRate);
+            //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
         }
     }
 
@@ -51,11 +54,6 @@ public class StateManager : MonoBehaviour
     private void SwitchToTheNextState(State nextState)
     {
         currentState = nextState;    
-    }
-
-    public void KillMyBrain()
-    {
-        Destroy(this);
     }
 
 }

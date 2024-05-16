@@ -14,6 +14,11 @@ public class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerE
         myText = transform.GetComponentInChildren<TMP_Text>();
     }
 
+    private void OnEnable()
+    {
+        myText.characterSpacing = 0;
+    }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -26,4 +31,5 @@ public class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerE
        myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, 0, 0.2f).SetEase(Ease.OutExpo);
        myTween.SetUpdate(UpdateType.Normal, true);
     }
+
 }

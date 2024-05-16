@@ -24,6 +24,8 @@ public class JumpLandSignals : MonoBehaviour
 
     private IEnumerator fallingTimerRoutine;
 
+    private float lastLandCameraShakeStrenght;
+
     private void Start()
     {
         skipFirstSound = true;
@@ -50,7 +52,7 @@ public class JumpLandSignals : MonoBehaviour
             }
 
             landed = false;
-            cameraShake.landShakeStrenght = Mathf.Clamp(speedometer.verticalVelocity * 0.4f, 0, 10);
+            lastLandCameraShakeStrenght = Mathf.Clamp(speedometer.verticalVelocity * 0.4f, 0, 10);
         }
     }
 
@@ -82,7 +84,7 @@ public class JumpLandSignals : MonoBehaviour
                 footstepSystem.StartCoroutine(footstepSystem.IgnoreOneFootstep());
             }
                 skipFirstSound = false;
-                cameraShake.LandCameraShake();
+                cameraShake.LandCameraShake(lastLandCameraShakeStrenght);
                 hearingRange.RunExtendedHearingRange();
                 playerMovement.externalPushForce = 1;
                 landed = true;

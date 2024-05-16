@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 public class Dissolver : MonoBehaviour
@@ -22,9 +23,14 @@ public class Dissolver : MonoBehaviour
 
     private bool dudeDissolved = false;
 
+    [SerializeField] private NavMeshAgent myNavMeshAgent;
+    [SerializeField] private StateManager myStateManager;
+
 
     public void StartDissolve()
     {
+        Destroy(myStateManager);
+        myNavMeshAgent.enabled = false;
         myRenderer.material = deadMaterial;
         dissolveProgress = 0.7f;
         StartCoroutine(Animate());

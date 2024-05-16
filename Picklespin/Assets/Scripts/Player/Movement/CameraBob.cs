@@ -63,7 +63,8 @@ public class CameraBob : MonoBehaviour
 
         toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, originalPosition + (tempPos), ref camVelocity, smoothing);
 
-        toBob.transform.localEulerAngles += new Vector3(0, 0, -tempPos.x * 0.5f);
+        //toBob.transform.localEulerAngles += new Vector3(0, 0, -tempPos.x * 0.5f);
+        toBob.localRotation = Quaternion.Euler(0, 0, -tempPos.x * 0.5f);
 
     }
 
