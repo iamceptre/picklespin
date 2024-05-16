@@ -60,6 +60,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 1e9a662df25e39547b5b7fc9d039ceaa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -87,7 +91,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Progress: 0
+    - _Progress: 1
     - _RangeIn: 0.034
     - _RangeOut: 0.001
     - _SmoothnessTextureChannel: 0
@@ -96,7 +100,7 @@ Material:
     - _UVSec: 0
     - _UseEdgeColor: 1
     - _UseEdgeDistortion: 0
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EdgeAroundColor: {r: 0.75, g: 0.027573511, b: 0.027573511, a: 1}

@@ -104,7 +104,7 @@ public class CameraShake : MonoBehaviour
 
             explosionDuration = explosionDuration + (strenghtBasedOnDistance) * 0.05f;
 
-            Debug.Log("ran EnemyExplosionShake" + "distance: " + distanceFromExplosion + " strenght: " + strenghtBasedOnDistance + " duration: " + explosionDuration);
+            //Debug.Log("ran EnemyExplosionShake" + "distance: " + distanceFromExplosion + " strenght: " + strenghtBasedOnDistance + " duration: " + explosionDuration);
             if (explosionTween != null)
             {
                 explosionTween.Kill();
