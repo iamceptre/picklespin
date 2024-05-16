@@ -5431,6 +5431,7 @@ GameObject:
   - component: {fileID: 7181874480254964230}
   - component: {fileID: 1342977768311708897}
   - component: {fileID: -73454246529863374}
+  - component: {fileID: 6714385560574647472}
   m_Layer: 8
   m_Name: EvilEntityToSpawn
   m_TagString: EvilEntity
@@ -5648,6 +5649,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6714385560574647472}
+        m_TargetAssemblyTypeName: GiveExpToPlayer, Assembly-CSharp
+        m_MethodName: GiveExp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   aiHealthUiBar: {fileID: 3817865884643380506}
 --- !u!114 &1342977768311708897
 MonoBehaviour:
@@ -5687,6 +5700,20 @@ MonoBehaviour:
   basedOnDistance: 1
   shakeStrenght: 7
   shakeDuration: 0.2
+--- !u!114 &6714385560574647472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576000824764681535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fe0c4b8984d1c4a8638f1564a6fc49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  howMuchXpIGive: 100
+  expSourceName: exiled evil
 --- !u!1 &5822582043937475088
 GameObject:
   m_ObjectHideFlags: 0

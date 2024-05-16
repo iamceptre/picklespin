@@ -70,7 +70,8 @@ public class ManaLightAnimation : MonoBehaviour
         manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();
-        manaPlusPlus.DOFade(0, 0);
+        //manaPlusPlus.DOFade(0, 0);
+        manaPlusPlus.color = new Color(manaPlusPlus.color.r, manaPlusPlus.color.g, manaPlusPlus.color.b, 0);
         manaPlusPlus.DOFade(1, 0.4f).OnComplete(() =>
         {
             StopAllCoroutines();
