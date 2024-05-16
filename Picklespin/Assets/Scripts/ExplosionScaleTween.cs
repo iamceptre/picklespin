@@ -12,7 +12,7 @@ public class ExplosionScaleTween : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
         StartCoroutine(FadeOutMaterial());
-        transform.DOScale(50, animationTime).SetEase(Ease.OutExpo).OnComplete(() =>
+        transform.DOScale(30, animationTime).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             transform.DOKill();
             Destroy(gameObject);

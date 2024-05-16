@@ -1,5 +1,6 @@
 using UnityEngine;
 using FMODUnity;
+using UnityEngine.Events;
 
 public class AngelMind : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class AngelMind : MonoBehaviour
     public bool healed = false;
     public bool isDead = false;
 
-    public EventReference angelHealedEvent;
+    [SerializeField] private EventReference angelHealedSoundEvent;
     private FMOD.Studio.EventInstance angelInstance;
+
+    [SerializeField] private UnityEvent angelHealedEvent;
 
     [SerializeField] private ParticleSystem healedParticles;
 
@@ -33,8 +36,9 @@ public class AngelMind : MonoBehaviour
         {
             healedParticles.Play();
         }
-        angelInstance = RuntimeManager.CreateInstance(angelHealedEvent);
+        angelInstance = RuntimeManager.CreateInstance(angelHealedSoundEvent);
         angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+        angelHealedEvent.Invoke();
         angelRenderer.material.SetColor("_Color", Color.green);
         angelInstance.start();
 
