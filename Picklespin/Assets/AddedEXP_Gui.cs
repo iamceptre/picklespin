@@ -11,6 +11,7 @@ public class AddedEXP_Gui : MonoBehaviour
     private Vector2 _textStartPosition;
 
     private RectTransform _textTransform;
+    private Color startingColor;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class AddedEXP_Gui : MonoBehaviour
     private void Start()
     {
         _textStartPosition = transform.localPosition;
+        startingColor = new Color(_text.color.r, _text.color.g, _text.color.b, 1);
         _text.enabled = false;
     }
 
@@ -49,7 +51,7 @@ public class AddedEXP_Gui : MonoBehaviour
     {
         _text.enabled = true;
         amountToShow = amountToShow + addedXP;
-        _text.text = "+ " + amountToShow + " exp" + "<size=15px>" + " (" + expSourceName + ")";
+        UpdateText(addedXP, expSourceName);
         _text.DOKill();
         _textTransform.DOKill();
         _textTransform.localPosition = _textStartPosition;
@@ -65,6 +67,20 @@ public class AddedEXP_Gui : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(WaitAndFadeOut());
+    }
+
+    private void UpdateText(int addedXP, string expSourceName)
+    {
+        if (addedXP > 0)
+        {
+            _text.color = startingColor;
+            _text.text = "+ " + amountToShow + " exp" + "<size=15px>" + " (" + expSourceName + ")";
+        }
+        else
+        {
+            _text.color = new Color(0.76f, 0.235f, 0.235f);
+            _text.text = amountToShow + " exp" + "<size=15px>" + " (" + expSourceName + ")";
+        }
     }
 
     private IEnumerator WaitAndFadeOut()

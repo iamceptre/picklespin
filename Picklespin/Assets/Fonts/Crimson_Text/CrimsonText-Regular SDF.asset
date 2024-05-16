@@ -2699,13 +2699,16 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ScaleRatioC: 0.4513889
+    - _OutlineSoftness: 0
+    - _OutlineWidth: 0
+    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioC: 0.33854166
     - _UnderlayDilate: 1
     - _UnderlayOffsetX: 0
-    - _UnderlaySoftness: 0.5
+    - _UnderlaySoftness: 1
     m_Colors:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0.49803922}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 1}
+    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_BuildTextureStacks: []
 --- !u!28 &7021707339849787193
 Texture2D:

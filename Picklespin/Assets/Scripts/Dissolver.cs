@@ -29,8 +29,16 @@ public class Dissolver : MonoBehaviour
 
     public void StartDissolve()
     {
-        Destroy(myStateManager);
-        myNavMeshAgent.enabled = false;
+        if (myStateManager != null)
+        {
+            Destroy(myStateManager);
+        }
+
+        if (myNavMeshAgent != null)
+        {
+            myNavMeshAgent.enabled = false;
+        }
+
         myRenderer.material = deadMaterial;
         dissolveProgress = 0.7f;
         StartCoroutine(Animate());
