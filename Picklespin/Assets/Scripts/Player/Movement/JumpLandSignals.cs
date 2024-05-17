@@ -72,7 +72,6 @@ public class JumpLandSignals : MonoBehaviour
 
     private void Landed()
     {
-
         if (!routineRunning && !landed && speedometer.verticalVelocity > 0.5f)
         {
             StartCoroutine(LandedCooldown());

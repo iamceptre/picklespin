@@ -40,11 +40,13 @@ public class Attack : MonoBehaviour
 
     private bool castLoaded = false;
 
-   [SerializeField] private UnityEvent castingCompleted;
-   [SerializeField] private UnityEvent CancelCasting;
-   [SerializeField] private UnityEvent StartCasting;
+    [SerializeField] private UnityEvent castingCompleted;
+    [SerializeField] private UnityEvent CancelCasting;
+    [SerializeField] private UnityEvent StartCasting;
 
     private Bullet bullet;
+
+    private RecoilMultiplier recoilMultiplier;
 
     private void Awake()
     {
@@ -66,12 +68,13 @@ public class Attack : MonoBehaviour
     private void Start()
     {
         ammoDisplay = AmmoDisplay.instance;
+        recoilMultiplier = RecoilMultiplier.instance;
     }
 
     void Update()
     {
         ChooseSpell();
-        
+
         if (Input.GetKeyDown(KeyCode.Mouse0) && castCooldownAllow)
         {
             autofirePrevent = false;
@@ -96,7 +99,7 @@ public class Attack : MonoBehaviour
                 Shoot();
             }
         }
-        
+
 
         if (Input.GetKey(KeyCode.Mouse0) && castCooldownAllow && currentlySelectedCastDuration != 0 && !autofirePrevent && !Input.GetKey(KeyCode.Mouse1))
         {
@@ -121,11 +124,11 @@ public class Attack : MonoBehaviour
         castingPercentage = 0;
         autofirePrevent = true;
 
-        if (ammo.ammo >= bullet.magickaCost) 
+        if (ammo.ammo >= bullet.magickaCost)
         {
             SuccesfulShoot();
         }
-        else 
+        else
         {
             ShootFail();
         }
@@ -149,10 +152,24 @@ public class Attack : MonoBehaviour
         spellCooldown.StartCooldowning();
 
         var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        spawnedBullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bullet.speed;
+        float randomX = Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil);
+        float randomY = Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil);
+
+        Vector3 randomDirection = new Vector3(
+    Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
+    Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
+    Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil)
+);
+
+        randomDirection = randomDirection.normalized * (recoilMultiplier.currentRecoil * Mathf.Deg2Rad);
+
+        Vector3 desiredDirection = bulletSpawnPoint.forward + randomDirection;
+
+        spawnedBullet.GetComponent<Rigidbody>().velocity = desiredDirection * bullet.speed;
         Bullet spawnedBulletScript = spawnedBullet.GetComponent<Bullet>();
 
-        if (ammo.ammo <= ammo.maxAmmo*0.15f) { //WHEN MAGICKA IS BELOW 15% THE SHOT WILL ALWAYS BE CRITICAL
+        if (ammo.ammo <= ammo.maxAmmo * 0.15f)
+        { //WHEN MANA IS BELOW 15% THE SHOT WILL ALWAYS BE CRITICAL
             spawnedBulletScript.iWillBeCritical = true;
         }
         else
@@ -169,13 +186,13 @@ public class Attack : MonoBehaviour
     {
 
         if (!Input.GetKey(KeyCode.Mouse0))
-        { 
+        {
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                    unlockedSpells.SelectingUnlockedAuraAnimation(0);
-                    selectedBullet = 0;
-                    SelectSpell();
+                unlockedSpells.SelectingUnlockedAuraAnimation(0);
+                selectedBullet = 0;
+                SelectSpell();
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -242,13 +259,14 @@ public class Attack : MonoBehaviour
                     spellCooldown.EnableComponents();
                 }
                 //constant ticks during casting
-                castLoaded = false; 
+                castLoaded = false;
                 castingPercentage += Time.deltaTime;
                 castingSlider.value = castingPercentage / castDuration;
             }
             else
             {
-                if (!castLoaded) {
+                if (!castLoaded)
+                {
                     castingCompleted.Invoke(); //single signal after fully loading cast
                     castLoaded = true;
                 }
@@ -261,4 +279,4 @@ public class Attack : MonoBehaviour
         }
     }
 
- }
+}

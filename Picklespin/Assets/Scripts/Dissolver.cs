@@ -86,7 +86,8 @@ public class Dissolver : MonoBehaviour
         {
             float randomY = Random.Range(0, 360);
             var spawnedAsh = Instantiate(ashPile, hit.point + positionOffset, new Quaternion(0, randomY, 0, 0));
-
+            float randomScale = Random.Range(0.8f, 1.2f);
+            spawnedAsh.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
             ashRenderer = spawnedAsh.GetComponent<Renderer>();
             ashDissolveProgress = 0;
             ashRenderer.material = ashDissolveMaterial;

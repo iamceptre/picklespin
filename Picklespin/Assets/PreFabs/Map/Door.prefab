@@ -124,14 +124,14 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  DoorOpenEvent:
+  doorOpenSoundEvent:
     Guid:
       Data1: -1835022994
       Data2: 1193558593
       Data3: -46367315
       Data4: -1625419879
     Path: event:/PLACEHOLDER_UNCZ/door_open
-  DoorCloseEvent:
+  doorCloseSoundEvent:
     Guid:
       Data1: 2074844658
       Data2: 1207122337

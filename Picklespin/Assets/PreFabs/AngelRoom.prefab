@@ -103,13 +103,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healed: 0
   isDead: 0
-  angelHealedEvent:
+  angelHealedSoundEvent:
     Guid:
-      Data1: -1863039198
-      Data2: 1199646912
-      Data3: -636784227
-      Data4: 154598932
-    Path: event:/PLACEHOLDER_UNCZ/angel_healed
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  angelHealedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   healedParticles: {fileID: 4435688068558383525}
 --- !u!114 &8596464650940358322
 MonoBehaviour:
@@ -233,7 +236,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8012322252144174865
 Transform:
@@ -338,7 +341,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: df2ab1138e291864c8b236ea8b1ddbcc, type: 2}
+  - {fileID: 2100000, guid: cec43550c4d91da42a8f8d17904dab90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5395,7 +5398,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8205917976535950856
 Transform:
@@ -7449,7 +7452,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: df2ab1138e291864c8b236ea8b1ddbcc, type: 2}
+  - {fileID: 2100000, guid: 81b3c6431807a3e4da44a25403c3d489, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7655,75 +7658,13 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -9162264694036188266, guid: 9532d5206272de549aab2918be5e71f4, type: 3}
-    m_RemovedComponents:
-    - {fileID: 2739686205671821841, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5131700858073758555, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2013690783543190692}
-    - targetCorrespondingSourceObject: {fileID: 3913443595153778505, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3133070867582268029}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
 --- !u!4 &1464281577558686898 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4411482223498004050, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
   m_PrefabInstance: {fileID: 2984364707001154272}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2244428501047254441 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3913443595153778505, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
-  m_PrefabInstance: {fileID: 2984364707001154272}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3133070867582268029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2244428501047254441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90039baa820ea1a4d931687ec44a3fe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  intensityRange: {x: 0.5, y: 1}
-  speed: 1
---- !u!1 &7952760312762565051 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5131700858073758555, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
-  m_PrefabInstance: {fileID: 2984364707001154272}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2013690783543190692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7952760312762565051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 415102918
-      Data2: 1145276465
-      Data3: 395432623
-      Data4: -2120870790
-    Path: event:/PLACEHOLDER_UNCZ/set_on_fire_loop
-  Event: 
-  PlayEvent: 1
-  StopEvent: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
-  Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 4
-  OverrideMaxDistance: 20

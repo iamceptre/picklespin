@@ -8,12 +8,12 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.110DEAF1" = "p: t:material"
+	"last_search.110DEAF1" = "t:material"
 	"OpenInspectorPreview.110DEAF1" = "0"
 	"currentGroup.110DEAF1" = "asset"
-	"last_search.E8DA15E5" = "p: t:material"
+	"last_search.E8DA15E5" = ""
 	"OpenInspectorPreview.E8DA15E5" = "0"
-	"currentGroup.E8DA15E5" = "asset"
+	"currentGroup.E8DA15E5" = "all"
 }
 providers = {
 	packages = {
@@ -65,10 +65,10 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
-	"p: t:m"
-	"p: t:texture"
 	""
 	"all t:material"
+	"p: t:m"
+	"p: t:texture"
 	"p: t:ma"
 ]
 searchItemFavorites = [

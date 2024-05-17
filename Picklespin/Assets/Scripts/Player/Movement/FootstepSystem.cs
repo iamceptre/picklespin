@@ -134,10 +134,9 @@ public class FootstepSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator SendJumpSignal() //change it to void tf
+    public void SendJumpSignal()
     {
         RuntimeManager.PlayOneShot(jumpEvent);
-        yield return null;
     }
 
 }

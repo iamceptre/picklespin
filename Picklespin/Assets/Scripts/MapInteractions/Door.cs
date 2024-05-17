@@ -19,8 +19,8 @@ public class Door : MonoBehaviour
     private Vector3 openedRot;
 
     //SOUND
-    [SerializeField] private EventReference DoorOpenEvent;
-    [SerializeField] private EventReference DoorCloseEvent;
+    [SerializeField] private EventReference doorOpenSoundEvent;
+    [SerializeField] private EventReference doorCloseSoundEvent;
     [SerializeField] private EventReference DoorLockedEvent;
      private EventInstance DoorSoundInstance;
 
@@ -33,7 +33,7 @@ public class Door : MonoBehaviour
         startRot = transform.eulerAngles;
         openedRot = startRot + new Vector3(0,0,90);
         
-        DoorSoundInstance = RuntimeManager.CreateInstance(DoorOpenEvent);
+        DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
         DoorSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
         myCollider = gameObject.GetComponent<Collider>();
@@ -94,7 +94,7 @@ public class Door : MonoBehaviour
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
-        DoorSoundInstance = RuntimeManager.CreateInstance(DoorOpenEvent);
+        DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
         DoorSoundInstance.start();
 
         isOpened = true;
@@ -107,7 +107,7 @@ public class Door : MonoBehaviour
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
-        DoorSoundInstance = RuntimeManager.CreateInstance(DoorCloseEvent);
+        DoorSoundInstance = RuntimeManager.CreateInstance(doorCloseSoundEvent);
 
         DoorSoundInstance.start();
         isOpened = false;

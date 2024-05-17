@@ -254,7 +254,7 @@ public class PlayerMovement : MonoBehaviour
             jumpPushForward();
             moveDirection.y = jumpPower;
             footstepSystem.StopAllCoroutines();
-            footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
+            footstepSystem.SendJumpSignal();
         }
     }
 
@@ -265,7 +265,7 @@ public class PlayerMovement : MonoBehaviour
         jumpPushForwardBhop();
         moveDirection.y = jumpPower;
         footstepSystem.StopAllCoroutines();
-        footstepSystem.StartCoroutine(footstepSystem.SendJumpSignal());
+        footstepSystem.SendJumpSignal();
     }
 
     private void jumpPushForward()
