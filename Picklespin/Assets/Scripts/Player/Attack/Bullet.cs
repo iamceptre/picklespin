@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
 
     [Header("Special Effects")]
     [SerializeField] private SetOnFire setOnFire;
+    [SerializeField] private bool doesThisSpellSetOnFire = false;
 
     private Transform mainCamera;
 
@@ -70,15 +71,18 @@ public class Bullet : MonoBehaviour
         {
             hitSomething = true;
 
-            aiHealth = collision.gameObject.GetComponent<AiHealth>();
-
-
-            if (aiHealth != null) //Hit Registered
+            if (collision.gameObject.TryGetComponent<AiHealth>(out AiHealth aiHealth)) //ENEMY HIT REGISTERED
             {
                 aiVision = collision.gameObject.GetComponent<AiVision>();
                 aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
 
                 RandomizeCritical();
+
+
+                if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
+                {
+                    Headshot(collision);
+                }
 
                 aiHealth.hp -= damage;
 
@@ -93,10 +97,7 @@ public class Bullet : MonoBehaviour
                     ApplySpecialEffect(collision);
                 }
 
-                if (aiHealthUI != null) {
-                    aiHealthUI.RefreshBar();
-                }
-
+                aiHealthUI.RefreshBar();
                 HitGetsYouNoticed();
 
             }
@@ -109,9 +110,18 @@ public class Bullet : MonoBehaviour
     }
 
 
+    private void Headshot(Collision collision)
+    {
+        damage *= 3;
+        ParticleSystem headshotParticle = collision.collider.gameObject.transform.GetComponent<ParticleSystem>();
+        headshotParticle.Play();
+        //maybe a slight sound
+    }
+
+
     private void ApplySpecialEffect(Collision collision)
     {
-        if (setOnFire != null)
+        if (doesThisSpellSetOnFire)
         {
             var addedEffect = collision.gameObject.GetComponent<SetOnFire>();
 

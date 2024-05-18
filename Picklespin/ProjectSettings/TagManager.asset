@@ -15,6 +15,7 @@ TagManager:
   - Waypoint
   - AngelTrigger
   - WinGateKey
+  - Hitbox_Head
   layers:
   - Default
   - TransparentFX
