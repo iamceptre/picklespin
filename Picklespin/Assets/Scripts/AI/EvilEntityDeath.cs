@@ -32,35 +32,31 @@ public class EvilEntityDeath : MonoBehaviour
 
     public void Die()
     {
+        CheckAndDisableFire();
+
         aiHealthUiBar.Detach();
         aiHealthUiBar.FadeOut();
+
+        evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
+        RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
+        evilEntityDeathSoundReference.start();
+        dissolver = gameObject.GetComponent<Dissolver>();
+        dissolver.StartDissolve();
 
         ammo.GiveManaToPlayer(howMuchManaIGiveAfterDying);
         manaSuckParticlesSpawner.Spawn(transform.position, howMuchManaIGiveAfterDying);
 
-        deathEvent.Invoke(); //custom death behaviour
+        deathEvent.Invoke(); //additional death behaviour
 
-        CheckAndDisableFire(); //if ai is burning then its dying from burninig, if theres no fire, just dies
+
     }
 
 
     private void CheckAndDisableFire()
     {
-        var setOnFireScirpt = gameObject.GetComponent<SetOnFire>();
-
-        if (setOnFireScirpt != null)
+        if (gameObject.TryGetComponent<SetOnFire>(out SetOnFire setOnFireScirpt))
         {
-            //if ai is dying from fire, not spellhit
-            setOnFireScirpt.PanicKill();
-        }
-        else
-        {
-            evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
-            RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
-            evilEntityDeathSoundReference.start();
-            //Need to shut down ai here
-            dissolver = gameObject.GetComponent<Dissolver>();
-            dissolver.StartDissolve();
+            setOnFireScirpt.KillFromFire(); //die during being on fire
         }
     }
 

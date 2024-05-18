@@ -14,11 +14,8 @@ public class ExplosionScaleTween : MonoBehaviour
         StartCoroutine(FadeOutMaterial());
        float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
 
-        Debug.Log(distanceToPlayer);
-
-        transform.DOScale(distanceToPlayer +15, animationTime).SetEase(Ease.OutExpo).OnComplete(() =>
+        transform.DOScale(distanceToPlayer * 2, animationTime).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            Debug.Log(transform.localScale);
             transform.DOKill();
             Destroy(gameObject);
         });

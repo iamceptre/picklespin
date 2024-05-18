@@ -5,7 +5,6 @@ using FMODUnity;
 public class SetOnFire : MonoBehaviour
 {
     [Header("Assets")]
-
     public EventReference effectAudio;
     private StudioEventEmitter emitter;
     public GameObject ParticleObject;
@@ -15,15 +14,15 @@ public class SetOnFire : MonoBehaviour
     [SerializeField] private ParticleSystem effectParticle;
     private ParticleSystem.MainModule particleMain;
     private bool imOnFire = false;
-    private bool killedFromBurning = false;
+    private bool burned = false;
 
     private IEnumerator killer;
 
     [SerializeField] private int howMuchDamageIdeal = 2;
 
+    [Header("References")]
     private AiHealth cachedAiHP;
     private AiHealthUiBar cachedAiHpBar;
-    private EvilEntityDeath cachedDeathScirpt;
     private DamageUI_Spawner damageUiSpawner;
 
     private GameObject spawnedParticle;
@@ -73,7 +72,6 @@ public class SetOnFire : MonoBehaviour
         {
             cachedAiHP = gameObject.GetComponent<AiHealth>();
             cachedAiHpBar = GetComponentInChildren<AiHealthUiBar>();
-            cachedDeathScirpt = GetComponentInParent<EvilEntityDeath>();
         }
 
         killer = DecreaseHPoverTime();
@@ -87,30 +85,30 @@ public class SetOnFire : MonoBehaviour
         {
             cachedAiHP.hp -= howMuchDamageIdeal;
             AiHpBarRefresher();
-            KillFromFire();
+
+            if (cachedAiHP.hp<=0)
+            {
+                KillFromFire(); //die from fire
+            }
+
             yield return new WaitForSeconds(0.5f);
         }
     }
 
-    private void KillFromFire()
+    public void KillFromFire() //spalenie
     {
-        if (cachedAiHP.hp <= 0 && !killedFromBurning)
-        {
-            imOnFire = false;
+        if (!burned) {
+            burned = true;
+            transform.parent = null;
             emitter.Stop();
-            cachedDeathScirpt.Die();
-            killedFromBurning = true;
+            particleMain.loop = false;
+            effectParticle.Stop();
+            Instantiate(killedByBurnEffect, transform.position - new Vector3(0, 2), Quaternion.identity);
+            cachedAiHP.deathEvent.Invoke();
+            Destroy(this);
         }
     }
 
-    public void PanicKill()
-    {
-        StopAllCoroutines();
-        emitter.Stop();
-        transform.parent = null;
-        Instantiate(killedByBurnEffect, transform.position - new Vector3(0, 2), Quaternion.identity);
-        Destroy(gameObject);
-    }
 
     private void AiHpBarRefresher()
     {
@@ -119,7 +117,7 @@ public class SetOnFire : MonoBehaviour
             cachedAiHpBar.RefreshBar();
         }
 
-        damageUiSpawner.Spawn(transform.position + new Vector3(0, 1), howMuchDamageIdeal, false);
+        damageUiSpawner.Spawn(transform.position + new Vector3(0, 1), howMuchDamageIdeal, false); //maybe a different color
     }
 
 
@@ -138,7 +136,7 @@ public class SetOnFire : MonoBehaviour
         }
     }
 
-    public void ShutFireDown()
+    public void ShutFireDown() //ugaszenie
     {
         transform.parent = null;
         imOnFire = false;
