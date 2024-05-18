@@ -3,6 +3,7 @@ using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.GraphicsBuffer;
 
 public class FallingFloor : MonoBehaviour
 {
@@ -88,7 +89,7 @@ public class FallingFloor : MonoBehaviour
 
             if (fallingFloorCountdown < timeBeforeFloorFalls * 0.5f && floorShakeTween == null)
             {
-                floorShakeTween = currentlyOccupiedFloor.transform.DOShakeRotation(timeBeforeFloorFalls * 0.5f, 1, 40, 90, false);
+                AlmostFallingIncidations();
             }
 
             if (fallingFloorCountdown <= 0)
@@ -100,6 +101,15 @@ public class FallingFloor : MonoBehaviour
         }
     }
 
+
+    private void AlmostFallingIncidations()
+    {
+        ParticleSystem almostFaliingParticle = currentlyOccupiedFloor.GetComponentInChildren<ParticleSystem>();
+        ParticleSystem.MainModule main = almostFaliingParticle.main;
+        main.duration = timeBeforeFloorFalls * 0.5f;
+        almostFaliingParticle.Play();
+        floorShakeTween = currentlyOccupiedFloor.transform.DOShakeRotation(timeBeforeFloorFalls * 0.5f, 1, 40, 90, false);
+    }
 
 
 
