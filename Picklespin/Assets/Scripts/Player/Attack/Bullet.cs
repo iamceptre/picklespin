@@ -96,7 +96,8 @@ public class Bullet : MonoBehaviour
 
                 aiHealth.hp -= damage;
 
-                damageUiSpawner.Spawn(collision.transform.position, damage, wasLastHitCritical);
+                //damageUiSpawner.Spawn(collision.transform.position, damage, wasLastHitCritical);
+                damageUiSpawner.Spawn(collision.contacts[0].point, damage, wasLastHitCritical);
 
                 if (aiHealth.hp <= 0) {
                     collision.collider.enabled = false;

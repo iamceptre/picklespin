@@ -23,7 +23,7 @@ public class DamageUI_Spawner : MonoBehaviour
 
     public void Spawn (Vector3 whereIshouldGo, int howMuchDamageDealt, bool isCritical)
     {
-        whereIshouldGo = whereIshouldGo + new Vector3(0, 3.5f) + (Random.insideUnitSphere); //get collision point in the future, in whereIshouldGo
+        //whereIshouldGo = whereIshouldGo + new Vector3(0, 3.5f) + (Random.insideUnitSphere); //get collision point in the future, in whereIshouldGo
         var spawnedDamageUi = Instantiate(damageUi, whereIshouldGo, Quaternion.identity);
         spawnedDamageUi.gameObject.GetComponent<DamageUI_V2>().Do(whereIshouldGo, howMuchDamageDealt, isCritical);
         spawnedDamageUi.transform.SetParent(transform);

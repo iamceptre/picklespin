@@ -13,7 +13,7 @@ public class EvilEntityDeath : MonoBehaviour
 
     private Dissolver dissolver;
 
-    private int howMuchManaIGiveAfterDying = 10;
+    [SerializeField] private int howMuchManaIGiveAfterDying = 25;
     private Ammo ammo;
 
     private void Awake()
@@ -34,8 +34,10 @@ public class EvilEntityDeath : MonoBehaviour
     {
         CheckAndDisableFire();
 
-        aiHealthUiBar.Detach();
-        aiHealthUiBar.FadeOut();
+        if (aiHealthUiBar != null) {
+            aiHealthUiBar.Detach();
+            aiHealthUiBar.FadeOut();
+        }
 
         evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
         RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
