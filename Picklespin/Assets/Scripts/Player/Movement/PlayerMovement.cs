@@ -287,7 +287,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0)
         {
-            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.24f;
+            externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.25f; //succesful bhop push
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }

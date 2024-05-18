@@ -23,7 +23,7 @@ public class GiveExpToPlayer : MonoBehaviour
         else
         {
             int headshotXP = (int)(howMuchXpIGive * 1.5f);
-            playerEXP.GivePlayerExp(headshotXP, expSourceName+" eyeshot!");
+            playerEXP.GivePlayerExp(headshotXP, expSourceName+", eyeshot!");
         }
     }
 

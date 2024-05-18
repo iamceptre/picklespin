@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3046381217476468453}
   - component: {fileID: 4628344361317781918}
   - component: {fileID: 7953518214010612825}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: AlmostFallingParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

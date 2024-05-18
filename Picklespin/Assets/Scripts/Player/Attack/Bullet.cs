@@ -35,6 +35,7 @@ public class Bullet : MonoBehaviour
     private DamageUI_Spawner damageUiSpawner;
     private GiveExpToPlayer giveExpToPlayer;
     [HideInInspector] public Transform handCastingPoint;
+    private MaterialFlashWhenHit flashWhenHit;
 
 
     [Header("Misc")]
@@ -72,15 +73,25 @@ public class Bullet : MonoBehaviour
                 aiVision = collision.gameObject.GetComponent<AiVision>();
                 aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
                 giveExpToPlayer = collision.gameObject.GetComponent<GiveExpToPlayer>(); //make get components execute only when new enemy has been hit
+                flashWhenHit = collision.gameObject.GetComponent<MaterialFlashWhenHit>();
+
+
 
                 RandomizeCritical();
 
-                giveExpToPlayer.wasLastShotAHeadshot = false;
+
+                flashWhenHit.StopAllCoroutines();
 
                 if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
                 {
                     Headshot(collision);
                     giveExpToPlayer.wasLastShotAHeadshot = true;
+                    flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
+                }
+                else
+                {
+                    giveExpToPlayer.wasLastShotAHeadshot = false;
+                    flashWhenHit.StartCoroutine(flashWhenHit.Flash());
                 }
 
                 aiHealth.hp -= damage;
@@ -96,7 +107,10 @@ public class Bullet : MonoBehaviour
                     ApplySpecialEffect(collision);
                 }
 
-                aiHealthUI.RefreshBar();
+                if (aiHealthUI != null)
+                {
+                    aiHealthUI.RefreshBar();
+                }
                 HitGetsYouNoticed();
 
             }
