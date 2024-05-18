@@ -6,6 +6,8 @@ public class GiveExpToPlayer : MonoBehaviour
     [SerializeField] private int howMuchXpIGive;
     [SerializeField] private string expSourceName;
 
+    [HideInInspector] public bool wasLastShotAHeadshot;
+
     void Start()
     {
         playerEXP = PlayerEXP.instance;
@@ -13,7 +15,16 @@ public class GiveExpToPlayer : MonoBehaviour
 
     public void GiveExp()
     {
-        playerEXP.GivePlayerExp(howMuchXpIGive,expSourceName);
+        if (!wasLastShotAHeadshot)
+        {
+            playerEXP.GivePlayerExp(howMuchXpIGive, expSourceName);
+            return;
+        }
+        else
+        {
+            int headshotXP = (int)(howMuchXpIGive * 1.5f);
+            playerEXP.GivePlayerExp(headshotXP, expSourceName+" eyeshot!");
+        }
     }
 
 }

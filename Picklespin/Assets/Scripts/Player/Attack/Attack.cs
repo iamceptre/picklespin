@@ -152,6 +152,8 @@ public class Attack : MonoBehaviour
         spellCooldown.StartCooldowning();
 
         var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        Bullet bulletScript = spawnedBullet.GetComponent<Bullet>();
+        bulletScript.handCastingPoint = handCastingPoint;
         float randomX = Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil);
         float randomY = Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil);
 

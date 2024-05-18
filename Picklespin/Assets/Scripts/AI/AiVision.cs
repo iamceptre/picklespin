@@ -19,7 +19,7 @@ public class AiVision : MonoBehaviour
 
     private void Start()
     {
-        playerRef = GameObject.FindGameObjectWithTag("MainCamera");
+        playerRef = Camera.main.gameObject;
         targetMask |= 0x1 << LayerMask.NameToLayer("Player");
         obstructionMask |= 0x1 << LayerMask.NameToLayer("Default");
     }

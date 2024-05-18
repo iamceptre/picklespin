@@ -4,7 +4,6 @@ using FMOD.Studio;
 
 public class Bullet : MonoBehaviour
 {
-
     private int originalDamage;
 
     [Header("Stats")]
@@ -15,7 +14,6 @@ public class Bullet : MonoBehaviour
     public float castDuration;
     public bool destroyOnHit = true;
 
-    private AiHealth aiHealth;
     private AiVision aiVision;
 
     [Header("Assets")]
@@ -31,14 +29,12 @@ public class Bullet : MonoBehaviour
     [SerializeField] private SetOnFire setOnFire;
     [SerializeField] private bool doesThisSpellSetOnFire = false;
 
-    private Transform mainCamera;
-
-    private Transform handCastingPoint;
-
     [Header("References")]
     private AiHealthUiBar aiHealthUI;
     private CameraShake cameraShake;
     private DamageUI_Spawner damageUiSpawner;
+    private GiveExpToPlayer giveExpToPlayer;
+    [HideInInspector] public Transform handCastingPoint;
 
 
     [Header("Misc")]
@@ -51,15 +47,15 @@ public class Bullet : MonoBehaviour
     {
         Destroy(gameObject,10);
         originalDamage = damage;
-        cameraShake = GameObject.FindGameObjectWithTag("CameraHandler").GetComponent<CameraShake>(); //replace it, tag is very inefficient
-        handCastingPoint = GameObject.FindGameObjectWithTag("CastingPoint").GetComponent<Transform>();
     }
 
     private void Start()
     {
         damageUiSpawner = DamageUI_Spawner.instance;
+        cameraShake = CameraShake.instance;
         RuntimeManager.PlayOneShot(castSound);
-        Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
+        var spawnedCastBlast = Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
+        spawnedCastBlast.transform.parent = handCastingPoint;
         transform.localEulerAngles = new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360));
     }
 
@@ -75,13 +71,16 @@ public class Bullet : MonoBehaviour
             {
                 aiVision = collision.gameObject.GetComponent<AiVision>();
                 aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
+                giveExpToPlayer = collision.gameObject.GetComponent<GiveExpToPlayer>(); //make get components execute only when new enemy has been hit
 
                 RandomizeCritical();
 
+                giveExpToPlayer.wasLastShotAHeadshot = false;
 
                 if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
                 {
                     Headshot(collision);
+                    giveExpToPlayer.wasLastShotAHeadshot = true;
                 }
 
                 aiHealth.hp -= damage;
@@ -115,7 +114,7 @@ public class Bullet : MonoBehaviour
         damage *= 3;
         ParticleSystem headshotParticle = collision.collider.gameObject.transform.GetComponent<ParticleSystem>();
         headshotParticle.Play();
-        //maybe a slight sound
+        //maybe a low-key sound
     }
 
 
@@ -168,15 +167,14 @@ public class Bullet : MonoBehaviour
 
     private void SpawnExplosion()
     {
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
-        Instantiate(explosionFX, Vector3.Lerp(transform.position, mainCamera.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
+        Instantiate(explosionFX, Vector3.Lerp(transform.position, Camera.main.transform.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
 
         hitInstance = RuntimeManager.CreateInstance(hitSound);
         FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(transform.position);
         hitInstance.set3DAttributes(attributes);
 
         RuntimeManager.AttachInstanceToGameObject(hitInstance, GetComponent<Transform>());
-        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, mainCamera.position),originalDamage);
+        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, Camera.main.transform.position),originalDamage);
         hitInstance.start();
     }
 
