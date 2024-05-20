@@ -21,8 +21,9 @@ public class PortalAfterClosing : MonoBehaviour
 
     [SerializeField] private EventReference SnapshotAfterPortalClosage;
 
-    [SerializeField] private CanvasGroup[] canvasToFade;
+    [SerializeField] private CanvasGroup[] canvasToFadeout;
     [SerializeField] private Image screenTint;
+    [SerializeField] private Image crosshair;
 
     [SerializeField] private CanvasGroup failedScreenCanvasGroup;
     private Tween myTween;
@@ -50,12 +51,12 @@ public class PortalAfterClosing : MonoBehaviour
     public void PortalClosed()
     {
         myCollider.enabled = false;
+        crosshair.enabled = false;
         FadeOutCanvas();
         RuntimeManager.PlayOneShot(SnapshotAfterPortalClosage);
         TurnOffEmissions();
         StartCoroutine(ActivateFailScreen());
         StartCoroutine(SlowDownTimeAnDesaturate());
-        //transform.DOScale(0, 1).SetEase(Ease.OutExpo);
         portalLight.DOColor(Color.white, 1).SetEase(Ease.OutExpo);
         portalLight.DOIntensity(0, 1).OnComplete(() =>
         {
@@ -66,7 +67,7 @@ public class PortalAfterClosing : MonoBehaviour
 
     private void FadeOutCanvas()
     {
-        foreach (var canvas in canvasToFade)
+        foreach (var canvas in canvasToFadeout)
         {
             canvas.DOFade(0, 1);
         }
@@ -110,11 +111,11 @@ public class PortalAfterClosing : MonoBehaviour
 
     private void BlackOutScreen()
     {
-       Tween myTween = screenTint.DOColor(Color.black, 1).OnComplete(() =>
-       {
-           pause.PauseGamePortalClosedFail();
-       });
-       myTween.SetUpdate(UpdateType.Normal, true);
+        Tween myTween = screenTint.DOColor(Color.black, 2).OnComplete(() =>
+        {
+            pause.PauseGamePortalClosedFail();
+        });
+        myTween.SetUpdate(UpdateType.Normal, true);
     }
 
 
