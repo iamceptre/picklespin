@@ -10,7 +10,7 @@ public class LookAt : MonoBehaviour
         if (whatToLookAt == null)
         {
             //whatToLookAt = GameObject.FindGameObjectWithTag("MainCamera").transform;
-            whatToLookAt = Camera.main.transform;
+            whatToLookAt = CachedCameraMain.instance.cachedTransform;
         }
     }
 

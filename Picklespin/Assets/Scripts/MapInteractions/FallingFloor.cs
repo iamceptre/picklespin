@@ -31,30 +31,32 @@ public class FallingFloor : MonoBehaviour
 
     private void RaycastCheck()
     {
-        Vector3 rayStart = transform.position;
-        Vector3 rayDirection = Vector3.down;
-        float rayDistance = 2;
-
-        RaycastHit hit;
-
-        Debug.DrawRay(rayStart, rayDirection * rayDistance, Color.red);
-
-        if (Physics.Raycast(rayStart, rayDirection, out hit, rayDistance, fallingFloorLayer))
+        if (transform.position.y > 15)
         {
-            currentlyOccupiedFloor = hit.transform.gameObject;
-        }
-        else
-        {
-            floorShakeTween.Kill();
-            floorShakeTween = null;
-            fallingFloorCountdown = timeBeforeFloorFalls;
-            return;
-        }
+            Debug.Log("raycast scan");
+            Vector3 rayStart = transform.position;
+            Vector3 rayDirection = Vector3.down;
+            float rayDistance = 2;
 
-        if (currentlyOccupiedFloor != previouslyOccupiedFloor)
-        {
-            OccupiedFloorChanged();
-            previouslyOccupiedFloor = currentlyOccupiedFloor;
+            RaycastHit hit;
+
+            if (Physics.Raycast(rayStart, rayDirection, out hit, rayDistance, fallingFloorLayer))
+            {
+                currentlyOccupiedFloor = hit.transform.gameObject;
+            }
+            else
+            {
+                floorShakeTween.Kill();
+                floorShakeTween = null;
+                fallingFloorCountdown = timeBeforeFloorFalls;
+                return;
+            }
+
+            if (currentlyOccupiedFloor != previouslyOccupiedFloor)
+            {
+                OccupiedFloorChanged();
+                previouslyOccupiedFloor = currentlyOccupiedFloor;
+            }
         }
     }
 

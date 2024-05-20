@@ -4,11 +4,11 @@ public class LookAtY : MonoBehaviour
 {
     public Transform whatToLookAt;
 
-    private void Awake()
+    private void Start()
     {
         if (whatToLookAt == null)
         {
-            whatToLookAt = Camera.main.transform;
+            whatToLookAt = CachedCameraMain.instance.cachedTransform;
         }
     }
 

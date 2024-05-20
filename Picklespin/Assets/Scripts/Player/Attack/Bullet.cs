@@ -36,6 +36,7 @@ public class Bullet : MonoBehaviour
     private GiveExpToPlayer giveExpToPlayer;
     [HideInInspector] public Transform handCastingPoint;
     private MaterialFlashWhenHit flashWhenHit;
+    private CachedCameraMain cachedCameraMain;
 
 
     [Header("Misc")]
@@ -54,6 +55,7 @@ public class Bullet : MonoBehaviour
     {
         damageUiSpawner = DamageUI_Spawner.instance;
         cameraShake = CameraShake.instance;
+        cachedCameraMain = CachedCameraMain.instance;
         RuntimeManager.PlayOneShot(castSound);
         var spawnedCastBlast = Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
         spawnedCastBlast.transform.parent = handCastingPoint;
@@ -182,14 +184,14 @@ public class Bullet : MonoBehaviour
 
     private void SpawnExplosion()
     {
-        Instantiate(explosionFX, Vector3.Lerp(transform.position, Camera.main.transform.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
+        Instantiate(explosionFX, Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
 
         hitInstance = RuntimeManager.CreateInstance(hitSound);
         FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(transform.position);
         hitInstance.set3DAttributes(attributes);
 
         RuntimeManager.AttachInstanceToGameObject(hitInstance, GetComponent<Transform>());
-        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, Camera.main.transform.position),originalDamage);
+        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, cachedCameraMain.cachedTransform.position),originalDamage);
         hitInstance.start();
     }
 

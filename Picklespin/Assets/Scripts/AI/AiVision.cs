@@ -7,7 +7,7 @@ public class AiVision : MonoBehaviour
     [Range(0, 360)]
     public float angle;
 
-    [HideInInspector] public GameObject playerRef;
+    [HideInInspector] public Transform playerRef;
 
     private LayerMask targetMask;
     private LayerMask obstructionMask;
@@ -19,7 +19,7 @@ public class AiVision : MonoBehaviour
 
     private void Start()
     {
-        playerRef = Camera.main.gameObject;
+        playerRef = CachedCameraMain.instance.cachedTransform;
         targetMask |= 0x1 << LayerMask.NameToLayer("Player");
         obstructionMask |= 0x1 << LayerMask.NameToLayer("Default");
     }
@@ -51,7 +51,7 @@ public class AiVision : MonoBehaviour
 
                 if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
                 {
-                    float distanceToTarget = Vector3.Distance(transform.position, playerRef.transform.position);
+                    float distanceToTarget = Vector3.Distance(transform.position, playerRef.position);
 
                     if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
                         seeingPlayer = true;
@@ -83,7 +83,7 @@ public class AiVision : MonoBehaviour
 
    private void isPlayerVeryCloseCheck()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, playerRef.transform.position); //change it to Player Sound Radius Trigger with AI Hear Trigger
+        float distanceToPlayer = Vector3.Distance(transform.position, playerRef.position); //change it to Player Sound Radius Trigger with AI Hear Trigger
 
         if (distanceToPlayer <= (radius * 0.5))
         { 
