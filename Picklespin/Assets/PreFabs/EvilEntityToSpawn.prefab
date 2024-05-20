@@ -10555,6 +10555,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   aiHealthUiBar: {fileID: 3817865884643380506}
+  giveExpToPlayer: {fileID: 0}
+  howMuchManaIGiveAfterDying: 25
 --- !u!114 &1342977768311708897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10608,6 +10610,7 @@ MonoBehaviour:
   howMuchXpIGive: 100
   expSourceName: exiled evil
   wasLastShotAHeadshot: 0
+  howMuchManaIGiveAfterDying: 10
 --- !u!136 &2450276633478797400
 CapsuleCollider:
   m_ObjectHideFlags: 0

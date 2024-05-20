@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed;
     public float crouchSpeed;
 
-    private bool isSlowedDown = false;
+    private float speedMultiplier = 1;
 
     private BarLightsAnimation barLightsAnimation;
 
@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] [Range(0, 100)] public float stamina = 100;
     private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
-    private bool canMove = true;
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool anyMovementKeysPressed;
     [HideInInspector] public float externalPushForce = 1; //1 means no difference at all
@@ -67,18 +66,18 @@ public class PlayerMovement : MonoBehaviour
     public void SlowMeDown()
     {
         SetSneakSingleTick();
-        isSlowedDown = true;
+        speedMultiplier = 0.5f;
     }
 
     public void SpeedMeBackUp()
     {
         SetWalkSingleTick();
-        isSlowedDown = false;
+        speedMultiplier = 1;
     }
 
     private void SetWalkSingleTick()
     {
-        if (movementStateForFMOD != 1 && !Input.GetKey(KeyCode.C) && anyMovementKeysPressed)
+        if (movementStateForFMOD != 1 && !Input.GetKey(KeyCode.C) && anyMovementKeysPressed && speedMultiplier == 1)
         {
             movementStateForFMOD = 1;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
@@ -90,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SetRunSingleTick()
     {
-        if (movementStateForFMOD != 2 && stamina > 5 && anyMovementKeysPressed)
+        if (movementStateForFMOD != 2 && stamina > 5 && anyMovementKeysPressed && speedMultiplier == 1)
         {
             movementStateForFMOD = 2;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
@@ -102,8 +101,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void SetSneakSingleTick()
     {
-        if (movementStateForFMOD != 0 && anyMovementKeysPressed)
+        if (anyMovementKeysPressed)
         {
+            Debug.Log("setting sneak parameters");
             movementStateForFMOD = 0;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
             footstepSystem.fixedFootstepSpace = 0.8f; //sneak speed
@@ -115,10 +115,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        Vector3 forward = body.TransformDirection(Vector3.forward);
-        Vector3 right = mainCamera.TransformDirection(Vector3.right);
-
-        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+        if (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0)
         {
             anyMovementKeysPressed = true;
         }
@@ -128,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift) && !isSlowedDown)
+        if (characterController.isGrounded && stamina >= 0 && Input.GetKey(KeyCode.LeftShift))
         {
             if (anyMovementKeysPressed && !Input.GetKey(KeyCode.C))
             {
@@ -149,12 +146,15 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX * externalPushForce) + (right * curSpeedY);
+        Vector3 forward = body.TransformDirection(Vector3.forward);
+        Vector3 right = mainCamera.TransformDirection(Vector3.right);
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        float curSpeedX = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal");
+        float movementDirectionY = moveDirection.y;
+        moveDirection = ((forward * curSpeedX * externalPushForce) + (right * curSpeedY)) * speedMultiplier;
+
+        if (Input.GetButton("Jump") && characterController.isGrounded)
         {
             Jump();
         }
@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.C) && canMove || isSlowedDown)
+        if (Input.GetKeyDown(KeyCode.C))
         {
             SetSneakSingleTick();
             characterController.height = crouchHeight;
@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
             runSpeed = crouchSpeed;
         }
 
-        if (Input.GetKeyUp(KeyCode.C) && canMove || isSlowedDown)
+        if (Input.GetKeyUp(KeyCode.C))
         {
             if (!isRunning)
             {

@@ -35,18 +35,21 @@ public class Ammo : MonoBehaviour
     public void GiveManaToPlayer(int howMuchManaIGive)
     {
 
-        if (ammo + howMuchManaIGive <= maxAmmo)
-        {
-            ammo += howMuchManaIGive;
-            barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, false); //hp = 0, stamina = 1, mana = 2
-        }
-        else
-        {
-            ammo = maxAmmo;
-            barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, true); //hp = 0, stamina = 1, mana = 2
-        }
+        if (ammo < maxAmmo) {
 
-        ammoDisplay.Refresh(true);
+            if (ammo + howMuchManaIGive <= maxAmmo)
+            {
+                ammo += howMuchManaIGive;
+                barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, false); //hp = 0, stamina = 1, mana = 2
+            }
+            else
+            {
+                ammo = maxAmmo;
+                barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, true); //hp = 0, stamina = 1, mana = 2
+            }
+
+            ammoDisplay.Refresh(true);
+        }
 
         //RuntimeManager.PlayOneShot(manaAqquiredSound);
     }

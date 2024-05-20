@@ -5,16 +5,12 @@ using UnityEngine.Events;
 
 public class EvilEntityDeath : MonoBehaviour
 {
-    ManaSuckParticlesSpawner manaSuckParticlesSpawner;
     [SerializeField] private EventReference evilEntityDeathSound;
     private EventInstance evilEntityDeathSoundReference;
     [SerializeField] private UnityEvent deathEvent;
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
 
     private Dissolver dissolver;
-
-    [SerializeField] private int howMuchManaIGiveAfterDying = 25;
-    private Ammo ammo;
 
     private void Awake()
     {
@@ -24,11 +20,6 @@ public class EvilEntityDeath : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        manaSuckParticlesSpawner = ManaSuckParticlesSpawner.instance;
-        ammo = Ammo.instance;
-    }
 
     public void Die()
     {
@@ -44,9 +35,6 @@ public class EvilEntityDeath : MonoBehaviour
         evilEntityDeathSoundReference.start();
         dissolver = gameObject.GetComponent<Dissolver>();
         dissolver.StartDissolve();
-
-        ammo.GiveManaToPlayer(howMuchManaIGiveAfterDying);
-        manaSuckParticlesSpawner.Spawn(transform.position, howMuchManaIGiveAfterDying);
 
         deathEvent.Invoke(); //additional death behaviour
 

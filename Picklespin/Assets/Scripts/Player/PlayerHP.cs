@@ -74,22 +74,25 @@ public class PlayerHP : MonoBehaviour
 
     public void GiveHPToPlayer(int howMuchHPIGive)
     {
-
-        if (hp + howMuchHPIGive < maxHp)
+        if (hp < maxHp)
         {
-            //Debug.Log("raz");
-            hp += howMuchHPIGive;
+
+            if (hp + howMuchHPIGive < maxHp)
+            {
+                //Debug.Log("raz");
+                hp += howMuchHPIGive;
+                hpBarDisplay.Refresh(true);
+                barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, false); //hp = 0, stamina = 1, mana = 2
+            }
+            else
+            {
+                //Debug.Log("dwa");
+                hp = maxHp;
+                barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, true);
+            }
+
             hpBarDisplay.Refresh(true);
-            barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, false); //hp = 0, stamina = 1, mana = 2
         }
-        else
-        {
-            //Debug.Log("dwa");
-            hp = maxHp;
-            barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, true);
-        }
-
-        hpBarDisplay.Refresh(true);
 
         //RuntimeManager.PlayOneShot(hpAqquiredSound);
     }
