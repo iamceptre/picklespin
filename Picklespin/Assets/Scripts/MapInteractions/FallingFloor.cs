@@ -33,7 +33,6 @@ public class FallingFloor : MonoBehaviour
     {
         if (transform.position.y > 15)
         {
-            Debug.Log("raycast scan");
             Vector3 rayStart = transform.position;
             Vector3 rayDirection = Vector3.down;
             float rayDistance = 2;

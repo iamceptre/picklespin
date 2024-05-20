@@ -154,8 +154,7 @@ public class Attack : MonoBehaviour
         var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         Bullet bulletScript = spawnedBullet.GetComponent<Bullet>();
         bulletScript.handCastingPoint = handCastingPoint;
-        float randomX = Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil);
-        float randomY = Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil);
+        recoilMultiplier.UpdateRecoil();
 
         Vector3 randomDirection = new Vector3(
     Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),

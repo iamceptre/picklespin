@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4151057753473120548}
   - component: {fileID: 2673072155298577061}
   - component: {fileID: 1610391019735168431}
+  - component: {fileID: 3445111517720353771}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -49,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CastingParticle: {fileID: 0}
   damage: 0
   magickaCost: 4
   speed: 15
@@ -79,6 +79,11 @@ MonoBehaviour:
       Data3: 1879968661
       Data4: 1426133493
     Path: event:/PLACEHOLDER_UNCZ/light_spell_hit
+  explosionSoundEmitter: {fileID: 3445111517720353771}
+  CastingParticle: {fileID: 0}
+  setOnFire: {fileID: 0}
+  doesThisSpellSetOnFire: 0
+  handCastingPoint: {fileID: 0}
   iWillBeCritical: 0
   hitSomething: 0
 --- !u!33 &7222242048214855591
@@ -179,6 +184,37 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &3445111517720353771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066149339659852106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 36460496
+      Data2: 1091138312
+      Data3: 1879968661
+      Data4: 1426133493
+    Path: event:/PLACEHOLDER_UNCZ/light_spell_hit
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 9
+  OverrideMaxDistance: 100
 --- !u!1 &5220911496793695969
 GameObject:
   m_ObjectHideFlags: 0

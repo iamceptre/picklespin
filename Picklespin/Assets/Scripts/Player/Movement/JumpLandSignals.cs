@@ -4,17 +4,20 @@ using FMODUnity;
 
 public class JumpLandSignals : MonoBehaviour
 {
-    [SerializeField] private CameraShake cameraShake;
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private FootstepSystem footstepSystem;
+    private FootstepSystem footstepSystem;
+    private CameraShake cameraShake;
     private PlayerMovement playerMovement;
     [SerializeField] private HearingRange hearingRange;
 
     private bool landed = true;
     private bool routineRunning = false;
 
-    [SerializeField] private EventReference landSoft;
-    [SerializeField] private EventReference landHard;
+    //[SerializeField] private EventReference landSoft;
+    //[SerializeField] private EventReference landHard;
+
+    [SerializeField] private StudioEventEmitter landSoftEmitter;
+    [SerializeField] private StudioEventEmitter landHardEmitter;
 
     private CharacterControllerVelocity speedometer;
 
@@ -31,6 +34,8 @@ public class JumpLandSignals : MonoBehaviour
         skipFirstSound = true;
         speedometer = CharacterControllerVelocity.instance;
         playerMovement = PlayerMovement.instance;  
+        cameraShake = CameraShake.instance;
+        footstepSystem = FootstepSystem.instance; 
     }
 
     private void Update()
@@ -110,13 +115,13 @@ public class JumpLandSignals : MonoBehaviour
         {
             isFallingLongEnough = false;
 
-            if (speedometer.verticalVelocity >= 10) //is landing hard treshold
+            if (speedometer.verticalVelocity <= 10) //is landing hard treshold
             {
-                RuntimeManager.PlayOneShot(landHard);
+                landSoftEmitter.Play();
             }
             else
             {
-                RuntimeManager.PlayOneShot(landSoft);
+                landHardEmitter.Play();
             }
 
         }

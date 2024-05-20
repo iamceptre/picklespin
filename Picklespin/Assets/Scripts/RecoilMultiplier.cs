@@ -15,11 +15,11 @@ public class RecoilMultiplier : MonoBehaviour
     {
         playerMovement = PlayerMovement.instance;
         speedometer = CharacterControllerVelocity.instance;
-        InvokeRepeating("UpdateRecoil", 0, 0.1f);
+        //InvokeRepeating("UpdateRecoil", 0, 0.1f);
     }
 
 
-    private void UpdateRecoil()
+    public void UpdateRecoil()
     {
         if (playerMovement.movementStateForFMOD != 2) {
             currentRecoil = speedometer.verticalVelocity * jumpingRecoil;

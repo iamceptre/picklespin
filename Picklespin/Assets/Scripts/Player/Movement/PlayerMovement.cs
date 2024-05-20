@@ -243,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        footstepSystem.footstepInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //footstepSystem.footstepInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         if (bhop != null && bhop.canBhop)
         {
             BhopJump();

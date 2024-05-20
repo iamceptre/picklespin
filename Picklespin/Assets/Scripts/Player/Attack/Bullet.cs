@@ -2,6 +2,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 
+[RequireComponent(typeof(StudioEventEmitter))]
 public class Bullet : MonoBehaviour
 {
     private int originalDamage;
@@ -21,7 +22,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private GameObject explosionFX;
     [SerializeField] private EventReference castSound;
     public EventReference pullupSound;
-    [SerializeField] private EventReference hitSound;
+    [SerializeField] private StudioEventEmitter explosionSoundEmitter;
     [SerializeField] private EventInstance hitInstance;
     [Tooltip("long casting particle")] public GameObject CastingParticle;
 
@@ -98,7 +99,6 @@ public class Bullet : MonoBehaviour
 
                 aiHealth.hp -= damage;
 
-                //damageUiSpawner.Spawn(collision.transform.position, damage, wasLastHitCritical);
                 damageUiSpawner.Spawn(collision.contacts[0].point, damage, wasLastHitCritical);
 
                 if (aiHealth.hp <= 0) {
@@ -185,10 +185,7 @@ public class Bullet : MonoBehaviour
     private void SpawnExplosion()
     {
         Instantiate(explosionFX, Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
-
-        hitInstance = RuntimeManager.CreateInstance(hitSound);
-        FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(transform.position);
-        hitInstance.set3DAttributes(attributes);
+        explosionSoundEmitter.Play();
 
         RuntimeManager.AttachInstanceToGameObject(hitInstance, GetComponent<Transform>());
         cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, cachedCameraMain.cachedTransform.position),originalDamage);

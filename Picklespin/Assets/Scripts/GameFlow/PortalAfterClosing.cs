@@ -3,6 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Rendering.PostProcessing;
 using FMODUnity;
+using UnityEngine.UI;
 
 public class PortalAfterClosing : MonoBehaviour
 {
@@ -20,7 +21,8 @@ public class PortalAfterClosing : MonoBehaviour
 
     [SerializeField] private EventReference SnapshotAfterPortalClosage;
 
-    [SerializeField] private CanvasGroup[] canvasToFadeOut;
+    [SerializeField] private CanvasGroup[] canvasToFade;
+    [SerializeField] private Image screenTint;
 
     [SerializeField] private CanvasGroup failedScreenCanvasGroup;
     private Tween myTween;
@@ -64,7 +66,7 @@ public class PortalAfterClosing : MonoBehaviour
 
     private void FadeOutCanvas()
     {
-        foreach (var canvas in canvasToFadeOut)
+        foreach (var canvas in canvasToFade)
         {
             canvas.DOFade(0, 1);
         }
@@ -106,13 +108,23 @@ public class PortalAfterClosing : MonoBehaviour
     }
 
 
+    private void BlackOutScreen()
+    {
+       Tween myTween = screenTint.DOColor(Color.black, 1).OnComplete(() =>
+       {
+           pause.PauseGamePortalClosedFail();
+       });
+       myTween.SetUpdate(UpdateType.Normal, true);
+    }
+
+
     private IEnumerator ActivateFailScreen()
     {
         yield return new WaitForSeconds(1);
         PortalClosedScreen.SetActive(true);
         myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>
         {
-            pause.PauseGamePortalClosedFail();
+            BlackOutScreen();
         });
         myTween.SetUpdate(UpdateType.Normal, true);
     }

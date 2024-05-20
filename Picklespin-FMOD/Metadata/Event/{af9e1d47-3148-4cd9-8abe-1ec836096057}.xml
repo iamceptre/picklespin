@@ -56,7 +56,17 @@
 			<destination>{43d56649-36ae-4295-91e9-91ac14cc86d4}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{c9338e34-5e53-477d-9135-ed4731bb8d0f}" />
+	<object class="EventAutomatableProperties" id="{c9338e34-5e53-477d-9135-ed4731bb8d0f}">
+		<property name="maxVoices">
+			<value>2</value>
+		</property>
+		<property name="priority">
+			<value>3</value>
+		</property>
+		<property name="triggerCooldown">
+			<value>20</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{f35a2d48-2a56-4e16-8104-283a59a825ec}" />
 	<object class="GroupTrack" id="{2ae4252d-6b34-49c6-b87b-c115d8424458}">
 		<relationship name="mixerGroup">
@@ -133,8 +143,11 @@
 	</object>
 	<object class="MultiSound" id="{32497c79-315c-4e9e-891a-f75fd219ffe6}">
 		<property name="volume">
-			<value>-21</value>
+			<value>-16</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{f6e9e4bc-f13c-4ee1-8b70-6695786de252}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{dfdfb76f-afcb-4e89-a200-090f96dbcb53}</destination>
 			<destination>{16e9abf7-3a9d-4379-8e57-ffb089cbe1af}</destination>
@@ -193,6 +206,14 @@
 		<relationship name="audioFile">
 			<destination>{eb25896c-99a4-463b-b3fc-8c8a3047d3dd}</destination>
 		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{f6e9e4bc-f13c-4ee1-8b70-6695786de252}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>2.5</value>
+		</property>
 	</object>
 	<object class="SingleSound" id="{dfdfb76f-afcb-4e89-a200-090f96dbcb53}">
 		<relationship name="audioFile">
