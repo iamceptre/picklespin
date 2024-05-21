@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class SpellSpawner : MonoBehaviour
 {
@@ -20,8 +21,7 @@ public class SpellSpawner : MonoBehaviour
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            RandomizeWithoutReps();
-            Instantiate(spellsLo[Random.Range(0,spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+            StartCoroutine(WaitAndSpawnLo(i));
         }
     }
 
@@ -29,9 +29,22 @@ public class SpellSpawner : MonoBehaviour
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            RandomizeWithoutReps();
-            Instantiate(spellsHi[Random.Range(0, spellsHi.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+            StartCoroutine(WaitAndSpawnHi(i));
         }
+    }
+
+    private IEnumerator WaitAndSpawnLo(int i)
+    {
+        yield return new WaitForSeconds(i * 0.06f);
+        RandomizeWithoutReps();
+        Instantiate(spellsLo[Random.Range(0, spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+    }
+
+    private IEnumerator WaitAndSpawnHi(int i)
+    {
+        yield return new WaitForSeconds(i * 0.06f);
+        RandomizeWithoutReps();
+        Instantiate(spellsHi[Random.Range(0, spellsHi.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
     }
 
     public void SpawnLastSpell()

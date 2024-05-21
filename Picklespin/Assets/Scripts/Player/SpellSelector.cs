@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
@@ -44,23 +45,22 @@ public class SpellSelector : MonoBehaviour
 
         inventoryBarSelectedSpell.NumberBump(pressedNumber);
 
-        if (pressedNumber != currentlySelectedSpell) { //prevents mindless spamming 
 
-            if (unlockedSpells.spellUnlocked[pressedNumber] == true)
-            {
-                unlockedSpells.SelectingUnlockedAuraAnimation(pressedNumber);
-                attack.SelectSpell(pressedNumber);
-                currentlySelectedSpell = pressedNumber;
-                inventoryBarSelectedSpell.SelectionChanged(pressedNumber);
-            }
-            else
-            {
-                RuntimeManager.PlayOneShot(spellLockedSoundEvent);
-                unlockedSpells.spellLockedIconAnimation(pressedNumber);
-            }
+        if (unlockedSpells.spellUnlocked[pressedNumber] == true)
+        {
+            unlockedSpells.SelectingUnlockedAuraAnimation(pressedNumber);
+            attack.SelectSpell(pressedNumber);
+            currentlySelectedSpell = pressedNumber;
+            inventoryBarSelectedSpell.SelectionChanged(pressedNumber);
         }
+        else
+        {
+            RuntimeManager.PlayOneShot(spellLockedSoundEvent);
+            unlockedSpells.spellLockedIconAnimation(pressedNumber);
+        }
+
 
     }
 
-   
+
 }

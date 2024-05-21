@@ -70,10 +70,8 @@ public class CameraShake : MonoBehaviour
             strenghtBasedOnDistance = Mathf.Clamp(strenghtBasedOnDistance, 0, 10);
 
             //Debug.Log("ran ExplosionShake" + "distance: " + distanceFromExplosion + " str: " + strenghtBasedOnDistance);
-            if (explosionTween != null)
-            {
-                explosionTween.Kill();
-            }
+
+            explosionTween.Kill();
             explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic);
             hand.DOKill();
             hand.DOShakePosition(strenghtBasedOnDistance, strenghtBasedOnDistance * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
@@ -94,16 +92,7 @@ public class CameraShake : MonoBehaviour
             strenghtBasedOnDistance = Mathf.Clamp(strenghtBasedOnDistance, 0, 10);
 
             explosionDuration = explosionDuration + (strenghtBasedOnDistance) * 0.05f;
-
-            //Debug.Log("ran EnemyExplosionShake" + "distance: " + distanceFromExplosion + " strenght: " + strenghtBasedOnDistance + " duration: " + explosionDuration);
-            if (explosionTween != null)
-            {
-                explosionTween.Kill();
-            }
-            if (enemyDeadExplosionTween != null)
-            {
-                enemyDeadExplosionTween.Kill();
-            }
+            enemyDeadExplosionTween.Kill();
             StartCoroutine(EnemyExplosionLater(explosionDuration, strenghtBasedOnDistance));
         }
     }

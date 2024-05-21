@@ -34,14 +34,12 @@ public class AddedEXP_Gui : MonoBehaviour
     {
         _textStartPosition = transform.localPosition;
         startingColor = new Color(_text.color.r, _text.color.g, _text.color.b, 1);
-        //_text.enabled = false;
         myCanvas = gameObject.GetComponent<Canvas>();
         myCanvas.enabled = false;
     }
 
     public void DisplayAddedEXP(int addedXP, string expSourceName)
     {
-        //_text.enabled = true;
         myCanvas.enabled = true;
         amountToShow = amountToShow + addedXP;
         UpdateText(addedXP, expSourceName);
@@ -67,12 +65,12 @@ public class AddedEXP_Gui : MonoBehaviour
         if (addedXP > 0)
         {
             _text.color = startingColor;
-            _text.text = "+ " + amountToShow + " exp" + "<size=15px>" + " (" + expSourceName + ")";
+            _text.text = "+ " + amountToShow + " exp" + "<size=15px><br>" + "(" + expSourceName + ")";
         }
         else
         {
             _text.color = new Color(0.76f, 0.235f, 0.235f);
-            _text.text = amountToShow + " exp" + "<size=15px>" + " (" + expSourceName + ")";
+            _text.text = amountToShow + " exp" + "<size=15px><br>" + "(" + expSourceName + ")";
         }
     }
 

@@ -3,6 +3,7 @@ using FMODUnity;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
+using FMOD.Studio;
 
 public class Attack : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class Attack : MonoBehaviour
     AmmoDisplay ammoDisplay;
 
     [SerializeField] private EventReference shootFailEvent;
-    [SerializeField] private EventReference spellLockedEvent;
-    private FMOD.Studio.EventInstance spellcastInstance;
+    private EventInstance pullupEventInstance;
+    private EventInstance spellcastInstance;
 
     [SerializeField] private Transform bulletSpawnPoint;
     public GameObject[] bulletPrefab;
@@ -178,7 +179,10 @@ public class Attack : MonoBehaviour
         currentBullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
         currentlySelectedCastDuration = currentBullet.castDuration;
         changeSelectedSpell.Invoke();
-        RuntimeManager.PlayOneShot(currentBullet.pullupSound);
+        //RuntimeManager.PlayOneShot(currentBullet.pullupSound);
+        pullupEventInstance = RuntimeManager.CreateInstance(currentBullet.pullupSound);
+        pullupEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        pullupEventInstance.start();
     }
 
     private IEnumerator SpellCasting(float castDuration)

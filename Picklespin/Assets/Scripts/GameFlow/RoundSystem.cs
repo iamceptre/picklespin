@@ -19,6 +19,8 @@ public class RoundSystem : MonoBehaviour
     [SerializeField] private TMP_Text newRoundText;
     private NewRoundDisplayText newRoundDisplayText;
 
+    private float speedMultiplier = 1;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -40,14 +42,14 @@ public class RoundSystem : MonoBehaviour
 
     private void Update()
     {
-        if (timer < 0)
+        if (timer > 0)
         {
-            NextRound();
+            timer -= Time.deltaTime * speedMultiplier;
+            roundTimerGUI.value = timer / roundDuration;
         }
         else
         {
-            timer -= Time.deltaTime;
-            roundTimerGUI.value = timer / roundDuration;
+            NextRound();
         }
 
     }
@@ -55,13 +57,13 @@ public class RoundSystem : MonoBehaviour
     private void NextRound()
     {
         if (roundNumber<RoundEvent.Length) {
-            newRoundDisplayText.gameObject.SetActive(true);
+           // newRoundDisplayText.gameObject.SetActive(true);
             newRoundText.text = "Round " + (roundNumber + 1) + " begins";
             RoundEvent[roundNumber].Invoke();
         }
         else
         {
-            newRoundDisplayText.gameObject.SetActive(true);
+            //newRoundDisplayText.gameObject.SetActive(true);
             newRoundText.text = "You reached the end";
 
             LastRoundEvent.Invoke();

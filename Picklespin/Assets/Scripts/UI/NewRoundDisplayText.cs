@@ -9,6 +9,8 @@ public class NewRoundDisplayText : MonoBehaviour
     private TMP_Text myText;
     private RectTransform myRectTransform;
 
+    [SerializeField] private Canvas myCanvas;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -22,6 +24,7 @@ public class NewRoundDisplayText : MonoBehaviour
 
         myText = gameObject.GetComponent<TMP_Text>();
         myRectTransform = gameObject.GetComponent<RectTransform>();
+        myCanvas.enabled = true;
     }
 
     private void Start()
@@ -32,6 +35,7 @@ public class NewRoundDisplayText : MonoBehaviour
 
     public void Animate()
     {
+        myCanvas.enabled = true;
         myText.DOKill();
         myText.DOFade(0, 0);
         myRectTransform.localScale = Vector3.one;
@@ -43,7 +47,8 @@ public class NewRoundDisplayText : MonoBehaviour
     {
         myText.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(() =>
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            myCanvas.enabled = true;
         });
     }
 

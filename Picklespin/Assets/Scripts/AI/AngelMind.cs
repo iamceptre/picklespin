@@ -50,7 +50,7 @@ public class AngelMind : MonoBehaviour
 
     private void GiveHPToPlayer()
     {
-        playerHP.GiveHPToPlayer(Random.Range(80, 100));
+        playerHP.GiveHPToPlayer(Random.Range(80, playerHP.maxHp));
     }
 
     private void GiveStaminaToPlayer()
@@ -60,7 +60,7 @@ public class AngelMind : MonoBehaviour
 
     private void GiveManaToPlayer()
     {
-        ammo.GiveManaToPlayer(Random.Range(80, 100)); 
+        ammo.GiveManaToPlayer(Random.Range(80, ammo.maxAmmo)); 
     }
 
 }

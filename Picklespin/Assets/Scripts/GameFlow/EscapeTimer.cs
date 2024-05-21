@@ -24,6 +24,7 @@ public class EscapeTimer : MonoBehaviour
 
     [SerializeField] private GameObject[] enableWithMe;
     [SerializeField] private GameObject[] disableWithMe;
+    [SerializeField] private Canvas[] disableCanvasesWithMe;
 
     private IEnumerator colorRoutine;
 
@@ -54,6 +55,7 @@ public class EscapeTimer : MonoBehaviour
         for (int i = 0; i < disableWithMe.Length; i++)
         {
             disableWithMe[i].SetActive(false);
+            disableCanvasesWithMe[i].enabled = false;
         }
     }
 

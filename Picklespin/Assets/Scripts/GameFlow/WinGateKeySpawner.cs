@@ -18,7 +18,6 @@ public class WinGateKeySpawner : MonoBehaviour
         {
             winGateKey.transform.position = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
             winGateKey.SetActive(true);
-            keySpawnedTip.gameObject.SetActive(true);
             keySpawnedTip.Animate();
         }
     }

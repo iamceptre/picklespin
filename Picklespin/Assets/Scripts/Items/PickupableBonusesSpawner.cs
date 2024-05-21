@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PickupableBonusesSpawner : MonoBehaviour
@@ -18,10 +19,19 @@ public class PickupableBonusesSpawner : MonoBehaviour
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            RandomizeWithoutReps();
-            Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+            StartCoroutine(WaitAndSpawn(i));
         }
     }
+
+
+    private IEnumerator WaitAndSpawn(int i)
+    {
+        yield return new WaitForSeconds(i * 0.05f);
+        RandomizeWithoutReps();
+        Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+    }
+
+
 
 
 

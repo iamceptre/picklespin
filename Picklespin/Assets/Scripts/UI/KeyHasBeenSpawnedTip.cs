@@ -28,12 +28,13 @@ public class KeyHasBeenSpawned : MonoBehaviour
     private void Start()
     {
         myText.DOFade(0, 0);
-        gameObject.SetActive(false);
+        myText.enabled = false;
     }
 
 
     public void Animate()
     {
+        myText.enabled = true;
         myText.DOKill();
         myText.DOFade(0, 0);
         myRectTransform.localScale = Vector3.one;
@@ -53,7 +54,7 @@ public class KeyHasBeenSpawned : MonoBehaviour
         {
             myText.DOKill();
             myRectTransform.DOKill();
-            Destroy(gameObject); //Destroys itself cuz there will be only one time a key is spawned during gamplay
+           myText.enabled=false;
         });
     }
 
