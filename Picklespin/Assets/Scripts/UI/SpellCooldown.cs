@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,48 +6,54 @@ public class SpellCooldown : MonoBehaviour
 {
 
     private Slider me;
-    [HideInInspector] public float selectedSpellCooldownTime;
+    //[HideInInspector] public float selectedSpellCooldownTime;
     private float currentCooldown;
-    [SerializeField] private GameObject[] myComponents;
+    public Canvas myCanvas;
+    //[SerializeField] private GameObject[] myComponents;
+
+    Attack attack;
 
     private void Awake()
     {
         me = GetComponent<Slider>();
+        myCanvas = GetComponent<Canvas>();
     }
 
-
-    [SerializeField]private Attack attack;
-    void Update()
+    private void Start()
     {
-        currentCooldown -= Time.deltaTime;
-        me.value = currentCooldown/selectedSpellCooldownTime;
-
-        if (me.value <= 0)
-        {
-            DisableComponents();
-            enabled = false;
-        }
+        attack = Attack.instance;
     }
 
-    public void StartCooldowning()
+    public void StartCooldown(float selectedSpellCooldownTime)
     {
-        EnableComponents();
+        myCanvas.enabled = true;
+        attack.castCooldownAllow = false;
         currentCooldown = selectedSpellCooldownTime;
+        StartCoroutine(Cooldown(selectedSpellCooldownTime));
     }
 
-    public void EnableComponents()
+    private IEnumerator Cooldown(float selectedSpellCooldownTime)
     {
-        for (int i = 0; i < myComponents.Length; i++)
+        while (true)
         {
-            myComponents[i].SetActive(true);
+            currentCooldown -= Time.deltaTime;
+            me.value = currentCooldown / selectedSpellCooldownTime;
+
+            if (currentCooldown<=0) 
+            {
+                attack.castCooldownAllow = true;
+                myCanvas.enabled = false;
+                yield break;
+            }
+
+            yield return null;
         }
     }
 
     public void DisableComponents()
     {
-        for (int i = 0; i < myComponents.Length; i++)
-        {
-            myComponents[i].SetActive(false);
-        }
+        currentCooldown = 0;
+        myCanvas.enabled = false;
     }
+
 }

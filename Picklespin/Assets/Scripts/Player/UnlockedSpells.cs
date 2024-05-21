@@ -5,9 +5,10 @@ using DG.Tweening;
 
 public class UnlockedSpells : MonoBehaviour
 {
+    public static UnlockedSpells instance { get; private set; }
+
     private Ammo ammo;
     private AmmoDisplay ammoDisplay;
-    [SerializeField] private ManaLightAnimation manaLightAnimation;
 
     [SerializeField] private RectTransform[] invSlotRect;
     [SerializeField] private Image[] spellIcon;
@@ -21,7 +22,7 @@ public class UnlockedSpells : MonoBehaviour
 
     public bool[] spellUnlocked;
 
-    [SerializeField] private GameObject[] lockedSpellTint; //unserialize, get objects using Find Function
+    [SerializeField] private GameObject[] lockedSpellTint;
 
     [Header("Spell Unlock Light GUI")]
     [SerializeField] private Image spellUnlockedLight;
@@ -30,6 +31,16 @@ public class UnlockedSpells : MonoBehaviour
 
     private void Awake()
     {
+
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
         lightRect = spellUnlockedLight.GetComponent<RectTransform>();
         lockedRect = spellLockedIcon.GetComponent<RectTransform>();
         alreadyUnlockedRect = alreadyUnlockedIcon.GetComponent<RectTransform>();
@@ -45,7 +56,7 @@ public class UnlockedSpells : MonoBehaviour
     {
         if (spellUnlocked[spellID])
         {
-            ManaBonus();
+            ammo.GiveManaToPlayer(50);
         }
         else
         {
@@ -89,28 +100,6 @@ public class UnlockedSpells : MonoBehaviour
     private void DisableLight()
     {
         spellUnlockedLight.enabled = false;
-    }
-
-    private void ManaBonus()
-    {
-
-        //gives 50 mana for now
-
-        if (ammo.maxAmmo - ammo.ammo <= 50)
-        {
-            ammo.ammo = ammo.maxAmmo;
-            manaLightAnimation.LightAnimation(50, true);
-
-        }
-        else
-        {
-            ammo.ammo += 50;
-            manaLightAnimation.LightAnimation(50, false);
-        }
-
-        ammoDisplay.Refresh(true);
-
-
     }
 
 

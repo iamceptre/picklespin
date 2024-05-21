@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ParticleMoveTowards : MonoBehaviour
 {
-    [SerializeField] private Transform targetPoint;
+    //[SerializeField] private Transform targetPoint;
     private ParticleSystem myParticleSystem;
     private ParticleSystem.MainModule mainModule;
 
@@ -19,10 +19,10 @@ public class ParticleMoveTowards : MonoBehaviour
     {
         publicPlayerTransform = PublicPlayerTransform.instance;
 
-        if (targetPoint == null)
-        {
-            targetPoint = publicPlayerTransform.PlayerTransform;
-        }
+       // if (targetPoint == null)
+       // {
+       //     targetPoint = publicPlayerTransform.PlayerTransform;
+       // }
 
         myParticleSystem = GetComponent<ParticleSystem>();
         mainModule = myParticleSystem.main;
@@ -36,14 +36,14 @@ public class ParticleMoveTowards : MonoBehaviour
 
         for (int i = 0; i < numParticlesAlive; i++)
         {
-            float distanceToPlayer = Vector3.Distance(targetPoint.position, particles[i].position);
+            float distanceToPlayer = Vector3.Distance(publicPlayerTransform.PlayerTransform.position, particles[i].position);
 
             if (distanceToPlayer < 0.1f)
             {
                 particles[i].remainingLifetime = 0f;
             }
 
-            Vector3 directionToTarget = (targetPoint.position - particles[i].position).normalized;
+            Vector3 directionToTarget = (publicPlayerTransform.PlayerTransform.position - particles[i].position).normalized;
             particles[i].velocity = directionToTarget * myParticleSystem.main.startSpeed.constant;
         }
 

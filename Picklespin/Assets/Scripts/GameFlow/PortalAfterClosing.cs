@@ -17,7 +17,8 @@ public class PortalAfterClosing : MonoBehaviour
     private ColorGrading ppColorGrading;
 
     private Pause pause;
-    [SerializeField] private GameObject PortalClosedScreen;
+    //[SerializeField] private GameObject PortalClosedScreen;
+    [SerializeField] private Canvas PortalClosedScreen;
 
     [SerializeField] private EventReference SnapshotAfterPortalClosage;
 
@@ -122,7 +123,7 @@ public class PortalAfterClosing : MonoBehaviour
     private IEnumerator ActivateFailScreen()
     {
         yield return new WaitForSeconds(1);
-        PortalClosedScreen.SetActive(true);
+        PortalClosedScreen.enabled = true;
         myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>
         {
             BlackOutScreen();

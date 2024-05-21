@@ -1,8 +1,8 @@
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.Events;
-using System.Collections;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Attack : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class Attack : MonoBehaviour
     public int selectedBullet;
 
     [HideInInspector] public float castCooldownTime = 0.1f;
-    private bool castCooldownAllow = true;
+    public bool castCooldownAllow = true;
 
     [SerializeField] private UnlockedSpells unlockedSpells;
     [SerializeField] private SpellCooldown spellCooldown;
@@ -33,9 +33,8 @@ public class Attack : MonoBehaviour
     [SerializeField] private NoManaLightAnimation noManaLightAnimation;
 
     //Long Casting
-    [HideInInspector] public float castingPercentage = 0;
+    [HideInInspector] public float castingProgress = 0;
     private float currentlySelectedCastDuration;
-    private bool autofirePrevent;
     [SerializeField] private Slider castingSlider;
 
     private bool castLoaded = false;
@@ -44,14 +43,14 @@ public class Attack : MonoBehaviour
     [SerializeField] private UnityEvent CancelCasting;
     [SerializeField] private UnityEvent StartCasting;
 
-    private Bullet bullet;
+    private Bullet currentBullet;
 
     private RecoilMultiplier recoilMultiplier;
 
     private void Awake()
     {
         ammo = GetComponent<Ammo>();
-        bullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
+        currentBullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
 
         if (instance != null && instance != this)
         {
@@ -73,15 +72,19 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
-        ChooseSpell();
-
         if (Input.GetKeyDown(KeyCode.Mouse0) && castCooldownAllow)
         {
-            autofirePrevent = false;
-
             if (currentlySelectedCastDuration == 0)
             {
                 Shoot(); //instant Cast
+                return;
+            }
+            else
+            {
+                if (!Input.GetKey(KeyCode.Mouse1))
+                {
+                    StartCoroutine(SpellCasting(currentlySelectedCastDuration));
+                }
             }
         }
 
@@ -89,7 +92,6 @@ public class Attack : MonoBehaviour
         {
             if (castCooldownAllow)
             {
-                castingPercentage = 0;
                 spellCooldown.DisableComponents();
                 CancelCasting.Invoke();
             }
@@ -101,18 +103,10 @@ public class Attack : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.Mouse0) && castCooldownAllow && currentlySelectedCastDuration != 0 && !autofirePrevent && !Input.GetKey(KeyCode.Mouse1))
-        {
-            CastingSpell(currentlySelectedCastDuration); //long Casting
-        }
-
-
         if (Input.GetKeyDown(KeyCode.Mouse1) && castLoaded)
         {
-            castingPercentage = 0;
             spellCooldown.DisableComponents();
             CancelCasting.Invoke();
-            autofirePrevent = false;
         }
 
     }
@@ -121,10 +115,9 @@ public class Attack : MonoBehaviour
     {
         CancelCasting.Invoke();
         castLoaded = false;
-        castingPercentage = 0;
-        autofirePrevent = true;
+        spellCooldown.DisableComponents();
 
-        if (ammo.ammo >= bullet.magickaCost)
+        if (ammo.ammo >= currentBullet.magickaCost)
         {
             SuccesfulShoot();
         }
@@ -143,13 +136,9 @@ public class Attack : MonoBehaviour
 
     private void SuccesfulShoot()
     {
-        castCooldownTime = bullet.myCooldown;
+        castCooldownTime = currentBullet.myCooldown;
         shootEvent.Invoke();
-        ammo.ammo -= bullet.magickaCost;
-
-        spellCooldown.enabled = true;
-        spellCooldown.selectedSpellCooldownTime = bullet.myCooldown;
-        spellCooldown.StartCooldowning();
+        ammo.ammo -= currentBullet.magickaCost;
 
         var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         Bullet bulletScript = spawnedBullet.GetComponent<Bullet>();
@@ -166,7 +155,7 @@ public class Attack : MonoBehaviour
 
         Vector3 desiredDirection = bulletSpawnPoint.forward + randomDirection;
 
-        spawnedBullet.GetComponent<Rigidbody>().velocity = desiredDirection * bullet.speed;
+        spawnedBullet.GetComponent<Rigidbody>().velocity = desiredDirection * currentBullet.speed;
         Bullet spawnedBulletScript = spawnedBullet.GetComponent<Bullet>();
 
         if (ammo.ammo <= ammo.maxAmmo * 0.15f)
@@ -179,104 +168,51 @@ public class Attack : MonoBehaviour
         }
 
         ammoDisplay.Refresh(false);
-        StartCoroutine(CastCooldown());
+        spellCooldown.StartCooldown(castCooldownTime);
     }
 
 
-    private void ChooseSpell() //Move it to a separate class, or to Inventory bar selected spell
+    public void SelectSpell(int selectedSpell)
     {
-
-        if (!Input.GetKey(KeyCode.Mouse0))
-        {
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                unlockedSpells.SelectingUnlockedAuraAnimation(0);
-                selectedBullet = 0;
-                SelectSpell();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (unlockedSpells.spellUnlocked[1] == true)
-                {
-                    unlockedSpells.SelectingUnlockedAuraAnimation(1);
-                    selectedBullet = 1;
-                    SelectSpell();
-                }
-                else
-                {
-                    RuntimeManager.PlayOneShot(spellLockedEvent);
-                    unlockedSpells.spellLockedIconAnimation(1);
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                if (unlockedSpells.spellUnlocked[2] == true)
-                {
-                    unlockedSpells.SelectingUnlockedAuraAnimation(2);
-                    selectedBullet = 2;
-                    SelectSpell();
-                }
-                else
-                {
-                    RuntimeManager.PlayOneShot(spellLockedEvent);
-                    unlockedSpells.spellLockedIconAnimation(2);
-                }
-            }
-
-        }
-    }
-
-
-    private void SelectSpell()
-    {
-        bullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
-        currentlySelectedCastDuration = bullet.castDuration;
+        selectedBullet = selectedSpell;
+        currentBullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
+        currentlySelectedCastDuration = currentBullet.castDuration;
         changeSelectedSpell.Invoke();
-        RuntimeManager.PlayOneShot(bulletPrefab[selectedBullet].GetComponentInChildren<Bullet>().pullupSound);
+        RuntimeManager.PlayOneShot(currentBullet.pullupSound);
     }
 
-    private IEnumerator CastCooldown()
+    private IEnumerator SpellCasting(float castDuration)
     {
-        castCooldownAllow = false;
-        yield return new WaitForSeconds(castCooldownTime);
-        castCooldownAllow = true;
-    }
-
-
-    private void CastingSpell(float castDuration)
-    {
-        if (ammo.ammo >= bullet.magickaCost)
+        if (ammo.ammo >= currentBullet.magickaCost)
         {
-            if (castingPercentage < currentlySelectedCastDuration)
+            castingSlider.value = 0;
+            castingProgress = 0;
+            var spawnedCastingParticle = Instantiate(currentBullet.CastingParticle, handCastingPoint);
+            StartCasting.Invoke();
+            spellCooldown.myCanvas.enabled = true;
+            castLoaded = false;
+
+            while (true)
             {
-                if (castingPercentage == 0)
+                if (castingProgress < currentlySelectedCastDuration)
                 {
-                    //one signal tick
-                    var spawnedCastingParticle = Instantiate(bullet.CastingParticle, handCastingPoint);
-                    StartCasting.Invoke();
-                    spellCooldown.EnableComponents();
+                    castingProgress += Time.deltaTime;
+                    castingSlider.value = castingProgress / castDuration;
                 }
-                //constant ticks during casting
-                castLoaded = false;
-                castingPercentage += Time.deltaTime;
-                castingSlider.value = castingPercentage / castDuration;
-            }
-            else
-            {
-                if (!castLoaded)
+                else
                 {
-                    castingCompleted.Invoke(); //single signal after fully loading cast
+                    castingCompleted.Invoke();
                     castLoaded = true;
+                    yield break;
                 }
+
+                yield return null;
             }
         }
         else
         {
             ShootFail();
-            autofirePrevent = true;
+            yield break;
         }
     }
 

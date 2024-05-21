@@ -103,7 +103,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (anyMovementKeysPressed)
         {
-            Debug.Log("setting sneak parameters");
             movementStateForFMOD = 0;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
             footstepSystem.fixedFootstepSpace = 0.8f; //sneak speed

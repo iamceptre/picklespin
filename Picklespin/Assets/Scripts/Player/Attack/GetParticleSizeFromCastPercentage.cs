@@ -18,6 +18,6 @@ public class GetParticleSizeFromCastPercentage : MonoBehaviour
     void Update()
     {
         var main = ps.main;
-        main.startSizeMultiplier = attack.castingPercentage * 2;
+        main.startSizeMultiplier = attack.castingProgress * 2;
     }
 }

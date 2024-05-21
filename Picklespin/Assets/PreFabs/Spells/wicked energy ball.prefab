@@ -169,13 +169,6 @@ MonoBehaviour:
       Data3: -1224385138
       Data4: -71727395
     Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
-  hitSound:
-    Guid:
-      Data1: -1364902935
-      Data2: 1235094204
-      Data3: -745530716
-      Data4: -2104198156
-    Path: event:/PLACEHOLDER_UNCZ/spellHit
   explosionSoundEmitter: {fileID: 3124534748917274391}
   CastingParticle: {fileID: 0}
   setOnFire: {fileID: 0}

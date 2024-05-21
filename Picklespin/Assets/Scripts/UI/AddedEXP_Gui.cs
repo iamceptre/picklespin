@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 public class AddedEXP_Gui : MonoBehaviour
 {
+    private Canvas myCanvas;
     public static AddedEXP_Gui instance { get; private set; }
     private TMP_Text _text;
     private int amountToShow = 0;
@@ -33,23 +34,15 @@ public class AddedEXP_Gui : MonoBehaviour
     {
         _textStartPosition = transform.localPosition;
         startingColor = new Color(_text.color.r, _text.color.g, _text.color.b, 1);
-        _text.enabled = false;
+        //_text.enabled = false;
+        myCanvas = gameObject.GetComponent<Canvas>();
+        myCanvas.enabled = false;
     }
-
-    /*
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            DisplayAddedEXP(100, "debug");
-        }
-
-    }
-    */
 
     public void DisplayAddedEXP(int addedXP, string expSourceName)
     {
-        _text.enabled = true;
+        //_text.enabled = true;
+        myCanvas.enabled = true;
         amountToShow = amountToShow + addedXP;
         UpdateText(addedXP, expSourceName);
         _text.DOKill();
@@ -90,7 +83,8 @@ public class AddedEXP_Gui : MonoBehaviour
         _text.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(() =>
         {
             amountToShow = 0;
-            _text.enabled = false;
+            //_text.enabled = false;
+            myCanvas.enabled = false;
         });
     }
 

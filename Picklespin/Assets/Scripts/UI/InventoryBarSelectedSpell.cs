@@ -4,6 +4,9 @@ using DG.Tweening;
 
 public class InventoryBarSelectedSpell : MonoBehaviour
 {
+
+    public static InventoryBarSelectedSpell instance;
+
     [SerializeField] private Image[] invSlot;
     [SerializeField] private Image[] invSlotSpellIcon;
     [SerializeField] private RectTransform[] invNumbersRect;
@@ -11,45 +14,38 @@ public class InventoryBarSelectedSpell : MonoBehaviour
 
     private float invNumberStartPos;
 
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
     private void Start()
     {
-        SelectionChanged();
+        SelectionChanged(0);
         invNumberStartPos = invNumbersRect[0].localPosition.y;
     }
 
-    private void Update()
+
+    public void SelectionChanged(int spellID) 
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            NumberBump(0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            NumberBump(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            NumberBump(2);
-        }
-    }
-
-
-    public void SelectionChanged() //its called from attack script
-    {
-
         for (int i = 0; i < invSlot.Length; i++)
         {
             invSlot[i].color = Color.gray;
             invSlotSpellIcon[i].color = new Color(0.35f, 0.35f, 0.35f);
         }
 
-        invSlot[attack.selectedBullet].color = Color.white;
-        invSlotSpellIcon[attack.selectedBullet].color = Color.white;
+        invSlot[spellID].color = Color.white;
+        invSlotSpellIcon[spellID].color = Color.white;
     }
 
-    private void NumberBump(int spellID)
+    public void NumberBump(int spellID)
     {
         invNumbersRect[spellID].DOKill();
         invNumbersRect[spellID].localPosition = new Vector2(invNumbersRect[spellID].localPosition.x, invNumberStartPos);

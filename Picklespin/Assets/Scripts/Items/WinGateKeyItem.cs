@@ -10,7 +10,8 @@ public class WinGateKeyItem : MonoBehaviour
 
     [SerializeField] private EventReference keyPickUpSound;
 
-    public GameObject toEnable;
+    [SerializeField] private Canvas canvasToEnable;
+    private EscapeTimer escapeTimer;
 
  
 
@@ -18,12 +19,14 @@ public class WinGateKeyItem : MonoBehaviour
     {
         inventory = InventoryItemsBank.instance;
         roundSystem = RoundSystem.instance;
+        escapeTimer = EscapeTimer.instance;
     }
 
     public void GiveKey()
     {
         inventory.WinGateKey = true;
-        toEnable.SetActive(true);
+        canvasToEnable.enabled = true;
+        escapeTimer.enabled = true;
         RuntimeManager.PlayOneShot(keyPickUpSound);
         afterPickingUp.Pickup();
         roundSystem.enabled = false;

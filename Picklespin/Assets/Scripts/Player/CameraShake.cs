@@ -59,15 +59,6 @@ public class CameraShake : MonoBehaviour
     }
 
 
-   // public void CustomCameraShake(float shakeStrenght, float shakeDuration)
-   // {
-        //Debug.Log("ran CustomCameraShake" + "str: " + shakeStrenght + " dur: " + shakeDuration);
-     //   mainCamera.DOShakeRotation(shakeDuration, shakeStrenght , 26, 90, true, ShakeRandomnessMode.Harmonic);
-     //   hand.DOShakePosition(shakeDuration, 0.005f * shakeStrenght, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
-    //}
-
-
-
     public void ExplosionNearbyShake(float distanceFromExplosion, float damage) //maybe do a delay based on distance, so wait until the shockwave of an explosion gets to you
     {
         ResetShakePosition();
@@ -120,12 +111,10 @@ public class CameraShake : MonoBehaviour
 
     private IEnumerator EnemyExplosionLater(float explosionDuration, float strenghtBasedOnDistance) //fix problem of conflict
     {
+        ResetShakePosition();
         yield return new WaitForEndOfFrame();
         //can wait time based on distance if we want to
-        enemyDeadExplosionTween = mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo).OnComplete(() =>
-        {
-            ResetShakePosition();
-        });
+        enemyDeadExplosionTween = mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo);
         //hand.DOShakePosition(explosionDuration, strenghtBasedOnDistance  * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 

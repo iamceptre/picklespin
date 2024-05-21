@@ -7,7 +7,6 @@ using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
 {
-
     [SerializeField] AngelHealingMinigame minigame;
     [HideInInspector] public float healboost = 1;
 
@@ -17,13 +16,10 @@ public class AngelHeal : MonoBehaviour
     [SerializeField] private Material handHighlightMaterial;
     private MeshRenderer handRenderer;
 
-    [SerializeField] private ParticleSystem healParticle;
-    private ParticleSystem.EmissionModule healEmission;
-
-    [SerializeField] private GameObject healParticleStart;
-
     [SerializeField] private Slider angelHPSlider;
+    [SerializeField] private Canvas angelHPCanvas;
 
+    [SerializeField] private HealingParticles healingParticlesScript;
 
     [SerializeField] private Transform mainCamera;
    
@@ -56,7 +52,6 @@ public class AngelHeal : MonoBehaviour
     {
         handRenderer = hand.GetComponent<MeshRenderer>();
         handOGMaterial = handRenderer.material;
-        healEmission = healParticle.emission;
         minigame.enabled = false;
     }
 
@@ -106,7 +101,8 @@ public class AngelHeal : MonoBehaviour
     private void CancelHealing()
     {
         if (!canPlayEvent) {
-            HealingParticleStop();
+            //HealingParticleStop();
+            healingParticlesScript.StopEmitting();
             FadeOutGui();
             minigame.enabled = false;
             healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -168,7 +164,7 @@ public class AngelHeal : MonoBehaviour
 
             aiHealth.hp += Time.deltaTime * 15 * healboost;
             angelHPSlider.value = aiHealth.hp;
-            HealingParticleStart();
+            healingParticlesScript.StartEmitting(currentAngel.transform);
 
             if (aiHealth.hp >= 100)
             {
@@ -178,31 +174,13 @@ public class AngelHeal : MonoBehaviour
 
     }
 
-    private void HealingParticleStart()
-    {
-        healParticle.transform.LookAt(currentAngel.transform.position);
-        if (!healParticle.isEmitting)
-        {
-            healParticleStart.SetActive(true);
-            healParticle.Play();
-            healEmission.enabled = true;
-        }
-    }
-
-    private void HealingParticleStop()
-    {
-        if (healParticle.isEmitting)
-        {
-            healEmission.enabled = false;
-        }
-    }
-
 
     private void Healed()
     {
         if (!canPlayEvent)
         {
-        HealingParticleStop();
+            //HealingParticleStop();
+            healingParticlesScript.StopEmitting();
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         healingBeamInstance.release();
         handRenderer.material = handOGMaterial;
@@ -222,7 +200,7 @@ public class AngelHeal : MonoBehaviour
         angelHPCanvasGroup.alpha = 1;
         angelHPCanvasGroup.DOFade(0, guiFadeTimes*1.618f).OnComplete(() =>
         {
-            angelHPSlider.gameObject.SetActive(false);
+            angelHPCanvas.enabled = false;
         });
     }
 
@@ -231,7 +209,7 @@ public class AngelHeal : MonoBehaviour
         if (!angel.healed) {
             angelHPCanvasGroup.DOKill();
             angelHPCanvasGroup.alpha = 0;
-            angelHPSlider.gameObject.SetActive(true);
+            angelHPCanvas.enabled = true;
             angelHPCanvasGroup.DOFade(1, guiFadeTimes);
         }
     }
