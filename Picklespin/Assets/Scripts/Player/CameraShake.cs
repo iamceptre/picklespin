@@ -30,10 +30,7 @@ public class CameraShake : MonoBehaviour
 
     private void Start()
     {
-        shootTween = mainCamera.DOShakeRotation(0.3f, 0.8f, 30, 90, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause().OnComplete(() =>
-        {
-            mainCamera.localRotation = Quaternion.identity;
-        }); ;
+        shootTween = mainCamera.DOShakeRotation(0.3f, 0.8f, 30, 90, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause();
         handShakeTween = hand.DOShakePosition(0.15f, 0.2f, 40, 90, false, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause();
     }
 
@@ -41,7 +38,7 @@ public class CameraShake : MonoBehaviour
 
     public void ShootCameraShake()
     {
-        mainCamera.localRotation = Quaternion.identity;
+
         shootTween.Restart();
         handShakeTween.Restart();
     }

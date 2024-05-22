@@ -15,6 +15,7 @@ public class CameraBob : MonoBehaviour
     private Vector3 originalPosition = new Vector3();
     private Vector3 originalHandPosition = new Vector3();
     private Vector3 tempPos = new Vector3();
+    [SerializeField] private Transform referenceObject;
 
     public Transform toBob;
 
@@ -45,7 +46,7 @@ public class CameraBob : MonoBehaviour
     }
 
 
-    private void Update()
+    private void LateUpdate()
     {
 
         if (characterController.isGrounded)
@@ -60,11 +61,10 @@ public class CameraBob : MonoBehaviour
         tempPos.y = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed) * height * 0.3f * speedometer.horizontalVelocity;
         tempPos.x = Mathf.Sin(Time.fixedTime * Mathf.PI * bobSpeed * 0.5f) * height * speedometer.horizontalVelocity;
 
-
-        toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, originalPosition + (tempPos), ref camVelocity, smoothing);
-
-        //toBob.transform.localEulerAngles += new Vector3(0, 0, -tempPos.x * 0.5f);
-        toBob.localRotation = Quaternion.Euler(0, 0, -tempPos.x * 0.5f);
+        Quaternion referenceRotation = referenceObject.rotation;
+        Vector3 relativeBobPosition = referenceRotation * tempPos;
+        Vector3 targetPosition = originalPosition + relativeBobPosition;
+        toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, targetPosition, ref camVelocity, smoothing);
 
     }
 

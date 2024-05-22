@@ -159,15 +159,6 @@ public class Attack : MonoBehaviour
         spawnedBullet.GetComponent<Rigidbody>().velocity = desiredDirection * currentBullet.speed;
         Bullet spawnedBulletScript = spawnedBullet.GetComponent<Bullet>();
 
-        if (ammo.ammo <= ammo.maxAmmo * 0.15f)
-        { //WHEN MANA IS BELOW 15% THE SHOT WILL ALWAYS BE CRITICAL
-            spawnedBulletScript.iWillBeCritical = true;
-        }
-        else
-        {
-            spawnedBulletScript.iWillBeCritical = false;
-        }
-
         ammoDisplay.Refresh(false);
         spellCooldown.StartCooldown(castCooldownTime);
     }

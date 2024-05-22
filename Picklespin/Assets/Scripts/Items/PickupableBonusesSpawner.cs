@@ -57,7 +57,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
     public void SpawnBonuses()
     {
-        StartCoroutine(SpawnRoutine());
+            StartCoroutine(SpawnRoutine());
     }
 
     private IEnumerator SpawnRoutine()

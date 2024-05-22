@@ -9,6 +9,8 @@ public class PortalAfterClosing : MonoBehaviour
 {
     public static PortalAfterClosing instance;
 
+    private PlayerHP playerHp;
+
     [SerializeField] private ParticleSystem[] particleSystems;
     private BoxCollider myCollider;
     [SerializeField] private Light portalLight;
@@ -45,6 +47,7 @@ public class PortalAfterClosing : MonoBehaviour
     private void Start()
     {
         pause = Pause.instance;
+        playerHp = PlayerHP.instance;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
     }
 
@@ -53,6 +56,7 @@ public class PortalAfterClosing : MonoBehaviour
     {
         myCollider.enabled = false;
         crosshair.enabled = false;
+        playerHp.SetGodmode(true);
         FadeOutCanvas();
         RuntimeManager.PlayOneShot(SnapshotAfterPortalClosage);
         TurnOffEmissions();

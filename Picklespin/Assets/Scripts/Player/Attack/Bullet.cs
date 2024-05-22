@@ -38,6 +38,7 @@ public class Bullet : MonoBehaviour
     [HideInInspector] public Transform handCastingPoint;
     private MaterialFlashWhenHit flashWhenHit;
     private CachedCameraMain cachedCameraMain;
+    private Ammo ammo;
 
 
     [Header("Misc")]
@@ -57,6 +58,7 @@ public class Bullet : MonoBehaviour
         damageUiSpawner = DamageUI_Spawner.instance;
         cameraShake = CameraShake.instance;
         cachedCameraMain = CachedCameraMain.instance;
+        ammo = Ammo.instance;
         RuntimeManager.PlayOneShot(castSound);
         var spawnedCastBlast = Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
         spawnedCastBlast.transform.parent = handCastingPoint;
@@ -159,7 +161,18 @@ public class Bullet : MonoBehaviour
 
     private void RandomizeCritical()
     {
-        if (Random.Range(0,10) >= 9 || iWillBeCritical) // 1/10 chance of doubling the damage OR when low on magicka (iWillBeCritical is then set to true by Attack script)
+        int criticalTreshold;
+
+        if(ammo.ammo < ammo.maxAmmo * 0.2f) //20% or less mana
+        {
+            criticalTreshold = 10 - 7; // 7/10 chance of critical
+        }
+        else
+        {
+            criticalTreshold = 10 - 1; //WHEN HIGH ON MANA, 1/10 chance of critical
+        }
+
+        if (Random.Range(0,10) >= criticalTreshold || iWillBeCritical)
         {
             damage = originalDamage * 4;
             wasLastHitCritical = true;
@@ -170,6 +183,8 @@ public class Bullet : MonoBehaviour
             damage = originalDamage;
             wasLastHitCritical = false;
         }
+
+
     }
 
 
