@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 public class AttackPlayer : State
@@ -40,6 +41,7 @@ public class AttackPlayer : State
 
     void RunToPlayer()
     {
+        StopAllCoroutines();
         agent.speed = attackSpeed;
         loosingPlayer.lostPlayer = false;
         agent.SetDestination(playerTransform.PlayerTransform.position);
@@ -48,7 +50,7 @@ public class AttackPlayer : State
 
     void AttackWhenClose()
     {
-        if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 2)
+        if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 5)
         {
             playerHP.hp -= 10;
             hpBarDisplay.Refresh(false);

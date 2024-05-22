@@ -4,9 +4,8 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
 
-   public State currentState;
-   [HideInInspector] public AiVision aiVision;
-    //private NavMeshAgent agent;
+     public State currentState;
+    [HideInInspector] public AiVision aiVision;
 
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
 
@@ -16,21 +15,23 @@ public class StateManager : MonoBehaviour
     private void Awake()
     {
         aiVision = GetComponent<AiVision>();
-        //agent = GetComponent<NavMeshAgent>();
     }
-    void Start()
+
+
+    public void StartAI()
     {
-        StartCoroutine(RefreshAI());
         randomTimeOffset = Random.Range(0, 0.05f);
         actualRefreshRate = RefreshEveryVarSeconds + randomTimeOffset;
+        StartCoroutine(RefreshAI());
     }
+
 
 
     private IEnumerator RefreshAI()
     {
         while (true)
         {
-            //if(agent.enabled)
+            aiVision.FieldOfViewCheck();
             RunStateMachine();
             yield return new WaitForSeconds(actualRefreshRate);
             //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
@@ -40,7 +41,6 @@ public class StateManager : MonoBehaviour
     private void RunStateMachine()
     {
             State nextState = currentState?.RunCurrentState();
-            aiVision.FieldOfViewCheck();
 
 
             if (nextState != null)

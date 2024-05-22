@@ -14,7 +14,7 @@ public class EnemiesSpawner : MonoBehaviour
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            Invoke("InstantiateEnemy", i * 0.1f);
+            Invoke("InstantiateEnemy", i * 0.2f);
         }
     }
 

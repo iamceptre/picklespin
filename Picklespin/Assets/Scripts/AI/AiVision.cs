@@ -28,13 +28,14 @@ public class AiVision : MonoBehaviour
     {
         if (hitMeCooldown >= 0)
         {
-            PlayerJustHitMeCooldown();
+            //PlayerJustHitMeCooldown();
         }
     }
 
 
     public void FieldOfViewCheck()
     {
+        
 
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
 
@@ -78,6 +79,8 @@ public class AiVision : MonoBehaviour
         {
             playerJustHitMe = false;
         }
+        
+       // seeingPlayer = true;
     }
 
 
@@ -87,7 +90,7 @@ public class AiVision : MonoBehaviour
 
         if (distanceToPlayer <= (radius * 0.5))
         { 
-           // playerIsVeryClose = true;
+            playerIsVeryClose = true;
         }
         else
         {
