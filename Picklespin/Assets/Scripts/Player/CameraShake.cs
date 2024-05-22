@@ -9,6 +9,8 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private Transform hand;
 
     private Tween shootTween;
+    private Tween handShakeTween;
+
     private Tween explosionTween;
     private Tween enemyDeadExplosionTween;
 
@@ -28,20 +30,20 @@ public class CameraShake : MonoBehaviour
 
     private void Start()
     {
-        startMainCameraRotation = mainCamera.eulerAngles;
+        shootTween = mainCamera.DOShakeRotation(0.3f, 0.8f, 30, 90, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause().OnComplete(() =>
+        {
+            mainCamera.localRotation = Quaternion.identity;
+        }); ;
+        handShakeTween = hand.DOShakePosition(0.15f, 0.2f, 40, 90, false, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause();
     }
 
-    private void ResetShakePosition()
-    {
-        mainCamera.localEulerAngles = startMainCameraRotation;
-    }
+
 
     public void ShootCameraShake()
     {
-        shootTween.Kill();
-        ResetShakePosition();
-        shootTween = mainCamera.DOShakeRotation(0.25f, 0.8f , 30, 90, true, ShakeRandomnessMode.Harmonic);
-        hand.DOShakePosition(0.15f, 0.2f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+        mainCamera.localRotation = Quaternion.identity;
+        shootTween.Restart();
+        handShakeTween.Restart();
     }
 
 
@@ -53,7 +55,7 @@ public class CameraShake : MonoBehaviour
     }
 
 
-    public void ExplosionNearbyShake(float distanceFromExplosion, float damage) //maybe do a delay based on distance, so wait until the shockwave of an explosion gets to you
+    public void ExplosionNearbyShake(float distanceFromExplosion, float damage) 
     {
         if (distanceFromExplosion < 70 && damage > 0)
         {
@@ -64,8 +66,17 @@ public class CameraShake : MonoBehaviour
 
             //Debug.Log("ran ExplosionShake" + "distance: " + distanceFromExplosion + " str: " + strenghtBasedOnDistance);
 
-            explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic);
-            hand.DOShakePosition(strenghtBasedOnDistance, strenghtBasedOnDistance * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+            // explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause();
+            //explosionTween.Restart();
+
+            mainCamera.localRotation = Quaternion.identity; 
+            explosionTween.Kill();
+            explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
+            {
+                mainCamera.localRotation = Quaternion.identity;
+            }); 
+
+            //hand.DOShakePosition(strenghtBasedOnDistance, strenghtBasedOnDistance * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
         }
     }
 
@@ -90,9 +101,12 @@ public class CameraShake : MonoBehaviour
     private IEnumerator EnemyExplosionLater(float explosionDuration, float strenghtBasedOnDistance) //fix problem of conflict
     {
         yield return new WaitForEndOfFrame();
-        //can wait time based on distance if we want to
-        ResetShakePosition();
-        enemyDeadExplosionTween = mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo);
+        mainCamera.localRotation = Quaternion.identity;
+        enemyDeadExplosionTween.Kill();
+        enemyDeadExplosionTween = mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo).OnComplete(() =>
+        {
+            mainCamera.localRotation = Quaternion.identity;
+        });
         //hand.DOShakePosition(explosionDuration, strenghtBasedOnDistance  * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 

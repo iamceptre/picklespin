@@ -6,12 +6,12 @@ public class PickupableBonusesSpawner : MonoBehaviour
 {
     public static PickupableBonusesSpawner instance { get; private set; }
 
-    public int howManyToSpawn;
+    public int howManyToSpawn; //make it pass through an argument instead
 
     [SerializeField] private GameObject[] bonuses;
 
     [SerializeField] private Transform[] spawnPoints;
-    [HideInInspector] public bool[] isSpawnPointTaken;
+     public bool[] isSpawnPointTaken;
 
     private List<int> generatedNumbers;
 
