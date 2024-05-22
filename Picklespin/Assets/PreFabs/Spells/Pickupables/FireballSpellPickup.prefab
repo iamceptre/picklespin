@@ -4878,6 +4878,7 @@ GameObject:
   - component: {fileID: 4975619316761397936}
   - component: {fileID: 4833771101333461241}
   - component: {fileID: -442128238072334790}
+  - component: {fileID: 1632211794220430024}
   m_Layer: 0
   m_Name: FireballSpellPickup
   m_TagString: Untagged
@@ -5042,6 +5043,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedY: 0.2
   scrollSpeedX: 0.25
+--- !u!114 &1632211794220430024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5694425429473018150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myOccupiedWaypoint: 0
+  amIaSpell: 1
 --- !u!1 &7976620075623437790
 GameObject:
   m_ObjectHideFlags: 0

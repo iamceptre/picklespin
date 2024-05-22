@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class EnemiesSpawner : MonoBehaviour
 {
-    public int howManyToSpawn;
+    //public int howManyToSpawn;
 
     [SerializeField] private GameObject evilEntity;
     [SerializeField] private Transform[] spawnPoints;
 
     [SerializeField] private Transform[] waypointsToPass;
 
-    public void SpawnEnemiesEasy()
+
+    public void SpawnEnemiesEasy(int howManyToSpawn)
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {

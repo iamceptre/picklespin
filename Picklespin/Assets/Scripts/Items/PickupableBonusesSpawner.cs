@@ -4,21 +4,56 @@ using UnityEngine;
 
 public class PickupableBonusesSpawner : MonoBehaviour
 {
-    [Tooltip("cannot exceed number of spawn points")] public int howManyToSpawn;
+    public static PickupableBonusesSpawner instance { get; private set; }
+
+    public int howManyToSpawn;
 
     [SerializeField] private GameObject[] bonuses;
 
     [SerializeField] private Transform[] spawnPoints;
+    public bool[] isSpawnPointTaken;
 
     [SerializeField] private List<int> generatedNumbers;
 
     private int rrrandom;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
+        if (howManyToSpawn > spawnPoints.Length)
+        {
+            howManyToSpawn = spawnPoints.Length;
+        }
+    }
+    private void Start()
+    {
+        isSpawnPointTaken = new bool[spawnPoints.Length];
+    }
+
+    public void SetSpawnCount(int spawnCount)
+    {
+        howManyToSpawn = spawnCount;
+
+        if (howManyToSpawn > spawnPoints.Length)
+        {
+            howManyToSpawn = spawnPoints.Length;
+        }
+    }
 
 
     public void SpawnBonuses()
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {
+            generatedNumbers.Clear();
             StartCoroutine(WaitAndSpawn(i));
         }
     }
@@ -28,7 +63,10 @@ public class PickupableBonusesSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(i * 0.05f);
         RandomizeWithoutReps();
-        Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+        var spawned = Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+        spawned.GetComponent<FreeUpWaypointAfterPickingUp>().myOccupiedWaypoint = generatedNumbers[i];
+        isSpawnPointTaken[generatedNumbers[i]] = true;
+        howManyToSpawn--;
     }
 
 
@@ -40,9 +78,10 @@ public class PickupableBonusesSpawner : MonoBehaviour
         int maxRange = spawnPoints.Length;
         int minRange = 0;
 
+
         rrrandom = Random.Range(minRange, maxRange);
 
-        while (generatedNumbers.Contains(rrrandom))
+        while (generatedNumbers.Contains(rrrandom) || isSpawnPointTaken[rrrandom])  //maybe otimize it don't have to random so much numbers before getting the one that fits
         {
             rrrandom = Random.Range(minRange, maxRange);
         }

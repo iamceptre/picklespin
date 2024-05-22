@@ -54,22 +54,12 @@ public class HealingParticles : MonoBehaviour
         while (isEmitting)
         {
             int numParticlesAlive = myParticleSystem.GetParticles(particles);
-
-
             Vector3 targetPosition = currentlyHealingAngel.position;
 
             for (int i = 0; i < numParticlesAlive; i++)
             {
                 Vector3 direction = targetPosition - particles[i].position;
                 float distance = direction.magnitude;
-
-
-                float distanceToPlayer = Vector3.Distance(currentlyHealingAngel.position, particles[i].position);
-
-                if (distanceToPlayer < 0.1f)
-                {
-                    particles[i].remainingLifetime = 0f;
-                }
 
                 particles[i].velocity = (direction / distance) * 10;
 

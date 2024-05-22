@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7903765151714754945}
   - component: {fileID: 754533922775403660}
   - component: {fileID: 3284596184831570677}
+  - component: {fileID: 4693016999618831517}
   m_Layer: 0
   m_Name: IT_Mana_Potion_Pickup
   m_TagString: Untagged
@@ -128,6 +129,18 @@ MonoBehaviour:
       - m_Target: {fileID: 365895604060921718}
         m_TargetAssemblyTypeName: Pickupable_Mana, Assembly-CSharp
         m_MethodName: GiveManaToPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4693016999618831517}
+        m_TargetAssemblyTypeName: FreeUpWaypointAfterPickingUp, Assembly-CSharp
+        m_MethodName: FreeUpSlot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -259,3 +272,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f4865ec34cb7b40bac5499360c081a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4693016999618831517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3705856140283125615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myOccupiedWaypoint: 0

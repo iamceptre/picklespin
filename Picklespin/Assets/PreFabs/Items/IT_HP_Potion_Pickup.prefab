@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4773779664034127539}
   - component: {fileID: 4273161091703289828}
   - component: {fileID: 6199161264812252518}
+  - component: {fileID: -1766851079683881015}
   m_Layer: 0
   m_Name: IT_HP_Potion_Pickup
   m_TagString: Untagged
@@ -128,6 +129,18 @@ MonoBehaviour:
       - m_Target: {fileID: 4707837425877556033}
         m_TargetAssemblyTypeName: Pickupable_HP, Assembly-CSharp
         m_MethodName: GiveHPToPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: -1766851079683881015}
+        m_TargetAssemblyTypeName: FreeUpWaypointAfterPickingUp, Assembly-CSharp
+        m_MethodName: FreeUpSlot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -259,3 +272,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1766851079683881015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166941356346100054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myOccupiedWaypoint: 0

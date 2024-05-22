@@ -18,8 +18,8 @@ public class BarEase : MonoBehaviour
 
     private void Start()
     {
-        me.value = sliderToFollow.maxValue;
-        myValue = sliderToFollow.maxValue;
+        me.value = sliderToFollow.value;
+        myValue = sliderToFollow.value;
         easeFill.enabled = true;
     }
 

@@ -46,6 +46,7 @@ public class FallingFloor : MonoBehaviour
             else
             {
                 floorShakeTween.Kill();
+                StopAllCoroutines();
                 floorShakeTween = null;
                 fallingFloorCountdown = timeBeforeFloorFalls;
                 return;

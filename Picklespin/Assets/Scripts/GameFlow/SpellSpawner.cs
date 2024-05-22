@@ -4,7 +4,10 @@ using System.Collections;
 
 public class SpellSpawner : MonoBehaviour
 {
-    [Tooltip("cannot exceed number of spawn points")]public int howManyToSpawn;
+    public static SpellSpawner instance;
+
+
+    public int howManyToSpawn;
 
     [SerializeField] private GameObject[] spellsLo;
     [SerializeField] private GameObject[] spellsHi;
@@ -14,6 +17,40 @@ public class SpellSpawner : MonoBehaviour
     private List<int> generatedNumbers = new List<int>();
 
     private int rrrandom;
+
+    public bool[] isSpawnPointTaken;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
+        if (howManyToSpawn > spawnPoints.Length)
+        {
+            howManyToSpawn = spawnPoints.Length;
+        }
+    }
+
+    private void Start()
+    {
+        isSpawnPointTaken = new bool[spawnPoints.Length];
+    }
+
+    public void SetSpawnCount(int spawnCount)
+    {
+        howManyToSpawn = spawnCount;
+
+        if (howManyToSpawn > spawnPoints.Length)
+        {
+            howManyToSpawn = spawnPoints.Length;
+        }
+    }
 
 
 
@@ -25,27 +62,41 @@ public class SpellSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnSpellsHi()
-    {
-        for (int i = 0; i < howManyToSpawn; i++)
-        {
-            StartCoroutine(WaitAndSpawnHi(i));
-        }
-    }
+
+
 
     private IEnumerator WaitAndSpawnLo(int i)
     {
         yield return new WaitForSeconds(i * 0.06f);
         RandomizeWithoutReps();
-        Instantiate(spellsLo[Random.Range(0, spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+        var spawnedSpell = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
+        var freeUpScript = spawnedSpell.GetComponent<FreeUpWaypointAfterPickingUp>();
+        freeUpScript.myOccupiedWaypoint = generatedNumbers[i];
+
+        howManyToSpawn--;
     }
 
+    /*
     private IEnumerator WaitAndSpawnHi(int i)
     {
         yield return new WaitForSeconds(i * 0.06f);
         RandomizeWithoutReps();
         Instantiate(spellsHi[Random.Range(0, spellsHi.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
     }
+
+    */
+
+    /*
+
+public void SpawnSpellsHi()
+{
+    for (int i = 0; i < howManyToSpawn; i++)
+    {
+        StartCoroutine(WaitAndSpawnHi(i));
+    }
+}
+
+*/
 
     public void SpawnLastSpell()
     {
@@ -59,14 +110,14 @@ public class SpellSpawner : MonoBehaviour
         int maxRange = spawnPoints.Length;
         int minRange = 0;
 
+        rrrandom = Random.Range(minRange, maxRange);
+
+        while (generatedNumbers.Contains(rrrandom) || isSpawnPointTaken[rrrandom])
+        {
             rrrandom = Random.Range(minRange, maxRange);
+        }
 
-            while (generatedNumbers.Contains(rrrandom))
-            {
-                rrrandom = Random.Range(minRange, maxRange);
-            }
+        generatedNumbers.Add(rrrandom);
 
-            generatedNumbers.Add(rrrandom);
-      
     }
 }
