@@ -170,13 +170,6 @@ MonoBehaviour:
       Data3: -1681641856
       Data4: -1589454864
     Path: event:/PLACEHOLDER_UNCZ/fireball_pullup
-  hitSound:
-    Guid:
-      Data1: -1364902935
-      Data2: 1235094204
-      Data3: -745530716
-      Data4: -2104198156
-    Path: event:/PLACEHOLDER_UNCZ/spellHit
   explosionSoundEmitter: {fileID: 3124534748917274391}
   CastingParticle: {fileID: 7949908593669574268, guid: 3c0d6ca3c8cd9a645866f0c2d47d564d, type: 3}
   setOnFire: {fileID: 7520822979644434691}
@@ -5127,7 +5120,7 @@ MonoBehaviour:
   ParticleObject: {fileID: 88596927381914609, guid: 79650234c7dae354aadbadc903906c57, type: 3}
   killedByBurnEffect: {fileID: 5085288267478614331, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
   effectParticle: {fileID: 0}
-  howMuchDamageIdeal: 20
+  howMuchDamageIdeal: 2
   countdownTimer: 0
 --- !u!114 &3124534748917274391
 MonoBehaviour:

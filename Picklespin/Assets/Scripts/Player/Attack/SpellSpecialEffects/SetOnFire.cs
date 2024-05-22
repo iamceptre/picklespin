@@ -18,7 +18,7 @@ public class SetOnFire : MonoBehaviour
 
     private IEnumerator killer;
 
-    [SerializeField] private int howMuchDamageIdeal = 2;
+    [SerializeField] private int howMuchDamageIdeal = 10;
 
     [Header("References")]
     private AiHealth cachedAiHP;
