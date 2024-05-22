@@ -18,8 +18,11 @@ public class FreeUpWaypointAfterPickingUp : MonoBehaviour
     {
         if (!amIaSpell)
         {
-            pickupableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypoint] = false;
-            pickupableBonusesSpawner.howManyToSpawn++;
+            pickupableBonusesSpawner.TakenSpawnPoints.Remove(myOccupiedWaypoint);
+            if (pickupableBonusesSpawner.howManyToSpawn<pickupableBonusesSpawner.startingHowManyToSpawn)
+            {
+                pickupableBonusesSpawner.howManyToSpawn++;
+            }
         }
         else
         {

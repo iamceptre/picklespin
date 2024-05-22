@@ -19,6 +19,8 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private Sprite[] hurtOverlays;
     [SerializeField] private EventReference hpAqquiredSound;
 
+    private bool godMode = false;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -30,6 +32,11 @@ public class PlayerHP : MonoBehaviour
             instance = this;
         }
 
+    }
+
+    public void SetGodmode(bool isGodmode)
+    {
+        godMode = isGodmode;
     }
 
     private void Start()
@@ -50,14 +57,16 @@ public class PlayerHP : MonoBehaviour
     }
 
 
-    public void PlayerHurtSound()
+    public void PlayerHurtSound() //initial signal goes here
     {
-        RuntimeManager.PlayOneShot(hurtSound);
-        PlayerHurtVisual();
-        CheckIfPlayerIsDead();
+        if (!godMode) {
+            RuntimeManager.PlayOneShot(hurtSound);
+            PlayerHurtVisual();
+            CheckIfPlayerIsDead();
+        }
     }
 
-    public void PlayerHurtVisual()
+    private void PlayerHurtVisual()
     {
         hurtOverlay.enabled = true;
         hurtOverlay.sprite = hurtOverlays[Random.Range(0, hurtOverlays.Length)];

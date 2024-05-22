@@ -1,19 +1,19 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PickupableBonusesSpawner : MonoBehaviour
 {
     public static PickupableBonusesSpawner instance { get; private set; }
 
-    public int howManyToSpawn; //make it pass through an argument instead
+    public int howManyToSpawn;
+    [HideInInspector] public int startingHowManyToSpawn;
 
     [SerializeField] private GameObject[] bonuses;
 
     [SerializeField] private Transform[] spawnPoints;
-     public bool[] isSpawnPointTaken;
 
-    private List<int> generatedNumbers;
+    public List<int> TakenSpawnPoints = new List<int>();
 
     private int rrrandom;
 
@@ -32,12 +32,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
         {
             howManyToSpawn = spawnPoints.Length;
         }
+
+        startingHowManyToSpawn = howManyToSpawn;
     }
-    private void Start()
-    {
-        isSpawnPointTaken = new bool[spawnPoints.Length];
-        generatedNumbers = new List<int>();
-}
 
     public void SetSpawnCount(int spawnCount)
     {
@@ -50,29 +47,36 @@ public class PickupableBonusesSpawner : MonoBehaviour
     }
 
 
-    public void SpawnBonuses()
+    private void Update()
     {
-        for (int i = 0; i < howManyToSpawn; i++)
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            generatedNumbers.Clear();
-            StartCoroutine(WaitAndSpawn(i));
+            SpawnBonuses();
         }
     }
 
-
-    private IEnumerator WaitAndSpawn(int i)
+    public void SpawnBonuses()
     {
-        yield return new WaitForSeconds(i * 0.05f);
-        RandomizeWithoutReps();
-        var spawned = Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
-        spawned.GetComponent<FreeUpWaypointAfterPickingUp>().myOccupiedWaypoint = generatedNumbers[i];
-        isSpawnPointTaken[generatedNumbers[i]] = true;
-        howManyToSpawn--;
+        StartCoroutine(SpawnRoutine());
     }
 
+    private IEnumerator SpawnRoutine()
+    {
+        for (int i = 0; i < howManyToSpawn; i++)
+        {
+            yield return new WaitForSeconds(i * 0.03f);
+            Spawn();
+        }
+        yield return null;
+    }
 
-
-
+    private void Spawn()
+    {
+        RandomizeWithoutReps();
+        var spawned = Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[rrrandom].position, Quaternion.identity);
+        spawned.GetComponent<FreeUpWaypointAfterPickingUp>().myOccupiedWaypoint = rrrandom;
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, spawnPoints.Length - TakenSpawnPoints.Count);
+    }
 
     private void RandomizeWithoutReps()
     {
@@ -82,12 +86,11 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
         rrrandom = Random.Range(minRange, maxRange);
 
-        while (generatedNumbers.Contains(rrrandom) || isSpawnPointTaken[rrrandom])  //maybe otimize it don't have to random so much numbers before getting the one that fits
+        while (TakenSpawnPoints.Contains(rrrandom))
         {
             rrrandom = Random.Range(minRange, maxRange);
         }
 
-        generatedNumbers.Add(rrrandom);
-
+        TakenSpawnPoints.Add(rrrandom);
     }
 }
