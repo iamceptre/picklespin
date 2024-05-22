@@ -2,9 +2,17 @@ using UnityEngine;
 
 public class CursorNotVisible : MonoBehaviour
 {
+    [SerializeField] private bool unlockOnStart = false;
    private void Start()
     {
-        LockCursor();
+        if (!unlockOnStart)
+        {
+            LockCursor();
+        }
+        else
+        {
+            UnlockCursor();
+        }
     }
 
     public void UnlockCursor()

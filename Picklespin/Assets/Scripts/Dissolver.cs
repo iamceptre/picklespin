@@ -20,6 +20,7 @@ public class Dissolver : MonoBehaviour
     [SerializeField] private bool destroyAfterDissolve = false;
 
     [SerializeField] private GameObject ashPile;
+    [SerializeField] private Collider myCollider;
 
     private bool dudeDissolved = false;
 
@@ -29,6 +30,7 @@ public class Dissolver : MonoBehaviour
 
     public void StartDissolve()
     {
+        myCollider.enabled = false;
         if (myStateManager != null)
         {
             Destroy(myStateManager);

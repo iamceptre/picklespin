@@ -13,7 +13,6 @@ public class LoadSelectedScene : MonoBehaviour
     private void SwitchScene()
     {
         DG.Tweening.DOTween.KillAll();
-        Debug.Log("switching scene");
         SceneManager.LoadScene(selectedSceneIndex);
         Time.timeScale = 1.0f;
     }

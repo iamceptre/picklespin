@@ -12,7 +12,7 @@ public class Door : MonoBehaviour
     private Transform mainCamera;
     private Ray ray;
     private Collider myCollider;
-    [SerializeField] LayerMask layerMask; 
+    [SerializeField] LayerMask layerMask;
 
     //ROTATION
     private Vector3 startRot;
@@ -22,39 +22,39 @@ public class Door : MonoBehaviour
     [SerializeField] private EventReference doorOpenSoundEvent;
     [SerializeField] private EventReference doorCloseSoundEvent;
     [SerializeField] private EventReference DoorLockedEvent;
-     private EventInstance DoorSoundInstance;
+    private EventInstance DoorSoundInstance;
 
     //TOOLTIP
-   [SerializeField] private UnityEvent showTooltipEvent;
-   [SerializeField] private UnityEvent hideTooltipEvent;
+    public UnityEvent showTooltipEvent;
+    public UnityEvent hideTooltipEvent;
 
     void Start()
     {
         startRot = transform.eulerAngles;
-        openedRot = startRot + new Vector3(0,0,90);
-        
+        openedRot = startRot + new Vector3(0, 0, 90);
+
         DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
         DoorSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
         myCollider = gameObject.GetComponent<Collider>();
-        hideTooltipEvent.Invoke();
     }
 
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
             ray = new Ray(mainCamera.position, mainCamera.forward);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 5, layerMask)) {
+            if (Physics.Raycast(ray, out RaycastHit hit, 5, layerMask))
+            {
                 if (hit.collider.Equals(myCollider))
                 {
                     LockedCheck();
                 }
             }
         }
-}
+    }
 
 
     private void LockedCheck()
@@ -115,16 +115,21 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !isOpened)
+        if (other.gameObject.CompareTag("Player") && !enabled)
         {
             enabled = true;
-            showTooltipEvent.Invoke();
+
+            if (!isOpened)
+            {
+                showTooltipEvent.Invoke();
+            }
+
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && enabled)
         {
             enabled = false;
             hideTooltipEvent.Invoke();

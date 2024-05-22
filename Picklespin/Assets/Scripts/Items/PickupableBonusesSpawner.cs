@@ -11,9 +11,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
     [SerializeField] private GameObject[] bonuses;
 
     [SerializeField] private Transform[] spawnPoints;
-    public bool[] isSpawnPointTaken;
+    [HideInInspector] public bool[] isSpawnPointTaken;
 
-    [SerializeField] private List<int> generatedNumbers;
+    private List<int> generatedNumbers;
 
     private int rrrandom;
 
@@ -36,7 +36,8 @@ public class PickupableBonusesSpawner : MonoBehaviour
     private void Start()
     {
         isSpawnPointTaken = new bool[spawnPoints.Length];
-    }
+        generatedNumbers = new List<int>();
+}
 
     public void SetSpawnCount(int spawnCount)
     {

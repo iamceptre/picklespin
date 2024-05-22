@@ -47,7 +47,7 @@ public class AngelHealingMinigame : MonoBehaviour
     public void RandomizeTurboAreaPosition()
     {
         float halfOfWidth = turboAreaWidth * 0.5f;
-        float turboAreaRandomizedPosition = Random.Range(20, 50);
+        float turboAreaRandomizedPosition = Random.Range(8, 35);
         turboAreaLeftEdgePosition = turboAreaRandomizedPosition - halfOfWidth;
         turboAreaRightEdgePosition = turboAreaRandomizedPosition + halfOfWidth;
         float desiredTurboAreaPositionX = Mathf.Lerp(-147, 147, turboAreaRandomizedPosition * 0.01f);
