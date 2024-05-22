@@ -19,7 +19,7 @@ public class RoundSystem : MonoBehaviour
     [SerializeField] private TMP_Text newRoundText;
     private NewRoundDisplayText newRoundDisplayText;
 
-    private float speedMultiplier = 1;
+    public float speedMultiplier = 1;
 
     private void Awake()
     {
@@ -56,6 +56,8 @@ public class RoundSystem : MonoBehaviour
 
     private void NextRound()
     {
+        speedMultiplier = 1;
+
         if (roundNumber<RoundEvent.Length) {
            // newRoundDisplayText.gameObject.SetActive(true);
             newRoundText.text = "Round " + (roundNumber + 1) + " begins";
