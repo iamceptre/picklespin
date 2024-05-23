@@ -138,18 +138,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -1766851079683881015}
-        m_TargetAssemblyTypeName: FreeUpWaypointAfterPickingUp, Assembly-CSharp
-        m_MethodName: FreeUpSlot
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &4707837425877556033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +171,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f4865ec34cb7b40bac5499360c081a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  afterPickingUpEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -1766851079683881015}
+        m_TargetAssemblyTypeName: FreeUpWaypointAfterPickingUp, Assembly-CSharp
+        m_MethodName: FreeUpSlot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!108 &4273161091703289828
 Light:
   m_ObjectHideFlags: 0
@@ -284,4 +287,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myOccupiedWaypoint: 0
+  amIaSpell: 0

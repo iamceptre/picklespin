@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PickupableBonusesSpawner : MonoBehaviour
 {
@@ -11,9 +12,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
     [SerializeField] private GameObject[] bonuses;
 
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
-    public List<int> TakenSpawnPoints = new List<int>();
+   public List<Transform> AvaliableSpawnPoints;
 
     private int rrrandom;
 
@@ -34,6 +35,11 @@ public class PickupableBonusesSpawner : MonoBehaviour
         }
 
         startingHowManyToSpawn = howManyToSpawn;
+    }
+
+    private void Start()
+    {
+        AvaliableSpawnPoints = spawnPoints.ToList();
     }
 
     public void SetSpawnCount(int spawnCount)
@@ -64,7 +70,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            yield return new WaitForSeconds(i * 0.03f);
+            yield return new WaitForSeconds(i * 0.02f);
             Spawn();
         }
         yield return null;
@@ -72,25 +78,16 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
     private void Spawn()
     {
-        RandomizeWithoutReps();
-        var spawned = Instantiate(bonuses[Random.Range(0, bonuses.Length)], spawnPoints[rrrandom].position, Quaternion.identity);
-        spawned.GetComponent<FreeUpWaypointAfterPickingUp>().myOccupiedWaypoint = rrrandom;
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, spawnPoints.Length - TakenSpawnPoints.Count);
+        Randomize();
+        var spawned = Instantiate(bonuses[Random.Range(0, bonuses.Length)], AvaliableSpawnPoints[rrrandom].position, Quaternion.identity);
+        spawned.GetComponent<FreeUpWaypointAfterPickingUp>().SetOccupiedWaypoint(AvaliableSpawnPoints[rrrandom],this);
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, AvaliableSpawnPoints.Count);
     }
 
-    private void RandomizeWithoutReps()
+    private void Randomize()
     {
-        int maxRange = spawnPoints.Length;
+        int maxRange = AvaliableSpawnPoints.Count;
         int minRange = 0;
-
-
         rrrandom = Random.Range(minRange, maxRange);
-
-        while (TakenSpawnPoints.Contains(rrrandom))
-        {
-            rrrandom = Random.Range(minRange, maxRange);
-        }
-
-        TakenSpawnPoints.Add(rrrandom);
     }
 }

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class ItemAfterPickingUp : MonoBehaviour
@@ -10,6 +11,8 @@ public class ItemAfterPickingUp : MonoBehaviour
     private Renderer rend;
     private ParticleSystem particle;
     private ParticleSystem.EmissionModule emission;
+
+    [SerializeField] private UnityEvent afterPickingUpEvent; //ACTUALLY THE SHIT
 
     void Awake()
     {
@@ -34,6 +37,7 @@ public class ItemAfterPickingUp : MonoBehaviour
         myLight.DOKill();
         myCollider.enabled = false;
         FadeOut();
+        afterPickingUpEvent.Invoke();
     }
 
 

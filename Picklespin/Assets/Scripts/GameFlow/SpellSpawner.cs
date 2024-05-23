@@ -71,7 +71,7 @@ public class SpellSpawner : MonoBehaviour
         RandomizeWithoutReps();
         var spawnedSpell = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
         var freeUpScript = spawnedSpell.GetComponent<FreeUpWaypointAfterPickingUp>();
-        freeUpScript.myOccupiedWaypoint = generatedNumbers[i];
+        //freeUpScript.myOccupiedWaypoint = generatedNumbers[i];
 
         howManyToSpawn--;
     }
