@@ -70,7 +70,7 @@ public class SpellSpawner : MonoBehaviour
         yield return new WaitForSeconds(i * 0.06f);
         RandomizeWithoutReps();
         var spawnedSpell = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
-        var freeUpScript = spawnedSpell.GetComponent<FreeUpWaypointAfterPickingUp>();
+        //var freeUpScript = spawnedSpell.GetComponent<FreeUpWaypointAfterPickingUp>();
         //freeUpScript.myOccupiedWaypoint = generatedNumbers[i];
 
         howManyToSpawn--;

@@ -9,8 +9,8 @@ public class Pickupable_Item : MonoBehaviour
 
     [SerializeField] private UnityEvent pickupEvent;
     private Light myLight;
-    private float startingYPos;
     private float myLightIntensitivity;
+    [SerializeField] private bool pooled = true;
 
     void Awake()
     {
@@ -23,9 +23,15 @@ public class Pickupable_Item : MonoBehaviour
 
     private void Start()
     {
-        startingYPos = transform.position.y;
-        PickupableAnimation();
+        if (pooled)
+        {
+            return;
+        }
+
+        StartFloating();
     }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -34,9 +40,9 @@ public class Pickupable_Item : MonoBehaviour
         }
     }
 
-    private void PickupableAnimation()
+    public void StartFloating()
     {
-        transform.DOMoveY(startingYPos + 0.3f, 1).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+        transform.DOMoveY(transform.position.y + 0.3f, 1).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
 
         if (myLight != null) {
             myLight.DOIntensity(myLightIntensitivity * 0.5f, 1).SetLoops(-1, LoopType.Yoyo);

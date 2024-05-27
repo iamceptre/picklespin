@@ -26,7 +26,7 @@ public class EnemyCounter : MonoBehaviour
 
     public void UpdateRoundSystemSpeedMultiplier()
     {
-        if (EnemyCount<=0)
+        if (EnemyCount <= 0)
         {
             roundSystem.speedMultiplier = 3;
         }

@@ -7,12 +7,15 @@ public class ItemAfterPickingUp : MonoBehaviour
 {
 
     private Light myLight;
+    private float myLightIntestivity;
     private Collider myCollider;
     private Renderer rend;
     private ParticleSystem particle;
     private ParticleSystem.EmissionModule emission;
 
-    [SerializeField] private UnityEvent afterPickingUpEvent; //ACTUALLY THE SHIT
+    [SerializeField] private UnityEvent afterPickingUpEvent;
+
+    [SerializeField] private bool isObjectPooled = true;
 
     void Awake()
     {
@@ -29,6 +32,8 @@ public class ItemAfterPickingUp : MonoBehaviour
         {
             emission = particle.emission;
         }
+
+        myLightIntestivity = myLight.intensity;
     }
 
     public void Pickup()
@@ -37,17 +42,38 @@ public class ItemAfterPickingUp : MonoBehaviour
         myLight.DOKill();
         myCollider.enabled = false;
         FadeOut();
-        afterPickingUpEvent.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        if (!myCollider.enabled) {
+            myCollider.enabled = true;
+            FadeIn();
+        }
+    }
+
+    private void FadeIn()
+    {
+        rend.enabled = true;
+
+
+        if (particle != null)
+        {
+            emission.enabled = true;
+        }
+
+        if (myLight != null)
+        {
+            myLight.DOIntensity(myLightIntestivity, 0.5f);
+        }
+
     }
 
 
     private void FadeOut()
     {
 
-        if (rend != null)
-        {
-            rend.enabled = false;
-        }
+        rend.enabled = false;
 
 
         if (particle != null)
@@ -67,6 +93,12 @@ public class ItemAfterPickingUp : MonoBehaviour
 
     private void DestroyMe()
     {
-        Destroy(gameObject);
+        if (!isObjectPooled)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        afterPickingUpEvent.Invoke();
     }
 }

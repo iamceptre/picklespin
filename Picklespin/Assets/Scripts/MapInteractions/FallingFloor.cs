@@ -31,7 +31,7 @@ public class FallingFloor : MonoBehaviour
 
     private void RaycastCheck()
     {
-        if (transform.position.y > 15)
+        if (transform.position.y > 5)
         {
             Vector3 rayStart = transform.position;
             Vector3 rayDirection = Vector3.down;

@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using UnityEngine.Pool;
 
 public class PickupableBonusesSpawner : MonoBehaviour
 {
@@ -10,13 +9,16 @@ public class PickupableBonusesSpawner : MonoBehaviour
     public int howManyToSpawn;
     [HideInInspector] public int startingHowManyToSpawn;
 
-    [SerializeField] private GameObject[] bonuses;
+    [SerializeField] private PoolSpawnableObject[] bonuses;
 
     public Transform[] spawnPoints;
+    public bool[] isSpawnPointTaken;
+    public int avaliableSpawnPointsCount;
 
-   public List<Transform> AvaliableSpawnPoints;
 
     private int rrrandom;
+
+    public ObjectPool<PoolSpawnableObject> allPotionsPool;
 
     private void Awake()
     {
@@ -35,35 +37,46 @@ public class PickupableBonusesSpawner : MonoBehaviour
         }
 
         startingHowManyToSpawn = howManyToSpawn;
+        isSpawnPointTaken = new bool[spawnPoints.Length];
+        avaliableSpawnPointsCount = spawnPoints.Length;
     }
 
     private void Start()
     {
-        AvaliableSpawnPoints = spawnPoints.ToList();
+        allPotionsPool = new ObjectPool<PoolSpawnableObject>(CreateItem, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, spawnPoints.Length, spawnPoints.Length * 2);
+        PreInstantiate();
     }
 
-    public void SetSpawnCount(int spawnCount)
-    {
-        howManyToSpawn = spawnCount;
 
-        if (howManyToSpawn > spawnPoints.Length)
+    private void PreInstantiate()
+    {
+                                      //spawnPoints.Length is max object pool count, change it when you do separate pools for every potion
+        var tempList = new PoolSpawnableObject[spawnPoints.Length];
+
+        for (int i = 0; i < spawnPoints.Length; i++)
         {
-            howManyToSpawn = spawnPoints.Length;
+            tempList[i] = allPotionsPool.Get();
+        }
+
+        for (int i = 0; i < spawnPoints.Length; i++)
+        {
+            allPotionsPool.Release(tempList[i]);
         }
     }
 
 
-    private void Update()
+    private PoolSpawnableObject CreateItem()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnBonuses();
-        }
+        PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]); //split every potion into separate pools so you can do weighted random
+        itemInstance.SetPool(allPotionsPool);
+        return itemInstance;
     }
+
 
     public void SpawnBonuses()
     {
-            StartCoroutine(SpawnRoutine());
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, avaliableSpawnPointsCount);
+        StartCoroutine(SpawnRoutine());
     }
 
     private IEnumerator SpawnRoutine()
@@ -79,15 +92,51 @@ public class PickupableBonusesSpawner : MonoBehaviour
     private void Spawn()
     {
         Randomize();
-        var spawned = Instantiate(bonuses[Random.Range(0, bonuses.Length)], AvaliableSpawnPoints[rrrandom].position, Quaternion.identity);
-        spawned.GetComponent<FreeUpWaypointAfterPickingUp>().SetOccupiedWaypoint(AvaliableSpawnPoints[rrrandom],this);
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, AvaliableSpawnPoints.Count);
+        PoolSpawnableObject spawned = allPotionsPool.Get();
+        spawned.transform.position = spawnPoints[rrrandom].position;
+        spawned.SetOccupiedWaypoint(rrrandom, this);
+        spawned.GetComponent<Pickupable_Item>().StartFloating();
+        avaliableSpawnPointsCount--;
     }
 
     private void Randomize()
     {
-        int maxRange = AvaliableSpawnPoints.Count;
+        int maxRange = spawnPoints.Length;
         int minRange = 0;
-        rrrandom = Random.Range(minRange, maxRange);
+
+        while (isSpawnPointTaken[rrrandom])
+        {
+            rrrandom = Random.Range(minRange, maxRange);
+        }
     }
+
+
+
+
+
+
+
+
+    private void OnGetFromPool(PoolSpawnableObject pooledItem)
+    {
+        pooledItem.gameObject.SetActive(true);
+    }
+
+    private void OnReleaseToPool(PoolSpawnableObject pooledItem)
+    {
+        pooledItem.gameObject.SetActive(false);
+    }
+
+    private void OnDestroyPooledObject(PoolSpawnableObject pooledItem)
+    {
+        Destroy(pooledItem.gameObject);
+    }
+
+
+    public void SetSpawnCount(int spawnCount) //use it from event system gui, before spawning
+    {
+        howManyToSpawn = spawnCount;
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, spawnPoints.Length);
+    }
+
 }
