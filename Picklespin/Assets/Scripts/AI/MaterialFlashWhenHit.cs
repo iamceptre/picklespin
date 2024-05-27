@@ -9,6 +9,8 @@ public class MaterialFlashWhenHit : MonoBehaviour
     private float flashElapsed;
     [SerializeField] private float flashDuration = 0.5f;
 
+    private int emissionColor = Shader.PropertyToID("_EmissionColor");
+
 
     public IEnumerator Flash()
     {
@@ -18,7 +20,7 @@ public class MaterialFlashWhenHit : MonoBehaviour
         {
             float elapsedPercentage = flashElapsed / flashDuration;
             Color currentEmissionColor = new Color(elapsedPercentage * 0.5f, elapsedPercentage * 0.5f, elapsedPercentage * 0.5f);
-            rend.material.SetColor("_EmissionColor", currentEmissionColor);
+            rend.material.SetColor(emissionColor, currentEmissionColor);
             flashElapsed -= Time.deltaTime;
             yield return null;
         }
@@ -38,7 +40,7 @@ public class MaterialFlashWhenHit : MonoBehaviour
         {
             float elapsedPercentage = flashElapsed / flashDuration;
             Color currentEmissionColor = new Color(elapsedPercentage * 0.76f, elapsedPercentage * 0.24f, elapsedPercentage * 0.24f);
-            rend.material.SetColor("_EmissionColor", currentEmissionColor);
+            rend.material.SetColor(emissionColor, currentEmissionColor);
             flashElapsed -= Time.deltaTime;
             yield return null;
         }

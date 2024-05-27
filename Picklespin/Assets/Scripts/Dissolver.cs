@@ -27,6 +27,8 @@ public class Dissolver : MonoBehaviour
     [SerializeField] private NavMeshAgent myNavMeshAgent;
     [SerializeField] private StateManager myStateManager;
 
+    private int progress = Shader.PropertyToID("_Progress");
+
 
     public void StartDissolve()
     {
@@ -54,7 +56,7 @@ public class Dissolver : MonoBehaviour
         while (dissolveProgress >= 0)
         {
             dissolveProgress -= Time.deltaTime * dissolveSpeed;
-            myRenderer.material.SetFloat("_Progress", dissolveProgress);
+            myRenderer.material.SetFloat(progress, dissolveProgress);
 
             if (dissolveProgress <= 0 && !dudeDissolved)
             {
@@ -102,7 +104,7 @@ public class Dissolver : MonoBehaviour
         while (ashDissolveProgress < 1)
         {
             ashDissolveProgress = 0.7f - dissolveProgress;
-            ashRenderer.material.SetFloat("_Progress", ashDissolveProgress);
+            ashRenderer.material.SetFloat(progress, ashDissolveProgress);
             yield return null;
         }
     }

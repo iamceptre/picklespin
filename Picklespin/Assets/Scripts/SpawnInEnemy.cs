@@ -12,6 +12,8 @@ public class SpawnInEnemy : MonoBehaviour
 
     private Color startingColor;
 
+    private int colorProperty = Shader.PropertyToID("_Color");
+
     private IEnumerator Start()
     {
         mainModule = spawnInParticles.main;
@@ -33,7 +35,7 @@ public class SpawnInEnemy : MonoBehaviour
         {
             progress += Time.deltaTime;
             Color color = new Color(startingColor.r, startingColor.g, startingColor.b, progress);
-            mat.SetColor("_Color", color);
+            mat.SetColor(colorProperty, color);
             if (progress>=1)
             {
                 mat.SetFloat("_Mode", 0);
