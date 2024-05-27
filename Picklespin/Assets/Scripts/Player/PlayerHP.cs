@@ -19,7 +19,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private Sprite[] hurtOverlays;
     [SerializeField] private EventReference hpAqquiredSound;
 
-    private bool godMode = false;
+    public bool godMode = false;
 
     private void Awake()
     {
@@ -54,6 +54,11 @@ public class PlayerHP : MonoBehaviour
         {
             death.PlayerDeath();
         }
+    }
+
+    private void CheckIfPlayerIsLowHP()
+    {
+
     }
 
 

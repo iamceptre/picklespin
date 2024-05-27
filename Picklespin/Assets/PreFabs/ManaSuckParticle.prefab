@@ -44,7 +44,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 0.2
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -222,13 +222,13 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 2
-      minColor: {r: 0.373042, g: 0.5648661, b: 0.9528302, a: 1}
-      maxColor: {r: 0.2901961, g: 0.3882353, b: 0.827451, a: 1}
+      minMaxState: 4
+      minColor: {r: 0.6556604, g: 0.76966465, b: 1, a: 1}
+      maxColor: {r: 0.24256852, g: 0.33430475, b: 0.745283, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.2901961, g: 0.3882353, b: 0.827451, a: 1}
-        key1: {r: 0.4224813, g: 0.6029453, b: 0.8867924, a: 1}
+        key0: {r: 1, g: 0.9297468, b: 0.28773582, a: 0.61960787}
+        key1: {r: 1, g: 0.59289265, b: 0, a: 0.61960787}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -236,7 +236,7 @@ ParticleSystem:
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 65342
+        ctime1: 65535
         ctime2: 0
         ctime3: 0
         ctime4: 0
@@ -288,8 +288,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
-      minScalar: 0.3
+      scalar: 0.4
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4844,4 +4844,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e260c1f9f924df458b762ed8ee82b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPoint: {fileID: 0}

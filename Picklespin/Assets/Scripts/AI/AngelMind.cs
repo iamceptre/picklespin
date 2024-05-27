@@ -17,6 +17,7 @@ public class AngelMind : MonoBehaviour
 
 
     [SerializeField] private ParticleSystem healedParticles;
+    [SerializeField] private GiveExpToPlayer giveExpAfterHeal;
 
     private Renderer angelRenderer;
 
@@ -45,7 +46,7 @@ public class AngelMind : MonoBehaviour
         GiveHPToPlayer();
         Invoke("GiveStaminaToPlayer", 0.2f);
         Invoke("GiveManaToPlayer", 0.4f);
-        playerEXP.GivePlayerExp(200, "healed an Angel");
+        giveExpAfterHeal.GiveExp();
     }
 
 

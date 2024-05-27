@@ -9,26 +9,39 @@ public class GiveExpToPlayer : MonoBehaviour
     [HideInInspector] public bool wasLastShotAHeadshot;
 
     private Ammo ammo;
-    private ManaSuckParticlesSpawner manaSuckParticlesSpawner;
     private PlayerHP playerHp;
+
+    [SerializeField] private ParticleSystem manaSuckParticles;
+    private ParticleMoveTowards particleMoveTowardsScript;
 
     void Start()
     {
+        particleMoveTowardsScript = manaSuckParticles.gameObject.GetComponent<ParticleMoveTowards>();
+        manaSuckParticles.Pause();
+        manaSuckParticles.Clear();
+        particleMoveTowardsScript.enabled = false;
         playerEXP = PlayerEXP.instance;
         ammo = Ammo.instance;
-        manaSuckParticlesSpawner = ManaSuckParticlesSpawner.instance;
         playerHp = PlayerHP.instance;   
+    }
+
+    private void OnEnable()
+    {
+        manaSuckParticles.transform.parent = transform;
+        manaSuckParticles.transform.localPosition = Vector3.zero;
     }
 
     public void GiveExp()
     {
         int howMuchStatsIGive = (int)(howMuchXpIGive * 0.1f);
+
+
         if (!wasLastShotAHeadshot)
         {
             ammo.GiveManaToPlayer(howMuchStatsIGive);
-            manaSuckParticlesSpawner.Spawn(transform.position, howMuchStatsIGive);
             playerEXP.GivePlayerExp(howMuchXpIGive, expSourceName);
             playerHp.GiveHPToPlayer(howMuchStatsIGive);
+            GiveManaSuckParticles(howMuchStatsIGive);
             return;
         }
         else
@@ -37,9 +50,19 @@ public class GiveExpToPlayer : MonoBehaviour
             int headshotXP = (int)(howMuchXpIGive * 1.5f);
             playerEXP.GivePlayerExp(headshotXP, expSourceName+", eyeshot!");
             ammo.GiveManaToPlayer(howMuchIGiveAfterHeadshot);
-            manaSuckParticlesSpawner.Spawn(transform.position, howMuchIGiveAfterHeadshot);
             playerHp.GiveHPToPlayer(howMuchIGiveAfterHeadshot);
+            GiveManaSuckParticles(howMuchIGiveAfterHeadshot);
         }
     }
+
+    private void GiveManaSuckParticles(int particleCount)
+    {
+        particleMoveTowardsScript.enabled = true;
+        manaSuckParticles.Clear();
+        manaSuckParticles.Emit(particleCount);
+        manaSuckParticles.Play();
+        manaSuckParticles.transform.parent = null;
+    }
+
 
 }
