@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine.Rendering.PostProcessing;
 using FMODUnity;
 using UnityEngine.UI;
+using FMOD.Studio;
 
 public class PortalAfterClosing : MonoBehaviour
 {
@@ -19,10 +20,10 @@ public class PortalAfterClosing : MonoBehaviour
     private ColorGrading ppColorGrading;
 
     private Pause pause;
-    //[SerializeField] private GameObject PortalClosedScreen;
     [SerializeField] private Canvas PortalClosedScreen;
 
-    [SerializeField] private EventReference SnapshotAfterPortalClosage;
+    [SerializeField] private EventReference portalClosedSnapshot;
+    public EventInstance portalClosedInstance;
 
     [SerializeField] private CanvasGroup[] canvasToFadeout;
     [SerializeField] private Image screenTint;
@@ -49,6 +50,7 @@ public class PortalAfterClosing : MonoBehaviour
         pause = Pause.instance;
         playerHp = PlayerHP.instance;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
+        portalClosedInstance = RuntimeManager.CreateInstance(portalClosedSnapshot);
     }
 
 
@@ -58,7 +60,7 @@ public class PortalAfterClosing : MonoBehaviour
         crosshair.enabled = false;
         playerHp.SetGodmode(true);
         FadeOutCanvas();
-        RuntimeManager.PlayOneShot(SnapshotAfterPortalClosage);
+        portalClosedInstance.start();
         TurnOffEmissions();
         StartCoroutine(ActivateFailScreen());
         StartCoroutine(SlowDownTimeAnDesaturate());
@@ -107,7 +109,7 @@ public class PortalAfterClosing : MonoBehaviour
         while (Time.timeScale > 0.1)
         {
             Time.timeScale -= Time.deltaTime;
-            ppColorGrading.saturation.value -= Time.deltaTime * 100;
+            ppColorGrading.saturation.value -= Time.deltaTime * 75;
             ppColorGrading.postExposure.value += Time.deltaTime * 2;
             yield return null;
         }

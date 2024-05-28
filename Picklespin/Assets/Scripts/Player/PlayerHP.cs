@@ -2,6 +2,9 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Rendering.PostProcessing;
+using System.Collections;
+using FMOD.Studio;
 
 public class PlayerHP : MonoBehaviour
 {
@@ -20,6 +23,15 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private EventReference hpAqquiredSound;
 
     public bool godMode = false;
+
+    private bool isLowHP = false;
+    [SerializeField] private PostProcessVolume ppVolume;
+    private ColorGrading ppColorGrading;
+    private float desaturateAmount = 20;
+    private float contrastAmount = 10;
+    private float exposureAmount = 1;
+    private EventInstance lowHpSnapshotInstance;
+    [SerializeField] private EventReference lowHpSnapshotReference;
 
     private void Awake()
     {
@@ -45,6 +57,8 @@ public class PlayerHP : MonoBehaviour
         hurtOverlay.enabled = false;
         barLightsAnimation = BarLightsAnimation.instance;
         hpBarDisplay = HpBarDisplay.instance;
+        ppVolume.profile.TryGetSettings(out ppColorGrading);
+        lowHpSnapshotInstance = RuntimeManager.CreateInstance(lowHpSnapshotReference);
     }
 
 
@@ -58,7 +72,35 @@ public class PlayerHP : MonoBehaviour
 
     private void CheckIfPlayerIsLowHP()
     {
+        if (hp <= maxHp * 0.3f)
+        {
+            ApplyLowHPState();
+        }
+        else
+        {
+            ReturnFromLowHPState();
+        }
+    }
 
+    private void ApplyLowHPState()
+    {
+        if (!isLowHP)
+        {
+            StartCoroutine(LowHpEffect());
+            isLowHP = true;
+            lowHpSnapshotInstance.start();
+        }
+    }
+
+
+    private void ReturnFromLowHPState()
+    {
+        if (isLowHP)
+        {
+            StartCoroutine(RestoreHpEffect());
+            lowHpSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            isLowHP = false;
+        }
     }
 
 
@@ -68,6 +110,7 @@ public class PlayerHP : MonoBehaviour
             RuntimeManager.PlayOneShot(hurtSound);
             PlayerHurtVisual();
             CheckIfPlayerIsDead();
+            CheckIfPlayerIsLowHP();
         }
     }
 
@@ -109,6 +152,37 @@ public class PlayerHP : MonoBehaviour
         }
 
         //RuntimeManager.PlayOneShot(hpAqquiredSound);
+        CheckIfPlayerIsLowHP();
+    }
+
+    private IEnumerator LowHpEffect()
+    {
+        float timer = 0;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime;
+            ppColorGrading.saturation.value -= Time.deltaTime * desaturateAmount;
+            ppColorGrading.contrast.value += Time.deltaTime * contrastAmount;
+            ppColorGrading.postExposure.value += Time.deltaTime * exposureAmount;
+            yield return null;
+        }
+        yield break;
+    }
+
+    private IEnumerator RestoreHpEffect()
+    {
+        float timer = 0;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime;
+            ppColorGrading.saturation.value += Time.deltaTime * desaturateAmount;
+            ppColorGrading.contrast.value -= Time.deltaTime * contrastAmount;
+            ppColorGrading.postExposure.value -= Time.deltaTime * exposureAmount;
+            yield return null;
+        }
+        yield break;
     }
 
 }

@@ -131,10 +131,10 @@ MonoBehaviour:
     value: -14.6
   tint:
     overrideState: 0
-    value: 100
+    value: 0
   colorFilter:
     overrideState: 0
-    value: {r: 1, g: 1, b: 1, a: 1}
+    value: {r: 1024, g: 1024, b: 1024, a: 1}
   hueShift:
     overrideState: 0
     value: -1
@@ -151,7 +151,7 @@ MonoBehaviour:
     overrideState: 1
     value: -25
   mixerRedOutRedIn:
-    overrideState: 0
+    overrideState: 1
     value: 100
   mixerRedOutGreenIn:
     overrideState: 0

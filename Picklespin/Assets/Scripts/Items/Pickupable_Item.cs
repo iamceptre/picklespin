@@ -10,7 +10,6 @@ public class Pickupable_Item : MonoBehaviour
     [SerializeField] private UnityEvent pickupEvent;
     private Light myLight;
     private float myLightIntensitivity;
-    [SerializeField] private bool pooled = true;
 
     void Awake()
     {
@@ -23,11 +22,6 @@ public class Pickupable_Item : MonoBehaviour
 
     private void Start()
     {
-        if (pooled)
-        {
-            return;
-        }
-
         StartFloating();
     }
 

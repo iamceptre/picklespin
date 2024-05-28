@@ -1,13 +1,12 @@
 using DG.Tweening;
-using FMOD.Studio;
 using FMODUnity;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Reborn : MonoBehaviour
 {
+    private PortalAfterClosing portalAfterClosing;
     private TMP_Text myText;
     private RectTransform myRectTransform;
 
@@ -18,8 +17,6 @@ public class Reborn : MonoBehaviour
     private float animationTime = 1f;
 
     private EventReference rebornEvent;
-    [SerializeField] private EventReference defaultSnapshot;
-    private EventInstance snapshotInstance;
 
     private void Awake()
     {
@@ -28,6 +25,7 @@ public class Reborn : MonoBehaviour
     }
     void Start()
     {
+        portalAfterClosing = PortalAfterClosing.instance;
         myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, howMuchToSpaceout, animationTime).SetLoops(-1, LoopType.Yoyo);
         myTween.SetUpdate(UpdateType.Normal, true);
     }
@@ -43,8 +41,7 @@ public class Reborn : MonoBehaviour
             myTween = myText.DOColor(transparentMe, 2).SetEase(Ease.OutExpo).OnComplete(() =>
             {
                 DOTween.KillAll();
-                snapshotInstance = RuntimeManager.CreateInstance(defaultSnapshot);
-                snapshotInstance.start();
+                portalAfterClosing.portalClosedInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
                 SceneManager.LoadScene(currentSceneIndex);
                 Time.timeScale = 1;

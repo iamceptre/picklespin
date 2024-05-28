@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using DG.Tweening;
 
 public class Pause : MonoBehaviour
 {
