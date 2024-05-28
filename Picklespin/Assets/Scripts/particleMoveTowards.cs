@@ -40,7 +40,7 @@ public class ParticleMoveTowards : MonoBehaviour
 
             if (distanceToPlayer < 0.1f)
             {
-                //particles[i].remainingLifetime = 0f;
+                particles[i].remainingLifetime = 0f;
             }
 
             Vector3 directionToTarget = (publicPlayerTransform.PlayerTransform.position - particles[i].position).normalized;

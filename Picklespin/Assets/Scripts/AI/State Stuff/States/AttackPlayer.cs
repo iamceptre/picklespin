@@ -13,6 +13,8 @@ public class AttackPlayer : State
 
     [SerializeField] private float attackSpeed = 8;
 
+    private int howMuchDamageIdeal = 10;
+
     private void Start()
     {
         playerTransform = PublicPlayerTransform.instance;
@@ -52,7 +54,14 @@ public class AttackPlayer : State
     {
         if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 5)
         {
-            playerHP.hp -= 10;
+            if (!playerHP.isLowHP) {
+                playerHP.hp -= howMuchDamageIdeal;
+            }
+            else
+            {
+                playerHP.hp -= (int)(howMuchDamageIdeal * 0.5f);
+            }
+
             hpBarDisplay.Refresh(false);
             playerHP.PlayerHurtSound();
         }

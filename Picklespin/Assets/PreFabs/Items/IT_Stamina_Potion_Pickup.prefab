@@ -128,7 +128,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 795687396003462228}
         m_TargetAssemblyTypeName: Pickupable_Stamina, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: GiveStaminaToPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

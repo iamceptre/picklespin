@@ -128,7 +128,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4707837425877556033}
         m_TargetAssemblyTypeName: Pickupable_HP, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: GiveHPToPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

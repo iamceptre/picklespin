@@ -24,7 +24,7 @@ public class PlayerHP : MonoBehaviour
 
     public bool godMode = false;
 
-    private bool isLowHP = false;
+    [HideInInspector] public bool isLowHP = false;
     [SerializeField] private PostProcessVolume ppVolume;
     private ColorGrading ppColorGrading;
     private float desaturateAmount = 20;
