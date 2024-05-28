@@ -1,26 +1,39 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Pool;
 
 public class SpellPickupable : MonoBehaviour
 {
     [SerializeField] private int spellID;
+    private int myOccupiedWaypointIndex;
+
     private UnlockedSpells unlockedSpells;
+    private Ammo ammo;
+    private SpellSpawner spellSpawnerScript;
+
     private Light myLight;
+    private float myLightRange = 0;
+    private Color myLightColor;
+
     private Renderer rend;
+
     private ParticleSystem particle;
     private ParticleSystem.EmissionModule emission;
+
     private Collider myCollider;
 
-    private Ammo ammo;
+    private ObjectPool<SpellPickupable> _pool;
+
+    public int spellClass; //0 - LO, 1 - HI, 2 - FINAl
+
 
 
     private void Awake()
     {
-        unlockedSpells = GameObject.FindWithTag("Player").GetComponent<UnlockedSpells>();
         myLight = gameObject.GetComponentInChildren<Light>();
-        rend = gameObject.GetComponent<Renderer>();
-        particle = gameObject.GetComponentInChildren<ParticleSystem>();
-        myCollider = gameObject.GetComponent<Collider>();
+        rend = GetComponent<Renderer>();
+        particle = GetComponentInChildren<ParticleSystem>();
+        myCollider = GetComponent<Collider>();
 
         if (particle != null)
         {
@@ -30,36 +43,68 @@ public class SpellPickupable : MonoBehaviour
 
     private void Start()
     {
+        unlockedSpells = UnlockedSpells.instance;
         ammo = Ammo.instance;
+        myLightRange = myLight.range;
+        myLightColor = myLight.color;
+    }
+
+    private void OnEnable()
+    {
+        myCollider.enabled = true;
+        rend.enabled = true;
+
+        if (particle != null)
+        {
+            emission.enabled = true;
+        }
+
+        if (myLightRange != 0)
+        {
+            myLight.range = myLightRange;
+            myLight.color = myLightColor;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player")) //SPELL PICKUP
         {
-            if (!unlockedSpells.spellUnlocked[spellID]) //when pickuped spell is not unlocked
-            {
-                unlockedSpells.UnlockASpell(spellID);
-                myCollider.enabled = false;
-                FadeOut();
-            }
-            else //when picking up already unlocked spell
-            {
-                if (ammo.ammo < ammo.maxAmmo) 
-                {
-                    unlockedSpells.UnlockASpell(spellID);
-                    myCollider.enabled = false;
-                    FadeOut();
-                }
-            }
-
+            unlockedSpells.UnlockASpell(spellID);
+            spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
+            spellSpawnerScript.avaliableSpawnPointsCount++;
+            spellSpawnerScript.ClampSpawnCount();
+            FadeOut();
         }
 
     }
 
+    private void PoolReleaser()
+    {
+        if (spellClass == 0)
+        {
+            spellSpawnerScript.spellsLoPool.Release(this);
+            return;
+        }
+
+        /*
+
+        if (spellClass == 1) {
+            spellSpawnerScript.spellsHiPool.Release(this);
+            return ;
+        }
+        */
+
+        // spellSpawnerScript.spellsFinalPool.Release(this); //this does not even need to be a pool, could be a single object
+
+    }
+
+
+
     private void FadeOut()
     {
+        myCollider.enabled = false;
         rend.enabled = false;
         if (particle != null)
         {
@@ -71,16 +116,29 @@ public class SpellPickupable : MonoBehaviour
 
     private void LightRangeTweener()
     {
-        DOTween.To(() => myLight.range, x => myLight.range = x, 45, 0.5f).OnComplete(FadeOutLight);
+        DOTween.To(() => myLight.range, x => myLight.range = x, 45, 0.3f).OnComplete(FadeOutLight);
     }
 
     private void FadeOutLight()
     {
-        myLight.DOColor(Color.black, 0.5f).OnComplete(KillMe);
+        myLight.DOColor(Color.black, 0.3f).OnComplete(PoolReleaser);
     }
 
-    private void KillMe()
+    public void SetOccupiedWaypoint(int myWaypointIndex, SpellSpawner spawnerScript, int spellClassID)
     {
-        Destroy(gameObject);
+        if (spellSpawnerScript == null)
+        {
+            spellSpawnerScript = spawnerScript;
+        }
+
+        myOccupiedWaypointIndex = myWaypointIndex;
+        spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = true;
+        spellClass = spellClassID;
+    }
+
+
+    public void SetPool(ObjectPool<SpellPickupable> pool)
+    {
+        _pool = pool;
     }
 }

@@ -1,24 +1,24 @@
-using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Pool;
 
 public class SpellSpawner : MonoBehaviour
 {
+    //[SerializeField] private GameObject[] spellsHi;
     public static SpellSpawner instance;
 
-
     public int howManyToSpawn;
+    private int startingHowManyToSpawn;
 
-    [SerializeField] private GameObject[] spellsLo;
-    [SerializeField] private GameObject[] spellsHi;
+    [SerializeField] private SpellPickupable[] spellsLo;
 
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
+    [HideInInspector] public bool[] isSpawnPointTaken;
+    [HideInInspector] public int avaliableSpawnPointsCount;
 
-    private List<int> generatedNumbers = new List<int>();
+    public ObjectPool<SpellPickupable> spellsLoPool;
 
     private int rrrandom;
-
-    public bool[] isSpawnPointTaken;
 
     private void Awake()
     {
@@ -35,68 +35,64 @@ public class SpellSpawner : MonoBehaviour
         {
             howManyToSpawn = spawnPoints.Length;
         }
+
+        isSpawnPointTaken = new bool[spawnPoints.Length];
+        avaliableSpawnPointsCount = spawnPoints.Length;
+        startingHowManyToSpawn = howManyToSpawn;
     }
 
     private void Start()
     {
-        isSpawnPointTaken = new bool[spawnPoints.Length];
+        spellsLoPool = new ObjectPool<SpellPickupable>(CreateItem, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, spawnPoints.Length, spawnPoints.Length * 2);
+        PreInstantiate();
     }
 
-    public void SetSpawnCount(int spawnCount)
-    {
-        howManyToSpawn = spawnCount;
 
-        if (howManyToSpawn > spawnPoints.Length)
+    private void PreInstantiate()
+    {
+        //spawnPoints.Length is max object pool count, change it when you do separate pools for every potion
+        var tempList = new SpellPickupable[spawnPoints.Length];
+
+        for (int i = 0; i < spawnPoints.Length; i++)
         {
-            howManyToSpawn = spawnPoints.Length;
+            tempList[i] = spellsLoPool.Get();
+        }
+
+        for (int i = 0; i < spawnPoints.Length; i++)
+        {
+            spellsLoPool.Release(tempList[i]);
         }
     }
-
 
 
     public void SpawnSpellsLo()
     {
+        StartCoroutine(SpawnRoutine());
+    }
+
+    private IEnumerator SpawnRoutine()
+    {
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            StartCoroutine(WaitAndSpawnLo(i));
+            yield return new WaitForSeconds(i * 0.1f);
+            SpawnLo();
         }
+        avaliableSpawnPointsCount -= howManyToSpawn;
+        ClampSpawnCount();
     }
 
 
 
 
-    private IEnumerator WaitAndSpawnLo(int i)
+    private void SpawnLo()
     {
-        yield return new WaitForSeconds(i * 0.06f);
-        RandomizeWithoutReps();
-        var spawnedSpell = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
-        //var freeUpScript = spawnedSpell.GetComponent<FreeUpWaypointAfterPickingUp>();
-        //freeUpScript.myOccupiedWaypoint = generatedNumbers[i];
-
-        howManyToSpawn--;
+        Randomize();
+        SpellPickupable spawned = spellsLoPool.Get();
+        spawned.transform.position = spawnPoints[rrrandom].position;
+        spawned.SetOccupiedWaypoint(rrrandom, this, 0);
     }
 
-    /*
-    private IEnumerator WaitAndSpawnHi(int i)
-    {
-        yield return new WaitForSeconds(i * 0.06f);
-        RandomizeWithoutReps();
-        Instantiate(spellsHi[Random.Range(0, spellsHi.Length)], spawnPoints[generatedNumbers[i]].position, Quaternion.identity);
-    }
 
-    */
-
-    /*
-
-public void SpawnSpellsHi()
-{
-    for (int i = 0; i < howManyToSpawn; i++)
-    {
-        StartCoroutine(WaitAndSpawnHi(i));
-    }
-}
-
-*/
 
     public void SpawnLastSpell()
     {
@@ -105,19 +101,54 @@ public void SpawnSpellsHi()
 
 
 
-    private void RandomizeWithoutReps()
+    private void Randomize()
     {
         int maxRange = spawnPoints.Length;
         int minRange = 0;
 
-        rrrandom = Random.Range(minRange, maxRange);
-
-        while (generatedNumbers.Contains(rrrandom) || isSpawnPointTaken[rrrandom])
+        while (isSpawnPointTaken[rrrandom])
         {
             rrrandom = Random.Range(minRange, maxRange);
         }
+    }
 
-        generatedNumbers.Add(rrrandom);
+    public void SetSpawnCount(int spawnCount)
+    {
+        if (howManyToSpawn >= spawnPoints.Length)
+        {
+            howManyToSpawn = spawnPoints.Length;
+        }
+        else
+        {
+            howManyToSpawn = spawnCount;
+        }
+    }
 
+    private SpellPickupable CreateItem()
+    {
+        SpellPickupable itemInstance = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)]); 
+        itemInstance.SetPool(spellsLoPool);
+        return itemInstance;
+    }
+
+    private void OnGetFromPool(SpellPickupable pooledItem)
+    {
+        pooledItem.gameObject.SetActive(true);
+    }
+
+    private void OnReleaseToPool(SpellPickupable pooledItem)
+    {
+        pooledItem.gameObject.SetActive(false);
+    }
+
+    private void OnDestroyPooledObject(SpellPickupable pooledItem)
+    {
+        Destroy(pooledItem.gameObject);
+    }
+
+    public void ClampSpawnCount()
+    {
+        howManyToSpawn = startingHowManyToSpawn;
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, avaliableSpawnPointsCount);
     }
 }

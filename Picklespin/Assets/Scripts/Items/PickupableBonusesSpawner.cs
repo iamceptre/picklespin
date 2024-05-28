@@ -12,8 +12,8 @@ public class PickupableBonusesSpawner : MonoBehaviour
     [SerializeField] private PoolSpawnableObject[] bonuses;
 
     public Transform[] spawnPoints;
-    public bool[] isSpawnPointTaken;
-    public int avaliableSpawnPointsCount;
+    [HideInInspector] public bool[] isSpawnPointTaken;
+    [HideInInspector] public int avaliableSpawnPointsCount;
 
 
     private int rrrandom;
@@ -65,17 +65,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
     }
 
 
-    private PoolSpawnableObject CreateItem()
-    {
-        PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]); //split every potion into separate pools so you can do weighted random
-        itemInstance.SetPool(allPotionsPool);
-        return itemInstance;
-    }
-
 
     public void SpawnBonuses()
     {
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, avaliableSpawnPointsCount);
         StartCoroutine(SpawnRoutine());
     }
 
@@ -86,7 +78,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
             yield return new WaitForSeconds(i * 0.02f);
             Spawn();
         }
-        yield return null;
+
+        avaliableSpawnPointsCount -= howManyToSpawn;
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, avaliableSpawnPointsCount);
     }
 
     private void Spawn()
@@ -96,7 +90,6 @@ public class PickupableBonusesSpawner : MonoBehaviour
         spawned.transform.position = spawnPoints[rrrandom].position;
         spawned.SetOccupiedWaypoint(rrrandom, this);
         spawned.GetComponent<Pickupable_Item>().StartFloating();
-        avaliableSpawnPointsCount--;
     }
 
     private void Randomize()
@@ -115,7 +108,12 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
 
 
-
+    private PoolSpawnableObject CreateItem()
+    {
+        PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]); //split every potion into separate pools so you can do weighted random
+        itemInstance.SetPool(allPotionsPool);
+        return itemInstance;
+    }
 
     private void OnGetFromPool(PoolSpawnableObject pooledItem)
     {
