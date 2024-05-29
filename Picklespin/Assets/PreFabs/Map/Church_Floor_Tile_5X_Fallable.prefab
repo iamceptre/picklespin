@@ -4843,6 +4843,7 @@ GameObject:
   - component: {fileID: 5622725851200233085}
   - component: {fileID: 8843648706758379729}
   - component: {fileID: 2474128314011845917}
+  - component: {fileID: 1299231236158072210}
   m_Layer: 10
   m_Name: Church_Floor_Tile_5X_Fallable
   m_TagString: Untagged
@@ -4944,9 +4945,36 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6712952209873735734}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e93da0a3b376b94da5fcf8b7b9565e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timeBeforeFreezing: 3
+--- !u!54 &1299231236158072210
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6712952209873735734}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1

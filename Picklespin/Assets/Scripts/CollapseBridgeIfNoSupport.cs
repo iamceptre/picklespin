@@ -6,7 +6,7 @@ public class CollapseBridgeIfNoSupport : MonoBehaviour
     private Rigidbody[] rb;
 
     private DisablePhysicsAfterTime[] disablePhysicsAfterTime;
-    [SerializeField] private int supportsNeededToCollapse; //much many supports needs to be destroyed in order for the bridge to collapse
+    [SerializeField] private int supportsNeededToCollapse;
     private int currentlyDestroyedSupportsCount = 0;
 
     void Awake()
@@ -42,7 +42,7 @@ public class CollapseBridgeIfNoSupport : MonoBehaviour
 
         foreach (var physicsFreeze in disablePhysicsAfterTime)
         {
-            physicsFreeze.StartCoroutine(physicsFreeze.StartCountdown());
+            physicsFreeze.enabled = true;
         }
     }
 }

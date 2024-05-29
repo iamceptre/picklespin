@@ -35,6 +35,11 @@ public class CameraShake : MonoBehaviour
     }
 
 
+    private void RestoreZeroRotation()
+    {
+        mainCamera.DOLocalRotate(Vector3.zero, 0.1f);
+    }
+
 
     public void ShootCameraShake()
     {
@@ -61,17 +66,11 @@ public class CameraShake : MonoBehaviour
             float strenghtBasedOnDistance = (75 - distanceFromExplosion) * 0.01f * damage;
             strenghtBasedOnDistance = Mathf.Clamp(strenghtBasedOnDistance, 0, 10);
 
-            //Debug.Log("ran ExplosionShake" + "distance: " + distanceFromExplosion + " str: " + strenghtBasedOnDistance);
-
-            // explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic).SetAutoKill(false).Pause();
-            //explosionTween.Restart();
-
-            mainCamera.localRotation = Quaternion.identity; 
             explosionTween.Kill();
             explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
             {
-                mainCamera.localRotation = Quaternion.identity;
-            }); 
+                RestoreZeroRotation();
+            }); ;
 
             //hand.DOShakePosition(strenghtBasedOnDistance, strenghtBasedOnDistance * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
         }
@@ -90,6 +89,7 @@ public class CameraShake : MonoBehaviour
             strenghtBasedOnDistance = Mathf.Clamp(strenghtBasedOnDistance, 0, 10);
 
             explosionDuration = explosionDuration + (strenghtBasedOnDistance) * 0.05f;
+            explosionTween.Kill();
             StartCoroutine(EnemyExplosionLater(explosionDuration, strenghtBasedOnDistance));
         }
     }
@@ -98,12 +98,11 @@ public class CameraShake : MonoBehaviour
     private IEnumerator EnemyExplosionLater(float explosionDuration, float strenghtBasedOnDistance) //fix problem of conflict
     {
         yield return new WaitForEndOfFrame();
-        mainCamera.localRotation = Quaternion.identity;
-        enemyDeadExplosionTween.Kill();
-        enemyDeadExplosionTween = mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo).OnComplete(() =>
+        mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            mainCamera.localRotation = Quaternion.identity;
+            RestoreZeroRotation();
         });
+
         //hand.DOShakePosition(explosionDuration, strenghtBasedOnDistance  * 0.02f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 

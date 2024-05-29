@@ -8,9 +8,9 @@ public class Pickupable_Item : MonoBehaviour
 {
 
     [SerializeField] private UnityEvent pickupEvent;
-    private Light myLight;
-    private float myLightIntensitivity;
-
+    //private Light myLight;
+    //private float myLightIntensitivity;
+    /*
     void Awake()
     {
         if (TryGetComponent<Light>(out Light gotLight))
@@ -19,6 +19,7 @@ public class Pickupable_Item : MonoBehaviour
             myLightIntensitivity = myLight.intensity;
         }
     }
+    */
 
     private void Start()
     {
@@ -33,14 +34,14 @@ public class Pickupable_Item : MonoBehaviour
             pickupEvent.Invoke();
         }
     }
-
+   
     public void StartFloating()
     {
         transform.DOMoveY(transform.position.y + 0.3f, 1).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
 
-        if (myLight != null) {
-            myLight.DOIntensity(myLightIntensitivity * 0.5f, 1).SetLoops(-1, LoopType.Yoyo);
-        }
+       // if (myLight != null) {
+           // myLight.DOIntensity(myLightIntensitivity * 0.5f, 1).SetLoops(-1, LoopType.Yoyo);
+        //}
     }
 
     private void Update()

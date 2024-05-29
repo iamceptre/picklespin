@@ -3,11 +3,10 @@ using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-using static UnityEngine.GraphicsBuffer;
 
 public class FallingFloor : MonoBehaviour
 {
-    private Rigidbody rb;
+    //private Rigidbody rb;
     [SerializeField] private EventReference fallingFloorEvent;
     private EventInstance fallingFloorEventInstance;
 
@@ -19,7 +18,6 @@ public class FallingFloor : MonoBehaviour
     private GameObject previouslyOccupiedFloor;
 
     [SerializeField] private LayerMask fallingFloorLayer;
-    [SerializeField] private DisablePhysicsAfterTime disablePhysicsAfterTime;
 
     private Tween floorShakeTween;
 
@@ -77,7 +75,6 @@ public class FallingFloor : MonoBehaviour
     {
         if (currentlyOccupiedFloor.TryGetComponent<BridgeSupport>(out BridgeSupport bridgeSupport))
         {
-            //Debug.Log("tryGetComp");
             bridgeSupport.myCollapse();
         }
 
@@ -119,17 +116,13 @@ public class FallingFloor : MonoBehaviour
     {
         fallingFloorCountdown = timeBeforeFloorFalls;
 
-        rb = currentlyOccupiedFloor.AddComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        disablePhysicsAfterTime = currentlyOccupiedFloor.GetComponent<DisablePhysicsAfterTime>();
-        disablePhysicsAfterTime.StartCoroutine(disablePhysicsAfterTime.StartCountdown());
+        Rigidbody rb = currentlyOccupiedFloor.GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        currentlyOccupiedFloor.GetComponent<DisablePhysicsAfterTime>().enabled = true;
 
         rb.velocity = Vector3.down;
 
         isFallingFloorSupportingAbridge();
-
-        //gameObject.isStatic = false; make it work
 
         float maxRandomRotation = 15;
         Vector3 randomRot = new Vector3(Random.Range(0f, maxRandomRotation),
