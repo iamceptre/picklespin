@@ -33,7 +33,7 @@ public class FallingFloor : MonoBehaviour
         {
             Vector3 rayStart = transform.position;
             Vector3 rayDirection = Vector3.down;
-            float rayDistance = 2;
+            float rayDistance = 3;
 
             RaycastHit hit;
 
@@ -120,7 +120,7 @@ public class FallingFloor : MonoBehaviour
         rb.isKinematic = false;
         currentlyOccupiedFloor.GetComponent<DisablePhysicsAfterTime>().enabled = true;
 
-        rb.velocity = Vector3.down;
+        rb.velocity = Vector3.down + ApplyRandomForce();
 
         isFallingFloorSupportingAbridge();
 
@@ -135,6 +135,19 @@ public class FallingFloor : MonoBehaviour
 
         fallingFloorEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(currentlyOccupiedFloor));
         fallingFloorEventInstance.start();
+    }
+
+
+
+    Vector3 ApplyRandomForce()
+    {
+        Vector3 randomForce = new Vector3(
+            Random.Range(-1f, 1f),
+            0,
+            Random.Range(-1f, 1f)
+        ) * 3;
+
+        return randomForce;
     }
 
 

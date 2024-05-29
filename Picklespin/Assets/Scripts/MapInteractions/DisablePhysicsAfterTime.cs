@@ -5,8 +5,14 @@ public class DisablePhysicsAfterTime : MonoBehaviour
 {
     [SerializeField] private float timeBeforeFreezing = 3;
 
+    [SerializeField] private FallingFloorCoyoteTime coyoteTime;
+
     private void OnEnable()
     {
+        if (coyoteTime != null)
+        {
+            coyoteTime.enabled = true;
+        }
         StartCoroutine(StartCountdown());
     }
 
