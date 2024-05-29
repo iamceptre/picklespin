@@ -69,34 +69,38 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         hitSomething = true;
-        if (collision.gameObject)
+        if (collision.transform)
         {
             hitSomething = true;
 
-            if (collision.gameObject.TryGetComponent<AiHealth>(out AiHealth aiHealth)) //ENEMY HIT REGISTERED
+            if (collision.transform.TryGetComponent<AiHealth>(out AiHealth aiHealth)) //ENEMY HIT REGISTERED
             {
-                aiVision = collision.gameObject.GetComponent<AiVision>();
-                aiHealthUI = collision.gameObject.GetComponentInChildren<AiHealthUiBar>();
-                giveExpToPlayer = collision.gameObject.GetComponent<GiveExpToPlayer>(); //make get components execute only when new enemy has been hit
-                flashWhenHit = collision.gameObject.GetComponent<MaterialFlashWhenHit>();
+                    aiVision = collision.transform.GetComponent<AiVision>();
+                    aiHealthUI = collision.transform.GetComponentInChildren<AiHealthUiBar>();
+                    giveExpToPlayer = collision.transform.GetComponent<GiveExpToPlayer>(); //make get components execute only when new enemy has been hit
+                    flashWhenHit = collision.transform.GetComponent<MaterialFlashWhenHit>();
 
 
 
                 RandomizeCritical();
 
-
-                flashWhenHit.StopAllCoroutines();
-
-                if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
+                if (flashWhenHit != null)
                 {
-                    Headshot(collision);
-                    giveExpToPlayer.wasLastShotAHeadshot = true;
-                    flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
-                }
-                else
-                {
-                    giveExpToPlayer.wasLastShotAHeadshot = false;
-                    flashWhenHit.StartCoroutine(flashWhenHit.Flash());
+                    flashWhenHit.StopAllCoroutines();
+
+
+                    if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
+                    {
+                        Headshot(collision);
+                        giveExpToPlayer.wasLastShotAHeadshot = true;
+                        flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
+                    }
+                    else
+                    {
+                        giveExpToPlayer.wasLastShotAHeadshot = false;
+                        flashWhenHit.StartCoroutine(flashWhenHit.Flash());
+                    }
+
                 }
 
                 aiHealth.hp -= damage;

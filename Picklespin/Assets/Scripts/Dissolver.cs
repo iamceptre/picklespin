@@ -33,6 +33,7 @@ public class Dissolver : MonoBehaviour
     public void StartDissolve()
     {
         myCollider.enabled = false;
+
         if (myStateManager != null)
         {
             Destroy(myStateManager);

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class isCloseToAngel : MonoBehaviour
@@ -15,6 +14,7 @@ public class isCloseToAngel : MonoBehaviour
     {
         if (other.gameObject.name == "AngelScriptAcivationTrigger")
         {
+            minigame.boosted = false;
             angelHeal.enabled = true;
             helperArrow.SetActive(false);
 
@@ -32,38 +32,41 @@ public class isCloseToAngel : MonoBehaviour
         {
             if (minigame.gameObject.activeInHierarchy)
             {
-                StartCoroutine(WaitBeforeDisabling());
+                WaitBeforeDisabling();
             }
             else
             {
-                angelHeal.enabled = false;
+                DisableMe();
             }
         }
     }
 
     private void Start()
     {
-        angelHeal.enabled = false;
+        DisableMe();
     }
 
 
-    private IEnumerator WaitBeforeDisabling()
+    private void WaitBeforeDisabling()
     {
-        while (true)
-        {
-            if (!minigame.gameObject.activeInHierarchy)
-            {
-                Invoke("DisableMe", 1);
-                StopAllCoroutines();    
-            }
 
-            yield return null;
+        if (!minigame.gameObject.activeInHierarchy)
+        {
+            Invoke("DisableMe", 1);
         }
+        else
+        {
+            DisableMe();
+        }
+
+
     }
 
 
     private void DisableMe()
     {
+        angelHeal.CancelHealing();
+        angelHeal.StopAiming();
         angelHeal.enabled = false;
     }
 

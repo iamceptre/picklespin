@@ -6,6 +6,8 @@ using FMODUnity;
 public class AngelHealingMinigame : MonoBehaviour
 {
 
+    public static AngelHealingMinigame instance;
+
     [SerializeField] private EventReference healBoostSound;
     [SerializeField] private EventReference failedSound;
 
@@ -37,6 +39,15 @@ public class AngelHealingMinigame : MonoBehaviour
         sliderStartingColor = sliderFill.color;
         angelHPslider = GetComponent<Slider>(); 
         turboAreaColor = turboArea.color;
+
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
     }
 
     private void Start()
@@ -59,16 +70,7 @@ public class AngelHealingMinigame : MonoBehaviour
     public void InitializeMinigame()
     {
         if (!tooLate) {
-            sliderFill.color = sliderStartingColor;
-            inTurboRange = false;
-            turboArea.enabled = true;
-            scrollTip.enabled = true;
-            turboArea.color = new Color(255, 255, 255, 1);
-            scrollTip.color = new Color(255, 255, 255, 1);
-            angelHeal.healboost = 1;
-            scrollTipStartYPos = scrollTip.rectTransform.localPosition.y;
-            missed = false;
-            boosted = false;
+            ReadyUp();
             FadeIn();
         }
         else
@@ -77,6 +79,26 @@ public class AngelHealingMinigame : MonoBehaviour
             scrollTip.enabled = false;
             enabled = false;    
         }
+    }
+
+    private void ReadyUp()
+    {
+        sliderFill.color = sliderStartingColor;
+        inTurboRange = false;
+        turboArea.enabled = true;
+        scrollTip.enabled = true;
+        turboArea.color = new Color(255, 255, 255, 1);
+        scrollTip.color = new Color(255, 255, 255, 1);
+        angelHeal.healboost = 1;
+        scrollTipStartYPos = scrollTip.rectTransform.localPosition.y;
+        missed = false;
+        boosted = false;
+        tooLate = false;
+    }
+
+    public void AngelChanged()
+    {
+        ReadyUp();
     }
 
    private void Update()
@@ -131,7 +153,6 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         if (!missed && !tooLate)
         {
-            //angelHeal.healboost = 0.5f;
             DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 1, 0.4f).SetEase(Ease.OutExpo);
             sliderFill.DOColor(Color.red, 0.4f).OnComplete(RevertSliderColor);
             Reddify();
@@ -142,7 +163,6 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private void RevertSliderColor()
     {
-        //aiHealth.hp = 1;
         sliderFill.DOColor(sliderStartingColor, 0.4f);
     }
 
@@ -169,11 +189,7 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private void FadeIn()
     {
-       // turboArea.DOKill();
         scrollTip.DOKill();
-       // turboArea.color = new Color(turboArea.color.r, turboArea.color.g, turboArea.color.b, 0);
-       // scrollTip.color = new Color(scrollTip.color.r, scrollTip.color.g, scrollTip.color.b, 0);
-       // turboArea.DOFade(1, 0.05f);
         scrollTip.DOFade(0.62f, 0.1f).OnComplete(TipFloat);
     }
     
@@ -199,7 +215,6 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             boostLight.LightAnimation();
             FadeOut();
-            //angelHeal.healboost = 4;
             angelHeal.healboost = 0;
             DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f).SetEase(Ease.OutSine);
             RuntimeManager.PlayOneShot(healBoostSound);

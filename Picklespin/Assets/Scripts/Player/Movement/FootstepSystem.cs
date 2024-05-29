@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using FMODUnity;
-using FMOD.Studio;
 
 public class FootstepSystem : MonoBehaviour
 {
@@ -10,12 +9,6 @@ public class FootstepSystem : MonoBehaviour
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerMovement playerMovement;
-
-    //[SerializeField] private EventReference footstepEvent;
-    // [SerializeField] private EventReference evenFootstepLayerEvent;  
-    // public EventInstance footstepInstance;
-    //[SerializeField] private EventReference jumpEvent;
-
     [SerializeField] private StudioEventEmitter footstepEmitter;
     [SerializeField] private StudioEventEmitter evenFootstepLayerEmitter;
     [SerializeField] private StudioEventEmitter jumpEventEmitter;
@@ -52,7 +45,6 @@ public class FootstepSystem : MonoBehaviour
         fixedFootstepSpace = 0.6f; //walk speed
         footstepTimerRoutine = FootstepTimer();
         cachedFixedFootstepSpace = fixedFootstepSpace;
-       // footstepInstance = RuntimeManager.CreateInstance(footstepEvent);
     }
 
     private void Update()
@@ -92,10 +84,7 @@ public class FootstepSystem : MonoBehaviour
                 PlayFoostepSound();
                 yield return new WaitForSeconds(fixedFootstepSpace + randomHumanize);
             }
-           // else
-           // {
-                //footstepInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-           // }
+
         }
     }
 
@@ -103,18 +92,14 @@ public class FootstepSystem : MonoBehaviour
 
     private void PlayFoostepSound()
     {
-        if (!isFootstepIgnored)
-        {
-            // footstepInstance.start();
+        if (!isFootstepIgnored) {
             footstepEmitter.Play();
-        }
 
-        if (footstepCount % 2 == 0)
-        {
-            //RuntimeManager.PlayOneShot(evenFootstepLayerEvent);
-            evenFootstepLayerEmitter.Play();
+            if (footstepCount % 2 == 0)
+            {
+                evenFootstepLayerEmitter.Play();
+            }
         }
-
     }
 
 
@@ -125,6 +110,7 @@ public class FootstepSystem : MonoBehaviour
             isFootstepIgnored = true;
             yield return null;
             isFootstepIgnored = false;
+            yield break;
         }
     }
 
@@ -142,7 +128,7 @@ public class FootstepSystem : MonoBehaviour
 
     public void SendJumpSignal()
     {
-        //RuntimeManager.PlayOneShot(jumpEvent);
+
         jumpEventEmitter.Play();
     }
 

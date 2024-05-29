@@ -1,6 +1,5 @@
 using UnityEngine;
 using FMODUnity;
-using UnityEngine.Events;
 
 public class AngelMind : MonoBehaviour
 {
@@ -18,6 +17,8 @@ public class AngelMind : MonoBehaviour
 
     [SerializeField] private ParticleSystem healedParticles;
     [SerializeField] private GiveExpToPlayer giveExpAfterHeal;
+
+    [SerializeField] private BoxCollider scriptActivationTrigger;
 
     private Renderer angelRenderer;
 
@@ -47,6 +48,7 @@ public class AngelMind : MonoBehaviour
         Invoke("GiveStaminaToPlayer", 0.2f);
         Invoke("GiveManaToPlayer", 0.4f);
         giveExpAfterHeal.GiveExp();
+        scriptActivationTrigger.size = Vector3.zero;
     }
 
 

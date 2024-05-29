@@ -13,15 +13,11 @@ public class JumpLandSignals : MonoBehaviour
     private bool landed = true;
     private bool routineRunning = false;
 
-    //[SerializeField] private EventReference landSoft;
-    //[SerializeField] private EventReference landHard;
-
     [SerializeField] private StudioEventEmitter landSoftEmitter;
     [SerializeField] private StudioEventEmitter landHardEmitter;
 
     private CharacterControllerVelocity speedometer;
 
-    private bool skipFirstSound;
 
     private bool isFallingLongEnough = true;
 
@@ -31,7 +27,6 @@ public class JumpLandSignals : MonoBehaviour
 
     private void Start()
     {
-        skipFirstSound = true;
         speedometer = CharacterControllerVelocity.instance;
         playerMovement = PlayerMovement.instance;  
         cameraShake = CameraShake.instance;
@@ -81,13 +76,9 @@ public class JumpLandSignals : MonoBehaviour
         {
             StartCoroutine(LandedCooldown());
 
-            if (!skipFirstSound)
-            {
                 isLandingHardDecider();
                 footstepSystem.RefreshFootstepTimer();
                 footstepSystem.StartCoroutine(footstepSystem.IgnoreOneFootstep());
-            }
-                skipFirstSound = false;
                 cameraShake.LandCameraShake(lastLandCameraShakeStrenght);
                 hearingRange.RunExtendedHearingRange();
                 playerMovement.externalPushForce = 1;
