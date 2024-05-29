@@ -113,7 +113,6 @@ public class AngelHeal : MonoBehaviour
         //{
             angel = hit.transform.GetComponent<AngelMind>();
             aiHealth = hit.transform.GetComponent<AiHealth>();
-            //Debug.Log("SetNewAngel" + angel + aiHealth.hp);
             minigame.AngelChanged();
         //}
     }
@@ -159,8 +158,9 @@ public class AngelHeal : MonoBehaviour
                 handRenderer.material = handOGMaterial;
             }
 
-            CancelHealing();
             isAimingAtAngel = false;
+
+            CancelHealing();
         }
 
     }
@@ -192,9 +192,8 @@ public class AngelHeal : MonoBehaviour
 
     public void Healed()
     {
-        //Debug.Log("Healed");
-
-        StopCoroutine(healingRoutine);
+        healSpeedMultiplier = 1;
+        StopAiming();
 
         healingParticlesScript.StopEmitting();
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
