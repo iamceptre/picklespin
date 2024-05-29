@@ -169,7 +169,7 @@ public class AngelHeal : MonoBehaviour
 
     private IEnumerator Healing()
     {
-        Debug.Log("Healing");
+        //Debug.Log("Healing");
         healingBeamInstance.start();
         hideTip.Invoke();
         floatUpDown.enabled = true;
@@ -190,9 +190,12 @@ public class AngelHeal : MonoBehaviour
     }
 
 
-    private void Healed()
+    public void Healed()
     {
         //Debug.Log("Healed");
+
+        StopCoroutine(healingRoutine);
+
         healingParticlesScript.StopEmitting();
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         handRenderer.material = handOGMaterial;

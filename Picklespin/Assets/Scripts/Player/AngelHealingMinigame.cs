@@ -216,7 +216,10 @@ public class AngelHealingMinigame : MonoBehaviour
             boostLight.LightAnimation();
             FadeOut();
             angelHeal.healboost = 0;
-            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f).SetEase(Ease.OutSine);
+            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f).SetEase(Ease.OutSine).OnComplete(() =>
+            {
+                angelHeal.Healed();
+            });
             RuntimeManager.PlayOneShot(healBoostSound);
 
             boosted = true;
