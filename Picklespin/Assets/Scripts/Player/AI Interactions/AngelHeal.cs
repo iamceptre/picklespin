@@ -8,7 +8,7 @@ using DG.Tweening;
 public class AngelHeal : MonoBehaviour
 {
     AngelHealingMinigame minigame;
-    [HideInInspector] public float healboost = 1; //ITS BOOSTED WHEN IS 0
+    [HideInInspector] public float healSpeedMultiplier = 1; //ITS BOOSTED WHEN IS 0
 
     [SerializeField] private GameObject hand;
 
@@ -88,7 +88,7 @@ public class AngelHeal : MonoBehaviour
             StartHealing();
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse1) && !minigame.boosted)
+        if (Input.GetKeyUp(KeyCode.Mouse1) && healSpeedMultiplier == 1)
         {
             CancelHealing();
         }
@@ -109,13 +109,13 @@ public class AngelHeal : MonoBehaviour
 
     private void SetNewAngel(RaycastHit hit)
     {
-        if (angel != hit.transform.GetComponent<AngelMind>())
-        {
-            //Debug.Log("SetNewAngel");
+        //if (angel != hit.transform.GetComponent<AngelMind>())
+        //{
             angel = hit.transform.GetComponent<AngelMind>();
             aiHealth = hit.transform.GetComponent<AiHealth>();
+            //Debug.Log("SetNewAngel" + angel + aiHealth.hp);
             minigame.AngelChanged();
-        }
+        //}
     }
 
 
@@ -148,7 +148,7 @@ public class AngelHeal : MonoBehaviour
 
     public void StopAiming()
     {
-        if (isAimingAtAngel)
+        if (isAimingAtAngel && healSpeedMultiplier == 1)
         {
            // Debug.Log("StopAiming");
 
@@ -180,7 +180,7 @@ public class AngelHeal : MonoBehaviour
 
         while (aiHealth.hp <= 100)
         {
-            aiHealth.hp += Time.deltaTime * 15 * healboost;
+            aiHealth.hp += Time.deltaTime * 15 * healSpeedMultiplier;
             angelHPSlider.value = aiHealth.hp;
             yield return null;
         }

@@ -1,14 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class isCloseToAngel : MonoBehaviour
 {
 
     [SerializeField] private AngelHeal angelHeal;
-    [SerializeField] private GameObject angelHPGUI;
+    [SerializeField] private Canvas angelHPGUI;
     [SerializeField] private AngelHealingMinigame minigame;
     [SerializeField] private GameObject helperArrow;
 
-    private bool enabledGUI;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,12 +17,7 @@ public class isCloseToAngel : MonoBehaviour
             minigame.boosted = false;
             angelHeal.enabled = true;
             helperArrow.SetActive(false);
-
-            if (!enabledGUI)
-            {
-                angelHPGUI.SetActive(true);
-                enabledGUI = true;
-            }
+            angelHPGUI.enabled = true;
         }
     }
 
@@ -30,9 +25,9 @@ public class isCloseToAngel : MonoBehaviour
     {
         if (other.gameObject.name == "AngelScriptAcivationTrigger")
         {
-            if (minigame.gameObject.activeInHierarchy)
+            if (angelHeal.healSpeedMultiplier == 0)
             {
-                WaitBeforeDisabling();
+                StartCoroutine(waitUntilMinigameStops());
             }
             else
             {
@@ -47,25 +42,21 @@ public class isCloseToAngel : MonoBehaviour
     }
 
 
-    private void WaitBeforeDisabling()
+
+    private IEnumerator waitUntilMinigameStops()
     {
-
-        if (!minigame.gameObject.activeInHierarchy)
+        while (angelHeal.healSpeedMultiplier == 0)
         {
-            Invoke("DisableMe", 1);
+            yield return null;
         }
-        else
-        {
-            DisableMe();
-        }
-
-
+        DisableMe();
+        yield break;
     }
 
 
     private void DisableMe()
     {
-        angelHeal.CancelHealing();
+        angelHPGUI.enabled = false;
         angelHeal.StopAiming();
         angelHeal.enabled = false;
     }

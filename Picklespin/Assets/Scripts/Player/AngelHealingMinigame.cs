@@ -89,7 +89,7 @@ public class AngelHealingMinigame : MonoBehaviour
         scrollTip.enabled = true;
         turboArea.color = new Color(255, 255, 255, 1);
         scrollTip.color = new Color(255, 255, 255, 1);
-        angelHeal.healboost = 1;
+        angelHeal.healSpeedMultiplier = 1;
         scrollTipStartYPos = scrollTip.rectTransform.localPosition.y;
         missed = false;
         boosted = false;
@@ -215,7 +215,7 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             boostLight.LightAnimation();
             FadeOut();
-            angelHeal.healboost = 0;
+            angelHeal.healSpeedMultiplier = 0;
             DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f).SetEase(Ease.OutSine).OnComplete(() =>
             {
                 angelHeal.Healed();
