@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
     public float myCooldown;
     public float castDuration;
     public bool destroyOnHit = true;
+    public float turbulence = 1;
 
     private AiVision aiVision;
 
