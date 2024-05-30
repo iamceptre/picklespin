@@ -20,6 +20,7 @@ public class FallingFloorCoyoteTime : MonoBehaviour
     {
         yield return new WaitForSeconds(0.15f);
         rb.excludeLayers = playerLayer;
+        enabled = false;
     }
 
 }

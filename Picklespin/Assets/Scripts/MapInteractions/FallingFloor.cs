@@ -29,8 +29,11 @@ public class FallingFloor : MonoBehaviour
 
     private void RaycastCheck()
     {
-        if (transform.position.y > 5)
+        if (transform.position.y < 5)
         {
+            return;
+        }
+
             Vector3 rayStart = transform.position;
             Vector3 rayDirection = Vector3.down;
             float rayDistance = 3;
@@ -47,6 +50,8 @@ public class FallingFloor : MonoBehaviour
                 StopAllCoroutines();
                 floorShakeTween = null;
                 fallingFloorCountdown = timeBeforeFloorFalls;
+                currentlyOccupiedFloor = null;
+                previouslyOccupiedFloor = null;
                 return;
             }
 
@@ -55,7 +60,7 @@ public class FallingFloor : MonoBehaviour
                 OccupiedFloorChanged();
                 previouslyOccupiedFloor = currentlyOccupiedFloor;
             }
-        }
+        
     }
 
     private void OccupiedFloorChanged()
@@ -104,6 +109,8 @@ public class FallingFloor : MonoBehaviour
     private void AlmostFallingIncidations()
     {
         ParticleSystem almostFaliingParticle = currentlyOccupiedFloor.GetComponentInChildren<ParticleSystem>();
+        almostFaliingParticle.Stop();
+        almostFaliingParticle.Clear();
         ParticleSystem.MainModule main = almostFaliingParticle.main;
         main.duration = timeBeforeFloorFalls * 0.5f;
         almostFaliingParticle.Play();
@@ -139,7 +146,7 @@ public class FallingFloor : MonoBehaviour
 
 
 
-    Vector3 ApplyRandomForce()
+    private Vector3 ApplyRandomForce()
     {
         Vector3 randomForce = new Vector3(
             Random.Range(-1f, 1f),

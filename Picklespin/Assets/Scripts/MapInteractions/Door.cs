@@ -3,6 +3,7 @@ using DG.Tweening;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class Door : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class Door : MonoBehaviour
 
     //ROTATION
     private Vector3 startRot;
-    private Vector3 openedRot;
 
     //SOUND
     [SerializeField] private EventReference doorOpenSoundEvent;
@@ -28,10 +28,17 @@ public class Door : MonoBehaviour
     public UnityEvent showTooltipEvent;
     public UnityEvent hideTooltipEvent;
 
+    //CACHE
+    private Transform _transform;
+
+    private void Awake()
+    {
+        _transform = transform;
+    }
+
     void Start()
     {
-        startRot = transform.eulerAngles;
-        openedRot = startRot + new Vector3(0, 0, 90);
+        startRot = _transform.localEulerAngles;
 
         DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
         DoorSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
@@ -89,8 +96,8 @@ public class Door : MonoBehaviour
 
     private void OpenDoor()
     {
-        transform.DOKill();
-        transform.DOLocalRotate(openedRot, 1, RotateMode.Fast);
+         _transform.DOKill();
+         _transform.DOLocalRotate(startRot + new Vector3(0,90), 1, RotateMode.Fast);
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
@@ -102,8 +109,8 @@ public class Door : MonoBehaviour
 
     private void CloseDoor()
     {
-        transform.DOKill();
-        transform.DOLocalRotate(startRot, 1, RotateMode.Fast);
+        _transform.DOKill();
+        _transform.DOLocalRotate(startRot, 1, RotateMode.Fast);
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
