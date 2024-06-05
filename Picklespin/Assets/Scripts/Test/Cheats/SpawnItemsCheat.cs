@@ -27,7 +27,7 @@ public class SpawnItemsCheat : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.B))
             {
-                pickupableBonusesSpawner.SpawnBonuses();
+                pickupableBonusesSpawner.SpawnBonuses(8);
                 cheatActivatedFeedback.Do("spawn bonuses");
             }
 

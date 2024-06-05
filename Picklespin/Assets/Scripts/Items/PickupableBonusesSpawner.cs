@@ -66,8 +66,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
 
 
-    public void SpawnBonuses()
+    public void SpawnBonuses(int howManyToSpawn)
     {
+        SetSpawnCount(howManyToSpawn);
         StartCoroutine(SpawnRoutine());
     }
 
@@ -131,7 +132,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
     }
 
 
-    public void SetSpawnCount(int spawnCount) //use it from event system gui, before spawning
+    private void SetSpawnCount(int spawnCount) //use it from event system gui, before spawning
     {
         howManyToSpawn = spawnCount;
         howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, spawnPoints.Length);
