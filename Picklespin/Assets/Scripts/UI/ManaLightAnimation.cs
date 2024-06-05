@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Text;
 
 public class ManaLightAnimation : MonoBehaviour
 {
@@ -56,18 +57,20 @@ public class ManaLightAnimation : MonoBehaviour
 
     private void ManaPlusPlusAnimation(float howMuchWasGiven, bool maxxed)
     {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("<b>+ ");
+        sb.Append(howMuchWasGiven);
+
         manaPlusPlus.color = new Color(manaPlusPlus.color.r, manaPlusPlus.color.g, manaPlusPlus.color.b, 0);
         manaPlusPlus.enabled = true;
         manaPlusPlus.color = new Color(manaPlusPlus.color.r, manaPlusPlus.color.g, manaPlusPlus.color.b, 0);
 
         if (maxxed)
         {
-            manaPlusPlus.text = "<b>+ " + howMuchWasGiven + "</b> *";
+            sb.Append("</b> *");
         }
-        else
-        {
-            manaPlusPlus.text = "<b>+ " + howMuchWasGiven;
-        }
+
+        manaPlusPlus.text = sb.ToString();
 
         manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
         manaPlusPlus.DOKill();

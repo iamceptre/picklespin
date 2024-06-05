@@ -12,6 +12,8 @@ public class KeyHasBeenSpawned : MonoBehaviour
 
     private WaitForSeconds timeBeforeAnimating= new WaitForSeconds(0.2f);
 
+    public bool imHere = false;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -36,6 +38,7 @@ public class KeyHasBeenSpawned : MonoBehaviour
 
     public void Animate()
     {
+        imHere = true;
         myText.enabled = true;
         myText.DOKill();
         myText.DOFade(0, 0);
@@ -57,6 +60,7 @@ public class KeyHasBeenSpawned : MonoBehaviour
             myText.DOKill();
             myRectTransform.DOKill();
            myText.enabled=false;
+            imHere = false;
         });
     }
 

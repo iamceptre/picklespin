@@ -59,13 +59,11 @@ public class RoundSystem : MonoBehaviour
         speedMultiplier = 1;
 
         if (roundNumber<RoundEvent.Length) {
-           // newRoundDisplayText.gameObject.SetActive(true);
             newRoundText.text = "Round " + (roundNumber + 1) + " begins";
             RoundEvent[roundNumber].Invoke();
         }
         else
         {
-            //newRoundDisplayText.gameObject.SetActive(true);
             newRoundText.text = "You reached the end";
 
             LastRoundEvent.Invoke();

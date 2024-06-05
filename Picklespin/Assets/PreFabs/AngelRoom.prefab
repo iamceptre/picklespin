@@ -57,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2230698395378710805}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 74, y: 0, z: 56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -96,15 +96,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3263075522673705718}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7372774, z: -0.67559016, w: 0}
-  m_LocalPosition: {x: -4.5, y: 3.931, z: -7.164}
+  m_LocalRotation: {x: -0, y: -0.74489415, z: -0.6671827, w: 0}
+  m_LocalPosition: {x: -4.5, y: 3.931, z: -7.223}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8805426223339904342}
   - {fileID: 8128205702091640246}
   m_Father: {fileID: 1364476381116299179}
-  m_LocalEulerAnglesHint: {x: -85, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: -83.7, y: -180, z: 0}
 --- !u!33 &2610467144282190538
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -406,7 +406,7 @@ Transform:
   m_GameObject: {fileID: 4996277676181605745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 0.023, z: 4.158}
+  m_LocalPosition: {x: 0.04, y: -0.2, z: 4.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -423,9 +423,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.7134546, b: 0.082352936, a: 1}
-  m_Intensity: 2
-  m_Range: 10
+  m_Color: {r: 0.3537736, g: 0.38017234, b: 1, a: 1}
+  m_Intensity: 3
+  m_Range: 16
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90039baa820ea1a4d931687ec44a3fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensityRange: {x: 0.5, y: 1.5}
+  minimumInstensity: 0.5
   speed: 1
 --- !u!114 &4045239076310397233
 MonoBehaviour:
@@ -5292,7 +5292,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3349fc02d104e2b458470ec533f51c16, type: 2}
+  - {fileID: 2100000, guid: 6e3e4d2947be0d249b8a97d7a3237245, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

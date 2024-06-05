@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using System.Text;
 
 public class DamageUI_V2 : MonoBehaviour
 {
@@ -33,17 +34,23 @@ public class DamageUI_V2 : MonoBehaviour
         myText_Transform.position = whereIshouldGo;
         myText_Transform.localScale = new Vector3(-1, 1, 1);
 
-        myText.DOFade(0, 0);
+        myText.color = new Color(myText.color.r, myText.color.g, myText.color.b, 0);
+
+        StringBuilder sb = new StringBuilder();
 
         if (isCritical)
         {
-            myText.text = "- <b>" + howMuchDamageDealt;
+            sb.Append("- <b>");
+            sb.Append(howMuchDamageDealt);
+            myText.text = sb.ToString();
             myText.color = criticalColor;
             myText.fontSize = damageUIstartFontSize * 1.618f;
         }
         else
         {
-            myText.text = "- " + howMuchDamageDealt;
+            sb.Append("- ");
+            sb.Append(howMuchDamageDealt);
+            myText.text = sb.ToString();
             FadeInFlashColor();
             //myText.color = damageUIstartColor;
             myText.fontSize = damageUIstartFontSize;

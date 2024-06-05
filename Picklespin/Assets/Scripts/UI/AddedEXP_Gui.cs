@@ -65,16 +65,23 @@ public class AddedEXP_Gui : MonoBehaviour
 
     private void UpdateText(int addedXP, string expSourceName)
     {
-        if (addedXP > 0)
+        StringBuilder sb = new StringBuilder();
+
+        if (addedXP >= 0)
         {
             _text.color = startingColor;
-            _text.text =  "+ " + amountToShow + " exp<size=15px><br>(" + expSourceName + ")";
+            sb.Append("+ ");  //WHEN POSITIVE EXP
         }
         else
         {
-            _text.color = new Color(0.76f, 0.235f, 0.235f);
-            _text.text = amountToShow + " exp<size=15px><br>(" + expSourceName + ")";
+            _text.color = new Color(0.76f, 0.235f, 0.235f); //WHEN NEGATIVE EXP
         }
+
+        sb.Append(amountToShow);
+        sb.Append(" exp<size=15px><br>(");
+        sb.Append(expSourceName);
+        sb.Append(")");
+        _text.text = sb.ToString();
     }
 
     private IEnumerator WaitAndFadeOut()

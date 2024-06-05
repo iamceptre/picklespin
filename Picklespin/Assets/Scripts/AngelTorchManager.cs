@@ -13,4 +13,9 @@ public class AngelTorchManager : MonoBehaviour
     {
             torch.Off();
     }
+
+    public void OffTorch()
+    {
+        torch.Off();
+    }
 }

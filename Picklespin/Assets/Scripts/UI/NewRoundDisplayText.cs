@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 public class NewRoundDisplayText : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class NewRoundDisplayText : MonoBehaviour
     private RectTransform myRectTransform;
 
     [SerializeField] private Canvas myCanvas;
+    [SerializeField] private KeyHasBeenSpawned keyHasBeenSpawned;
 
     private void Awake()
     {
@@ -24,7 +26,6 @@ public class NewRoundDisplayText : MonoBehaviour
 
         myText = gameObject.GetComponent<TMP_Text>();
         myRectTransform = gameObject.GetComponent<RectTransform>();
-        myCanvas.enabled = true;
     }
 
     private void Start()
@@ -45,12 +46,28 @@ public class NewRoundDisplayText : MonoBehaviour
 
     private void FadeOut()
     {
-        myText.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(() =>
-        {
-            //gameObject.SetActive(false);
-            myCanvas.enabled = true;
-        });
+        myText.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(DisableCanvas);
     }
 
+
+    private void DisableCanvas()
+    {
+        if (!keyHasBeenSpawned.imHere)
+        {
+            myCanvas.enabled = false;
+        }
+        else
+        {
+            StartCoroutine(WaitAndDisableCanvas());
+        }
+    }
+
+    private IEnumerator WaitAndDisableCanvas()
+    {
+        while (keyHasBeenSpawned.imHere) {
+            yield return null;
+        }
+        myCanvas.enabled = false;
+    }
 
 }

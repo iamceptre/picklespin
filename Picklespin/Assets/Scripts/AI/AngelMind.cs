@@ -7,6 +7,7 @@ public class AngelMind : MonoBehaviour
     private Ammo ammo;
     private PlayerMovement playerMovement;
     private PlayerEXP playerEXP;
+    private AngelTorchManager angelTorchManager;
 
     public bool healed = false;
     public bool isDead = false;
@@ -22,6 +23,11 @@ public class AngelMind : MonoBehaviour
 
     private Renderer angelRenderer;
 
+    private void Awake()
+    {
+        angelTorchManager = GetComponent<AngelTorchManager>();
+    }
+
     private void Start()
     {
         angelRenderer = gameObject.GetComponent<Renderer>();
@@ -34,7 +40,6 @@ public class AngelMind : MonoBehaviour
 
     public void AfterHealedAction()
     {
-
         if (healedParticles != null)
         {
             healedParticles.Play();
@@ -43,6 +48,8 @@ public class AngelMind : MonoBehaviour
         angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
         angelRenderer.material.SetColor("_Color", Color.green);
         angelInstance.start();
+
+        angelTorchManager.OffTorch();
 
         GiveHPToPlayer();
         Invoke("GiveStaminaToPlayer", 0.2f);
