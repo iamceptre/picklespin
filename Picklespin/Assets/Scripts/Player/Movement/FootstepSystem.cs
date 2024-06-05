@@ -22,6 +22,7 @@ public class FootstepSystem : MonoBehaviour
 
     public float fixedFootstepSpace;
     private float cachedFixedFootstepSpace;
+    private WaitForSeconds currentFootstepSpace;
 
     [HideInInspector] public bool isFootstepIgnored = false;
 
@@ -38,11 +39,20 @@ public class FootstepSystem : MonoBehaviour
         {
             instance = this;
         }
+
+        fixedFootstepSpace = 0.6f; //walk speed
+        currentFootstepSpace = new WaitForSeconds(fixedFootstepSpace);
+    }
+
+    public void SetNewFootstepSpace(float desiredFootstepSpace)
+    {
+        fixedFootstepSpace = desiredFootstepSpace;
+        currentFootstepSpace = new WaitForSeconds(fixedFootstepSpace);
     }
 
     private void Start()
     {
-        fixedFootstepSpace = 0.6f; //walk speed
+
         footstepTimerRoutine = FootstepTimer();
         cachedFixedFootstepSpace = fixedFootstepSpace;
     }
@@ -79,10 +89,9 @@ public class FootstepSystem : MonoBehaviour
         while (isRoutineRunning) {
             if (playerMovement.anyMovementKeysPressed == true)
             {
-                float randomHumanize = Random.Range(0, 0.032f);
                 footstepCount++;
                 PlayFoostepSound();
-                yield return new WaitForSeconds(fixedFootstepSpace + randomHumanize);
+                yield return currentFootstepSpace;
             }
 
         }

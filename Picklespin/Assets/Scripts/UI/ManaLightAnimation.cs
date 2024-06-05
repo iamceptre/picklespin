@@ -13,6 +13,8 @@ public class ManaLightAnimation : MonoBehaviour
     private Image manaLight;
     private RectTransform rectTransform;
 
+    private WaitForSeconds waitBeforeFadingPlusPlus = new WaitForSeconds(2);
+
     private void Awake()
     {
         manaLight = GetComponent<Image>();
@@ -81,7 +83,7 @@ public class ManaLightAnimation : MonoBehaviour
 
     private IEnumerator WaitAndFadeOut()
     {
-        yield return new WaitForSeconds(2);
+        yield return waitBeforeFadingPlusPlus;
         ManaPlusPlusFadeOut();
     }
 

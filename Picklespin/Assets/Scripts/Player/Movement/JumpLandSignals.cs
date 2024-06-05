@@ -25,6 +25,10 @@ public class JumpLandSignals : MonoBehaviour
 
     private float lastLandCameraShakeStrenght;
 
+
+    private WaitForSeconds neededFallTimeToSound = new WaitForSeconds(0.5f);
+    private WaitForSeconds landCooldownTime = new WaitForSeconds(0.5f);
+
     private void Start()
     {
         speedometer = CharacterControllerVelocity.instance;
@@ -66,7 +70,7 @@ public class JumpLandSignals : MonoBehaviour
             fallingTimerRoutine = null;
         }
 
-        fallingTimerRoutine = FallingTimer(0.5f);
+        fallingTimerRoutine = FallingTimer();
         StartCoroutine(fallingTimerRoutine);
     }
 
@@ -86,9 +90,9 @@ public class JumpLandSignals : MonoBehaviour
         }
     }
 
-    private IEnumerator FallingTimer(float neededFallTime)        //lets the landing sound play only if falling is greather than ...
+    private IEnumerator FallingTimer()        //lets the landing sound play only if falling is greather than ...
     {
-        yield return new WaitForSeconds(neededFallTime);
+        yield return neededFallTimeToSound;
         isFallingLongEnough = true;
     }
 
@@ -96,7 +100,7 @@ public class JumpLandSignals : MonoBehaviour
     private IEnumerator LandedCooldown()
     {
             routineRunning = true;
-            yield return new WaitForSeconds(0.5f);
+        yield return landCooldownTime;
             routineRunning = false;
     }
 

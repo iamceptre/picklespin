@@ -9,6 +9,9 @@ public class Attack : MonoBehaviour
 {
     public static Attack instance { get; private set; }
 
+    private PlayCastBlast playCastBlast;
+    private SpellProjectileSpawner spellProjectileSpawner;
+
     [SerializeField] private Transform handCastingPoint;
 
     [SerializeField] private UnityEvent shootEvent;
@@ -21,9 +24,8 @@ public class Attack : MonoBehaviour
     private EventInstance pullupEventInstance;
     private EventInstance spellcastInstance;
 
-    [SerializeField] private Transform bulletSpawnPoint;
-    public GameObject[] bulletPrefab;
-    public int selectedBullet;
+    public Bullet[] bulletPrefab;
+    public int selectedBulletIndex;
 
     [HideInInspector] public float castCooldownTime = 0.1f;
     public bool castCooldownAllow = true;
@@ -44,14 +46,13 @@ public class Attack : MonoBehaviour
     [SerializeField] private UnityEvent CancelCasting;
     [SerializeField] private UnityEvent StartCasting;
 
-    private Bullet currentBullet;
-
-    private RecoilMultiplier recoilMultiplier;
+    public Bullet currentBullet;
 
     private void Awake()
     {
         ammo = GetComponent<Ammo>();
-        currentBullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
+
+        currentBullet = bulletPrefab[selectedBulletIndex];
 
         if (instance != null && instance != this)
         {
@@ -67,8 +68,9 @@ public class Attack : MonoBehaviour
 
     private void Start()
     {
+        playCastBlast = PlayCastBlast.instance;
         ammoDisplay = AmmoDisplay.instance;
-        recoilMultiplier = RecoilMultiplier.instance;
+        spellProjectileSpawner = SpellProjectileSpawner.instance;
     }
 
     void Update()
@@ -77,7 +79,7 @@ public class Attack : MonoBehaviour
         {
             if (currentlySelectedCastDuration == 0)
             {
-                Shoot(); //instant Cast
+                TryShoot(); //instant Cast
                 return;
             }
             else
@@ -99,7 +101,7 @@ public class Attack : MonoBehaviour
 
             if (castLoaded && !Input.GetKey(KeyCode.Mouse1))
             {
-                Shoot();
+                TryShoot();
             }
         }
 
@@ -112,7 +114,7 @@ public class Attack : MonoBehaviour
 
     }
 
-    private void Shoot()
+    private void TryShoot()
     {
         CancelCasting.Invoke();
         castLoaded = false;
@@ -137,27 +139,16 @@ public class Attack : MonoBehaviour
 
     private void SuccesfulShoot()
     {
+        if (playCastBlast.castingParticles[selectedBulletIndex] != null) {
+            playCastBlast.StopCastingParticles(selectedBulletIndex);
+        }
+
+        playCastBlast.Play(selectedBulletIndex);
         castCooldownTime = currentBullet.myCooldown;
         shootEvent.Invoke();
         ammo.ammo -= currentBullet.magickaCost;
 
-        var spawnedBullet = Instantiate(bulletPrefab[selectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        Bullet bulletScript = spawnedBullet.GetComponent<Bullet>();
-        bulletScript.handCastingPoint = handCastingPoint;
-        recoilMultiplier.UpdateRecoil();
-
-        Vector3 randomDirection = new Vector3(
-    Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
-    Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
-    Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil)
-);
-
-        randomDirection = randomDirection.normalized * (recoilMultiplier.currentRecoil * Mathf.Deg2Rad);
-
-        Vector3 desiredDirection = bulletSpawnPoint.forward + randomDirection;
-
-        spawnedBullet.GetComponent<Rigidbody>().velocity = desiredDirection * currentBullet.speed;
-        Bullet spawnedBulletScript = spawnedBullet.GetComponent<Bullet>();
+        spellProjectileSpawner.SpawnSpell(selectedBulletIndex);
 
         ammoDisplay.Refresh(false);
         spellCooldown.StartCooldown(castCooldownTime);
@@ -166,23 +157,22 @@ public class Attack : MonoBehaviour
 
     public void SelectSpell(int selectedSpell)
     {
-        selectedBullet = selectedSpell;
-        currentBullet = bulletPrefab[selectedBullet].GetComponent<Bullet>();
+        selectedBulletIndex = selectedSpell;
+        currentBullet = bulletPrefab[selectedBulletIndex];
         currentlySelectedCastDuration = currentBullet.castDuration;
         changeSelectedSpell.Invoke();
-        //RuntimeManager.PlayOneShot(currentBullet.pullupSound);
         pullupEventInstance = RuntimeManager.CreateInstance(currentBullet.pullupSound);
         pullupEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         pullupEventInstance.start();
     }
 
-    private IEnumerator SpellCasting(float castDuration)
+    private IEnumerator SpellCasting(float castDuration) //longer casting
     {
         if (ammo.ammo >= currentBullet.magickaCost)
         {
             castingSlider.value = 0;
             castingProgress = 0;
-            var spawnedCastingParticle = Instantiate(currentBullet.CastingParticle, handCastingPoint);
+            playCastBlast.StartCastingParticles(selectedBulletIndex);
             StartCasting.Invoke();
             spellCooldown.myCanvas.enabled = true;
             castLoaded = false;

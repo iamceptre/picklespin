@@ -27,6 +27,8 @@ public class WaypointsForSpawner : State
     private int rrrandom;
     private int previousNumber = -1;
 
+    private WaitForSeconds stuckCheckTime = new WaitForSeconds(1);
+
     public override State RunCurrentState() //This shit runs periodically 
     {
         if (aiVision.seeingPlayer)
@@ -98,7 +100,7 @@ public class WaypointsForSpawner : State
 
     private IEnumerator StuckCheckTimer()
     {
-        yield return new WaitForSeconds(1);
+        yield return stuckCheckTime;
         //imStuck = true;
         canIncrement = true;
     }

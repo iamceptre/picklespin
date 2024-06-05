@@ -16,6 +16,8 @@ public class CameraShake : MonoBehaviour
 
     private Vector3 startMainCameraRotation;
 
+    private WaitForEndOfFrame waitFrame = new WaitForEndOfFrame();
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -97,7 +99,7 @@ public class CameraShake : MonoBehaviour
 
     private IEnumerator EnemyExplosionLater(float explosionDuration, float strenghtBasedOnDistance) //fix problem of conflict
     {
-        yield return new WaitForEndOfFrame();
+        yield return waitFrame;
         mainCamera.DOShakeRotation(explosionDuration, strenghtBasedOnDistance, 35, 90, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             RestoreZeroRotation();

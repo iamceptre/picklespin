@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DisablePhysicsAfterTime : MonoBehaviour
 {
-    [SerializeField] private float timeBeforeFreezing = 3;
+    private WaitForSeconds timeBeforeFreezing = new WaitForSeconds(3);
 
     [SerializeField] private FallingFloorCoyoteTime coyoteTime;
 
@@ -18,7 +18,7 @@ public class DisablePhysicsAfterTime : MonoBehaviour
 
     private IEnumerator StartCountdown()
     {
-        yield return new WaitForSeconds(timeBeforeFreezing);
+        yield return timeBeforeFreezing;
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = true;
         enabled = false;

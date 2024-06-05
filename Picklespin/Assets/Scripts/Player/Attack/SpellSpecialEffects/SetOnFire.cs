@@ -29,6 +29,8 @@ public class SetOnFire : MonoBehaviour
 
     [SerializeField][Range(0, 10)] private float countdownTimer = 0;
 
+    private WaitForSeconds decreaseHpEverySeconds = new WaitForSeconds(0.5f);
+
     public void StartFire()
     {
         damageUiSpawner = DamageUI_Spawner.instance;
@@ -91,7 +93,7 @@ public class SetOnFire : MonoBehaviour
                 KillFromFire(); //die from fire
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return decreaseHpEverySeconds;
         }
     }
 

@@ -10,6 +10,8 @@ public class KeyHasBeenSpawned : MonoBehaviour
     private TMP_Text myText;
     private RectTransform myRectTransform;
 
+    private WaitForSeconds timeBeforeAnimating= new WaitForSeconds(0.2f);
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -43,7 +45,7 @@ public class KeyHasBeenSpawned : MonoBehaviour
 
     private IEnumerator WaitAndAnimate()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return timeBeforeAnimating;
         myText.DOFade(1, 0.32f).SetEase(Ease.InSine).OnComplete(FadeOut);
         myRectTransform.DOScale(1.1f, 3.2f);
     }

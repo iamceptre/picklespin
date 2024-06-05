@@ -8,7 +8,13 @@ public class FPSLimit : MonoBehaviour
 
     void Start()
     {
+        SetFramerate();
+    }
 
+
+
+    public void SetFramerate()
+    {
         Resolution currentResolution = Screen.currentResolution;
 
         if (framerateLimit == 0)
@@ -20,7 +26,6 @@ public class FPSLimit : MonoBehaviour
         {
             Application.targetFrameRate = framerateLimit;
         }
-
     }
 
 }

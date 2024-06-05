@@ -20,7 +20,7 @@ public class EscapeTimer : MonoBehaviour
     private PortalAfterClosing portalAfterClosing;
 
      public float countdownSpeed = 1;
-    [SerializeField] private float countdownDelayTime = 2;
+    private WaitForSeconds countdownDelayTime = new WaitForSeconds(2);
 
     [SerializeField] private GameObject[] enableWithMe;
     [SerializeField] private GameObject[] disableWithMe;
@@ -81,7 +81,7 @@ public class EscapeTimer : MonoBehaviour
             DisableOtherObjects();
         }
 
-        yield return new WaitForSeconds(countdownDelayTime);
+        yield return countdownDelayTime;
 
         while (true)
         {

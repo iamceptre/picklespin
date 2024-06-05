@@ -10,6 +10,8 @@ public class SpawnInEnemy : MonoBehaviour
     [SerializeField] private float timeToSpawnIn;
     [SerializeField] private StateManager stateManager;
 
+    private WaitForSeconds timeToSpawnInYield;
+
     private Color startingColor;
 
     private int colorProperty = Shader.PropertyToID("_Color");
@@ -19,7 +21,8 @@ public class SpawnInEnemy : MonoBehaviour
         mainModule = spawnInParticles.main;
         mainModule.startLifetime = timeToSpawnIn;
         spawnInParticles.Play();
-        yield return new WaitForSeconds(timeToSpawnIn);
+        timeToSpawnInYield = new WaitForSeconds(timeToSpawnIn);
+        yield return timeToSpawnInYield;
         stateManager.StartAI();
         StartCoroutine(FadeInMaterial());
         yield break;

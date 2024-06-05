@@ -1,37 +1,35 @@
 using UnityEngine;
 using FMODUnity;
-using FMOD.Studio;
-
-[RequireComponent(typeof(StudioEventEmitter))]
+using UnityEngine.Pool;
+using System.Collections;
+using DG.Tweening;
 public class Bullet : MonoBehaviour
 {
     private int originalDamage;
 
     [Header("Stats")]
+    public string spellName;
     [SerializeField] private int damage = 15;
     public int magickaCost = 30;
     public int speed = 60;
     public float myCooldown;
     public float castDuration;
-    public bool destroyOnHit = true;
-    public float turbulence = 1;
+    [SerializeField] float timeBeforeOff = 2;
+    [SerializeField] private bool fadeOutLight = false;
 
-    private AiVision aiVision;
 
     [Header("Assets")]
-    [SerializeField] private GameObject spawnInHandParticle;
-    [SerializeField] private GameObject explosionFX;
-    [SerializeField] private EventReference castSound;
+    [SerializeField] private ParticleSystem explosionFX;
+    private GameObject _explosionFxGameObject;
+    [SerializeField] private EventReference shootSound;
     public EventReference pullupSound;
-    [SerializeField] private StudioEventEmitter explosionSoundEmitter;
-    [SerializeField] private EventInstance hitInstance;
-    [Tooltip("long casting particle")] public GameObject CastingParticle;
 
     [Header("Special Effects")]
-    [SerializeField] private SetOnFire setOnFire;
     [SerializeField] private bool doesThisSpellSetOnFire = false;
+    [SerializeField] private SetOnFire setOnFire;
 
     [Header("References")]
+    private AiVision aiVision;
     private AiHealthUiBar aiHealthUI;
     private CameraShake cameraShake;
     private DamageUI_Spawner damageUiSpawner;
@@ -39,7 +37,13 @@ public class Bullet : MonoBehaviour
     [HideInInspector] public Transform handCastingPoint;
     private MaterialFlashWhenHit flashWhenHit;
     private CachedCameraMain cachedCameraMain;
+    private SpellProjectileSpawner spellProjectileSpawner;
     private Ammo ammo;
+    private ObjectPool<Bullet> _pool;
+    private IEnumerator autoKill;
+    private WaitForSeconds autoKillTime;
+    [SerializeField] private StudioEventEmitter explosionSoundEmitter;
+    private ApplyProjectileForce applyProjectileForce;
 
 
     [Header("Misc")]
@@ -47,11 +51,33 @@ public class Bullet : MonoBehaviour
     [HideInInspector] public bool hitSomething = false;
     private bool wasLastHitCritical = false;
 
+    [Header("Cache")]
+    private Transform _transform;
+    private Transform _explosionTransform;
+    private Renderer _renderer;
+    private Rigidbody _rigidbody;
+    private SphereCollider _collider;
+    [SerializeField] [Tooltip("tailParticle")]private ParticleSystem _particleSystem;
+    [SerializeField] private Light _light;
+    private Color _lightColor;
+    private GameObject _gameObject;
+    public LightSpell lightSpell;
+
 
     void Awake()
     {
-        Destroy(gameObject,10);
         originalDamage = damage;
+
+        _transform = transform;
+        _renderer = GetComponent<Renderer>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<SphereCollider>();
+        _explosionTransform = explosionFX.transform;
+        _explosionFxGameObject = explosionFX.gameObject;
+        _lightColor = _light.color;
+
+        autoKillTime = new WaitForSeconds(timeBeforeOff);
+        applyProjectileForce = GetComponent<ApplyProjectileForce>();
     }
 
     private void Start()
@@ -60,10 +86,44 @@ public class Bullet : MonoBehaviour
         cameraShake = CameraShake.instance;
         cachedCameraMain = CachedCameraMain.instance;
         ammo = Ammo.instance;
-        RuntimeManager.PlayOneShot(castSound);
-        var spawnedCastBlast = Instantiate(spawnInHandParticle, handCastingPoint.position, handCastingPoint.rotation);
-        spawnedCastBlast.transform.parent = handCastingPoint;
-        transform.localEulerAngles = new Vector3(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360));
+        spellProjectileSpawner = SpellProjectileSpawner.instance;
+    }
+
+    private IEnumerator AutoKill()
+    {
+        yield return autoKillTime;
+        ReturnToPool();
+    }
+
+
+    private void OnEnable()
+    {
+        _explosionFxGameObject.SetActive(false);
+        _collider.enabled = true;
+        _renderer.enabled = true;
+        _rigidbody.isKinematic = false;
+        _light.enabled = true;
+        autoKill = AutoKill();
+        StartCoroutine(autoKill);
+    }
+
+    public void OnShoot()
+    {
+        _particleSystem.Clear();
+        _particleSystem.Stop();
+        _particleSystem.Play();
+        RuntimeManager.PlayOneShot(shootSound);
+
+        if (applyProjectileForce != null)
+        {
+            applyProjectileForce.Set();
+        }
+    }
+
+    public void ReturnToPool()
+    {
+        StopCoroutine(autoKill);
+        _pool.Release(this);
     }
 
 
@@ -72,6 +132,7 @@ public class Bullet : MonoBehaviour
         hitSomething = true;
         if (collision.transform)
         {
+            StopCoroutine(autoKill);
             hitSomething = true;
 
             if (collision.transform.TryGetComponent<AiHealth>(out AiHealth aiHealth)) //ENEMY HIT REGISTERED
@@ -127,9 +188,7 @@ public class Bullet : MonoBehaviour
 
         }
         SpawnExplosion();
-        if (destroyOnHit) {
-            Destroy(gameObject);
-        }
+        AfterExplosion();
     }
 
 
@@ -204,12 +263,37 @@ public class Bullet : MonoBehaviour
 
     private void SpawnExplosion()
     {
-        Instantiate(explosionFX, Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f), Quaternion.identity); //prevents explosion clipping through ground
+        _explosionFxGameObject.SetActive(true);
         explosionSoundEmitter.Play();
-
-        RuntimeManager.AttachInstanceToGameObject(hitInstance, GetComponent<Transform>());
+        _explosionTransform.position = Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f);
         cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, cachedCameraMain.cachedTransform.position),originalDamage);
-        hitInstance.start();
     }
+
+    public void AfterExplosion()
+    {
+        _collider.enabled = false;
+        _renderer.enabled = false;
+        _particleSystem.Clear();
+        _particleSystem.Stop();
+        _rigidbody.isKinematic = true;
+
+        if (!fadeOutLight)
+        {
+            _light.enabled = false;
+            return;
+        }
+        _light.DOColor(Color.black, 0.2f).OnComplete(() =>
+        {
+            _light.enabled = false;
+            _light.color = _lightColor;
+        });
+    }
+
+    public void SetPool(ObjectPool<Bullet> pool)
+    {
+        _pool = pool;
+    }
+
+
 
 }

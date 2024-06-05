@@ -4,6 +4,8 @@ using DG.Tweening;
 public class SpellHitExplosionAnimation : MonoBehaviour
 {
     private Light myLight;
+    private float startingRange;
+    private Bullet bullet;
 
     [SerializeField] private float peakLightIntensity = 3;
     [SerializeField] private float peakLightRange = 45;
@@ -12,18 +14,26 @@ public class SpellHitExplosionAnimation : MonoBehaviour
     private void Awake()
     {
         myLight = GetComponent<Light>();
+        startingRange = myLight.range;
+        bullet = transform.GetComponentInParent<Bullet>();
     }
-    void Start()
+    void OnEnable()
     {
-        myLight.DOIntensity(peakLightIntensity, 0.07f).OnComplete(FadeOut);
+        myLight.enabled = true;
+        myLight.range = startingRange;
+        myLight.DOIntensity(peakLightIntensity, 0.07f).SetEase(Ease.OutExpo).OnComplete(FadeOut);
     }
 
 
     private void FadeOut()
     {
-        myLight.DOIntensity(0, lightFadeOutTime).SetEase(Ease.OutExpo);
+        myLight.DOIntensity(0, lightFadeOutTime).SetEase(Ease.OutSine).OnComplete(() =>
+        {
+            myLight.enabled = false;
+            bullet.ReturnToPool();
+        });
 
-        DOTween.To(() => myLight.range, x => myLight.range = x, peakLightRange, 1).SetEase(Ease.OutExpo);
+        DOTween.To(() => myLight.range, x => myLight.range = x, peakLightRange, lightFadeOutTime).SetEase(Ease.OutSine);
     }
 
 

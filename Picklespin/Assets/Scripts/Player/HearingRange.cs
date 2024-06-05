@@ -7,7 +7,10 @@ public class HearingRange : MonoBehaviour
     private SphereCollider hearingRange;
     [SerializeField] private PlayerMovement playerMovement;
     private float myRange;
- 
+
+    private WaitForSeconds refreshTime = new WaitForSeconds(0.5f);
+    private WaitForSeconds extendedRangeTime = new WaitForSeconds(0.5f);
+
     void Start()
     {
         hearingRange = GetComponent<SphereCollider>();
@@ -24,14 +27,14 @@ public class HearingRange : MonoBehaviour
             {
                 hearingRange.radius = myRange * playerMovement.movementStateForFMOD;
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return refreshTime;
         }
     }
 
     private IEnumerator ExtendedHearingRange()
     {
         hearingRange.radius = 20;
-        yield return new WaitForSeconds(0.5f);
+        yield return extendedRangeTime;
         StartCoroutine(LazyUpdate());
     }
 

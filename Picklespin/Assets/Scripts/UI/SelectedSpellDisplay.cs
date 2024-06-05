@@ -5,37 +5,34 @@ using DG.Tweening;
 public class SelectedSpellDisplay : MonoBehaviour
 {
 
-    [SerializeField] private Attack attackScript;
-    private TMP_Text selectedSpellText;
+     private Attack attackScript;
+     private TMP_Text selectedSpellText;
 
-    private void Awake()
+    private void Start()
     {
         selectedSpellText = GetComponent<TMP_Text>();
-        selectedSpellText.text = attackScript.bulletPrefab[attackScript.selectedBullet].gameObject.name.ToString();
-        selectedSpellText.color = new Color(255,255,255,0);
+        attackScript = Attack.instance;
+        selectedSpellText.text = attackScript.currentBullet.spellName;
+        selectedSpellText.color = new Color(255, 255, 255, 0);
         UpdateText();
         selectedSpellText.DOKill();
         selectedSpellText.DOFade(0, 0);
     }
 
-private void DisableMe()
+    private void DisableMe()
     {
-        gameObject.SetActive(false); 
+        gameObject.SetActive(false);
     }
 
- public void UpdateText()
+    public void UpdateText()
     {
-        if (selectedSpellText != null)
-        {
-            selectedSpellText.text = attackScript.bulletPrefab[attackScript.selectedBullet].gameObject.name.ToString();
-        }
+        selectedSpellText.text = attackScript.currentBullet.spellName;
         Animate();
     }
 
 
     private void Animate()
     {
-        //var sequence = DOTween.Sequence();
         selectedSpellText.DOKill();
         StopAllCoroutines();
         selectedSpellText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);

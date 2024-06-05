@@ -10,21 +10,31 @@ public class LightSpell : MonoBehaviour
 
     [SerializeField] private float lightDuration;
 
-    void Start()
+    private WaitForSeconds timeBeforeOut;
+    [SerializeField] private Bullet bullet;
+
+
+    void Awake()
     {
+        timeBeforeOut = new WaitForSeconds(lightDuration);
+        myLight.color = Color.black;
+    }
+
+    private void OnEnable()
+    {
+        myLight.color = Color.black;
         myLight.DOKill();
-        myLight.color = new Color(0, 0, 0);
         FadeIn();
 
-        if (myTransform != null)
-        {
-            myTransform.DOShakePosition(lightDuration, 0.1f, 5, 90, false, false, ShakeRandomnessMode.Harmonic);
-        }
+        myTransform.DOKill();
+        myTransform.localPosition = Vector3.zero;
+        myTransform.DOShakePosition(lightDuration, 0.1f, 5, 90, false, false, ShakeRandomnessMode.Harmonic);
     }
+
 
     private void FadeIn()
     {
-        myLight.DOColor(new Color(1, 1, 1), 0.5f).OnComplete(RunRoutine);
+        myLight.DOColor(Color.white, 0.5f).OnComplete(RunRoutine);
     }
 
     private void RunRoutine()
@@ -34,24 +44,22 @@ public class LightSpell : MonoBehaviour
 
     private IEnumerator WaitAndFadeOut()
     {
-        yield return new WaitForSeconds(lightDuration);
+        yield return timeBeforeOut;
         FadeOut();
-        yield return null;
+        yield break;
     }
 
     public void FadeOut()
     {
-        if (myLight != null)
-        {
-            myLight.DOColor(new Color(0, 0, 0), 1).OnComplete(Die);
-        }
+            StopAllCoroutines();
+            myLight.DOColor(Color.black, 1).OnComplete(Die);
     }
 
    private void Die()
     {
         myTransform.DOKill();
         myLight.DOKill();
-        Destroy(gameObject);
+        bullet.ReturnToPool();
     }
 
 }

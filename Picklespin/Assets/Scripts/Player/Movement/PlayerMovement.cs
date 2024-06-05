@@ -58,9 +58,8 @@ public class PlayerMovement : MonoBehaviour
         barLightsAnimation = BarLightsAnimation.instance;
         movementStateForFMOD = 1;
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
-        footstepSystem.fixedFootstepSpace = 0.6f;//walk speed
         SetCameraBobSpeed();
-
+        footstepSystem.SetNewFootstepSpace(0.6f);
     }
 
     public void SlowMeDown()
@@ -81,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 1;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
-            footstepSystem.fixedFootstepSpace = 0.6f;//walk speed
+            footstepSystem.SetNewFootstepSpace(0.6f);//walk speed
             SetCameraBobSpeed();
             isRunning = false;
         }
@@ -93,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 2;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
-            footstepSystem.fixedFootstepSpace = 0.22f; //run speed
+            footstepSystem.SetNewFootstepSpace(0.22f);  //run speed
             SetCameraBobSpeed();
             isRunning = true;
         }
@@ -105,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 0;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
-            footstepSystem.fixedFootstepSpace = 0.8f; //sneak speed
+            footstepSystem.SetNewFootstepSpace(0.8f); //sneak speed
             SetCameraBobSpeed();
             isRunning = false;
         }

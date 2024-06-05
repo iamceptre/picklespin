@@ -19,6 +19,10 @@ public class DamageUI_V2 : MonoBehaviour
     {
         myText = GetComponent<TMP_Text>();
         myText_Transform = gameObject.transform;
+    }
+
+    private void OnEnable()
+    {
         damageUIstartFontSize = myText.fontSize;
         damageUIstartColor = myText.color;
     }

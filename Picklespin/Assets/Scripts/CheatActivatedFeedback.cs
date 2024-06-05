@@ -12,6 +12,8 @@ public class CheatActivatedFeedback : MonoBehaviour
     [SerializeField] private TMP_Text cheatText;
     [SerializeField] private GameObject cheatPanel;
 
+    private WaitForSeconds waitBeforeHideTime = new WaitForSeconds(2);
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -36,7 +38,7 @@ public class CheatActivatedFeedback : MonoBehaviour
 
     private IEnumerator WaitHide()
     {
-        yield return new WaitForSeconds(2);
+        yield return waitBeforeHideTime;
         cheatPanel.SetActive(false);
     }
 }

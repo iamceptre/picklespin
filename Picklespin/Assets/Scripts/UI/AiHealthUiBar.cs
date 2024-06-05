@@ -13,6 +13,8 @@ public class AiHealthUiBar : MonoBehaviour
     [SerializeField] private GameObject wholeCanvas;
     [SerializeField] private BarEase barEase;
 
+    private WaitForSeconds waitBeforeFadeOutTime = new WaitForSeconds(5); //make it a one static variable instead of one per object
+
     private void Awake()
     {
         if (aiHealth == null)
@@ -79,7 +81,7 @@ public class AiHealthUiBar : MonoBehaviour
 
     private IEnumerator WaitAndFadeOut()
     {
-        yield return new WaitForSeconds(5);
+        yield return waitBeforeFadeOutTime;
         FadeOut();
     }
 

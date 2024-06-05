@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Text;
 using TMPro;
 using UnityEngine;
 public class AddedEXP_Gui : MonoBehaviour
@@ -13,6 +14,8 @@ public class AddedEXP_Gui : MonoBehaviour
 
     private RectTransform _textTransform;
     private Color startingColor;
+
+    private WaitForSeconds waitBeforeFadingTime = new WaitForSeconds(1);
 
     private void Awake()
     {
@@ -65,23 +68,22 @@ public class AddedEXP_Gui : MonoBehaviour
         if (addedXP > 0)
         {
             _text.color = startingColor;
-            _text.text = "+ " + amountToShow + " exp" + "<size=15px><br>" + "(" + expSourceName + ")";
+            _text.text =  "+ " + amountToShow + " exp<size=15px><br>(" + expSourceName + ")";
         }
         else
         {
             _text.color = new Color(0.76f, 0.235f, 0.235f);
-            _text.text = amountToShow + " exp" + "<size=15px><br>" + "(" + expSourceName + ")";
+            _text.text = amountToShow + " exp<size=15px><br>(" + expSourceName + ")";
         }
     }
 
     private IEnumerator WaitAndFadeOut()
     {
-        yield return new WaitForSeconds(1);
+        yield return waitBeforeFadingTime;
         _textTransform.DOLocalMoveY(_textStartPosition.y + 20, 2).SetEase(Ease.InSine);
         _text.DOFade(0, 2).SetEase(Ease.InSine).OnComplete(() =>
         {
             amountToShow = 0;
-            //_text.enabled = false;
             myCanvas.enabled = false;
         });
     }
