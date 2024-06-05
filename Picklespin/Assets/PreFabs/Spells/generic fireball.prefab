@@ -5107,6 +5107,7 @@ MonoBehaviour:
   myCooldown: 2
   castDuration: 1
   timeBeforeOff: 3
+  fadeOutLight: 0
   explosionFX: {fileID: 8713706549792644285}
   shootSound:
     Guid:
@@ -5130,6 +5131,7 @@ MonoBehaviour:
   hitSomething: 0
   _particleSystem: {fileID: 7638488778309636166}
   _light: {fileID: 3909137637185279755}
+  lightSpell: {fileID: 0}
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0

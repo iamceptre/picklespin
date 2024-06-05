@@ -22,6 +22,7 @@ public class DamageUI_Spawner : MonoBehaviour
 
     public void Spawn (Vector3 whereIshouldGo, int howMuchDamageDealt, bool isCritical)
     {
+        whereIshouldGo = whereIshouldGo + Random.insideUnitSphere;
         DamageUI_V2 spawnedDamageUi = Instantiate(damageUi, whereIshouldGo, Quaternion.identity);
         spawnedDamageUi.Do(whereIshouldGo, howMuchDamageDealt, isCritical);
         spawnedDamageUi.transform.SetParent(transform);

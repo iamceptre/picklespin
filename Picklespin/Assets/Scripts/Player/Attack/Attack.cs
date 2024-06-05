@@ -12,8 +12,6 @@ public class Attack : MonoBehaviour
     private PlayCastBlast playCastBlast;
     private SpellProjectileSpawner spellProjectileSpawner;
 
-    [SerializeField] private Transform handCastingPoint;
-
     [SerializeField] private UnityEvent shootEvent;
     [SerializeField] private UnityEvent changeSelectedSpell;
 
@@ -40,17 +38,14 @@ public class Attack : MonoBehaviour
     private float currentlySelectedCastDuration;
     [SerializeField] private Slider castingSlider;
 
-    private bool castLoaded = false;
-
     [SerializeField] private UnityEvent castingCompleted;
     [SerializeField] private UnityEvent CancelCasting;
-    [SerializeField] private UnityEvent StartCasting;
 
     public Bullet currentBullet;
 
+
     private void Awake()
     {
-        ammo = GetComponent<Ammo>();
 
         currentBullet = bulletPrefab[selectedBulletIndex];
 
@@ -62,12 +57,12 @@ public class Attack : MonoBehaviour
         {
             instance = this;
         }
-
     }
 
 
     private void Start()
     {
+        ammo = Ammo.instance;
         playCastBlast = PlayCastBlast.instance;
         ammoDisplay = AmmoDisplay.instance;
         spellProjectileSpawner = SpellProjectileSpawner.instance;
@@ -79,47 +74,23 @@ public class Attack : MonoBehaviour
         {
             if (currentlySelectedCastDuration == 0)
             {
-                TryShoot(); //instant Cast
-                return;
+                TryShoot(); 
             }
             else
             {
                 if (!Input.GetKey(KeyCode.Mouse1))
                 {
-                    StartCoroutine(SpellCasting(currentlySelectedCastDuration));
+                    ClearCasting();
+                    StartCoroutine(SpellCasting());
                 }
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            if (castCooldownAllow)
-            {
-                spellCooldown.DisableComponents();
-                CancelCasting.Invoke();
-            }
-
-            if (castLoaded && !Input.GetKey(KeyCode.Mouse1))
-            {
-                TryShoot();
-            }
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Mouse1) && castLoaded)
-        {
-            spellCooldown.DisableComponents();
-            CancelCasting.Invoke();
-        }
 
     }
 
     private void TryShoot()
     {
-        CancelCasting.Invoke();
-        castLoaded = false;
-        spellCooldown.DisableComponents();
-
         if (ammo.ammo >= currentBullet.magickaCost)
         {
             SuccesfulShoot();
@@ -147,11 +118,9 @@ public class Attack : MonoBehaviour
         castCooldownTime = currentBullet.myCooldown;
         shootEvent.Invoke();
         ammo.ammo -= currentBullet.magickaCost;
-
-        spellProjectileSpawner.SpawnSpell(selectedBulletIndex);
-
         ammoDisplay.Refresh(false);
         spellCooldown.StartCooldown(castCooldownTime);
+        spellProjectileSpawner.SpawnSpell(selectedBulletIndex);
     }
 
 
@@ -166,39 +135,54 @@ public class Attack : MonoBehaviour
         pullupEventInstance.start();
     }
 
-    private IEnumerator SpellCasting(float castDuration) //longer casting
+    private IEnumerator SpellCasting()
     {
         if (ammo.ammo >= currentBullet.magickaCost)
         {
-            castingSlider.value = 0;
-            castingProgress = 0;
-            playCastBlast.StartCastingParticles(selectedBulletIndex);
-            StartCasting.Invoke();
             spellCooldown.myCanvas.enabled = true;
-            castLoaded = false;
+            playCastBlast.StartCastingParticles(selectedBulletIndex);
+            PlayerMovement.instance.SlowMeDown();
 
-            while (true)
+           
+            while (castingProgress < currentlySelectedCastDuration)
             {
-                if (castingProgress < currentlySelectedCastDuration)
+                if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
-                    castingProgress += Time.deltaTime;
-                    castingSlider.value = castingProgress / castDuration;
-                }
-                else
-                {
-                    castingCompleted.Invoke();
-                    castLoaded = true;
+                    ClearCasting();
                     yield break;
                 }
-
+                    castingProgress += Time.deltaTime;
+                    castingSlider.value = castingProgress / currentlySelectedCastDuration;
                 yield return null;
             }
+
+            castingCompleted.Invoke();
+
+            while (Input.GetKey(KeyCode.Mouse0))
+            {
+                yield return null;
+            }
+                ClearCasting();
+                TryShoot();
+
+            yield break;
         }
         else
         {
             ShootFail();
             yield break;
         }
+    }
+
+
+    private void ClearCasting()
+    {
+        spellCooldown.myCanvas.enabled = false;
+        castingSlider.value = 0;
+        castingProgress = 0;
+        playCastBlast.StopCastingParticles(selectedBulletIndex);
+        spellCooldown.DisableComponents();
+        CancelCasting.Invoke();
     }
 
 }

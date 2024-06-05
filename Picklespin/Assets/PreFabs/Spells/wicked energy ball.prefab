@@ -107,7 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f523abede353148a08d0abdb5c7a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 6800567688136975266}
   peakLightIntensity: 3
   peakLightRange: 45
   lightFadeOutTime: 0.6
@@ -10132,9 +10131,10 @@ MonoBehaviour:
   damage: 10
   magickaCost: 7
   speed: 60
-  myCooldown: 0.1
+  myCooldown: 0.15
   castDuration: 0
-  destroyOnHit: 1
+  timeBeforeOff: 2
+  fadeOutLight: 0
   explosionFX: {fileID: 3036575118500837913}
   shootSound:
     Guid:
@@ -10158,6 +10158,7 @@ MonoBehaviour:
   hitSomething: 0
   _particleSystem: {fileID: 8312430218449341608}
   _light: {fileID: 3909137637185279755}
+  lightSpell: {fileID: 0}
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0

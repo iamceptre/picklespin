@@ -28,12 +28,16 @@ public class PlayCastBlast : MonoBehaviour
 
     public void StartCastingParticles(int spellID)
     {
+        castingParticles[spellID].Clear();
         castingParticles[spellID].Play();
         castingParticleSizeScript[spellID].StartCoroutine(castingParticleSizeScript[spellID].StartDoingShit());
     }
 
     public void StopCastingParticles(int spellID)
     {
-        castingParticles[spellID].Stop();
+        if (castingParticles[spellID] != null)
+        {
+            castingParticles[spellID].Stop();
+        }
     }
 }

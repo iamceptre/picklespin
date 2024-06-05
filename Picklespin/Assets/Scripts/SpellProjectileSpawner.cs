@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -77,7 +78,7 @@ public class SpellProjectileSpawner : MonoBehaviour
 
                 case 2:
                     Bullet lightSpawned = lightSpellPool.Get();
-                    OffPreviousLights(lightSpawned);
+                OffPreviousLights(lightSpawned);
                 lightSpawned.OnShoot();
                 break;
 
@@ -147,13 +148,13 @@ public class SpellProjectileSpawner : MonoBehaviour
     private Bullet CreateFireball()
     {
         Bullet fireballInstance = Instantiate(bulletPrefab[1]);
-        fireballInstance.SetPool(purpleSpellPool);
+        fireballInstance.SetPool(fireballSpellPool);
         return fireballInstance;
     }
     private Bullet CreateLight()
     {
         Bullet lightInstance = Instantiate(bulletPrefab[2]);
-        lightInstance.SetPool(purpleSpellPool);
+        lightInstance.SetPool(lightSpellPool);
         return lightInstance;
     }
 

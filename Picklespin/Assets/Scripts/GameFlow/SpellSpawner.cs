@@ -50,7 +50,6 @@ public class SpellSpawner : MonoBehaviour
 
     private void PreInstantiate()
     {
-        //spawnPoints.Length is max object pool count, change it when you do separate pools for every potion
         var tempList = new SpellPickupable[spawnPoints.Length];
 
         for (int i = 0; i < spawnPoints.Length; i++)

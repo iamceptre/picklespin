@@ -6,10 +6,8 @@ public class SpellCooldown : MonoBehaviour
 {
 
     private Slider me;
-    //[HideInInspector] public float selectedSpellCooldownTime;
     private float currentCooldown;
     public Canvas myCanvas;
-    //[SerializeField] private GameObject[] myComponents;
 
     Attack attack;
 
@@ -34,20 +32,16 @@ public class SpellCooldown : MonoBehaviour
 
     private IEnumerator Cooldown(float selectedSpellCooldownTime)
     {
-        while (true)
+        while (currentCooldown > 0)
         {
             currentCooldown -= Time.deltaTime;
             me.value = currentCooldown / selectedSpellCooldownTime;
-
-            if (currentCooldown<=0) 
-            {
-                attack.castCooldownAllow = true;
-                myCanvas.enabled = false;
-                yield break;
-            }
-
             yield return null;
         }
+
+        attack.castCooldownAllow = true;
+        myCanvas.enabled = false;
+        yield break;
     }
 
     public void DisableComponents()
