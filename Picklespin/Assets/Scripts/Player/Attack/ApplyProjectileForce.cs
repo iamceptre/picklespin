@@ -17,11 +17,11 @@ public class ApplyProjectileForce : MonoBehaviour
     }
 
 
-
     public void Set()
     {
         if (!gotRefs)
         {
+            //Debug.Log("getting refs");
             recoilMultiplier = RecoilMultiplier.instance;
             cachedCameraMain = CachedCameraMain.instance;
             gotRefs = true;
@@ -37,7 +37,7 @@ Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
 Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil)
 );
 
-        Vector3 desiredDirection = cachedCameraMain.cachedTransform.forward;//+ randomDirection;
+        Vector3 desiredDirection = cachedCameraMain.cachedTransform.forward + randomDirection;
         rb.velocity = desiredDirection * bullet.speed;
     }
 

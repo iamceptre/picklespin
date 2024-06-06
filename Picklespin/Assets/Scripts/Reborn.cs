@@ -16,7 +16,9 @@ public class Reborn : MonoBehaviour
 
     private float animationTime = 1f;
 
-    private EventReference rebornEvent;
+    [SerializeField] private EventReference rebornEvent;
+
+    [SerializeField] [Tooltip("if -1, it restarts the current scene")] private int sceneindex = -1;
 
     private void Awake()
     {
@@ -38,16 +40,32 @@ public class Reborn : MonoBehaviour
             myTween = myRectTransform.DOScale(1.618f, 2).SetEase(Ease.OutExpo);
             myTween.SetUpdate(UpdateType.Normal, true);
             Color transparentMe = new Color(myText.color.r, myText.color.g, myText.color.b, 0);
+            RuntimeManager.PlayOneShot(rebornEvent);
+
             myTween = myText.DOColor(transparentMe, 2).SetEase(Ease.OutExpo).OnComplete(() =>
             {
-                DOTween.KillAll();
                 portalAfterClosing.portalClosedInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                SceneManager.LoadScene(currentSceneIndex);
                 Time.timeScale = 1;
+                DOTween.KillAll();
+                SetScene();
             });
             myTween.SetUpdate(UpdateType.Normal, true);
-            RuntimeManager.PlayOneShot(rebornEvent);
+        }
+    }
+
+
+    private void SetScene()
+    {
+        if (sceneindex == -1)
+        {
+            //Debug.Log("reloading current scene");
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
+        }
+        else
+        {
+            //Debug.Log("loading selected scene");
+            SceneManager.LoadScene(sceneindex);
         }
     }
 

@@ -10,10 +10,10 @@ public class WaitAndLoadMenu : MonoBehaviour
 
     private IEnumerator Start()
     {
+        DG.Tweening.DOTween.KillAll();
         yield return new WaitForSecondsRealtime(timeToWait);
         DG.Tweening.DOTween.KillAll();
-        SceneManager.LoadScene(0);
         Time.timeScale = 1.0f;
-
+        SceneManager.LoadScene(0);
     }
 }

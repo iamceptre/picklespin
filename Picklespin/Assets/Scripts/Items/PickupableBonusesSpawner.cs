@@ -68,7 +68,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
 
     public void SpawnBonuses(int howManyToSpawn)
     {
-        SetSpawnCount(howManyToSpawn);
+        //SetSpawnCount(howManyToSpawn); //fix this shit crashing the game on the round 3 i think
         StartCoroutine(SpawnRoutine());
     }
 

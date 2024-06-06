@@ -3,20 +3,23 @@ using DG.Tweening;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 public class Door : MonoBehaviour
 {
     //LOGIC
+    private KeyCode actionKey = KeyCode.E;
     [SerializeField] private bool isLocked = false;
     private bool isOpened;
     private Transform mainCamera;
     private Ray ray;
     private Collider myCollider;
     [SerializeField] LayerMask layerMask;
+    private bool buttonBuffer = false;
+    private bool canButtonBuffer = true;
 
     //ROTATION
     private Vector3 startRot;
+    private float animationTime = 0.8f;
 
     //SOUND
     [SerializeField] private EventReference doorOpenSoundEvent;
@@ -49,7 +52,22 @@ public class Door : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKey(actionKey))
+        { 
+            buttonBuffer = true;
+        }
+        else
+        {
+            buttonBuffer = false;
+        }
+
+        if (Input.GetKeyUp(actionKey))
+        {
+            canButtonBuffer = true;
+        }
+
+
+        if (buttonBuffer && canButtonBuffer)
         {
             ray = new Ray(mainCamera.position, mainCamera.forward);
 
@@ -57,7 +75,9 @@ public class Door : MonoBehaviour
             {
                 if (hit.collider.Equals(myCollider))
                 {
+                    buttonBuffer = false;
                     LockedCheck();
+                    canButtonBuffer = false;
                 }
             }
         }
@@ -97,7 +117,7 @@ public class Door : MonoBehaviour
     private void OpenDoor()
     {
          _transform.DOKill();
-         _transform.DOLocalRotate(startRot + new Vector3(0,90), 1, RotateMode.Fast);
+         _transform.DOLocalRotate(startRot + new Vector3(0,90), animationTime, RotateMode.Fast);
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
@@ -110,7 +130,7 @@ public class Door : MonoBehaviour
     private void CloseDoor()
     {
         _transform.DOKill();
-        _transform.DOLocalRotate(startRot, 1, RotateMode.Fast);
+        _transform.DOLocalRotate(startRot, animationTime, RotateMode.Fast);
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
