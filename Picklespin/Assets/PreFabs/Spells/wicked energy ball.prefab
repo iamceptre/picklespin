@@ -10131,7 +10131,7 @@ MonoBehaviour:
   damage: 10
   magickaCost: 7
   speed: 60
-  myCooldown: 0.15
+  myCooldown: 0.1
   castDuration: 0
   timeBeforeOff: 2
   fadeOutLight: 0

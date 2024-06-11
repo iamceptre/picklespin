@@ -17,6 +17,8 @@ public class AddedEXP_Gui : MonoBehaviour
 
     private WaitForSeconds waitBeforeFadingTime = new WaitForSeconds(1);
 
+    StringBuilder sb = new StringBuilder();
+
     private void Awake()
     {
 
@@ -37,7 +39,7 @@ public class AddedEXP_Gui : MonoBehaviour
     {
         _textStartPosition = transform.localPosition;
         startingColor = new Color(_text.color.r, _text.color.g, _text.color.b, 1);
-        myCanvas = gameObject.GetComponent<Canvas>();
+        myCanvas = GetComponent<Canvas>();
         myCanvas.enabled = false;
     }
 
@@ -65,7 +67,7 @@ public class AddedEXP_Gui : MonoBehaviour
 
     private void UpdateText(int addedXP, string expSourceName)
     {
-        StringBuilder sb = new StringBuilder();
+        sb.Clear();
 
         if (addedXP >= 0)
         {

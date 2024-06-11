@@ -262,21 +262,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: f0f0fffffafaffff506b0000646b0000f86b0000ae6e00007e710000e8710000507200009a720000
+      m_ExpandedIDs: fafaffff0a68000086690000526a0000ba6c0000dc6c0000e46d00003c6e0000a46f0000ce6f00002a71000044710000127200002e720000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Slider
-        m_OriginalName: Slider
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 28334
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 6}
       m_SearchString: 
@@ -656,9 +656,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 27.797287, y: 3.8176215, z: 37.34844}
+    m_Target: {x: 2.9792008, y: 8.501762, z: 37.95492}
     speed: 2
-    m_Value: {x: 27.797287, y: 3.8176215, z: 37.34844}
+    m_Value: {x: 2.9792008, y: 8.501762, z: 37.95492}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -704,9 +704,9 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.004139548, y: 0.96910065, z: -0.016291125, w: -0.24610999}
+    m_Target: {x: 0.003785573, y: -0.7579044, z: -0.0042543323, w: -0.65237164}
     speed: 2
-    m_Value: {x: -0.0041395305, y: 0.9690965, z: -0.016291054, w: -0.24610893}
+    m_Value: {x: 0.0037854966, y: -0.75788915, z: -0.0042542466, w: -0.65235853}
   m_Size:
     m_Target: 10
     speed: 2
@@ -728,7 +728,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
+  m_LastSceneViewRotation: {x: 0.35357997, y: 0.09377301, z: -0.03567455, w: 0.9300233}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -810,7 +810,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/FMODBanks
+    - Assets/Scripts/UI
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -818,16 +818,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/FMODBanks
+  - Assets/Scripts/UI
   m_LastFoldersGridSize: 96
   m_LastProjectPath: C:\Users\lukaszpc\Desktop\picklespin-git\Picklespin
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 5a7b0000
-    m_LastClickedID: 31578
-    m_ExpandedIDs: 000000001a7b00001c7b00001e7b0000207b0000227b0000247b0000267b0000287b00002a7b000000ca9a3b
+    scrollPos: {x: 0, y: 252}
+    m_SelectedIDs: 927b0000
+    m_LastClickedID: 31634
+    m_ExpandedIDs: 00000000267b0000287b00002a7b00002c7b00002e7b0000307b0000327b0000347b0000367b00008c7b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -855,7 +855,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000001a7b00001c7b00001e7b0000207b0000227b0000247b0000267b0000287b00002a7b0000
+    m_ExpandedIDs: 00000000267b0000287b00002a7b00002c7b00002e7b0000307b0000327b0000347b0000367b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -880,9 +880,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: a6720000
+    m_LastClickedInstanceID: 29350
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000205d0000765d000064600000de690100cacf00001c6200000000000030670000dc6700002c6b00007468000044710000fe6805002a610000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -981,7 +981,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -3946
+  m_LastSelectedObjectID: 28248
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2142,7 +2142,7 @@ MonoBehaviour:
     m_CachedPref: 297
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
+  m_LastInspectedObjectInstanceID: 29350
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0

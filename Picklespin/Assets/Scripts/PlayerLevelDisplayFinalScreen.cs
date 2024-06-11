@@ -13,6 +13,8 @@ public class PlayerLevelDisplayFinalScreen : MonoBehaviour
     private int currentlyShownLevel;
     private float previousSliderValue;
 
+    StringBuilder sb = new StringBuilder();
+
     private void Awake()
     {
         _text = GetComponent<TMP_Text>();
@@ -23,12 +25,7 @@ public class PlayerLevelDisplayFinalScreen : MonoBehaviour
     {
         playerExp = PlayerEXP.instance;
         currentlyShownLevel = playerExp.PlayerLevelStarting;
-
-        StringBuilder sb = new StringBuilder();
-        sb.Append("level: ");
-        sb.Append(currentlyShownLevel);
-        _text.text = sb.ToString();
-
+        UpdateText();
         previousSliderValue = expGathered.currentlyAnimatedExp % 1000;
         _slider.value = previousSliderValue;
     }
@@ -49,19 +46,21 @@ public class PlayerLevelDisplayFinalScreen : MonoBehaviour
     private void NewLevel()
     {
         currentlyShownLevel++;
-        StringBuilder sb = new StringBuilder();
-        sb.Append("level: ");
-        sb.Append(currentlyShownLevel);
-        _text.text = sb.ToString();
+        UpdateText();
     }
 
     public void FinishedAnimating()
     {
         currentlyShownLevel = playerExp.playerLevel;
-        StringBuilder sb = new StringBuilder();
+        UpdateText();
+        _slider.value = playerExp.playerExpAmount % 1000;
+    }
+
+    private void UpdateText()
+    {
+        sb.Clear();
         sb.Append("level: ");
         sb.Append(currentlyShownLevel);
         _text.text = sb.ToString();
-        _slider.value = playerExp.playerExpAmount % 1000;
     }
 }

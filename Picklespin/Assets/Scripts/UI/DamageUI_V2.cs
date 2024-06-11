@@ -15,6 +15,8 @@ public class DamageUI_V2 : MonoBehaviour
 
     private Color criticalColor = new Color(255, 215, 0);
 
+    StringBuilder sb = new StringBuilder();
+
 
     private void Awake()
     {
@@ -36,7 +38,7 @@ public class DamageUI_V2 : MonoBehaviour
 
         myText.color = new Color(myText.color.r, myText.color.g, myText.color.b, 0);
 
-        StringBuilder sb = new StringBuilder();
+        sb.Clear();
 
         if (isCritical)
         {

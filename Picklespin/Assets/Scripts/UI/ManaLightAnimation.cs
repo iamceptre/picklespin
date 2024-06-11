@@ -16,6 +16,8 @@ public class ManaLightAnimation : MonoBehaviour
 
     private WaitForSeconds waitBeforeFadingPlusPlus = new WaitForSeconds(2);
 
+    StringBuilder sb = new StringBuilder();
+
     private void Awake()
     {
         manaLight = GetComponent<Image>();
@@ -57,7 +59,7 @@ public class ManaLightAnimation : MonoBehaviour
 
     private void ManaPlusPlusAnimation(float howMuchWasGiven, bool maxxed)
     {
-        StringBuilder sb = new StringBuilder();
+        sb.Clear();
         sb.Append("<b>+ ");
         sb.Append(howMuchWasGiven);
 

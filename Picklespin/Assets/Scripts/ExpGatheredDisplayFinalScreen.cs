@@ -16,6 +16,8 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour
 
     [SerializeField] private float animationTime = 6;
 
+    StringBuilder sb = new StringBuilder();
+
     private void Awake()
     {
         _text = GetComponent<TMP_Text>();
@@ -52,24 +54,25 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour
             FinishedAnimating();
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.Append("you gathered<br>");
-        sb.Append(currentlyAnimatedExp);
-        sb.Append(" exp");
-        _text.text = sb.ToString();
+        UpdateText();
     }
 
     private void FinishedAnimating()
     {
         //save the exp somewhere
         currentlyAnimatedExp = PlayerEXP.instance.playerExpAmount;
-        StringBuilder sb = new StringBuilder();
+        UpdateText();
+        inputPrompt.SetActive(true);
+        playerLevelDisplayFinalScreen.FinishedAnimating();
+        enabled = false;
+    }
+
+    private void UpdateText()
+    {
+        sb.Clear();
         sb.Append("you gathered<br>");
         sb.Append(currentlyAnimatedExp);
         sb.Append(" exp");
         _text.text = sb.ToString();
-        inputPrompt.SetActive(true);
-        playerLevelDisplayFinalScreen.FinishedAnimating();
-        enabled = false;
     }
 }

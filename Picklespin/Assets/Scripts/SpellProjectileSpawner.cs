@@ -46,7 +46,7 @@ public class SpellProjectileSpawner : MonoBehaviour
         recoilMultiplier = RecoilMultiplier.instance;
         spellCastPoint = cachedCameraMain.cachedTransform;
 
-        purpleSpellPool = new ObjectPool<Bullet>(CreatePurple, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledPurpleSpellsCount, pooledPurpleSpellsCount*2);
+        purpleSpellPool = new ObjectPool<Bullet>(CreatePurple, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledPurpleSpellsCount, pooledPurpleSpellsCount * 2);
         fireballSpellPool = new ObjectPool<Bullet>(CreateFireball, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledFireballSpellsCount, pooledFireballSpellsCount * 2);
         lightSpellPool = new ObjectPool<Bullet>(CreateLight, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledlightSpellsCount, pooledlightSpellsCount * 2);
         PreInstantiate();
@@ -70,18 +70,18 @@ public class SpellProjectileSpawner : MonoBehaviour
                 purpleSpawned.OnShoot();
                 break;
 
-                case 1:
+            case 1:
                 Bullet fireballSpawned = fireballSpellPool.Get();
                 fireballSpawned.OnShoot();
                 break;
 
-                case 2:
-                    Bullet lightSpawned = lightSpellPool.Get();
+            case 2:
+                Bullet lightSpawned = lightSpellPool.Get();
                 OffPreviousLights(lightSpawned);
                 lightSpawned.OnShoot();
                 break;
 
-                default:
+            default:
                 Debug.Log("spell spawner not set");
                 break;
         }

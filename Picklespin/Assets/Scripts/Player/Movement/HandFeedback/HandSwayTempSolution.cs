@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HandSwayTempSolution : MonoBehaviour
 {
+
     public Transform mainCamera;
     public Transform body;
     [SerializeField] private float damping = 30;
