@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -12,8 +11,6 @@ public class StateManager : MonoBehaviour
     private float randomTimeOffset;
     private float actualRefreshRate;
 
-    private WaitForSeconds refreshTimeSpace;
-
     private void Awake()
     {
         aiVision = GetComponent<AiVision>();
@@ -24,22 +21,18 @@ public class StateManager : MonoBehaviour
     {
         randomTimeOffset = Random.Range(0, 0.05f);
         actualRefreshRate = RefreshEveryVarSeconds + randomTimeOffset;
-        refreshTimeSpace = new WaitForSeconds(actualRefreshRate);
-        StartCoroutine(RefreshAI());
+        InvokeRepeating("Do", randomTimeOffset, actualRefreshRate);
     }
 
 
-
-    private IEnumerator RefreshAI()
+    private void Do()
     {
-        while (true)
-        {
-            aiVision.FieldOfViewCheck();
-            RunStateMachine();
-            yield return refreshTimeSpace;
-            //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
-        }
+        aiVision.FieldOfViewCheck();
+        RunStateMachine();
+        //Debug.Log("AI Refresh, every " + actualRefreshRate + " secs");
     }
+
+
 
     private void RunStateMachine()
     {

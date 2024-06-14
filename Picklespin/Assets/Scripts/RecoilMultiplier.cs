@@ -7,8 +7,8 @@ public class RecoilMultiplier : MonoBehaviour
 
     public float currentRecoil;
 
-    [SerializeField] private float jumpingRecoil = 1.2f;
-    [SerializeField] private float sprintingRecoil = 0.3f;
+     private float jumpingRecoil = 1.5f;
+     private float sprintingRecoil = 0.2f;
 
     private void Start()
     {

@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private SetOnFire setOnFire;
 
     [Header("References")]
+    private AiHealth aiHealth;
     private AiVision aiVision;
     private AiHealthUiBar aiHealthUI;
     private CameraShake cameraShake;
@@ -135,13 +136,14 @@ public class Bullet : MonoBehaviour
             StopCoroutine(autoKill);
             hitSomething = true;
 
-            if (collision.transform.TryGetComponent<AiHealth>(out AiHealth aiHealth)) //ENEMY HIT REGISTERED
+            if (collision.transform.TryGetComponent<AiReferences>(out AiReferences refs)) //ENEMY HIT REGISTERED
             {
-                    aiVision = collision.transform.GetComponent<AiVision>();
-                    aiHealthUI = collision.transform.GetComponentInChildren<AiHealthUiBar>();
-                    giveExpToPlayer = collision.transform.GetComponent<GiveExpToPlayer>(); //make get components execute only when new enemy has been hit
-                    flashWhenHit = collision.transform.GetComponent<MaterialFlashWhenHit>();
 
+                    aiHealth = refs.Health;
+                    aiVision = refs.Vision;
+                    aiHealthUI = refs.HpUiBar;
+                    giveExpToPlayer = refs.GiveExp;
+                    flashWhenHit = refs.MaterialFlash;
 
 
                 RandomizeCritical();

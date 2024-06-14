@@ -25,7 +25,7 @@
 	<object class="MixerBusPanner" id="{c2bcec46-1539-4dad-84d1-748fd5e8f046}" />
 	<object class="DelayEffect" id="{52b27eb7-3c6d-480a-a68b-09357993248b}">
 		<property name="delay">
-			<value>42</value>
+			<value>40</value>
 		</property>
 		<property name="feedback">
 			<value>0</value>
@@ -36,7 +36,7 @@
 	</object>
 	<object class="ThreeEQEffect" id="{40a69689-bf1a-4feb-a9fc-c2e9b8eeeb54}">
 		<property name="lowGain">
-			<value>-11</value>
+			<value>-10</value>
 		</property>
 		<property name="lowCrossover">
 			<value>140</value>

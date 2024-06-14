@@ -64,6 +64,8 @@ GameObject:
   - component: {fileID: 6126596996326152822}
   - component: {fileID: 7493580193764309060}
   - component: {fileID: 3868122248835144970}
+  - component: {fileID: 2758481305889976949}
+  - component: {fileID: 7169070340866394741}
   m_Layer: 6
   m_Name: Angel
   m_TagString: Angel
@@ -279,6 +281,37 @@ MonoBehaviour:
   myCollider: {fileID: 7493580193764309060}
   myNavMeshAgent: {fileID: 0}
   myStateManager: {fileID: 0}
+--- !u!114 &2758481305889976949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645630405786229440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94fe9388dca7a342ad77a2b7875f906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 8754541524929719591}
+  Vision: {fileID: 0}
+  HpUiBar: {fileID: 0}
+  GiveExp: {fileID: 711232562984108551}
+  MaterialFlash: {fileID: 7169070340866394741}
+--- !u!114 &7169070340866394741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645630405786229440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5033380a251c3f47a5f694fcca7ec0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 8405925972926547196}
+  flashDuration: 0.5
 --- !u!1 &3533344838445482147
 GameObject:
   m_ObjectHideFlags: 0
