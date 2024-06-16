@@ -38,9 +38,7 @@ public class AngelHeal : MonoBehaviour
 
     public FloatUpDown floatUpDown;
 
-    [SerializeField] private UnityEvent showTip;
-
-    [SerializeField] private UnityEvent hideTip;
+    private TipManager tipManager;
 
 
     [SerializeField] private CanvasGroup angelHPCanvasGroup;
@@ -57,8 +55,9 @@ public class AngelHeal : MonoBehaviour
 
     private void Start()
     {
+        tipManager = TipManager.instance;
         helperArrow = Helper_Arrow.instance;
-        hideTip.Invoke();
+        tipManager.Hide(1);
         minigame = AngelHealingMinigame.instance;
         minigame.enabled = false;
         healingBeamInstance = RuntimeManager.CreateInstance(healingBeamEvent);
@@ -143,7 +142,7 @@ public class AngelHeal : MonoBehaviour
             //Debug.Log("StartAiming");
             minigame.aiHealth = aiHealth;
             handRenderer.material = handHighlightMaterial;
-            showTip.Invoke();
+            tipManager.Show(1);
             isAimingAtAngel = true;
         }
     }
@@ -152,9 +151,9 @@ public class AngelHeal : MonoBehaviour
     {
         if (isAimingAtAngel && healSpeedMultiplier == 1)
         {
-           // Debug.Log("StopAiming");
+            // Debug.Log("StopAiming");
 
-            hideTip.Invoke();
+            tipManager.Hide(1);
 
             if (handRenderer.material != handOGMaterial)
             {
@@ -175,7 +174,7 @@ public class AngelHeal : MonoBehaviour
         //Debug.Log("Healing");
         helperArrow.HideArrow();
         healingBeamInstance.start();
-        hideTip.Invoke();
+        tipManager.Hide(1);
         floatUpDown.enabled = true;
         minigame.enabled = true;
         minigame.InitializeMinigame();

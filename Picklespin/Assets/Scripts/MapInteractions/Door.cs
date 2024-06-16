@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
 using FMOD.Studio;
-using UnityEngine.Events;
 
 public class Door : MonoBehaviour
 {
@@ -27,9 +26,8 @@ public class Door : MonoBehaviour
     [SerializeField] private EventReference DoorLockedEvent;
     private EventInstance DoorSoundInstance;
 
-    //TOOLTIP
-    public UnityEvent showTooltipEvent;
-    public UnityEvent hideTooltipEvent;
+    //TOOLTIPS
+    private TipManager tipManager;
 
     //CACHE
     private Transform _transform;
@@ -37,6 +35,11 @@ public class Door : MonoBehaviour
     private void Awake()
     {
         _transform = transform;
+    }
+
+    private void OnEnable()
+    {
+        tipManager = TipManager.instance;
     }
 
     void Start()
@@ -105,7 +108,7 @@ public class Door : MonoBehaviour
         if (!isOpened)
         {
             OpenDoor();
-            hideTooltipEvent.Invoke();
+            tipManager.Hide(0);
         }
         else
         {
@@ -148,7 +151,7 @@ public class Door : MonoBehaviour
 
             if (!isOpened)
             {
-                showTooltipEvent.Invoke();
+                tipManager.Show(0);
             }
 
         }
@@ -159,7 +162,7 @@ public class Door : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && enabled)
         {
             enabled = false;
-            hideTooltipEvent.Invoke();
+            tipManager.Hide(0);
         }
     }
 
