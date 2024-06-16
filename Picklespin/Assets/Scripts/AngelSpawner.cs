@@ -24,6 +24,7 @@ public class AngelSpawner : MonoBehaviour
     private void Start()
     {
         helperArrow = Helper_Arrow.instance;
+        SpawnAngel();
     }
 
 

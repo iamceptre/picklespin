@@ -21,6 +21,7 @@ public class Torch : MonoBehaviour
 
     public void On()
     {
+        _light.DOKill();
         _emitter.Play();
         ParticleSystem.EmissionModule emission = _particleSystem.emission;
         emission.enabled = true;
