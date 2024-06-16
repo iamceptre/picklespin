@@ -22,6 +22,7 @@ public class AngelHealingMinigame : MonoBehaviour
     public Image scrollTip;
     private float scrollTipStartYPos;
     public Image turboArea;
+    private RectTransform turboAreaRect;
     private Color turboAreaColor;
 
     private float turboAreaLeftEdgePosition;
@@ -34,10 +35,10 @@ public class AngelHealingMinigame : MonoBehaviour
 
     [SerializeField] AngelHealBoostLight boostLight;
 
-   private void Awake()
+    private void Awake()
     {
         sliderStartingColor = sliderFill.color;
-        angelHPslider = GetComponent<Slider>(); 
+        angelHPslider = GetComponent<Slider>();
         turboAreaColor = turboArea.color;
 
         if (instance != null && instance != this)
@@ -48,8 +49,7 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             instance = this;
         }
-        turboAreaWidth = turboArea.rectTransform.rect.width * 0.1f;
-        //Debug.Log(turboAreaWidth);
+        turboAreaRect = turboArea.transform.GetComponent<RectTransform>();
     }
 
     private void Start()
@@ -59,6 +59,9 @@ public class AngelHealingMinigame : MonoBehaviour
 
     public void RandomizeTurboAreaPosition()
     {
+        turboAreaWidth = Random.Range(4, 9);
+        turboAreaRect.sizeDelta = new Vector2(turboAreaWidth * 10, turboAreaRect.sizeDelta.y);
+
         float halfOfWidth = turboAreaWidth * 0.5f;
         float turboAreaRandomizedPosition = Random.Range(7, 35);
         turboAreaLeftEdgePosition = turboAreaRandomizedPosition - halfOfWidth;
@@ -71,7 +74,8 @@ public class AngelHealingMinigame : MonoBehaviour
 
     public void InitializeMinigame()
     {
-        if (!tooLate) {
+        if (!tooLate)
+        {
             ReadyUp();
             FadeIn();
         }
@@ -79,7 +83,7 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             turboArea.enabled = false;
             scrollTip.enabled = false;
-            enabled = false;    
+            enabled = false;
         }
     }
 
@@ -103,10 +107,10 @@ public class AngelHealingMinigame : MonoBehaviour
         ReadyUp();
     }
 
-   private void Update()
+    private void Update()
     {
 
-        if (angelHPslider.value >= turboAreaLeftEdgePosition && angelHPslider.value <= turboAreaRightEdgePosition) 
+        if (angelHPslider.value >= turboAreaLeftEdgePosition && angelHPslider.value <= turboAreaRightEdgePosition)
         {
             EnterRange();
         }
@@ -121,18 +125,19 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             if (inTurboRange)
             {
-                    Boost();
+                Boost();
             }
             else
             {
-                    Miss();
+                Miss();
             }
         }
     }
 
     private void EnterRange() //one impulse, not a continous function
     {
-        if (!inTurboRange && !missed) {
+        if (!inTurboRange && !missed)
+        {
 
             turboArea.DOColor(turboAreaColor, 0.2f);
             scrollTip.DOFade(1, 0.2f);
@@ -194,7 +199,7 @@ public class AngelHealingMinigame : MonoBehaviour
         scrollTip.DOKill();
         scrollTip.DOFade(0.62f, 0.1f).OnComplete(TipFloat);
     }
-    
+
     private void TipFloat()
     {
         if (!boosted && !missed && !tooLate)
@@ -213,7 +218,7 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private void Boost()
     {
-        if (!boosted && !tooLate && !missed) 
+        if (!boosted && !tooLate && !missed)
         {
             boostLight.LightAnimation();
             FadeOut();
