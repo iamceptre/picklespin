@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
 {
+    private Helper_Arrow helperArrow;
     AngelHealingMinigame minigame;
     [HideInInspector] public float healSpeedMultiplier = 1; //ITS BOOSTED WHEN IS 0
 
@@ -56,6 +57,7 @@ public class AngelHeal : MonoBehaviour
 
     private void Start()
     {
+        helperArrow = Helper_Arrow.instance;
         hideTip.Invoke();
         minigame = AngelHealingMinigame.instance;
         minigame.enabled = false;
@@ -122,6 +124,7 @@ public class AngelHeal : MonoBehaviour
     {
         if (floatUpDown.enabled)
         {
+            helperArrow.ShowArrow();
             StopCoroutine(healingRoutine);
             healingParticlesScript.StopEmitting();
             FadeOutGui();
@@ -170,6 +173,7 @@ public class AngelHeal : MonoBehaviour
     private IEnumerator Healing()
     {
         //Debug.Log("Healing");
+        helperArrow.HideArrow();
         healingBeamInstance.start();
         hideTip.Invoke();
         floatUpDown.enabled = true;

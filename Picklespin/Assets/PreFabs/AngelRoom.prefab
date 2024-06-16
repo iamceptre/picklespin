@@ -8999,6 +8999,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Angel
       objectReference: {fileID: 0}
+    - target: {fileID: 1645630405786229440, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2063180609649875548, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: giveExpAfterHeal
       value: 

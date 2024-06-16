@@ -41,6 +41,7 @@ public class Pause : MonoBehaviour
 
     public void PauseGame()
     {
+        System.GC.Collect();
         pauseEvent.Invoke();
         timescaleBeforePausing = Time.timeScale;
         Time.timeScale = 0;
@@ -51,6 +52,7 @@ public class Pause : MonoBehaviour
 
     public void UnpauseGame()
     {
+        System.GC.Collect();
         unpauseEvent.Invoke();
         Time.timeScale = timescaleBeforePausing;
         isPaused = false;

@@ -7,23 +7,25 @@ public class isCloseToAngel : MonoBehaviour
     [SerializeField] private AngelHeal angelHeal;
     [SerializeField] private Canvas angelHPGUI;
     [SerializeField] private AngelHealingMinigame minigame;
-    [SerializeField] private GameObject helperArrow;
+
+
+    private string triggerName = "AngelScriptAcivationTrigger";
+
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "AngelScriptAcivationTrigger")
+        if (other.gameObject.name == triggerName)
         {
             minigame.boosted = false;
             angelHeal.enabled = true;
-            helperArrow.SetActive(false);
             angelHPGUI.enabled = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name == "AngelScriptAcivationTrigger")
+        if (other.gameObject.name == triggerName)
         {
             if (angelHeal.healSpeedMultiplier == 0)
             {
