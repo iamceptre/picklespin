@@ -17,6 +17,7 @@ public class AngelMind : MonoBehaviour
     [SerializeField] private BoxCollider scriptActivationTrigger;
     private Renderer angelRenderer;
     private Helper_Arrow helperArrow;
+    private AngelHealingMinigame minigame;  
 
     [Header("Logic")]
     public bool healed = false;
@@ -58,6 +59,7 @@ public class AngelMind : MonoBehaviour
     private void Start()
     {
         angelRenderer = gameObject.GetComponent<Renderer>();
+        minigame = AngelHealingMinigame.instance;
         helperArrow = Helper_Arrow.instance;
         playerHP = PlayerHP.instance;
         ammo = Ammo.instance;
@@ -87,6 +89,7 @@ public class AngelMind : MonoBehaviour
         Invoke("GiveManaToPlayer", 0.4f);
         giveExpAfterHeal.GiveExp();
         scriptActivationTrigger.size = Vector3.zero;
+        minigame.RandomizeTurboAreaPosition();
     }
 
 

@@ -26,7 +26,7 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private float turboAreaLeftEdgePosition;
     private float turboAreaRightEdgePosition;
-    private float turboAreaWidth = 10;
+    private float turboAreaWidth;
 
     public bool boosted = false;
     private bool missed = false;
@@ -48,6 +48,8 @@ public class AngelHealingMinigame : MonoBehaviour
         {
             instance = this;
         }
+        turboAreaWidth = turboArea.rectTransform.rect.width * 0.1f;
+        //Debug.Log(turboAreaWidth);
     }
 
     private void Start()
@@ -58,7 +60,7 @@ public class AngelHealingMinigame : MonoBehaviour
     public void RandomizeTurboAreaPosition()
     {
         float halfOfWidth = turboAreaWidth * 0.5f;
-        float turboAreaRandomizedPosition = Random.Range(8, 35);
+        float turboAreaRandomizedPosition = Random.Range(7, 35);
         turboAreaLeftEdgePosition = turboAreaRandomizedPosition - halfOfWidth;
         turboAreaRightEdgePosition = turboAreaRandomizedPosition + halfOfWidth;
         float desiredTurboAreaPositionX = Mathf.Lerp(-147, 147, turboAreaRandomizedPosition * 0.01f);

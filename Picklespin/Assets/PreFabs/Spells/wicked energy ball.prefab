@@ -10269,8 +10269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc18866f382c7434bb5e70f3cf75a54b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turbulenceIntensity: 40
-  turbulenceFrequency: 200
+  turbulenceIntensity: 50
+  turbulenceFrequency: 500
 --- !u!114 &5946519115442919475
 MonoBehaviour:
   m_ObjectHideFlags: 0

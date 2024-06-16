@@ -1,12 +1,14 @@
 using FMODUnity;
 using UnityEngine;
 
-public class Win : MonoBehaviour
+public class Win : MonoBehaviour  //WHEN ESCAPING THRU THE PORTAL
 {
     public static Win instance;
 
     public GameObject winScreen;
-    public EventReference winEvent;
+    private CanvasGroupOpacityAnimator winScreenFadeIn;
+
+    public EventReference winFmodEvent;
 
     private void Awake()
     {
@@ -18,13 +20,14 @@ public class Win : MonoBehaviour
         {
             instance = this;
         }
-
+        winScreenFadeIn = winScreen.GetComponent<CanvasGroupOpacityAnimator>();
     }
 
     public void WinFunction()
     {
-        RuntimeManager.PlayOneShot(winEvent);
+        RuntimeManager.PlayOneShot(winFmodEvent);
         winScreen.SetActive(true);
+        winScreenFadeIn.enabled = true;
         Time.timeScale = 0;
     }
 

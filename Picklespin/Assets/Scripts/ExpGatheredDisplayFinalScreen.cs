@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using System.Text;
 
-public class ExpGatheredDisplayFinalScreen : MonoBehaviour
+public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 {
     private TMP_Text _text;
     [HideInInspector] public int currentlyAnimatedExp = 0;
@@ -18,6 +18,8 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour
 
     StringBuilder sb = new StringBuilder();
 
+    private float timeScaleBefore;
+
     private void Awake()
     {
         _text = GetComponent<TMP_Text>();
@@ -31,10 +33,10 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour
 
     void Start()
     {
-
-
+        timeScaleBefore = Time.timeScale;
         Pause.instance.PauseGame();
         Pause.instance.gameObject.SetActive(false);
+        //Time.timeScale = timeScaleBefore;
 
          myTween = DOTween.To(() => currentlyAnimatedExp, x => currentlyAnimatedExp = x, PlayerEXP.instance.playerExpAmount, animationTime).SetEase(Ease.InOutSine).OnComplete(() =>
         {
