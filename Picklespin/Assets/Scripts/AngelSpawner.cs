@@ -12,17 +12,16 @@ public class AngelSpawner : MonoBehaviour
     {
          angels = GameObject.FindGameObjectsWithTag("Angel");
          angelMinds = new AngelMind[angels.Length];
-
-        for (int i = 0; i < angels.Length; i++)
-        {
-            angelMinds[i] = angels[i].GetComponent<AngelMind>();
-            angels[i].SetActive(false);
-        }
-
     }
 
     private void Start()
     {
+        for (int i = 0; i < angels.Length; i++)
+        {
+            angelMinds[i] = angels[i].GetComponent<AngelMind>();
+            angelMinds[i].SetActive(false);
+        }
+
         helperArrow = Helper_Arrow.instance;
         SpawnAngel();
     }
@@ -40,13 +39,13 @@ public class AngelSpawner : MonoBehaviour
 
         RandomizeAngelIndex();
 
-        while (angels[_rand].activeInHierarchy)
+        while (angelMinds[_rand].isActive)
         {
             //Debug.Log("while loop ran, re-randomizing the number");
             RandomizeAngelIndex();
         }
 
-        angels[_rand].SetActive(true);
+        angelMinds[_rand].SetActive(true);
         helperArrow.ShowArrow(angels[_rand].transform);
     }
 
@@ -56,7 +55,7 @@ public class AngelSpawner : MonoBehaviour
 
         for (int i = 0; i < angels.Length; i++)
         {
-            if (!angels[i].activeInHierarchy)
+            if (!angelMinds[i].isActive)
             {
                 allActive = false;
                 break;
@@ -72,7 +71,7 @@ public class AngelSpawner : MonoBehaviour
 
         for (int i = 0; i < angels.Length; i++)
         {
-            if (angels[i].activeInHierarchy && !angelMinds[i].healed)
+            if (angelMinds[i].isActive && !angelMinds[i].healed)
             {
                 return false;
             }

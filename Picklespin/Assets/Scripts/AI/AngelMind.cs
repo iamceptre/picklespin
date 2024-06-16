@@ -4,6 +4,7 @@ using FMODUnity;
 public class AngelMind : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField]private Torch torch;
     private PlayerHP playerHP;
     private Ammo ammo;
     private PlayerMovement playerMovement;
@@ -21,11 +22,37 @@ public class AngelMind : MonoBehaviour
     public bool healed = false;
     public bool isDead = false;
 
+    [Header("Spawner Logic and Refrences")]
+    public bool isActive;
+    private Renderer _rend;
+    private Collider _collider;
+    private BoxCollider _activationTrigger;
+
+
+    public void SetActive(bool state)
+    {
+        _activationTrigger.enabled = state;
+        _rend.enabled = state;
+        _collider.enabled = state;
+        isActive = state;
+
+        if (state)
+        {
+            torch.On();
+        }
+        else
+        {
+            torch.Off();
+        }
+    }
 
 
     private void Awake()
     {
+        _rend = GetComponent<Renderer>();
+        _collider = GetComponent<SphereCollider>();
         angelTorchManager = GetComponent<AngelTorchManager>();
+        _activationTrigger = GetComponentInChildren<BoxCollider>();
     }
 
     private void Start()

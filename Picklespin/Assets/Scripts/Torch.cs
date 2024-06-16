@@ -34,6 +34,7 @@ public class Torch : MonoBehaviour
 
     public void Off()
     {
+        _light.DOKill();
         _emitter.Stop();
         ParticleSystem.EmissionModule emission = _particleSystem.emission;
         emission.enabled = false;
