@@ -68,6 +68,7 @@ public class CameraShake : MonoBehaviour
             float strenghtBasedOnDistance = (75 - distanceFromExplosion) * 0.01f * damage;
             strenghtBasedOnDistance = Mathf.Clamp(strenghtBasedOnDistance, 0, 10);
 
+            mainCamera.DOKill();
             explosionTween.Kill();
             explosionTween = mainCamera.DOShakeRotation(strenghtBasedOnDistance, strenghtBasedOnDistance + damage, 26, 90, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
             {

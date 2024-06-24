@@ -29,8 +29,14 @@ public class SetOnFire : MonoBehaviour
 
     [SerializeField][Range(0, 10)] private float countdownTimer = 0;
 
-    private WaitForSeconds decreaseHpEverySeconds = new WaitForSeconds(0.5f);
+    private WaitForSeconds decreaseHpEverySeconds;
 
+
+    private void Awake()
+    {
+        float rand = Random.Range(0.45f, 0.55f);
+        decreaseHpEverySeconds = new WaitForSeconds(rand);
+    }
     public void StartFire()
     {
         damageUiSpawner = DamageUI_Spawner.instance;

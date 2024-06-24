@@ -3,7 +3,7 @@ using FMODUnity;
 using UnityEngine.Pool;
 using System.Collections;
 using DG.Tweening;
-public class Bullet : MonoBehaviour
+public class Bullet_old_preRange : MonoBehaviour
 {
     private int originalDamage;
 
@@ -17,21 +17,12 @@ public class Bullet : MonoBehaviour
     [SerializeField] float timeBeforeOff = 2;
     [SerializeField] private bool fadeOutLight = false;
 
-    [Header("Range Damage")]
-    [SerializeField] private bool isRanged = false;
-    [SerializeField] private float rangeRadius = 5.0f;
-    [SerializeField] private LayerMask detectionLayer;
-
 
     [Header("Assets")]
     [SerializeField] private ParticleSystem explosionFX;
     private GameObject _explosionFxGameObject;
     [SerializeField] private EventReference shootSound;
     public EventReference pullupSound;
-
-    [Header("Special Effects")]
-    [SerializeField] private bool doesThisSpellSetOnFire = false;
-    [SerializeField] private SetOnFire setOnFire;
 
     [Header("References")]
     private AiHealth aiHealth;
@@ -68,6 +59,10 @@ public class Bullet : MonoBehaviour
     private Color _lightColor;
     private GameObject _gameObject;
     public LightSpell lightSpell;
+
+    [Header("Special Effects")]
+    [SerializeField] private bool doesThisSpellSetOnFire = false;
+    [SerializeField] private SetOnFire setOnFire;
 
 
     void Awake()
@@ -129,7 +124,7 @@ public class Bullet : MonoBehaviour
     public void ReturnToPool()
     {
         StopCoroutine(autoKill);
-        _pool.Release(this);
+        //_pool.Release(this);
     }
 
 
@@ -141,108 +136,82 @@ public class Bullet : MonoBehaviour
             StopCoroutine(autoKill);
             hitSomething = true;
 
-                if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
+            if (collision.transform.TryGetComponent<AiReferences>(out AiReferences refs)) //ENEMY HIT REGISTERED
+            {
+
+                    aiHealth = refs.Health;
+                    aiVision = refs.Vision;
+                    aiHealthUI = refs.HpUiBar;
+                    giveExpToPlayer = refs.GiveExp;
+                    flashWhenHit = refs.MaterialFlash;
+
+
+                RandomizeCritical();
+
+                if (flashWhenHit != null)
                 {
-                    Collider collider = collision.gameObject.GetComponent<Collider>();
-                    HitRegistered(collider, refs, collision);
+                    flashWhenHit.StopAllCoroutines();
+
+
+                    if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
+                    {
+                        Headshot(collision);
+                        giveExpToPlayer.wasLastShotAHeadshot = true;
+                        flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
+                    }
+                    else
+                    {
+                        giveExpToPlayer.wasLastShotAHeadshot = false;
+                        flashWhenHit.StartCoroutine(flashWhenHit.Flash());
+                    }
+
                 }
 
-            if (isRanged)
-            {
-                RangeHitDetection(collision);
-            }
-            
+                aiHealth.hp -= damage;
 
-            SpawnExplosion();
-            AfterExplosion();
+                damageUiSpawner.Spawn(collision.contacts[0].point, damage, wasLastHitCritical);
 
-        }
-
-    }
-
-
-    private void HitRegistered(Collider collider, AiReferences refs, Collision collision)
-    {
-        aiHealth = refs.Health;
-        aiVision = refs.Vision;
-        aiHealthUI = refs.HpUiBar;
-        giveExpToPlayer = refs.GiveExp;
-        flashWhenHit = refs.MaterialFlash;
-
-        RandomizeCritical();
-
-        flashWhenHit.StopAllCoroutines();
-
-
-        if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
-        {
-            Headshot(refs);
-            giveExpToPlayer.wasLastShotAHeadshot = true;
-            flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
-        }
-        else
-        {
-            giveExpToPlayer.wasLastShotAHeadshot = false;
-            flashWhenHit.StartCoroutine(flashWhenHit.Flash());
-        }
-
-        aiHealth.hp -= damage;
-
-        damageUiSpawner.Spawn(collider.transform.position, damage, wasLastHitCritical);
-
-        if (aiHealth.hp <= 0)
-        {
-            collider.enabled = false;
-            aiHealth.deathEvent.Invoke();
-        }
-        else
-        {
-            ApplySpecialEffect(refs);
-        }
-
-        if (aiHealthUI != null)
-        {
-            aiHealthUI.RefreshBar();
-        }
-        HitGetsYouNoticed();
-    }
-
-
-    private void RangeHitDetection(Collision collision)
-    {
-        Collider[] colliders = Physics.OverlapSphere(collision.GetContact(0).point, rangeRadius, detectionLayer);
-
-
-        foreach (Collider col in colliders)
-        {
-            if (col.transform.TryGetComponent(out AiReferences areaRefs))
-            {
-                if (col != collision.collider) // Avoid double hitting the same object
-                {
-                    HitRegistered(col, areaRefs, collision);
+                if (aiHealth.hp <= 0) {
+                    collision.collider.enabled = false;
+                    aiHealth.deathEvent.Invoke();
                 }
+                else
+                {
+                    ApplySpecialEffect(collision);
+                }
+
+                if (aiHealthUI != null)
+                {
+                    aiHealthUI.RefreshBar();
+                }
+                HitGetsYouNoticed();
+
             }
+
         }
+        SpawnExplosion();
+        AfterExplosion();
     }
 
 
-    private void Headshot(AiReferences refs)
+    private void Headshot(Collision collision)
     {
         damage *= 3;
-        refs.HeadshotParticle.Play();
+        ParticleSystem headshotParticle = collision.collider.gameObject.transform.GetComponent<ParticleSystem>();
+        headshotParticle.Play();
         //maybe a low-key sound
     }
 
 
-    private void ApplySpecialEffect(AiReferences aiRefs)
+    private void ApplySpecialEffect(Collision collision)
     {
         if (doesThisSpellSetOnFire)
         {
-            var addedEffect = aiRefs.gameObject.GetComponent<SetOnFire>();
+            var addedEffect = collision.gameObject.GetComponent<SetOnFire>();
 
             if (addedEffect == null)
             {
-                addedEffect = aiRefs.gameObject.AddComponent<SetOnFire>();
+                addedEffect = collision.gameObject.AddComponent<SetOnFire>();
                 addedEffect.effectAudio = setOnFire.effectAudio;
                 addedEffect.ParticleObject = setOnFire.ParticleObject;
                 addedEffect.killedByBurnEffect = setOnFire.killedByBurnEffect;

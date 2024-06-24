@@ -7,6 +7,8 @@ public class DamageUI_Spawner : MonoBehaviour
     [SerializeField] private DamageUI_V2 damageUi;
     [SerializeField] private RectTransform worldCanvas;
 
+    private Vector3 offset = new Vector3(0,4,0);
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -22,7 +24,7 @@ public class DamageUI_Spawner : MonoBehaviour
 
     public void Spawn (Vector3 whereIshouldGo, int howMuchDamageDealt, bool isCritical)
     {
-        whereIshouldGo = whereIshouldGo + Random.insideUnitSphere;
+        whereIshouldGo += Random.insideUnitSphere + offset;
         DamageUI_V2 spawnedDamageUi = Instantiate(damageUi, whereIshouldGo, Quaternion.identity);
         spawnedDamageUi.Do(whereIshouldGo, howMuchDamageDealt, isCritical);
         spawnedDamageUi.transform.SetParent(transform);

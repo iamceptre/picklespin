@@ -5100,7 +5100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellName: hot ball
+  spellName: fireball
   damage: 20
   magickaCost: 20
   speed: 30
@@ -5108,6 +5108,11 @@ MonoBehaviour:
   castDuration: 1
   timeBeforeOff: 3
   fadeOutLight: 0
+  isRanged: 1
+  rangeRadius: 15
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 256
   explosionFX: {fileID: 8713706549792644285}
   shootSound:
     Guid:

@@ -9,5 +9,7 @@ public class AiReferences : MonoBehaviour
     [Tooltip("when dying")]public GiveExpToPlayer GiveExp;
     public MaterialFlashWhenHit MaterialFlash;
 
+    public ParticleSystem HeadshotParticle;
+
 }
 

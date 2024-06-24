@@ -9995,7 +9995,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.5
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -15539,6 +15539,7 @@ MonoBehaviour:
   HpUiBar: {fileID: 3817865884643380506}
   GiveExp: {fileID: 6714385560574647472}
   MaterialFlash: {fileID: 2640075809853599693}
+  HeadshotParticle: {fileID: 8530334580075811554}
 --- !u!1 &5822582043937475088
 GameObject:
   m_ObjectHideFlags: 0
