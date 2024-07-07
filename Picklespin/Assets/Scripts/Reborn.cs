@@ -20,6 +20,8 @@ public class Reborn : MonoBehaviour
 
     [SerializeField] [Tooltip("if -1, it restarts the current scene")] private int sceneindex = -1;
 
+    private SnapshotManager snapshotManager;
+
     private void Awake()
     {
         myText = GetComponent<TMP_Text>();
@@ -27,6 +29,8 @@ public class Reborn : MonoBehaviour
     }
     void Start()
     {
+        snapshotManager = SnapshotManager.instance;
+        FMODResetManager.instance.ResetFMOD(true);
         portalAfterClosing = PortalAfterClosing.instance;
         myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, howMuchToSpaceout, animationTime).SetLoops(-1, LoopType.Yoyo);
         myTween.SetUpdate(UpdateType.Normal, true);
@@ -44,9 +48,10 @@ public class Reborn : MonoBehaviour
 
             myTween = myText.DOColor(transparentMe, 2).SetEase(Ease.OutExpo).OnComplete(() =>
             {
-                portalAfterClosing.portalClosedInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                snapshotManager.StopAllSnapshots();
                 Time.timeScale = 1;
                 DOTween.KillAll();
+                FMODResetManager.instance.ResetFMOD(true);
                 SetScene();
             });
             myTween.SetUpdate(UpdateType.Normal, true);

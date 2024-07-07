@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Rendering.PostProcessing;
 using System.Collections;
-using FMOD.Studio;
 
 public class PlayerHP : MonoBehaviour
 {
@@ -30,8 +29,9 @@ public class PlayerHP : MonoBehaviour
     private float desaturateAmount = 20;
     private float contrastAmount = 10;
     private float exposureAmount = 1;
-    private EventInstance lowHpSnapshotInstance;
-    [SerializeField] private EventReference lowHpSnapshotReference;
+
+    private SnapshotManager snapshotManager;
+    
 
     private void Awake()
     {
@@ -43,7 +43,6 @@ public class PlayerHP : MonoBehaviour
         {
             instance = this;
         }
-
     }
 
     public void SetGodmode(bool isGodmode)
@@ -53,12 +52,12 @@ public class PlayerHP : MonoBehaviour
 
     private void Start()
     {
+        snapshotManager = SnapshotManager.instance;
         death = Death.instance;
         hurtOverlay.enabled = false;
         barLightsAnimation = BarLightsAnimation.instance;
         hpBarDisplay = HpBarDisplay.instance;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
-        lowHpSnapshotInstance = RuntimeManager.CreateInstance(lowHpSnapshotReference);
     }
 
 
@@ -88,7 +87,7 @@ public class PlayerHP : MonoBehaviour
         {
             StartCoroutine(LowHpEffect());
             isLowHP = true;
-            lowHpSnapshotInstance.start();
+            snapshotManager.PlayLowHPSnapshot();
         }
     }
 
@@ -98,7 +97,7 @@ public class PlayerHP : MonoBehaviour
         if (isLowHP)
         {
             StartCoroutine(RestoreHpEffect());
-            lowHpSnapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            snapshotManager.StopLowHPSnapshot();
             isLowHP = false;
         }
     }

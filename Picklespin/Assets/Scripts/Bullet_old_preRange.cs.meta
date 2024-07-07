@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bfa3ec44bb546fa42ae3a4571817d7d3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - CastingParticle: {instanceID: 0}
+  - spawnInHandParticle: {instanceID: 0}
+  - explosionFX: {instanceID: 0}
+  - damageUi: {fileID: 2583684299047286458, guid: a5b9cee72a9d0944fbd5c29ee11ccc00, type: 3}
+  - setOnFire: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

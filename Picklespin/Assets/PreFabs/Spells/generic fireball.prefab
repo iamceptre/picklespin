@@ -5109,7 +5109,7 @@ MonoBehaviour:
   timeBeforeOff: 3
   fadeOutLight: 0
   isRanged: 1
-  rangeRadius: 15
+  rangeRadius: 9
   detectionLayer:
     serializedVersion: 2
     m_Bits: 256

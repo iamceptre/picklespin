@@ -22,8 +22,7 @@ public class PortalAfterClosing : MonoBehaviour
     private Pause pause;
     [SerializeField] private Canvas PortalClosedScreen;
 
-    [SerializeField] private EventReference portalClosedSnapshot;
-    public EventInstance portalClosedInstance;
+    private SnapshotManager snapshotManager;
 
     [SerializeField] private CanvasGroup[] canvasToFadeout;
     [SerializeField] private Image screenTint;
@@ -47,10 +46,10 @@ public class PortalAfterClosing : MonoBehaviour
 
     private void Start()
     {
+        snapshotManager = SnapshotManager.instance;
         pause = Pause.instance;
         playerHp = PlayerHP.instance;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
-        portalClosedInstance = RuntimeManager.CreateInstance(portalClosedSnapshot);
     }
 
 
@@ -60,7 +59,7 @@ public class PortalAfterClosing : MonoBehaviour
         crosshair.enabled = false;
         playerHp.SetGodmode(true);
         FadeOutCanvas();
-        portalClosedInstance.start();
+        snapshotManager.PlayPortalClosedSnapshot();
         TurnOffEmissions();
         StartCoroutine(ActivateFailScreen());
         StartCoroutine(SlowDownTimeAnDesaturate());

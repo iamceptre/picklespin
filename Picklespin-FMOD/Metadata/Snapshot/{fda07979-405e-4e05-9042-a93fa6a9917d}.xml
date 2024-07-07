@@ -44,7 +44,7 @@
 			<value>frequencyA</value>
 		</property>
 		<property name="value">
-			<value>1003.89966</value>
+			<value>2400</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
@@ -55,7 +55,7 @@
 			<value>qualityA</value>
 		</property>
 		<property name="value">
-			<value>0.100000001</value>
+			<value>0.707000017</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>

@@ -33,6 +33,7 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 
     void Start()
     {
+        FMODResetManager.instance.ResetFMOD(false);
         timeScaleBefore = Time.timeScale;
         Pause.instance.PauseGame();
         Pause.instance.gameObject.SetActive(false);
