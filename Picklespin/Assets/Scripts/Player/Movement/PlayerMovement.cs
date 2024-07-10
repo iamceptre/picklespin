@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterControllerVelocity speedometer;
 
+
     [Header("Stats")]
     public float fatigability = 32; //lower the fatigability to sprint for longer
 
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         movementStateForFMOD = 1;
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
         SetCameraBobSpeed();
-        footstepSystem.SetNewFootstepSpace(0.6f);
+        footstepSystem.SetNewFootstepSpace(1);
     }
 
     public void SlowMeDown()
@@ -80,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 1;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
-            footstepSystem.SetNewFootstepSpace(0.6f);//walk speed
+            footstepSystem.SetNewFootstepSpace(1);//walk speed
             SetCameraBobSpeed();
             isRunning = false;
         }
@@ -92,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 2;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
-            footstepSystem.SetNewFootstepSpace(0.22f);  //run speed
+            footstepSystem.SetNewFootstepSpace(2);  //run speed
             SetCameraBobSpeed();
             isRunning = true;
         }
@@ -104,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 0;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
-            footstepSystem.SetNewFootstepSpace(0.8f); //sneak speed
+            footstepSystem.SetNewFootstepSpace(0); //sneak speed
             SetCameraBobSpeed();
             isRunning = false;
         }

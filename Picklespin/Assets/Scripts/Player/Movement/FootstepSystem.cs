@@ -28,9 +28,24 @@ public class FootstepSystem : MonoBehaviour
 
     private int footstepCount = 0;
 
+    //Footstep Spaces, should be global
+    private float walkFootstepSpace = 0.6f;
+    private float runFootstepSpace = 0.285f;
+    private float sneakFootstepSpace = 0.8f;
+
+    private WaitForSeconds walkFootstepSpaceSecs;
+    private WaitForSeconds runFootstepSpaceSecs;
+    private WaitForSeconds sneakFootstepSpaceSecs;
+
+
 
     private void Awake()
     {
+        walkFootstepSpaceSecs = new WaitForSeconds(walkFootstepSpace);
+        runFootstepSpaceSecs = new WaitForSeconds(runFootstepSpace);
+        sneakFootstepSpaceSecs = new WaitForSeconds(sneakFootstepSpace);
+
+
         if (instance != null && instance != this)
         {
             Destroy(this);
@@ -44,10 +59,30 @@ public class FootstepSystem : MonoBehaviour
         currentFootstepSpace = new WaitForSeconds(fixedFootstepSpace);
     }
 
-    public void SetNewFootstepSpace(float desiredFootstepSpace)
+    public void SetNewFootstepSpace(int movementState)
     {
-        fixedFootstepSpace = desiredFootstepSpace;
-        currentFootstepSpace = new WaitForSeconds(fixedFootstepSpace);
+        switch (movementState)
+        {
+            case 0: //sneak
+                fixedFootstepSpace = sneakFootstepSpace;
+                currentFootstepSpace = sneakFootstepSpaceSecs;
+                break;
+
+            case 1: //walk
+                fixedFootstepSpace = walkFootstepSpace;
+                currentFootstepSpace = walkFootstepSpaceSecs;
+                break;
+
+            case 2: //run
+                fixedFootstepSpace = runFootstepSpace;
+                currentFootstepSpace = runFootstepSpaceSecs;
+                break;
+
+            default: //walk = default
+                fixedFootstepSpace = walkFootstepSpace;
+                currentFootstepSpace = walkFootstepSpaceSecs;
+                break;
+        }
     }
 
     private void Start()
@@ -86,7 +121,8 @@ public class FootstepSystem : MonoBehaviour
 
     private IEnumerator FootstepTimer()
     {
-        while (isRoutineRunning) {
+        while (isRoutineRunning)
+        {
             if (playerMovement.anyMovementKeysPressed == true)
             {
                 footstepCount++;
@@ -101,7 +137,8 @@ public class FootstepSystem : MonoBehaviour
 
     private void PlayFoostepSound()
     {
-        if (!isFootstepIgnored) {
+        if (!isFootstepIgnored)
+        {
             footstepEmitter.Play();
 
             if (footstepCount % 2 == 0)
@@ -127,7 +164,8 @@ public class FootstepSystem : MonoBehaviour
 
     public void RefreshFootstepTimer()
     {
-        if (playerMovement.anyMovementKeysPressed && controller.isGrounded) {
+        if (playerMovement.anyMovementKeysPressed && controller.isGrounded)
+        {
             isRoutineRunning = false;
             StopCoroutine(footstepTimerRoutine);
             isRoutineRunning = true;
@@ -137,7 +175,6 @@ public class FootstepSystem : MonoBehaviour
 
     public void SendJumpSignal()
     {
-
         jumpEventEmitter.Play();
     }
 

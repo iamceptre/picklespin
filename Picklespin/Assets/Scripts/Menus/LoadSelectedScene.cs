@@ -11,10 +11,20 @@ public class LoadSelectedScene : MonoBehaviour
     [SerializeField] private Canvas loadingBarCanvas;
     [SerializeField] private TMP_Text loadingText;
 
+    private FMODResetManager fmodResetManager;
+
+    private void Start()
+    {
+        fmodResetManager = FMODResetManager.instance;
+    }
+
 
 
     public void Do()
     {
+        if (fmodResetManager != null)
+            fmodResetManager.ResetFMOD(true);
+
         if (loadingBar == null)
         {
             SwitchScene();

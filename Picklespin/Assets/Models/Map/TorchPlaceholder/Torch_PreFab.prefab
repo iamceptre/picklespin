@@ -4944,22 +4944,22 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 415102918
-      Data2: 1145276465
-      Data3: 395432623
-      Data4: -2120870790
-    Path: event:/PLACEHOLDER_UNCZ/set_on_fire_loop
+      Data1: -621935701
+      Data2: 1216612453
+      Data3: -1386088787
+      Data4: -1748236048
+    Path: event:/MAP/Objects/Torch_Burning
   Event: 
-  PlayEvent: 0
+  PlayEvent: 1
   StopEvent: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   AllowNonRigidbodyDoppler: 0
   Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 4
-  OverrideMaxDistance: 20
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0.5
+  OverrideMaxDistance: 15
 --- !u!1 &7799337286964934545
 GameObject:
   m_ObjectHideFlags: 0
