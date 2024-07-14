@@ -59,7 +59,7 @@ public class AngelHealingMinigame : MonoBehaviour
 
     public void RandomizeTurboAreaPosition()
     {
-        turboAreaWidth = Random.Range(4, 9);
+        turboAreaWidth = Random.Range(5, 9);
         turboAreaRect.sizeDelta = new Vector2(turboAreaWidth * 10, turboAreaRect.sizeDelta.y);
 
         float halfOfWidth = turboAreaWidth * 0.5f;

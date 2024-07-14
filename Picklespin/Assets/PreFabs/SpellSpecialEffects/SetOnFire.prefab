@@ -48,13 +48,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectAudio:
     Guid:
-      Data1: 415102918
-      Data2: 1145276465
-      Data3: 395432623
-      Data4: -2120870790
-    Path: event:/PLACEHOLDER_UNCZ/set_on_fire_loop
-  particleObject: {fileID: 88596927381914609, guid: 79650234c7dae354aadbadc903906c57, type: 3}
+      Data1: -1876735547
+      Data2: 1102558783
+      Data3: 236182407
+      Data4: -372257410
+    Path: event:/ENEMIES/ENEMY_BURNING
+  ParticleObject: {fileID: 0}
+  killedByBurnEffect: {fileID: 0}
+  effectParticle: {fileID: 0}
   howMuchDamageIdeal: 2
+  countdownTimer: 0
 --- !u!199 &2559872966959438329
 ParticleSystemRenderer:
   serializedVersion: 6

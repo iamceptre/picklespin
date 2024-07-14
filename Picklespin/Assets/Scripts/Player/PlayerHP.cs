@@ -71,7 +71,7 @@ public class PlayerHP : MonoBehaviour
 
     private void CheckIfPlayerIsLowHP()
     {
-        if (hp <= maxHp * 0.2f)
+        if (hp <= maxHp * 0.1f)
         {
             ApplyLowHPState();
         }

@@ -1,31 +1,28 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
-using FMODUnity;
 
 public class SetOnFire : MonoBehaviour
 {
-    [Header("Assets")]
-    public EventReference effectAudio;
-    private StudioEventEmitter emitter;
-    public GameObject ParticleObject;
-    public GameObject killedByBurnEffect; //both particle and sound
-
-    [Header("Debug/Don't touch")]
-    [SerializeField] private ParticleSystem effectParticle;
-    private ParticleSystem.MainModule particleMain;
-    private bool imOnFire = false;
-    private bool burned = false;
-
-    private IEnumerator killer;
-
     [SerializeField] private int howMuchDamageIdeal = 10;
 
-    [Header("References")]
-    private AiHealth cachedAiHP;
-    private AiHealthUiBar cachedAiHpBar;
-    private DamageUI_Spawner damageUiSpawner;
+    [Header("Assets")]
+    [SerializeField] private StudioEventEmitter emitter;
+    [SerializeField] private GameObject diedFromBurnParticle; //both particle and sound
 
-    private GameObject spawnedParticle;
+    [SerializeField] private ParticleSystem effectParticle;
+    private ParticleSystem.EmissionModule particleEmission;
+    private ParticleSystem.MainModule particleMain;
+
+    [Header("Debug/Don't touch")]
+    private bool imOnFire = false;
+    private bool burned = false;
+    private IEnumerator killer;
+
+    [Header("References")]
+    [SerializeField] private AiHealth cachedAiHP;
+    [SerializeField] private AiHealthUiBar cachedAiHpBar;
+    private DamageUI_Spawner damageUiSpawner;
 
     [SerializeField][Range(0, 10)] private float countdownTimer = 0;
 
@@ -34,14 +31,25 @@ public class SetOnFire : MonoBehaviour
 
     private void Awake()
     {
-        float rand = Random.Range(0.45f, 0.55f);
-        decreaseHpEverySeconds = new WaitForSeconds(rand);
+        particleEmission = effectParticle.emission;   
+        particleMain = effectParticle.main;
     }
-    public void StartFire()
+
+
+    private void OnEnable()
     {
-        damageUiSpawner = DamageUI_Spawner.instance;
+        ResetCountdowns();
+
+        decreaseHpEverySeconds = new WaitForSeconds(Random.Range(0.45f, 0.55f));
+
+        if (damageUiSpawner == null)
+        {
+            damageUiSpawner = DamageUI_Spawner.instance;
+        }
+
         Invoke("FireUp", 0.1f);
     }
+
 
     public void ResetCountdowns()
     {
@@ -50,42 +58,21 @@ public class SetOnFire : MonoBehaviour
 
     private void FireUp()
     {
-        spawnedParticle = Instantiate(ParticleObject, transform.position, Quaternion.identity);
-        spawnedParticle.transform.parent = transform;
-        effectParticle = spawnedParticle.GetComponentInChildren<ParticleSystem>();
-        particleMain = effectParticle.main;
-        particleMain.loop = true;
-
-        if (!imOnFire)
-        {
-            SetUpAudio();
-            emitter.Play();
-            AiLinkUp();
-        }
-        imOnFire = true;
-    }
-
-
-    private void SetUpAudio()
-    {
-        emitter = gameObject.GetComponentInChildren<StudioEventEmitter>();
-        emitter.EventReference = effectAudio;
-    }
-
-
-
-    private void AiLinkUp()
-    {
-        if (cachedAiHP == null)
-        {
-            cachedAiHP = gameObject.GetComponent<AiHealth>();
-            cachedAiHpBar = GetComponentInChildren<AiHealthUiBar>();
-        }
-
         killer = DecreaseHPoverTime();
         StopCoroutine(killer);
         StartCoroutine(killer);
+
+        particleEmission.enabled = true;
+        effectParticle.Play();
+
+        if (!imOnFire)
+        {
+            emitter.Play();
+        }
+
+        imOnFire = true;
     }
+
 
     private IEnumerator DecreaseHPoverTime()
     {
@@ -107,24 +94,19 @@ public class SetOnFire : MonoBehaviour
     {
         if (!burned) {
             burned = true;
-            transform.parent = null;
             emitter.Stop();
-            particleMain.loop = false;
+            particleEmission.enabled = false;
             effectParticle.Stop();
-            Instantiate(killedByBurnEffect, transform.position - new Vector3(0, 2), Quaternion.identity);
+            diedFromBurnParticle.SetActive(true);
             cachedAiHP.deathEvent.Invoke();
-            Destroy(this);
+            enabled = false;
         }
     }
 
 
     private void AiHpBarRefresher()
     {
-        if (cachedAiHpBar != null)
-        {
-            cachedAiHpBar.RefreshBar();
-        }
-
+        cachedAiHpBar.RefreshBar();
         damageUiSpawner.Spawn(transform.position + new Vector3(0, 1), howMuchDamageIdeal, false); //maybe a different color
     }
 
@@ -144,15 +126,14 @@ public class SetOnFire : MonoBehaviour
         }
     }
 
-    public void ShutFireDown() //ugaszenie
+    public void ShutFireDown() //ugaszenie prze¿ywaj¹c
     {
-        transform.parent = null;
+        particleEmission.enabled = false;
         imOnFire = false;
         emitter.Stop();
-        particleMain.loop = false;
         effectParticle.Stop();
         StopAllCoroutines();
-        Destroy(this);
+        enabled = false;
     }
 
 }

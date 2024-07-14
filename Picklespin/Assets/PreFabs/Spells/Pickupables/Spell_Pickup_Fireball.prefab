@@ -4879,6 +4879,7 @@ GameObject:
   - component: {fileID: 4833771101333461241}
   - component: {fileID: -442128238072334790}
   - component: {fileID: 1632211794220430024}
+  - component: {fileID: 2361716839078369107}
   m_Layer: 0
   m_Name: Spell_Pickup_Fireball
   m_TagString: Untagged
@@ -5008,6 +5009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellID: 1
+  spellClass: 0
 --- !u!65 &4833771101333461241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5055,8 +5057,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myOccupiedWaypoint: 0
-  amIaSpell: 1
+  pickupableItem: {fileID: 0}
+--- !u!114 &2361716839078369107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5694425429473018150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1553581475
+      Data2: 1328516543
+      Data3: 1647672732
+      Data4: 1002143291
+    Path: event:/SPELLS/FIREBALL/FIREBALL_PICKUP
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7976620075623437790
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,7 +31,6 @@ public class Bullet : MonoBehaviour
 
     [Header("Special Effects")]
     [SerializeField] private bool doesThisSpellSetOnFire = false;
-    [SerializeField] private SetOnFire setOnFire;
 
     [Header("References")]
     private AiHealth aiHealth;
@@ -238,22 +237,11 @@ public class Bullet : MonoBehaviour
     {
         if (doesThisSpellSetOnFire)
         {
-            var addedEffect = aiRefs.gameObject.GetComponent<SetOnFire>();
-
-            if (addedEffect == null)
-            {
-                addedEffect = aiRefs.gameObject.AddComponent<SetOnFire>();
-                addedEffect.effectAudio = setOnFire.effectAudio;
-                addedEffect.ParticleObject = setOnFire.ParticleObject;
-                addedEffect.killedByBurnEffect = setOnFire.killedByBurnEffect;
-                addedEffect.StartFire();
-            }
-            else
-            {
-                addedEffect.ResetCountdowns();
-            }
+            var setOnFire = aiRefs.setOnFire;
+            setOnFire.enabled = true;
         }
     }
+
 
 
     private void RandomizeCritical()

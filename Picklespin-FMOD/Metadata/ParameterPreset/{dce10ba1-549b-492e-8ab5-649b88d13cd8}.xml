@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="ParameterPreset" id="{dce10ba1-549b-492e-8ab5-649b88d13cd8}">
 		<property name="name">
-			<value>Proximity Effect</value>
+			<value>Proximity (Normalized)</value>
 		</property>
 		<relationship name="folder">
 			<destination>{4f6310ca-fba1-427e-8bc3-8fa41ba89534}</destination>
@@ -13,16 +13,10 @@
 	</object>
 	<object class="GameParameter" id="{2d3177fb-cb39-495a-9f23-0d75f7199f42}">
 		<property name="parameterType">
-			<value>3</value>
-		</property>
-		<property name="minimum">
-			<value>0.10000000000000001</value>
-		</property>
-		<property name="maximum">
-			<value>40</value>
+			<value>10</value>
 		</property>
 		<property name="initialValue">
-			<value>0.10000000000000001</value>
+			<value>0</value>
 		</property>
 		<property name="isExposedRecursively">
 			<value>false</value>

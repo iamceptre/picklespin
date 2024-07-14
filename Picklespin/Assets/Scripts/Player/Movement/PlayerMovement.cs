@@ -227,11 +227,11 @@ public class PlayerMovement : MonoBehaviour
             if (anyMovementKeysPressed)                                                  //if player is moving then the stamina recovery is slower 
 
             {
-                stamina += Time.deltaTime * 16;
+                stamina += Time.deltaTime * 8;
             }
             else
             {
-                stamina += Time.deltaTime * 32;
+                stamina += Time.deltaTime * 16;
             }
         }
 

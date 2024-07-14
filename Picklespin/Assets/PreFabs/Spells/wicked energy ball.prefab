@@ -10128,13 +10128,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellName: purple lamborghini
-  damage: 10
+  damage: 4
   magickaCost: 7
   speed: 60
   myCooldown: 0.1
   castDuration: 0
   timeBeforeOff: 2
   fadeOutLight: 0
+  isRanged: 0
+  rangeRadius: 5
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 0
   explosionFX: {fileID: 3036575118500837913}
   shootSound:
     Guid:
@@ -10151,7 +10156,6 @@ MonoBehaviour:
       Data4: -71727395
     Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
   doesThisSpellSetOnFire: 0
-  setOnFire: {fileID: 0}
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 3005831588898276106}
   iWillBeCritical: 0

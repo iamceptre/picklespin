@@ -6,6 +6,7 @@ public class GetParticleSizeFromCastPercentage : MonoBehaviour
     private ParticleSystem ps;
     private ParticleSystem.MainModule mainModule;
     private Attack attack;
+
     private void Awake()
     {
         ps = GetComponent<ParticleSystem>();
@@ -25,6 +26,7 @@ public class GetParticleSizeFromCastPercentage : MonoBehaviour
             mainModule.startSizeMultiplier = attack.castingProgress * 2;
             yield return null;
         }
+
 
         yield break;
     }

@@ -7,7 +7,7 @@ public class ImageFadePulse : MonoBehaviour
     private Image myImage;
 
     [SerializeField] private bool startFromTransparent;
-    [Range(0,1)] [SerializeField] private float fadeInOpacity = 1;
+    [Range(0, 1)][SerializeField] private float fadeInOpacity = 1;
     [SerializeField] private float animationTime = 1;
 
     private void Awake()
@@ -19,11 +19,13 @@ public class ImageFadePulse : MonoBehaviour
         if (startFromTransparent)
         {
             myImage.color = new Color(1, 1, 1, 0);
-            myImage.DOFade(fadeInOpacity, animationTime).SetLoops(-1, LoopType.Yoyo);
+            Tween myTween = myImage.DOFade(fadeInOpacity, animationTime).SetLoops(-1, LoopType.Yoyo);
+            myTween.SetUpdate(UpdateType.Normal, true);
         }
         else
         {
-            myImage.DOFade(myImage.color.a - fadeInOpacity, animationTime).SetLoops(-1, LoopType.Yoyo);
+            Tween myTween = myImage.DOFade(myImage.color.a - fadeInOpacity, animationTime).SetLoops(-1, LoopType.Yoyo);
+            myTween.SetUpdate(UpdateType.Normal, true);
         }
     }
 

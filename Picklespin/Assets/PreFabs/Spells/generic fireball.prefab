@@ -5063,6 +5063,7 @@ GameObject:
   - component: {fileID: 1250395660635522415}
   - component: {fileID: 7520822979644434691}
   - component: {fileID: 7387112467910556193}
+  - component: {fileID: 8936586582799554640}
   m_Layer: 0
   m_Name: generic fireball
   m_TagString: Untagged
@@ -5101,12 +5102,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellName: fireball
-  damage: 20
+  damage: 10
   magickaCost: 20
   speed: 30
   myCooldown: 2
   castDuration: 1
-  timeBeforeOff: 3
+  timeBeforeOff: 15
   fadeOutLight: 0
   isRanged: 1
   rangeRadius: 9
@@ -5116,11 +5117,11 @@ MonoBehaviour:
   explosionFX: {fileID: 8713706549792644285}
   shootSound:
     Guid:
-      Data1: 1963473607
-      Data2: 1081434507
-      Data3: -643885943
-      Data4: -1090986781
-    Path: event:/PLACEHOLDER_UNCZ/shoot_test
+      Data1: -1684730785
+      Data2: 1231632278
+      Data3: 605164977
+      Data4: -1324184943
+    Path: event:/SPELLS/FIREBALL/FIREBALL_SHOT
   pullupSound:
     Guid:
       Data1: 1585686292
@@ -5129,7 +5130,6 @@ MonoBehaviour:
       Data4: -1589454864
     Path: event:/PLACEHOLDER_UNCZ/fireball_pullup
   doesThisSpellSetOnFire: 1
-  setOnFire: {fileID: 7520822979644434691}
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 7177393306444495002}
   iWillBeCritical: 0
@@ -5261,17 +5261,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce318fb99ca6bf48b015a2035e77313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectAudio:
-    Guid:
-      Data1: 415102918
-      Data2: 1145276465
-      Data3: 395432623
-      Data4: -2120870790
-    Path: event:/PLACEHOLDER_UNCZ/set_on_fire_loop
-  ParticleObject: {fileID: 88596927381914609, guid: 79650234c7dae354aadbadc903906c57, type: 3}
-  killedByBurnEffect: {fileID: 5085288267478614331, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
-  effectParticle: {fileID: 0}
   howMuchDamageIdeal: 2
+  emitter: {fileID: 0}
+  diedFromBurnParticle: {fileID: 0}
+  effectParticle: {fileID: 0}
+  cachedAiHP: {fileID: 0}
+  cachedAiHpBar: {fileID: 0}
   countdownTimer: 0
 --- !u!114 &7387112467910556193
 MonoBehaviour:
@@ -5285,6 +5280,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d96be56cf9c154f8fc54f1699cf05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8936586582799554640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1866604534
+      Data2: 1261968868
+      Data3: 1464430247
+      Data4: -1733097191
+    Path: event:/SPELLS/FIREBALL/FIREBALL_FLYBY
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 45
 --- !u!1 &8802589327829200301
 GameObject:
   m_ObjectHideFlags: 0
@@ -10197,6 +10223,7 @@ GameObject:
   - component: {fileID: 8713706549792644285}
   - component: {fileID: 8713064731604607695}
   - component: {fileID: 7177393306444495002}
+  - component: {fileID: 475281712639503539}
   m_Layer: 0
   m_Name: FireballExplosion
   m_TagString: Untagged
@@ -15156,6 +15183,19 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 5
   OverrideMaxDistance: 100
+--- !u!114 &475281712639503539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8802709932032747319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdc6abde23964947a154e83507cc4a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flybyEmitter: {fileID: 8936586582799554640}
 --- !u!1 &8803162574334162345
 GameObject:
   m_ObjectHideFlags: 0

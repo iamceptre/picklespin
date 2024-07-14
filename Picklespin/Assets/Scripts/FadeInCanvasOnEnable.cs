@@ -1,6 +1,5 @@
 using UnityEngine;
 using DG.Tweening;
-using System.Collections;
 
 public class FadeInCanvasOnEnable : MonoBehaviour
 {
@@ -9,9 +8,11 @@ public class FadeInCanvasOnEnable : MonoBehaviour
 
     [SerializeField] private float animationTime = 0.2f;
 
-    private void Start()
+    private void OnEnable()
     {
-        _canvasGroup.DOFade(1, animationTime);
+        _canvasGroup.alpha = 0;
+        Tween myTween = _canvasGroup.DOFade(1, animationTime);
+        myTween.SetUpdate(UpdateType.Normal, true);
     }
     
 

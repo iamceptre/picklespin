@@ -149,7 +149,7 @@ public class Door : MonoBehaviour
         {
             enabled = true;
 
-            if (!isOpened)
+            if (!isOpened && !isLocked)
             {
                 tipManager.Show(0);
             }

@@ -8,8 +8,7 @@ public class AiReferences : MonoBehaviour
     public AiHealthUiBar HpUiBar;
     [Tooltip("when dying")]public GiveExpToPlayer GiveExp;
     public MaterialFlashWhenHit MaterialFlash;
-
     public ParticleSystem HeadshotParticle;
-
+    public SetOnFire setOnFire;
 }
 
