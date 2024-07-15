@@ -10127,16 +10127,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellName: purple lamborghini
-  damage: 4
+  spellName: energy
+  damage: 2
   magickaCost: 7
   speed: 60
   myCooldown: 0.1
   castDuration: 0
-  timeBeforeOff: 2
+  timeBeforeOff: 4
   fadeOutLight: 0
   isRanged: 0
-  rangeRadius: 5
+  rangeRadius: 0
   detectionLayer:
     serializedVersion: 2
     m_Bits: 0

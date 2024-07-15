@@ -15,7 +15,8 @@ public class AngelHeal : MonoBehaviour
 
     private Material handOGMaterial;
     [SerializeField] private Material handHighlightMaterial;
-    private MeshRenderer handRenderer;
+    private SkinnedMeshRenderer handRenderer;
+    [SerializeField] private Animator handAnimator;
 
     [SerializeField] private Slider angelHPSlider;
     [SerializeField] private Canvas angelHPCanvas;
@@ -36,7 +37,6 @@ public class AngelHeal : MonoBehaviour
 
     [SerializeField] private ManaLightAnimation manaLightAnimation;
 
-    public FloatUpDown floatUpDown;
 
     private TipManager tipManager;
 
@@ -46,10 +46,12 @@ public class AngelHeal : MonoBehaviour
 
     private IEnumerator healingRoutine;
 
+    private bool isHealing = false;
+
 
     private void Awake()
     {
-        handRenderer = hand.GetComponent<MeshRenderer>();
+        handRenderer = hand.GetComponent<SkinnedMeshRenderer>();
         handOGMaterial = handRenderer.material;
     }
 
@@ -121,15 +123,16 @@ public class AngelHeal : MonoBehaviour
 
     public void CancelHealing()
     {
-        if (floatUpDown.enabled)
+        if (isHealing)
         {
+            isHealing = false;
+            handAnimator.SetTrigger("Healing_Beam_Stop");
             helperArrow.ShowArrow();
             StopCoroutine(healingRoutine);
             healingParticlesScript.StopEmitting();
             FadeOutGui();
             minigame.enabled = false;
             healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            floatUpDown.enabled = false;
             //Debug.Log("CancelHealing");
         }
     }
@@ -172,10 +175,11 @@ public class AngelHeal : MonoBehaviour
     private IEnumerator Healing()
     {
         //Debug.Log("Healing");
+        isHealing = true;
+        handAnimator.SetTrigger("Healing_Beam");
         helperArrow.HideArrow();
         healingBeamInstance.start();
         tipManager.Hide(1);
-        floatUpDown.enabled = true;
         minigame.enabled = true;
         minigame.InitializeMinigame();
         healingParticlesScript.StartEmitting(angel.transform);
@@ -201,7 +205,6 @@ public class AngelHeal : MonoBehaviour
         healingParticlesScript.StopEmitting();
         healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         handRenderer.material = handOGMaterial;
-        floatUpDown.enabled = false;
         angel.AfterHealedAction();
         minigame.enabled = false;
         FadeOutGui();

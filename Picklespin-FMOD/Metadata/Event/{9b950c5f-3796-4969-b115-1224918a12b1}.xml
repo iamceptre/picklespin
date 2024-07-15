@@ -72,9 +72,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{0c4339c3-102e-4efd-a78c-cde91d0cb9e0}">
-		<property name="volume">
-			<value>-1</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{c9601c7b-08b2-44fa-95a7-0b07bdb424d6}</destination>
 		</relationship>
@@ -98,12 +95,17 @@
 	<object class="MixerBusPanner" id="{1514a697-4d90-4c81-896f-9a0b575509a9}" />
 	<object class="MixerBusEffectChain" id="{c9601c7b-08b2-44fa-95a7-0b07bdb424d6}">
 		<relationship name="effects">
-			<destination>{06c39d70-0084-4603-9deb-cb93c00452f3}</destination>
 			<destination>{87bf11b4-b199-42a8-8197-185647a09feb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9db8fae2-6967-41dc-a9cb-55cbdddb8c90}" />
 	<object class="MultiSound" id="{c20ca323-fc87-4f64-bff6-552fef17eef2}">
+		<property name="startOffset">
+			<value>13</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{99bfaefc-e7dc-4b29-89e7-660dacc29a0b}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{5a58b57d-15e1-41f8-8d68-3758cf1452ef}</destination>
 			<destination>{f88d2727-b3ee-47cc-bfac-51d2c1be5122}</destination>
@@ -114,21 +116,33 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{f1282ee9-6376-441e-ba19-b6cb0b6eac15}" />
-	<object class="ThreeEQEffect" id="{06c39d70-0084-4603-9deb-cb93c00452f3}">
-		<property name="midGain">
-			<value>-6.5</value>
+	<object class="MixerBusFader" id="{87bf11b4-b199-42a8-8197-185647a09feb}" />
+	<object class="ADSRModulator" id="{99bfaefc-e7dc-4b29-89e7-660dacc29a0b}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
 		</property>
-		<property name="highGain">
-			<value>4</value>
+		<property name="initialValue">
+			<value>-80</value>
 		</property>
-		<property name="highCrossover">
-			<value>8500</value>
+		<property name="attackTime">
+			<value>80</value>
 		</property>
-		<property name="crossoverSlope">
+		<property name="attackShape">
+			<value>-1.00000048</value>
+		</property>
+		<property name="holdTime">
 			<value>0</value>
 		</property>
+		<property name="decayTime">
+			<value>0</value>
+		</property>
+		<property name="releaseTime">
+			<value>0</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
 	</object>
-	<object class="MixerBusFader" id="{87bf11b4-b199-42a8-8197-185647a09feb}" />
 	<object class="SingleSound" id="{5a58b57d-15e1-41f8-8d68-3758cf1452ef}">
 		<relationship name="audioFile">
 			<destination>{ed979a01-953d-4be0-9148-d5c15c6d02dd}</destination>

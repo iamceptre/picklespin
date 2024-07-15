@@ -16,6 +16,7 @@
 			<destination>{476b2e69-f176-4d19-8729-f085b68f3626}</destination>
 			<destination>{d9bc9902-3f66-48f4-8849-dcd489cb5cbc}</destination>
 			<destination>{4a2b33a3-31ba-4778-98b5-2f08d5141da9}</destination>
+			<destination>{c217b791-c9c2-4fb7-8847-97b680867e6e}</destination>
 			<destination>{7bcc93f0-66f5-4b1f-b61e-e811ff58f495}</destination>
 		</relationship>
 	</object>
@@ -49,6 +50,14 @@
 			<destination>{2651b891-afc7-4aa2-b029-c13a8871d9d8}</destination>
 			<destination>{7b176fdd-70b8-4202-94be-45e96325535f}</destination>
 		</relationship>
+	</object>
+	<object class="LimiterEffect" id="{c217b791-c9c2-4fb7-8847-97b680867e6e}">
+		<property name="boost">
+			<value>3.4000001</value>
+		</property>
+		<property name="release">
+			<value>76</value>
+		</property>
 	</object>
 	<object class="ObjectSpatialiserEffect" id="{7bcc93f0-66f5-4b1f-b61e-e811ff58f495}">
 		<property name="distanceRolloffType">

@@ -5,7 +5,7 @@
 			<value>SpellLocked</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{b82e73af-b42b-4497-ada3-c8d3e5aa4d48}</destination>
@@ -89,11 +89,7 @@
 			<destination>{6a5084b5-c55b-452f-8ce1-bb50c4904865}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{2b4f6668-6e50-4d0b-9f8d-0ceb99cca210}">
-		<relationship name="sounds">
-			<destination>{2bb666a6-d2d1-49a9-af9f-3878981e2a79}</destination>
-		</relationship>
-	</object>
+	<object class="MultiSound" id="{2b4f6668-6e50-4d0b-9f8d-0ceb99cca210}" />
 	<object class="MixerBusEffectChain" id="{22c13c71-cd39-437b-8915-466d3df115bd}">
 		<relationship name="effects">
 			<destination>{bac1fd25-849b-4f2e-917e-4de168c0ae56}</destination>
@@ -106,11 +102,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2b92c075-b835-4e21-8f3d-863d9c1d3cab}" />
-	<object class="SingleSound" id="{2bb666a6-d2d1-49a9-af9f-3878981e2a79}">
-		<relationship name="audioFile">
-			<destination>{8e43d640-d78f-4077-9cf2-3173304a4e31}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{bac1fd25-849b-4f2e-917e-4de168c0ae56}" />
 	<object class="MixerBusFader" id="{afe98c7d-e487-42c1-b9fa-54d76401f0ef}" />
 </objects>

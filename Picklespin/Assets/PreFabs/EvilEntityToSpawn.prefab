@@ -15433,6 +15433,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1328228321734506668}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   aiHealthUiBar: {fileID: 3817865884643380506}
 --- !u!114 &1342977768311708897
 MonoBehaviour:
@@ -16431,6 +16443,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3728460938537113143}
     m_Modifications:
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/ENEMIES/ENEMIES_BURNED
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: OverrideMinDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -730937498
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1313959051
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -742047845
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333612512838579436, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 1500423309
+      objectReference: {fileID: 0}
     - target: {fileID: 1990126293486748229, guid: f6dd6fbb010a64b4f9916e2383f62777, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

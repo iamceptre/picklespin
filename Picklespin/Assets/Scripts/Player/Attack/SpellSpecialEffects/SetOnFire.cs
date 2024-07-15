@@ -93,8 +93,8 @@ public class SetOnFire : MonoBehaviour
     public void KillFromFire() //spalenie
     {
         if (!burned) {
-            burned = true;
             emitter.Stop();
+            burned = true;
             particleEmission.enabled = false;
             effectParticle.Stop();
             diedFromBurnParticle.SetActive(true);

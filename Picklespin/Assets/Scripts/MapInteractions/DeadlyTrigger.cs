@@ -1,25 +1,25 @@
+using FMODUnity;
 using UnityEngine;
 
 public class DeadlyTrigger : MonoBehaviour
 {
-
-    private Death death;
-
-    private void Awake()
-    {
-        death = Death.instance;
-    }
+    private EventReference sound;
+    [SerializeField] private bool playSound = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("umarlo od tirggera");
-
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("umarles od tirggera");
-            //death.PlayerDeath();
+
+            if (playSound)
+            {
+                RuntimeManager.PlayOneShot(sound);
+            }
+
+            Death.instance.PlayerDeath();
         }
     }
+
 
 
 }

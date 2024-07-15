@@ -7,6 +7,8 @@ using FMOD.Studio;
 
 public class Attack : MonoBehaviour
 {
+
+    [SerializeField] private Animator handAnimator;
     public static Attack instance { get; private set; }
 
     private PlayCastBlast playCastBlast;
@@ -103,6 +105,7 @@ public class Attack : MonoBehaviour
 
     private void ShootFail()
     {
+        handAnimator.SetTrigger("Shoot_Fail");
         noManaLightAnimation.LightAnimation();
         spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
         spellcastInstance.start();
@@ -110,6 +113,8 @@ public class Attack : MonoBehaviour
 
     private void SuccesfulShoot()
     {
+        handAnimator.SetTrigger("Spell_Shot_Quick");
+
         if (playCastBlast.castingParticles[selectedBulletIndex] != null) {
             playCastBlast.StopCastingParticles(selectedBulletIndex);
         }
@@ -142,6 +147,7 @@ public class Attack : MonoBehaviour
             spellCooldown.myCanvas.enabled = true;
             playCastBlast.StartCastingParticles(selectedBulletIndex);
             PlayerMovement.instance.SlowMeDown();
+            handAnimator.SetTrigger("Spell_Casting");
 
            
             while (castingProgress < currentlySelectedCastDuration)
@@ -162,6 +168,7 @@ public class Attack : MonoBehaviour
             {
                 yield return null;
             }
+
                 ClearCasting();
                 TryShoot();
 
@@ -177,6 +184,7 @@ public class Attack : MonoBehaviour
 
     private void ClearCasting()
     {
+      //  handAnimator.SetTrigger("Spell_Casting_Stop");
         spellCooldown.myCanvas.enabled = false;
         castingSlider.value = 0;
         castingProgress = 0;

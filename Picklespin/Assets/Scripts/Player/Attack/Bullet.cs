@@ -250,11 +250,11 @@ public class Bullet : MonoBehaviour
 
         if(ammo.ammo < ammo.maxAmmo * 0.2f) //20% or less mana
         {
-            criticalTreshold = 10 - 7; // 7/10 chance of critical
+            criticalTreshold = 5; // 5/10 chance of critical
         }
         else
         {
-            criticalTreshold = 10 - 1; //WHEN HIGH ON MANA, 1/10 chance of critical
+            criticalTreshold = 8; //WHEN HIGH ON MANA, 2/10 chance of critical
         }
 
         if (Random.Range(0,10) >= criticalTreshold || iWillBeCritical)

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{6a539b62-ae5b-4257-a6c6-889c9706e34b}">
 		<property name="assetPath">
-			<value>In_Game/Spells/Fireball/SPELL_PICkUP_FIREBALL_4.wav</value>
+			<value>In_Game/Spells/Fireball/SPELL_PICKUPABLE_LOOP.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
