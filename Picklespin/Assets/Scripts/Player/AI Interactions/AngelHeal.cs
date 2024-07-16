@@ -144,7 +144,7 @@ public class AngelHeal : MonoBehaviour
         {
             //Debug.Log("StartAiming");
             minigame.aiHealth = aiHealth;
-            handRenderer.material = handHighlightMaterial;
+            //handRenderer.material = handHighlightMaterial;
             tipManager.Show(1);
             isAimingAtAngel = true;
         }

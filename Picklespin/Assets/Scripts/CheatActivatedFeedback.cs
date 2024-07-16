@@ -14,6 +14,8 @@ public class CheatActivatedFeedback : MonoBehaviour
 
     private WaitForSeconds waitBeforeHideTime = new WaitForSeconds(2);
 
+    [SerializeField] private Animator handAnimator;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -28,6 +30,7 @@ public class CheatActivatedFeedback : MonoBehaviour
 
     public void Do(string cheatName)
     {
+        handAnimator.SetTrigger("Thumbs_Up");
         RuntimeManager.PlayOneShot(cheatCodeSound);
         //gui
         cheatText.text = "<b>" + cheatName + "</b> " + "cheat activated!";

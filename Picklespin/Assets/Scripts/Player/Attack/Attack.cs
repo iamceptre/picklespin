@@ -154,6 +154,7 @@ public class Attack : MonoBehaviour
             {
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
+                    handAnimator.SetTrigger("Spell_Casting_Stop");
                     ClearCasting();
                     yield break;
                 }
@@ -184,7 +185,8 @@ public class Attack : MonoBehaviour
 
     private void ClearCasting()
     {
-      //  handAnimator.SetTrigger("Spell_Casting_Stop");
+        handAnimator.ResetTrigger("Spell_Casting");
+        //handAnimator.SetTrigger("Spell_Casting_Stop");
         spellCooldown.myCanvas.enabled = false;
         castingSlider.value = 0;
         castingProgress = 0;
