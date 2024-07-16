@@ -82,7 +82,7 @@ public class JumpLandSignals : MonoBehaviour
 
                 isLandingHardDecider();
                 footstepSystem.RefreshFootstepTimer();
-                footstepSystem.StartCoroutine(footstepSystem.IgnoreOneFootstep());
+                footstepSystem.isFootstepIgnored = true;
                 cameraShake.LandCameraShake(lastLandCameraShakeStrenght);
                 hearingRange.RunExtendedHearingRange();
                 playerMovement.externalPushForce = 1;

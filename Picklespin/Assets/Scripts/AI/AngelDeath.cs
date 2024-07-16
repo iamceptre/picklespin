@@ -4,7 +4,6 @@ using FMOD.Studio;
 
 public class AngelDeath : MonoBehaviour
 {
-
     [SerializeField] private EventReference angelDeathSound;
     private EventInstance angelDeathInstance;
     public void Die()

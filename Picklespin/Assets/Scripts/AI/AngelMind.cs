@@ -4,7 +4,9 @@ using FMODUnity;
 public class AngelMind : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField]private Torch torch;
+    [SerializeField] private Animator angelRingsAnimator;
+    [SerializeField] private GameObject angelRings;
+    [SerializeField] private Torch torch;
     private PlayerHP playerHP;
     private Ammo ammo;
     private PlayerMovement playerMovement;
@@ -17,7 +19,7 @@ public class AngelMind : MonoBehaviour
     [SerializeField] private BoxCollider scriptActivationTrigger;
     private Renderer angelRenderer;
     private Helper_Arrow helperArrow;
-    private AngelHealingMinigame minigame;  
+    private AngelHealingMinigame minigame;
 
     [Header("Logic")]
     public bool healed = false;
@@ -32,6 +34,7 @@ public class AngelMind : MonoBehaviour
 
     public void SetActive(bool state)
     {
+        angelRings.SetActive(state);
         _activationTrigger.enabled = state;
         _rend.enabled = state;
         _collider.enabled = state;
@@ -63,7 +66,7 @@ public class AngelMind : MonoBehaviour
         helperArrow = Helper_Arrow.instance;
         playerHP = PlayerHP.instance;
         ammo = Ammo.instance;
-        playerMovement = PlayerMovement.instance;   
+        playerMovement = PlayerMovement.instance;
         playerEXP = PlayerEXP.instance;
     }
 
@@ -74,6 +77,8 @@ public class AngelMind : MonoBehaviour
         {
             healedParticles.Play();
         }
+
+        angelRingsAnimator.SetTrigger("Healed");
 
         helperArrow.HideArrow();
 

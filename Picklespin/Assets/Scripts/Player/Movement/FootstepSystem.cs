@@ -127,6 +127,7 @@ public class FootstepSystem : MonoBehaviour
             {
                 footstepCount++;
                 PlayFoostepSound();
+                isFootstepIgnored = false;
                 yield return currentFootstepSpace;
             }
 
@@ -146,18 +147,8 @@ public class FootstepSystem : MonoBehaviour
                 evenFootstepLayerEmitter.Play();
             }
         }
-    }
 
-
-    public IEnumerator IgnoreOneFootstep()
-    {
-        if (playerMovement.anyMovementKeysPressed)
-        {
-            isFootstepIgnored = true;
-            yield return null;
-            isFootstepIgnored = false;
-            yield break;
-        }
+        isFootstepIgnored = false;
     }
 
 

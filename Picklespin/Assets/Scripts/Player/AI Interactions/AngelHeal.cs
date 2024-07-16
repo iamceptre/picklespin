@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
-using UnityEngine.Events;
 using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
@@ -37,6 +36,8 @@ public class AngelHeal : MonoBehaviour
 
     [SerializeField] private ManaLightAnimation manaLightAnimation;
 
+    [SerializeField] private LayerMask layersForRaycast;
+
 
     private TipManager tipManager;
 
@@ -69,7 +70,7 @@ public class AngelHeal : MonoBehaviour
     {
         Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(Vector3.forward * range));
 
-        if (Physics.Raycast(ray, out RaycastHit hit, range))
+        if (Physics.Raycast(ray, out RaycastHit hit, range, layersForRaycast))
         {
             if (hit.collider.CompareTag("Angel"))
             {
