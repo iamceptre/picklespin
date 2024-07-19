@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class Pause : MonoBehaviour
 {
+    private SnapshotManager snapshotManager;
     public static Pause instance { get; private set; }
 
     private float timescaleBeforePausing;
@@ -39,10 +40,18 @@ public class Pause : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        snapshotManager = SnapshotManager.instance;
+    }
+
     public void PauseGame()
     {
         System.GC.Collect();
         pauseEvent.Invoke();
+
+        snapshotManager.Pause.Play();
+
         timescaleBeforePausing = Time.timeScale;
         Time.timeScale = 0;
         isPaused = true;
@@ -54,6 +63,7 @@ public class Pause : MonoBehaviour
     {
         System.GC.Collect();
         unpauseEvent.Invoke();
+        snapshotManager.Pause.Stop();
         Time.timeScale = timescaleBeforePausing;
         isPaused = false;
         EventSystem.current.SetSelectedGameObject(null);

@@ -17,7 +17,7 @@
 			<destination>{d9bc9902-3f66-48f4-8849-dcd489cb5cbc}</destination>
 			<destination>{4a2b33a3-31ba-4778-98b5-2f08d5141da9}</destination>
 			<destination>{c217b791-c9c2-4fb7-8847-97b680867e6e}</destination>
-			<destination>{7bcc93f0-66f5-4b1f-b61e-e811ff58f495}</destination>
+			<destination>{8b1a3e1b-f250-488c-8d73-af15577a766a}</destination>
 		</relationship>
 	</object>
 	<object class="HighpassSimpleEffect" id="{476b2e69-f176-4d19-8729-f085b68f3626}">
@@ -59,11 +59,8 @@
 			<value>76</value>
 		</property>
 	</object>
-	<object class="ObjectSpatialiserEffect" id="{7bcc93f0-66f5-4b1f-b61e-e811ff58f495}">
+	<object class="SpatialiserEffect" id="{8b1a3e1b-f250-488c-8d73-af15577a766a}">
 		<property name="distanceRolloffType">
-			<value>1</value>
-		</property>
-		<property name="extentMode">
 			<value>1</value>
 		</property>
 	</object>

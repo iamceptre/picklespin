@@ -59,7 +59,7 @@ public class PortalAfterClosing : MonoBehaviour
         crosshair.enabled = false;
         playerHp.SetGodmode(true);
         FadeOutCanvas();
-        snapshotManager.PlayPortalClosedSnapshot();
+        snapshotManager.PortalClosed.Play();
         TurnOffEmissions();
         StartCoroutine(ActivateFailScreen());
         StartCoroutine(SlowDownTimeAnDesaturate());

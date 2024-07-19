@@ -16,7 +16,6 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{5c58943d-09a3-4acb-a827-3d9c8a7e3524}">
 		<relationship name="effects">
-			<destination>{89112518-6efd-47ad-bb72-fdeb8dccf2c6}</destination>
 			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
 			<destination>{9ca18f0d-bef0-45be-b644-e76fddb85bfd}</destination>
 		</relationship>
@@ -26,20 +25,15 @@
 			<value>2</value>
 		</property>
 	</object>
-	<object class="ChorusEffect" id="{89112518-6efd-47ad-bb72-fdeb8dccf2c6}">
-		<property name="rate">
-			<value>20</value>
-		</property>
-		<property name="depth">
-			<value>0</value>
-		</property>
-		<property name="mix">
-			<value>0</value>
-		</property>
-	</object>
 	<object class="MultibandEqEffect" id="{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}">
+		<property name="filterTypeB">
+			<value>4</value>
+		</property>
 		<property name="frequencyA">
 			<value>22000</value>
+		</property>
+		<property name="frequencyB">
+			<value>20</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{9ca18f0d-bef0-45be-b644-e76fddb85bfd}" />

@@ -5,7 +5,7 @@
 			<value>Torch_Burning</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{39770906-8b94-4b56-a293-0dc8612ef32a}</destination>
@@ -62,7 +62,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{38e5e04d-e9eb-4633-aa35-d2c80afb1b64}">
 		<property name="maxVoices">
-			<value>4</value>
+			<value>3</value>
 		</property>
 		<property name="minimumDistance">
 			<value>0.5</value>
@@ -120,7 +120,7 @@
 			<destination>{ac786ea2-c1d2-4262-9d21-843502a9f6ce}</destination>
 			<destination>{25193a9c-3d9f-470c-9630-9769053798c9}</destination>
 			<destination>{66fada02-1dd1-43bb-8b8e-2452e204b72e}</destination>
-			<destination>{d0e42d2d-5f09-404b-a00a-d6c36616bd36}</destination>
+			<destination>{e3b31113-8c3f-47c6-96df-bb8119080a3b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{dc1acd8f-cea4-4feb-97c5-088a390a6b20}" />
@@ -188,11 +188,7 @@
 			<value>76</value>
 		</property>
 	</object>
-	<object class="ObjectSpatialiserEffect" id="{d0e42d2d-5f09-404b-a00a-d6c36616bd36}">
-		<property name="extentMode">
-			<value>1</value>
-		</property>
-	</object>
+	<object class="SpatialiserEffect" id="{e3b31113-8c3f-47c6-96df-bb8119080a3b}" />
 	<object class="RandomizerModulator" id="{c210629a-a366-4d6f-a4ea-e9c7319b9983}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>startOffset</value>

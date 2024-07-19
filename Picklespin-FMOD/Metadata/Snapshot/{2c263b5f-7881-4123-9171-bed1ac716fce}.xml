@@ -23,13 +23,18 @@
 			<destination>{4d4cdd73-4b43-44ce-8aee-7d8c126c0b8f}</destination>
 			<destination>{ef7365f5-d1da-446c-b454-415f153e9606}</destination>
 			<destination>{172ca973-ed3f-4ef0-af42-b583dfa47e15}</destination>
-			<destination>{c1d3b78e-45c9-414a-87c5-78a8781a1eb3}</destination>
+			<destination>{61d80fc9-0f1d-4ddb-90fa-ed1e0e2fb4f5}</destination>
+			<destination>{e958ec18-4a34-4030-aeaa-2273d5ca64de}</destination>
+			<destination>{9ff60656-da60-4467-b8c1-1588d674c169}</destination>
 		</relationship>
 		<relationship name="snapshotTracks">
 			<destination>{71b85a3d-68b0-4f03-a9ba-77f11a9ab907}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{47d6e9fe-79b0-4ee0-8de2-53f27032c075}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{d5780aeb-14f4-431d-b09a-ab2ea2c71486}</destination>
 		</relationship>
@@ -70,15 +75,37 @@
 			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
 		</relationship>
 	</object>
-	<object class="SnapshotProperty" id="{c1d3b78e-45c9-414a-87c5-78a8781a1eb3}">
+	<object class="SnapshotProperty" id="{61d80fc9-0f1d-4ddb-90fa-ed1e0e2fb4f5}">
 		<property name="propertyName">
-			<value>mix</value>
+			<value>frequencyB</value>
+		</property>
+		<property name="value">
+			<value>20.0000019</value>
+		</property>
+		<relationship name="automatableObject">
+			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotProperty" id="{e958ec18-4a34-4030-aeaa-2273d5ca64de}">
+		<property name="propertyName">
+			<value>qualityB</value>
+		</property>
+		<property name="value">
+			<value>0.885344803</value>
+		</property>
+		<relationship name="automatableObject">
+			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotProperty" id="{9ff60656-da60-4467-b8c1-1588d674c169}">
+		<property name="propertyName">
+			<value>gainB</value>
 		</property>
 		<property name="value">
 			<value>0</value>
 		</property>
 		<relationship name="automatableObject">
-			<destination>{89112518-6efd-47ad-bb72-fdeb8dccf2c6}</destination>
+			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
 		</relationship>
 	</object>
 	<object class="SnapshotTrack" id="{71b85a3d-68b0-4f03-a9ba-77f11a9ab907}">

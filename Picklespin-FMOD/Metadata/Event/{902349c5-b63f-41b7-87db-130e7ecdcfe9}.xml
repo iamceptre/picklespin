@@ -5,7 +5,7 @@
 			<value>ENEMY_BURNING</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{81670a79-aa1a-4619-91f9-fd2c7aaa7d48}</destination>

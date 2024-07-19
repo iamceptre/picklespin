@@ -87,7 +87,7 @@ public class PlayerHP : MonoBehaviour
         {
             StartCoroutine(LowHpEffect());
             isLowHP = true;
-            snapshotManager.PlayLowHPSnapshot();
+            snapshotManager.LowHp.Play();
         }
     }
 
@@ -97,7 +97,7 @@ public class PlayerHP : MonoBehaviour
         if (isLowHP)
         {
             StartCoroutine(RestoreHpEffect());
-            snapshotManager.StopLowHPSnapshot();
+            snapshotManager.LowHp.Stop();
             isLowHP = false;
         }
     }
