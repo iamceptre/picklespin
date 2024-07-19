@@ -5,6 +5,7 @@ using System.Text;
 
 public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 {
+
     private TMP_Text _text;
     [HideInInspector] public int currentlyAnimatedExp = 0;
     [SerializeField] private CanvasGroup[] _canvasGroup;
@@ -18,7 +19,6 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 
     StringBuilder sb = new StringBuilder();
 
-    private float timeScaleBefore;
 
     private void Awake()
     {
@@ -27,19 +27,27 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
         for (int i = 0; i < _canvasGroup.Length; i++)
         {
             _canvasGroup[i].alpha = 0;
+            _canvasGroup[i].gameObject.SetActive(false);
         }
     }
 
 
     void Start()
     {
+        Attack.instance.enabled = false;
+        MouselookXY_old.instance.enabled = false;
         FMODResetManager.instance.ResetFMOD(false);
-        timeScaleBefore = Time.timeScale;
-        Pause.instance.PauseGame();
-        Pause.instance.gameObject.SetActive(false);
-        //Time.timeScale = timeScaleBefore;
+        //Time.timeScale = 0;
 
-         myTween = DOTween.To(() => currentlyAnimatedExp, x => currentlyAnimatedExp = x, PlayerEXP.instance.playerExpAmount, animationTime).SetEase(Ease.InOutSine).OnComplete(() =>
+       Tween slowdown = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.2f).SetEase(Ease.OutExpo).OnComplete(() =>
+        {
+            Time.timeScale = 0;
+        });
+
+        slowdown.SetUpdate(UpdateType.Normal, true);
+
+
+        myTween = DOTween.To(() => currentlyAnimatedExp, x => currentlyAnimatedExp = x, PlayerEXP.instance.playerExpAmount, animationTime).SetEase(Ease.InOutSine).OnComplete(() =>
         {
             FinishedAnimating();
         });

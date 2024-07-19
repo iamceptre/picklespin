@@ -28,7 +28,7 @@ public class Win : MonoBehaviour  //WHEN ESCAPING THRU THE PORTAL
         RuntimeManager.PlayOneShot(winFmodEvent);
         winScreen.SetActive(true);
         winScreenFadeIn.enabled = true;
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
     }
 
 }

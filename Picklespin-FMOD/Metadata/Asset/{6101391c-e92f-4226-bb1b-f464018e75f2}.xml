@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{6101391c-e92f-4226-bb1b-f464018e75f2}">
+		<property name="assetPath">
+			<value>In_Game/Spells/Fireball/EXPLOSIONS/CONCRETE_LAYER/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

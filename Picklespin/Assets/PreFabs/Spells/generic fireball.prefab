@@ -9926,6 +9926,7 @@ Transform:
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 5686573646745496764}
   - {fileID: 3868898484158233807}
   - {fileID: 8800743308747880159}
   - {fileID: 5095517348486478052}
@@ -9972,6 +9973,7 @@ MonoBehaviour:
       Data3: -1681641856
       Data4: -1589454864
     Path: event:/PLACEHOLDER_UNCZ/fireball_pullup
+  hitWall: {fileID: 1780142605118750544}
   doesThisSpellSetOnFire: 1
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 7177393306444495002}
@@ -10154,6 +10156,69 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7474173820419759747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5686573646745496764}
+  - component: {fileID: 1780142605118750544}
+  m_Layer: 0
+  m_Name: HitWallEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5686573646745496764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474173820419759747}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3730440565517659764}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1780142605118750544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474173820419759747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1044661887
+      Data2: 1331853294
+      Data3: -1357738840
+      Data4: -1340294877
+    Path: event:/SPELLS/FIREBALL/EXPLOSION/FIREBALL_EXPLOSION_CONCRETE_LAYER
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 3.2
+  OverrideMaxDistance: 60
 --- !u!1 &8802589327829200301
 GameObject:
   m_ObjectHideFlags: 0
@@ -20011,11 +20076,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1364902935
-      Data2: 1235094204
-      Data3: -745530716
-      Data4: -2104198156
-    Path: event:/PLACEHOLDER_UNCZ/spellHit
+      Data1: -212122527
+      Data2: 1176019699
+      Data3: -628895062
+      Data4: -1669301537
+    Path: event:/SPELLS/FIREBALL/EXPLOSION/FIREBALL_EXPLOSION_MAIN
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -20026,7 +20091,7 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 5
-  OverrideMaxDistance: 100
+  OverrideMaxDistance: 75
 --- !u!114 &475281712639503539
 MonoBehaviour:
   m_ObjectHideFlags: 0

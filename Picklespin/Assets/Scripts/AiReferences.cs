@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class AiReferences : MonoBehaviour
@@ -10,5 +11,6 @@ public class AiReferences : MonoBehaviour
     public MaterialFlashWhenHit MaterialFlash;
     public ParticleSystem HeadshotParticle;
     public SetOnFire setOnFire;
+    public StudioEventEmitter damageTakenBig;
 }
 

@@ -74,7 +74,7 @@ public class SnapshotManager : MonoBehaviour
                 break;
 
             case 2: //angel
-                Debug.Log("there is no angelroom stop function");
+                Debug.Log("there is no angelroom reverb stop function");
                 break;
 
             default:

@@ -28,6 +28,7 @@ public class Bullet : MonoBehaviour
     private GameObject _explosionFxGameObject;
     [SerializeField] private EventReference shootSound;
     public EventReference pullupSound;
+    [SerializeField] private StudioEventEmitter hitWall;
 
     [Header("Special Effects")]
     [SerializeField] private bool doesThisSpellSetOnFire = false;
@@ -135,8 +136,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         hitSomething = true;
-        if (collision.transform)
-        {
+
             StopCoroutine(autoKill);
             hitSomething = true;
 
@@ -144,7 +144,12 @@ public class Bullet : MonoBehaviour
                 {
                     Collider collider = collision.gameObject.GetComponent<Collider>();
                     HitRegistered(collider, refs, collision);
-                }
+        }
+        else //HIT THE WALL 
+        {
+            if(hitWall != null)
+            hitWall.Play();
+        }
 
             if (isRanged)
             {
@@ -154,9 +159,6 @@ public class Bullet : MonoBehaviour
 
             SpawnExplosion();
             AfterExplosion();
-
-        }
-
     }
 
 
@@ -167,6 +169,15 @@ public class Bullet : MonoBehaviour
         aiHealthUI = refs.HpUiBar;
         giveExpToPlayer = refs.GiveExp;
         flashWhenHit = refs.MaterialFlash;
+
+        if (castDuration != 0)
+        {
+            refs.damageTakenBig.Play();
+        }
+        else
+        {
+            //Damage Taken Small Play
+        }
 
         RandomizeCritical();
 

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MouselookXY_old : MonoBehaviour
 {
+    public static MouselookXY_old instance { get; private set; }
+
     private float rotY;
     private float rotX;
 
@@ -10,6 +12,18 @@ public class MouselookXY_old : MonoBehaviour
 
     public Transform body;
     public Transform mainCamera;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
 
     private void Start()

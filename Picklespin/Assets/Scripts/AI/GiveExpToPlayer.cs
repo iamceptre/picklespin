@@ -33,7 +33,7 @@ public class GiveExpToPlayer : MonoBehaviour
 
     public void GiveExp()
     {
-        int howMuchStatsIGive = (int)(howMuchXpIGive * 0.1f);
+        int howMuchStatsIGive = (int)(howMuchXpIGive * 0.2f);
 
 
         if (!wasLastShotAHeadshot)
