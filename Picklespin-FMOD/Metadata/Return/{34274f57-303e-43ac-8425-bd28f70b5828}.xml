@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="MixerReturn" id="{34274f57-303e-43ac-8425-bd28f70b5828}">
 		<property name="name">
-			<value>Church_Reverb_Main_Hall</value>
+			<value>Reverb_Church_Main</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{6c44fb0a-2604-402c-8c7a-a8389f2f033b}</destination>
@@ -47,10 +47,10 @@
 	</object>
 	<object class="ConvolutionReverbEffect" id="{eb8bc034-fe59-4ddc-8e5f-6416b6038ef4}">
 		<property name="endFrame">
-			<value>131552</value>
+			<value>118696</value>
 		</property>
 		<relationship name="referenceableData">
-			<destination>{4f63b9c5-5f43-497b-9341-e3065d265886}</destination>
+			<destination>{433b52d7-430c-4f18-be26-71b751b065a1}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{62eaf4e6-4b36-4880-b055-d7a180be304b}" />

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerReturn" id="{cf4b863e-6a43-4560-8649-ba3c29c7e4c4}">
+		<property name="name">
+			<value>Reverb_Dungeon_Corridor</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{2a6da9ba-83f1-4fd9-85ae-f05282e4e43d}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{72a4abf9-2857-44b6-9bc6-7003727986e8}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{2a6da9ba-83f1-4fd9-85ae-f05282e4e43d}">
+		<relationship name="effects">
+			<destination>{4ac96130-bcd0-4af3-8917-328ce175bc71}</destination>
+			<destination>{27dcb636-7ead-406a-81eb-b02a7d76d088}</destination>
+			<destination>{1a933229-6f87-4105-9f5a-5b290e42de55}</destination>
+			<destination>{9d9a8937-34e6-48b2-ba8a-37c94e0925eb}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{72a4abf9-2857-44b6-9bc6-7003727986e8}" />
+	<object class="DelayEffect" id="{4ac96130-bcd0-4af3-8917-328ce175bc71}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="delay">
+			<value>6.20000029</value>
+		</property>
+		<property name="feedback">
+			<value>0</value>
+		</property>
+		<property name="dryLevel">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="ThreeEQEffect" id="{27dcb636-7ead-406a-81eb-b02a7d76d088}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="lowGain">
+			<value>-10</value>
+		</property>
+		<property name="lowCrossover">
+			<value>140</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
+	<object class="ConvolutionReverbEffect" id="{1a933229-6f87-4105-9f5a-5b290e42de55}">
+		<property name="endFrame">
+			<value>71999</value>
+		</property>
+		<relationship name="referenceableData">
+			<destination>{756de4b6-7a85-488c-adf8-b56c3490b415}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusFader" id="{9d9a8937-34e6-48b2-ba8a-37c94e0925eb}" />
+</objects>

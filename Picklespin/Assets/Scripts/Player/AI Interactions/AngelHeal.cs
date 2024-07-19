@@ -43,6 +43,7 @@ public class AngelHeal : MonoBehaviour
 
 
     [SerializeField] private CanvasGroup angelHPCanvasGroup;
+    [SerializeField] private CanvasGroup minigameCanvasGroup;
     [SerializeField] private float guiFadeTimes = 0.1f;
 
     private IEnumerator healingRoutine;
@@ -208,6 +209,8 @@ public class AngelHeal : MonoBehaviour
         handRenderer.material = handOGMaterial;
         angel.AfterHealedAction();
         minigame.enabled = false;
+        minigameCanvasGroup.DOKill();
+        minigameCanvasGroup.alpha = 0;
         FadeOutGui();
         angel.healed = true;
     }
@@ -215,6 +218,8 @@ public class AngelHeal : MonoBehaviour
 
     private void FadeOutGui()
     {
+        minigameCanvasGroup.DOKill();
+        minigameCanvasGroup.DOFade(0, guiFadeTimes);
         angelHPCanvasGroup.DOKill();
         angelHPCanvasGroup.alpha = 1;
         angelHPCanvasGroup.DOFade(0, guiFadeTimes * 1.618f).OnComplete(() =>
@@ -227,6 +232,8 @@ public class AngelHeal : MonoBehaviour
     {
         if (!angel.healed)
         {
+            minigameCanvasGroup.DOKill();
+            minigameCanvasGroup.DOFade(1, guiFadeTimes);
             angelHPCanvasGroup.DOKill();
             angelHPCanvasGroup.alpha = 0;
             angelHPCanvas.enabled = true;

@@ -152,7 +152,8 @@ public class Attack : MonoBehaviour
            
             while (castingProgress < currentlySelectedCastDuration)
             {
-                if (Input.GetKeyUp(KeyCode.Mouse0))
+
+                if (Input.GetKeyUp(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     handAnimator.SetTrigger("Spell_Casting_Stop");
                     ClearCasting();
@@ -167,6 +168,14 @@ public class Attack : MonoBehaviour
 
             while (Input.GetKey(KeyCode.Mouse0))
             {
+
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    handAnimator.SetTrigger("Spell_Casting_Stop");
+                    ClearCasting();
+                    yield break;
+                }
+
                 yield return null;
             }
 

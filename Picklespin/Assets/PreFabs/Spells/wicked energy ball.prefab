@@ -10129,7 +10129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: energy
   damage: 2
-  magickaCost: 7
+  magickaCost: 15
   speed: 60
   myCooldown: 0.1
   castDuration: 0

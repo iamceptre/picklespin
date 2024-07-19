@@ -58,7 +58,6 @@ public class isCloseToAngel : MonoBehaviour
 
     private void DisableMe()
     {
-        angelHPGUI.enabled = false;
         angelHeal.StopAiming();
         angelHeal.enabled = false;
     }

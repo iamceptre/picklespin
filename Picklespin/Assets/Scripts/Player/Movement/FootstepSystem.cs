@@ -15,7 +15,6 @@ public class FootstepSystem : MonoBehaviour
 
     private IEnumerator footstepTimerRoutine;
 
-
     [SerializeField] private bool isstepping;
 
     private bool isRoutineRunning = false;
@@ -94,7 +93,7 @@ public class FootstepSystem : MonoBehaviour
 
     private void Update()
     {
-        if (playerMovement.anyMovementKeysPressed == true && controller.isGrounded) //after making state character controller, replace this if with just call from a given movement state class
+        if (playerMovement.anyMovementKeysPressed)
         {
             if (!isRoutineRunning)
             {
@@ -123,22 +122,18 @@ public class FootstepSystem : MonoBehaviour
     {
         while (isRoutineRunning)
         {
-            if (playerMovement.anyMovementKeysPressed == true)
-            {
                 footstepCount++;
                 PlayFoostepSound();
                 isFootstepIgnored = false;
                 yield return currentFootstepSpace;
             }
-
-        }
     }
 
 
 
     private void PlayFoostepSound()
     {
-        if (!isFootstepIgnored)
+        if (!isFootstepIgnored && controller.isGrounded)
         {
             footstepEmitter.Play();
 
@@ -146,9 +141,8 @@ public class FootstepSystem : MonoBehaviour
             {
                 evenFootstepLayerEmitter.Play();
             }
+            isFootstepIgnored = false;
         }
-
-        isFootstepIgnored = false;
     }
 
 

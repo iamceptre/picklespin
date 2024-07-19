@@ -65,7 +65,7 @@
 			<value>3</value>
 		</property>
 		<property name="minimumDistance">
-			<value>4</value>
+			<value>2.60000014</value>
 		</property>
 		<property name="maximumDistance">
 			<value>70</value>
@@ -111,6 +111,7 @@
 	<object class="MixerBusPanner" id="{063c03cb-8eb4-4389-9b33-220c403a736f}" />
 	<object class="MixerBusEffectChain" id="{89c6746b-c0d4-4eb9-a4da-7ef4cace3610}">
 		<relationship name="effects">
+			<destination>{15d07f97-f5ee-48d6-a942-a934adc0b59e}</destination>
 			<destination>{5dcb7401-6e45-4c47-9c69-fae7069a520d}</destination>
 			<destination>{225c2094-dcf8-4a29-a777-509dac66820f}</destination>
 		</relationship>
@@ -133,6 +134,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{affd4d69-29ce-4901-865f-5edf6d6624d0}" />
+	<object class="ThreeEQEffect" id="{15d07f97-f5ee-48d6-a942-a934adc0b59e}">
+		<property name="highGain">
+			<value>-3.5</value>
+		</property>
+		<property name="highCrossover">
+			<value>8000</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{5dcb7401-6e45-4c47-9c69-fae7069a520d}" />
 	<object class="ProxyEffect" id="{225c2094-dcf8-4a29-a777-509dac66820f}">
 		<property name="inputFormat">

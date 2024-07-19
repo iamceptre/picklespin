@@ -9946,7 +9946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: fireball
   damage: 10
-  magickaCost: 20
+  magickaCost: 30
   speed: 25
   myCooldown: 2
   castDuration: 1

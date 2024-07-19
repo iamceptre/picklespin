@@ -34,6 +34,7 @@ public class Reborn : MonoBehaviour
         portalAfterClosing = PortalAfterClosing.instance;
         myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, howMuchToSpaceout, animationTime).SetLoops(-1, LoopType.Yoyo);
         myTween.SetUpdate(UpdateType.Normal, true);
+        System.GC.Collect();
     }
 
     private void Update()

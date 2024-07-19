@@ -4,9 +4,11 @@ using FMODUnity;
 public class AngelMind : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private LookAtPlayer lookAtPlayer;
     [SerializeField] private Animator angelRingsAnimator;
-    [SerializeField] private GameObject angelRings;
+    [SerializeField] private Renderer[] additionalElements;
     [SerializeField] private Torch torch;
+    [SerializeField] private AngelRingEyesOpenClose eyesManager;
     private PlayerHP playerHP;
     private Ammo ammo;
     private PlayerMovement playerMovement;
@@ -34,7 +36,11 @@ public class AngelMind : MonoBehaviour
 
     public void SetActive(bool state)
     {
-        angelRings.SetActive(state);
+        for (int i = 0; i < additionalElements.Length; i++)
+        {
+            additionalElements[i].enabled = state;
+        }
+
         _activationTrigger.enabled = state;
         _rend.enabled = state;
         _collider.enabled = state;
@@ -68,6 +74,7 @@ public class AngelMind : MonoBehaviour
         ammo = Ammo.instance;
         playerMovement = PlayerMovement.instance;
         playerEXP = PlayerEXP.instance;
+        eyesManager.Close();
     }
 
 
@@ -81,11 +88,14 @@ public class AngelMind : MonoBehaviour
         angelRingsAnimator.SetTrigger("Healed");
 
         helperArrow.HideArrow();
+        lookAtPlayer.enabled = true;
 
         angelInstance = RuntimeManager.CreateInstance(angelHealedSoundEvent);
         angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
         angelRenderer.material.SetColor("_Color", Color.green);
         angelInstance.start();
+
+        eyesManager.Open();
 
         angelTorchManager.OffTorch();
 

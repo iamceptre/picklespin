@@ -2,9 +2,7 @@ using System.Collections;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
-    [HideInInspector] public static PlayerMovement instance { get; private set; } 
-
-
+    [HideInInspector] public static PlayerMovement instance { get; private set; }
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform body;
     private FootstepSystem footstepSystem;
@@ -16,21 +14,25 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed;
     public float crouchSpeed;
 
-    private float speedMultiplier = 1;
+    public float speedMultiplier = 1;
 
     private BarLightsAnimation barLightsAnimation;
 
     public float jumpPower;
-    private float gravity = 10;
+
+   [SerializeField] private float gravity = 9.81f;
+    private float startingGravity;
+    private float stairGravity = 4000;
+
     public float defaultHeight;
     public float crouchHeight;
-    [HideInInspector] [Range(0, 100)] public float stamina = 100;
+    [HideInInspector][Range(0, 100)] public float stamina = 100;
     private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool anyMovementKeysPressed;
     [HideInInspector] public float externalPushForce = 1; //1 means no difference at all
-    [Range(0,2)] public int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
+    [Range(0, 2)] public int movementStateForFMOD = 1; // 0-stealth, 1-walk, 2-sprint
 
     private CharacterControllerVelocity speedometer;
 
@@ -40,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this )
+        if (instance != null && instance != this)
         {
             Destroy(this);
         }
@@ -49,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
             instance = this;
         }
 
+        startingGravity = gravity;
     }
 
     private void Start()
@@ -63,6 +66,36 @@ public class PlayerMovement : MonoBehaviour
         footstepSystem.SetNewFootstepSpace(1);
     }
 
+    public void StairGravity()
+    {
+        //Debug.Log("setting stair gravity");
+        if (characterController.isGrounded)
+        {
+            gravity = stairGravity;
+        }
+        else
+        {
+            StartCoroutine(WaitTillLandingToSetGravity());
+        }
+    }
+
+
+    private IEnumerator WaitTillLandingToSetGravity()
+    {
+        while (!characterController.isGrounded)
+        {
+            yield return null;
+        }
+        gravity = stairGravity;
+        yield break;
+    }
+
+    public void NormalGravity()
+    {
+        //Debug.Log("unsetting stair gravity");
+        gravity = startingGravity;
+    }
+
     public void SlowMeDown()
     {
         SetSneakSingleTick();
@@ -71,7 +104,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void SpeedMeBackUp()
     {
-        SetWalkSingleTick();
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+         SetRunSingleTick();
+        }
+        else
+        {
+            SetWalkSingleTick();
+        }
+
         speedMultiplier = 1;
     }
 
@@ -110,6 +151,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
         }
     }
+
 
     void Update()
     {
@@ -169,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
             //if hit ceiling, stop jumping
             if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0)
             {
-                    moveDirection.y = 0;
+                moveDirection.y = 0;
             }
 
         }
@@ -242,7 +284,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        //footstepSystem.footstepInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        
+        NormalGravity();
+
         if (bhop != null && bhop.canBhop)
         {
             BhopJump();
@@ -269,7 +313,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void jumpPushForward()
     {
-        if (anyMovementKeysPressed && stamina>2)
+        if (anyMovementKeysPressed && stamina > 2)
         {
             externalPushForce = 0.4f + speedometer.horizontalVelocity * 0.2f;
             StopAllCoroutines();
@@ -292,7 +336,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (speedometer.horizontalVelocity>8) {
+            if (speedometer.horizontalVelocity > 8)
+            {
                 //fail bhop penalty
                 externalPushForce = 0.5f + speedometer.horizontalVelocity * 0.13f;
                 externalPushForce = Mathf.Clamp(externalPushForce, 1, 7);
@@ -319,15 +364,15 @@ public class PlayerMovement : MonoBehaviour
 
 
         if (stamina + howMuchStaminaIGive <= 100)
-            {
-                stamina += howMuchStaminaIGive;
-                barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, false); //hp = 0, stamina = 1, mana = 2
-            }
-            else
-            {
-                stamina = 100;
-                barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, true); //hp = 0, stamina = 1, mana = 2
-            }
+        {
+            stamina += howMuchStaminaIGive;
+            barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, false); //hp = 0, stamina = 1, mana = 2
+        }
+        else
+        {
+            stamina = 100;
+            barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, true); //hp = 0, stamina = 1, mana = 2
+        }
 
         staminaBarDisplay.Refresh(false);
 

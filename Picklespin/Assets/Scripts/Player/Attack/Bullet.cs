@@ -227,7 +227,7 @@ public class Bullet : MonoBehaviour
 
     private void Headshot(AiReferences refs)
     {
-        damage *= 3;
+        damage *= 2;
         refs.HeadshotParticle.Play();
         //maybe a low-key sound
     }
@@ -250,11 +250,11 @@ public class Bullet : MonoBehaviour
 
         if(ammo.ammo < ammo.maxAmmo * 0.2f) //20% or less mana
         {
-            criticalTreshold = 5; // 5/10 chance of critical
+            criticalTreshold = 5;
         }
         else
         {
-            criticalTreshold = 8; //WHEN HIGH ON MANA, 2/10 chance of critical
+            criticalTreshold = 9;
         }
 
         if (Random.Range(0,10) >= criticalTreshold || iWillBeCritical)
