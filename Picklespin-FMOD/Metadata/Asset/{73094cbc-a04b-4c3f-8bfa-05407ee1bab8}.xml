@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="EncodableAsset" id="{73094cbc-a04b-4c3f-8bfa-05407ee1bab8}">
 		<property name="assetPath">
-			<value>In_Game/Enemies/BURNED/</value>
+			<value>In_Game/NPC/Enemies/BURNED/</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{8a404859-8cf0-4df6-ade9-29049cf2f9b7}">
 		<property name="assetPath">
-			<value>In_Game/Enemies/ENEMY_BURN_LOOP5.wav</value>
+			<value>In_Game/NPC/Enemies/ENEMY_BURN_LOOP5.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>

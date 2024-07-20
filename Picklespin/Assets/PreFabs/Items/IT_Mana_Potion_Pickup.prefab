@@ -154,11 +154,11 @@ MonoBehaviour:
   howMuchManaIGive: 25
   pickupSoundEvent:
     Guid:
-      Data1: -1863039198
-      Data2: 1199646912
-      Data3: -636784227
-      Data4: 154598932
-    Path: event:/PLACEHOLDER_UNCZ/angel_healed
+      Data1: 756369316
+      Data2: 1179668277
+      Data3: -1592573549
+      Data4: 1607727002
+    Path: event:/ITEMS/POTIONS/POTION_PICKUP_BASE_LAYER
 --- !u!108 &7903765151714754945
 Light:
   m_ObjectHideFlags: 0
@@ -276,6 +276,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   isObjectPooled: 1
+  deactivateAfterPickup: 0
 --- !u!114 &4693016999618831517
 MonoBehaviour:
   m_ObjectHideFlags: 0

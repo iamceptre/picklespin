@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{7cd83912-b764-4b6b-891a-278cd558fbce}">
 		<property name="assetPath">
-			<value>In_Game/Enemies/BURNED/ENEMIES_BURNED_5.wav</value>
+			<value>In_Game/NPC/Enemies/BURNED/ENEMIES_BURNED_5.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

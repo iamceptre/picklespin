@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{6642a148-49b0-4b40-bf64-9c7b9c4e170c}">
 		<property name="assetPath">
-			<value>In_Game/Enemies/DAMAGE_TAKEN/BIG/ENEMY_HIT_BIGSPELL_5.wav</value>
+			<value>In_Game/NPC/Enemies/DAMAGE_TAKEN/BIG/ENEMY_HIT_BIGSPELL_5.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

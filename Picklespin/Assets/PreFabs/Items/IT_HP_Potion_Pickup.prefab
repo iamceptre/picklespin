@@ -154,11 +154,11 @@ MonoBehaviour:
   howMuchHPIGive: 20
   pickupSoundEvent:
     Guid:
-      Data1: 1225238315
-      Data2: 1131977981
-      Data3: 877919876
-      Data4: -853058563
-    Path: event:/PLACEHOLDER_UNCZ/ohh
+      Data1: 756369316
+      Data2: 1179668277
+      Data3: -1592573549
+      Data4: 1607727002
+    Path: event:/ITEMS/POTIONS/POTION_PICKUP_BASE_LAYER
 --- !u!114 &4773779664034127539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +187,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   isObjectPooled: 1
+  deactivateAfterPickup: 0
 --- !u!108 &4273161091703289828
 Light:
   m_ObjectHideFlags: 0

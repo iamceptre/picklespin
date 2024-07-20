@@ -23,6 +23,11 @@ public class AngelMind : MonoBehaviour
     private Helper_Arrow helperArrow;
     private AngelHealingMinigame minigame;
 
+    [Header("Emmiter References")]
+
+    [SerializeField] private StudioEventEmitter unhealedLoopEmmiter;
+    [SerializeField] private StudioEventEmitter healedLoopEmmiter;
+
     [Header("Logic")]
     public bool healed = false;
     public bool isDead = false;
@@ -36,6 +41,13 @@ public class AngelMind : MonoBehaviour
 
     public void SetActive(bool state)
     {
+        if (isActive)
+        {
+            return;
+        }
+
+        unhealedLoopEmmiter.Play();
+
         for (int i = 0; i < additionalElements.Length; i++)
         {
             additionalElements[i].enabled = state;
@@ -43,6 +55,7 @@ public class AngelMind : MonoBehaviour
 
         _activationTrigger.enabled = state;
         _rend.enabled = state;
+        unhealedLoopEmmiter.gameObject.SetActive(state);
         _collider.enabled = state;
         isActive = state;
 
@@ -54,6 +67,7 @@ public class AngelMind : MonoBehaviour
         {
             torch.Off();
         }
+
     }
 
 
@@ -90,6 +104,9 @@ public class AngelMind : MonoBehaviour
         helperArrow.HideArrow();
         lookAtPlayer.enabled = true;
 
+        unhealedLoopEmmiter.Stop();
+        healedLoopEmmiter.Play();
+
         angelInstance = RuntimeManager.CreateInstance(angelHealedSoundEvent);
         angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
         angelRenderer.material.SetColor("_Color", Color.green);
@@ -121,6 +138,13 @@ public class AngelMind : MonoBehaviour
     private void GiveManaToPlayer()
     {
         ammo.GiveManaToPlayer(ammo.maxAmmo);
+    }
+
+
+    public void StopMySound()
+    {
+        unhealedLoopEmmiter.Stop();
+        healedLoopEmmiter.Stop();
     }
 
 }

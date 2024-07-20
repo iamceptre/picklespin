@@ -125,6 +125,7 @@ Transform:
   - {fileID: 9166789335398876833}
   - {fileID: 4810402711278669920}
   - {fileID: 8729721348792304573}
+  - {fileID: 8903493190988106226}
   m_Father: {fileID: 1364476381116299179}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8027755061140122056
@@ -203,14 +204,16 @@ MonoBehaviour:
   eyesManager: {fileID: 720554755647266348}
   angelHealedSoundEvent:
     Guid:
-      Data1: -1863039198
-      Data2: 1199646912
-      Data3: -636784227
-      Data4: 154598932
-    Path: event:/PLACEHOLDER_UNCZ/angel_healed
+      Data1: -1765704324
+      Data2: 1165827984
+      Data3: -700140658
+      Data4: 2134639907
+    Path: event:/ANGELS/HEAL_ONESHOT
   healedParticles: {fileID: 4435688068558383525}
   giveExpAfterHeal: {fileID: 7371242577392167853}
   scriptActivationTrigger: {fileID: 1056809553663382193}
+  unhealedLoopEmmiter: {fileID: 4356330041425487037}
+  healedLoopEmmiter: {fileID: 5280607497776294092}
   healed: 0
   isDead: 0
   isActive: 0
@@ -256,6 +259,18 @@ MonoBehaviour:
       - m_Target: {fileID: 6278043471604384016}
         m_TargetAssemblyTypeName: AngelRingFalloff, Assembly-CSharp
         m_MethodName: Falloff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1338490457104099785}
+        m_TargetAssemblyTypeName: AngelMind, Assembly-CSharp
+        m_MethodName: StopMySound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -361,6 +376,7 @@ MonoBehaviour:
   MaterialFlash: {fileID: 7876515725705640416}
   HeadshotParticle: {fileID: 0}
   setOnFire: {fileID: 0}
+  damageTakenBig: {fileID: 0}
 --- !u!114 &7876515725705640416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5952,6 +5968,69 @@ MonoBehaviour:
   floatSpeed: 2
   noiseScale: 0.2
   noiseStrength: 1
+--- !u!1 &5111189580768652372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 12040621143310375}
+  - component: {fileID: 5280607497776294092}
+  m_Layer: 6
+  m_Name: Healed_Loop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &12040621143310375
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5111189580768652372}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8903493190988106226}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5280607497776294092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5111189580768652372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1303040721
+      Data2: 1236576237
+      Data3: -1366966340
+      Data4: -1847176226
+    Path: event:/ANGELS/HEALED_LOOP
+  Event: 
+  PlayEvent: 0
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 3.4
+  OverrideMaxDistance: 30
 --- !u!1 &6619971455601257019
 GameObject:
   m_ObjectHideFlags: 0
@@ -6035,6 +6114,69 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7886084925048109399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2920741681545479534}
+  - component: {fileID: 4356330041425487037}
+  m_Layer: 6
+  m_Name: Unhealed_Loop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2920741681545479534
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7886084925048109399}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8903493190988106226}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4356330041425487037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7886084925048109399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1427915773
+      Data2: 1299005490
+      Data3: -9525095
+      Data4: 478976527
+    Path: event:/ANGELS/UNHEALED_LOOP
+  Event: 
+  PlayEvent: 0
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 3.4
+  OverrideMaxDistance: 30
 --- !u!1 &8060132385785742649
 GameObject:
   m_ObjectHideFlags: 0
@@ -10958,6 +11100,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &8148840553184460164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8903493190988106226}
+  m_Layer: 6
+  m_Name: SoundEmmiters
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8903493190988106226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8148840553184460164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2920741681545479534}
+  - {fileID: 12040621143310375}
+  m_Father: {fileID: 7326393568944362546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8842972367169257141
 GameObject:
   m_ObjectHideFlags: 0

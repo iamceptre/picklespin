@@ -1,9 +1,11 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Pool;
+using FMODUnity;
 
 public class SpellPickupable : MonoBehaviour
 {
+    [SerializeField] private StudioEventEmitter mySound;
     [SerializeField] private int spellID;
     private int myOccupiedWaypointIndex;
 
@@ -47,12 +49,17 @@ public class SpellPickupable : MonoBehaviour
         ammo = Ammo.instance;
         myLightRange = myLight.range;
         myLightColor = myLight.color;
+
+        if (mySound != null)
+        {
+            mySound.Play();
+        }
     }
 
     private void OnEnable()
     {
         myCollider.enabled = true;
-        rend.enabled = true;
+        //rend.enabled = true;
 
         if (particle != null)
         {
@@ -71,6 +78,12 @@ public class SpellPickupable : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player")) //SPELL PICKUP
         {
+
+            if (mySound != null)
+            {
+                mySound.Stop();
+            }
+
             unlockedSpells.UnlockASpell(spellID);
             spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
             spellSpawnerScript.avaliableSpawnPointsCount++;

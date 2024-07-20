@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="EncodableAsset" id="{eef0f5b8-0c88-49e7-b0d6-6f5da5a21eec}">
 		<property name="assetPath">
-			<value>In_Game/Enemies/DAMAGE_TAKEN/BIG/</value>
+			<value>In_Game/NPC/Enemies/DAMAGE_TAKEN/BIG/</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>

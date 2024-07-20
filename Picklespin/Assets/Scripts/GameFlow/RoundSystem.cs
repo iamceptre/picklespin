@@ -19,7 +19,7 @@ public class RoundSystem : MonoBehaviour
     [SerializeField] private TMP_Text newRoundText;
     private NewRoundDisplayText newRoundDisplayText;
 
-    public float speedMultiplier = 1;
+    [HideInInspector] public float speedMultiplier = 1;
 
     private void Awake()
     {

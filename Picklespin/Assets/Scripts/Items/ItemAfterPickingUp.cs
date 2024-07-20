@@ -17,6 +17,8 @@ public class ItemAfterPickingUp : MonoBehaviour
 
     [SerializeField] private bool isObjectPooled = true;
 
+    [SerializeField] private bool deactivateAfterPickup = false;
+
     void Awake()
     {
         myCollider = GetComponent<Collider>();
@@ -97,6 +99,11 @@ public class ItemAfterPickingUp : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+
+        if (deactivateAfterPickup)
+        {
+          gameObject.SetActive(false);
         }
 
         afterPickingUpEvent.Invoke();
