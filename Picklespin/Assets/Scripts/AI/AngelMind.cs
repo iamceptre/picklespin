@@ -15,7 +15,6 @@ public class AngelMind : MonoBehaviour
     private PlayerEXP playerEXP;
     private AngelTorchManager angelTorchManager;
     [SerializeField] private EventReference angelHealedSoundEvent;
-    private FMOD.Studio.EventInstance angelInstance;
     [SerializeField] private ParticleSystem healedParticles;
     [SerializeField] private GiveExpToPlayer giveExpAfterHeal;
     [SerializeField] private BoxCollider scriptActivationTrigger;
@@ -107,10 +106,9 @@ public class AngelMind : MonoBehaviour
         unhealedLoopEmmiter.Stop();
         healedLoopEmmiter.Play();
 
-        angelInstance = RuntimeManager.CreateInstance(angelHealedSoundEvent);
-        angelInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+        RuntimeManager.PlayOneShot(angelHealedSoundEvent);
+
         angelRenderer.material.SetColor("_Color", Color.green);
-        angelInstance.start();
 
         eyesManager.Open();
 

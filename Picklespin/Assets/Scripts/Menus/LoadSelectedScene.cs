@@ -12,10 +12,12 @@ public class LoadSelectedScene : MonoBehaviour
     [SerializeField] private TMP_Text loadingText;
 
     private FMODResetManager fmodResetManager;
+    private SnapshotManager snapshotManager;
 
     private void Start()
     {
         fmodResetManager = FMODResetManager.instance;
+        snapshotManager = SnapshotManager.instance;
     }
 
 
@@ -24,6 +26,9 @@ public class LoadSelectedScene : MonoBehaviour
     {
         if (fmodResetManager != null)
             fmodResetManager.ResetFMOD(true);
+
+        if (snapshotManager != null)
+            snapshotManager.StopAllSnapshots();
 
         if (loadingBar == null)
         {

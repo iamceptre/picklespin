@@ -62,6 +62,8 @@ public class Reborn : MonoBehaviour
 
     private void SetScene()
     {
+        snapshotManager.StopAllSnapshots();
+
         if (sceneindex == -1)
         {
             //Debug.Log("reloading current scene");

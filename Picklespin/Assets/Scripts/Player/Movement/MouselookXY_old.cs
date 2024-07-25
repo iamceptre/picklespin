@@ -28,6 +28,9 @@ public class MouselookXY_old : MonoBehaviour
 
     private void Start()
     {
+
+        sensitivity = PlayerPrefs.GetFloat("MouseSensitivity") * 0.06f;
+
         startSensitivty = sensitivity;
         rotY = 0f;
         rotX = 0f;

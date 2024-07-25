@@ -18,6 +18,8 @@
 		<relationship name="effects">
 			<destination>{52b27eb7-3c6d-480a-a68b-09357993248b}</destination>
 			<destination>{40a69689-bf1a-4feb-a9fc-c2e9b8eeeb54}</destination>
+			<destination>{09774529-6841-40f9-b17e-8345b572f973}</destination>
+			<destination>{d757f5cb-d3c4-4b4e-93a0-9b22d1592d0c}</destination>
 			<destination>{eb8bc034-fe59-4ddc-8e5f-6416b6038ef4}</destination>
 			<destination>{62eaf4e6-4b36-4880-b055-d7a180be304b}</destination>
 		</relationship>
@@ -43,6 +45,19 @@
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>
+		</property>
+	</object>
+	<object class="HighpassEffect" id="{09774529-6841-40f9-b17e-8345b572f973}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="cutoff">
+			<value>500</value>
+		</property>
+	</object>
+	<object class="LowpassEffect" id="{d757f5cb-d3c4-4b4e-93a0-9b22d1592d0c}">
+		<property name="cutoff">
+			<value>10000</value>
 		</property>
 	</object>
 	<object class="ConvolutionReverbEffect" id="{eb8bc034-fe59-4ddc-8e5f-6416b6038ef4}">

@@ -5,7 +5,7 @@
 			<value>HEAL_ONESHOT</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{d43de067-053e-4c0f-9cb9-069437fbaec8}</destination>
@@ -108,14 +108,13 @@
 	<object class="MixerBusPanner" id="{3a25adb1-1b47-4dd2-8c29-02c6987eb11d}" />
 	<object class="MixerBusEffectChain" id="{9f018e7a-6cf9-4816-a7c6-1007d135ffcb}">
 		<relationship name="effects">
-			<destination>{52ebf69b-f77b-4858-b1a5-f2114ca64709}</destination>
 			<destination>{07e3efdb-7931-4d3a-8b6b-682efc57fe87}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{903db9f3-8843-4c41-b056-69a22b3f3790}" />
 	<object class="SingleSound" id="{2e8f429c-0d52-407c-9959-d0998d17c50e}">
 		<property name="startOffset">
-			<value>20</value>
+			<value>26.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{131a8a75-a62a-47f8-ac2a-ed936a42b8d8}</destination>
@@ -125,14 +124,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{c6cb07a1-d973-4c36-819f-16c4031cf583}" />
-	<object class="ProxyEffect" id="{52ebf69b-f77b-4858-b1a5-f2114ca64709}">
-		<property name="inputFormat">
-			<value>1</value>
-		</property>
-		<relationship name="preset">
-			<destination>{c7d241f7-1a4e-4d15-91e0-b8904136f212}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{07e3efdb-7931-4d3a-8b6b-682efc57fe87}" />
 	<object class="ADSRModulator" id="{131a8a75-a62a-47f8-ac2a-ed936a42b8d8}">
 		<property name="nameOfPropertyBeingModulated">

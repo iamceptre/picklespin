@@ -201,6 +201,11 @@ public class AngelHeal : MonoBehaviour
 
     public void Healed()
     {
+        if (angel.healed)
+        {
+            return;
+        }
+
         healSpeedMultiplier = 1;
         StopAiming();
 

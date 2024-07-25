@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5043804776176330075}
   - component: {fileID: 5580142917276853400}
   - component: {fileID: 2340856235009204094}
+  - component: {fileID: 2838970184411471511}
   m_Layer: 0
   m_Name: ManaSuckParticle
   m_TagString: Untagged
@@ -227,8 +228,8 @@ ParticleSystem:
       maxColor: {r: 0.24256852, g: 0.33430475, b: 0.745283, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.54509807, g: 0.627451, b: 1, a: 1}
-        key1: {r: 0.54509807, g: 0.627451, b: 1, a: 1}
+        key0: {r: 0.3820755, g: 0.41921574, b: 1, a: 1}
+        key1: {r: 0.3820755, g: 0.41921574, b: 1, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -251,7 +252,7 @@ ParticleSystem:
         atime5: 0
         atime6: 0
         atime7: 0
-        m_Mode: 1
+        m_Mode: 0
         m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
@@ -4779,7 +4780,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4844,3 +4844,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e260c1f9f924df458b762ed8ee82b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSuckedInSoundEmitter: {fileID: 2838970184411471511}
+--- !u!114 &2838970184411471511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7645066956858609154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1420208563
+      Data2: 1323228841
+      Data3: -228481916
+      Data4: 139789544
+    Path: event:/PLAYER/EXP/EXP_GATHER
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

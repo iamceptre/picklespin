@@ -86,7 +86,7 @@ public class SnapshotManager : MonoBehaviour
     public void StopAllSnapshots() {
         LowHp.Stop();
         PortalClosed.Stop();
-
+        Pause.Stop();
         StopReverbSnapshot(0);
         StopReverbSnapshot(1);
         StopReverbSnapshot(2);

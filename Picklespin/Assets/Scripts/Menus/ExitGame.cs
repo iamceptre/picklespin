@@ -13,8 +13,9 @@ public class ExitGame : MonoBehaviour
 
     private IEnumerator Surprise()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         //SURPRISE MOTHERFUCKER!
-        yield return waitFrame;
         yield return waitFrame;
         yield return waitFrame;
         yield return waitFrame;

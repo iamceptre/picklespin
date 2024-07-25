@@ -40,9 +40,10 @@ public class FootstepSystem : MonoBehaviour
 
     private void Awake()
     {
-        walkFootstepSpaceSecs = new WaitForSeconds(walkFootstepSpace);
-        runFootstepSpaceSecs = new WaitForSeconds(runFootstepSpace);
-        sneakFootstepSpaceSecs = new WaitForSeconds(sneakFootstepSpace);
+        //THOOSE ARE IN HALF
+        walkFootstepSpaceSecs = new WaitForSeconds(walkFootstepSpace*0.5f);
+        runFootstepSpaceSecs = new WaitForSeconds(runFootstepSpace * 0.5f);
+        sneakFootstepSpaceSecs = new WaitForSeconds(sneakFootstepSpace * 0.5f);
 
 
         if (instance != null && instance != this)
@@ -82,6 +83,7 @@ public class FootstepSystem : MonoBehaviour
                 currentFootstepSpace = walkFootstepSpaceSecs;
                 break;
         }
+
     }
 
     private void Start()
@@ -122,6 +124,7 @@ public class FootstepSystem : MonoBehaviour
     {
         while (isRoutineRunning)
         {
+                yield return currentFootstepSpace;
                 footstepCount++;
                 PlayFoostepSound();
                 isFootstepIgnored = false;

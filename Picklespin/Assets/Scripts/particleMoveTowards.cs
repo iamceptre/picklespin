@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class ParticleMoveTowards : MonoBehaviour
     private int numParticlesAlive;
 
     private float velocityMultiplier = 0;
+
+    [SerializeField] private StudioEventEmitter particleSuckedInSoundEmitter;
 
     private void Awake()
     {
@@ -38,6 +41,14 @@ public class ParticleMoveTowards : MonoBehaviour
         {
             float distanceToPlayer = Vector3.Distance(publicPlayerTransform.PlayerTransform.position, particles[i].position);
 
+            if (distanceToPlayer < 2f)
+            {
+                if (particleSuckedInSoundEmitter != null)
+                {
+                    particleSuckedInSoundEmitter.Play();
+                }
+            }
+
             if (distanceToPlayer < 0.1f)
             {
                 particles[i].remainingLifetime = 0f;
@@ -55,7 +66,7 @@ public class ParticleMoveTowards : MonoBehaviour
 
     private IEnumerator LazyStart()
     {
-        while (velocityMultiplier<1)
+        while (velocityMultiplier < 1)
         {
             velocityMultiplier += Time.deltaTime;
             mainModule.simulationSpeed = velocityMultiplier;

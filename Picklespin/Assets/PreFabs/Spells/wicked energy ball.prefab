@@ -10130,7 +10130,7 @@ MonoBehaviour:
   spellName: energy
   damage: 2
   magickaCost: 15
-  speed: 60
+  speed: 75
   myCooldown: 0.1
   castDuration: 0
   timeBeforeOff: 4
@@ -10155,6 +10155,7 @@ MonoBehaviour:
       Data3: -1224385138
       Data4: -71727395
     Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
+  hitWall: {fileID: 0}
   doesThisSpellSetOnFire: 0
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 3005831588898276106}

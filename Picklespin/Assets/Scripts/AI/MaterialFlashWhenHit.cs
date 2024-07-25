@@ -24,6 +24,8 @@ public class MaterialFlashWhenHit : MonoBehaviour
             flashElapsed -= Time.deltaTime;
             yield return null;
         }
+
+        rend.material.SetColor(emissionColor, Color.black);
     }
 
     private void Initialize()
@@ -44,6 +46,7 @@ public class MaterialFlashWhenHit : MonoBehaviour
             flashElapsed -= Time.deltaTime;
             yield return null;
         }
+        rend.material.SetColor(emissionColor, Color.black);
     }
 
 
