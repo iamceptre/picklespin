@@ -79,9 +79,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{d3ee14ff-cdae-4fb9-807d-e06b26443bed}">
-		<property name="volume">
-			<value>10</value>
-		</property>
+		<relationship name="modulators">
+			<destination>{fb1c6f72-8de1-4d74-ac82-77aff151290b}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{46fba566-66e9-4808-9fe7-391bd6618157}</destination>
 		</relationship>
@@ -103,10 +103,36 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{637c0ef8-4c78-4e10-9786-0e1896b474c2}" />
+	<object class="ADSRModulator" id="{fb1c6f72-8de1-4d74-ac82-77aff151290b}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-11</value>
+		</property>
+		<property name="attackTime">
+			<value>20</value>
+		</property>
+		<property name="holdTime">
+			<value>520</value>
+		</property>
+		<property name="decayTime">
+			<value>980</value>
+		</property>
+		<property name="decayShape">
+			<value>0.636005998</value>
+		</property>
+		<property name="sustainValue">
+			<value>-80</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{46fba566-66e9-4808-9fe7-391bd6618157}">
 		<relationship name="effects">
-			<destination>{8b3949ff-3d01-4b32-ba52-c369fa4a8504}</destination>
 			<destination>{42491a8f-ee08-4813-8bc1-21dd53adef73}</destination>
+			<destination>{8b3949ff-3d01-4b32-ba52-c369fa4a8504}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f7fa157c-a9e4-4149-87b4-1894b15e5842}" />
@@ -123,6 +149,7 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{2f2dd73d-2954-49f2-bfda-6ca7631db669}" />
+	<object class="MixerBusFader" id="{42491a8f-ee08-4813-8bc1-21dd53adef73}" />
 	<object class="ProxyEffect" id="{8b3949ff-3d01-4b32-ba52-c369fa4a8504}">
 		<property name="inputFormat">
 			<value>1</value>
@@ -131,7 +158,6 @@
 			<destination>{c7d241f7-1a4e-4d15-91e0-b8904136f212}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusFader" id="{42491a8f-ee08-4813-8bc1-21dd53adef73}" />
 	<object class="RandomizerModulator" id="{1b739612-6d26-4e12-adcf-11aa8f307c1e}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>

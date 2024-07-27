@@ -19,21 +19,15 @@ public class PlayerPrefsSliderManager : MonoBehaviour
     public void SaveSetting() {
 
             PlayerPrefs.SetFloat(settingName, _slider.value);
-            Debug.Log("saved " + settingName + " to " + _slider.value);
+            //Debug.Log("saved " + settingName + " to " + _slider.value);
             return;
     }
 
 
     public void LoadSetting()
     {
-        float readenSens = PlayerPrefs.GetFloat(settingName);
-
-        if (readenSens <= 0)
-        {
-            readenSens = _slider.value;
-        }
-
-        _slider.value = readenSens;
+        _slider.value = PlayerPrefs.GetFloat(settingName, _slider.value);
+        //do rest of the loading in coresponding scripts like MouseLook, VolumeSettingLoader etc
     }
 
 }

@@ -36,7 +36,7 @@ public class LookAtPlayer : MonoBehaviour
     {
         Vector3 lookDirection = player.position - transform.position;
         lookDirection.Normalize();
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), 4 * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), 6 * Time.deltaTime);
     }
 
 }

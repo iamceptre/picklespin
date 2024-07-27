@@ -31,7 +31,7 @@ public class FMODResetManager : MonoBehaviour
     public void ResetFMOD(bool immediate)
     {
         //Debug.Log("reset fmod");
-
+        if(snapshotManager != null)
         snapshotManager.StopAllSnapshots();
 
         if (immediate)

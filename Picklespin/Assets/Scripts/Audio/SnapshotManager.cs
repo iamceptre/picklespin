@@ -10,6 +10,7 @@ public class SnapshotManager : MonoBehaviour
     public StudioEventEmitter LowHp;
     public StudioEventEmitter PortalClosed;
     public StudioEventEmitter Pause;
+    public StudioEventEmitter Deathscreen;
 
     [Header("Reverbs")]
     [SerializeField] private StudioEventEmitter churchReverb;
@@ -87,6 +88,7 @@ public class SnapshotManager : MonoBehaviour
         LowHp.Stop();
         PortalClosed.Stop();
         Pause.Stop();
+        Deathscreen.Stop();
         StopReverbSnapshot(0);
         StopReverbSnapshot(1);
         StopReverbSnapshot(2);

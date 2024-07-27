@@ -4,9 +4,6 @@
 		<property name="assetPath">
 			<value>In_Game/Map/Objects/Torch/TORCH_LOOP-1.wav</value>
 		</property>
-		<property name="isStreaming">
-			<value>true</value>
-		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

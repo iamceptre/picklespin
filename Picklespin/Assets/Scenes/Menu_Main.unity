@@ -448,6 +448,8 @@ GameObject:
   m_Component:
   - component: {fileID: 186992056}
   - component: {fileID: 186992057}
+  - component: {fileID: 186992058}
+  - component: {fileID: 186992059}
   m_Layer: 5
   m_Name: VolumeSlider
   m_TagString: Untagged
@@ -542,6 +544,44 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 186992059}
+        m_TargetAssemblyTypeName: VolumeSettingLoader, Assembly-CSharp
+        m_MethodName: RefreshVolumeOutsidePlayerPrefs
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &186992058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186992055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4021de5d19e6b2f4596730dd46a2be36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingName: Volume
+--- !u!114 &186992059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186992055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2035d357b02ad43a779eedeb2877f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterVolumeSlider: {fileID: 186992057}
 --- !u!1 &192487932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,6 +1248,7 @@ GameObject:
   - component: {fileID: 318013932}
   - component: {fileID: 318013931}
   - component: {fileID: 318013935}
+  - component: {fileID: 318013936}
   m_Layer: 5
   m_Name: SettingsCanvas
   m_TagString: Untagged
@@ -1312,6 +1353,86 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &318013936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318013930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8384bb45a54ff24dad0dcb405d03da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefsSlider:
+  - {fileID: 1364549390}
+  - {fileID: 186992058}
+  - {fileID: 754520547}
+  - {fileID: 186992058}
+--- !u!1 &393372617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 393372619}
+  - component: {fileID: 393372618}
+  m_Layer: 0
+  m_Name: MenuMusic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &393372618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393372617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1359943401
+      Data2: 1108373045
+      Data3: -1383450698
+      Data4: 271282360
+    Path: event:/MUSIC/MUSIC_MENU_AMBIENT_UNCZ
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!4 &393372619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393372617}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.365958, y: -0.1402973, z: -14.072556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &540879384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,7 +1490,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: volume (not functional)
+  m_text: volume
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d66d60043d4c2d343a94dbe8473ac87f, type: 2}
   m_sharedMaterial: {fileID: 142448586285362361, guid: d66d60043d4c2d343a94dbe8473ac87f, type: 2}
@@ -1589,7 +1710,7 @@ MonoBehaviour:
   m_MinValue: 29
   m_MaxValue: 240
   m_WholeNumbers: 1
-  m_Value: 29
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1649,6 +1770,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1108234191}
     m_Modifications:
+    - target: {fileID: 3080542657431260424, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_Color.b
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080542657431260424, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_Color.g
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080542657431260424, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_Color.r
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080542657431260424, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_Maskable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080542657431260424, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7126869797160204313, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1680,6 +1821,18 @@ PrefabInstance:
     - target: {fileID: 7126869797160204313, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126869797160204313, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126869797160204313, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126869797160204313, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7126869797160204313, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1736,6 +1889,10 @@ PrefabInstance:
     - target: {fileID: 7651677856895746041, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586587813723134196, guid: 5fe477cda9f3c4c418125f99204a74dd, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2313,9 +2470,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 845204600}
   - {fileID: 1134096881}
   - {fileID: 3273637475469840951}
-  - {fileID: 845204600}
   m_Father: {fileID: 1983751260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2395,9 +2552,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Banished Abyss
-
-'
+  m_text: Essence
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d66d60043d4c2d343a94dbe8473ac87f, type: 2}
   m_sharedMaterial: {fileID: 142448586285362361, guid: d66d60043d4c2d343a94dbe8473ac87f, type: 2}
@@ -2928,7 +3083,7 @@ MonoBehaviour:
   m_MinValue: 1
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 50
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3716,7 +3871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1553642589
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4388,6 +4543,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 1
 --- !u!224 &254949499164649005
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4463,21 +4626,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1364549390}
-        m_TargetAssemblyTypeName: PlayerPrefsSliderManager, Assembly-CSharp
-        m_MethodName: SaveSetting
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 754520547}
-        m_TargetAssemblyTypeName: PlayerPrefsSliderManager, Assembly-CSharp
-        m_MethodName: SaveSetting
+      - m_Target: {fileID: 318013936}
+        m_TargetAssemblyTypeName: BulkSettingsManager, Assembly-CSharp
+        m_MethodName: SaveAllSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4783,6 +4934,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 1
 --- !u!222 &1181160854470018868
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5286,6 +5445,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 393372618}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &3185351304599687968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5767,6 +5938,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 1
 --- !u!114 &6969819936917739751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5779,6 +5958,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 1
 --- !u!114 &7420612056256587807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6036,21 +6223,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1364549390}
-        m_TargetAssemblyTypeName: PlayerPrefsSliderManager, Assembly-CSharp
-        m_MethodName: SaveSetting
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 754520547}
-        m_TargetAssemblyTypeName: PlayerPrefsSliderManager, Assembly-CSharp
-        m_MethodName: SaveSetting
+      - m_Target: {fileID: 318013936}
+        m_TargetAssemblyTypeName: BulkSettingsManager, Assembly-CSharp
+        m_MethodName: SaveAllSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6306,3 +6481,4 @@ SceneRoots:
   - {fileID: 46470756}
   - {fileID: 1409237353}
   - {fileID: 760267520070700102}
+  - {fileID: 393372619}

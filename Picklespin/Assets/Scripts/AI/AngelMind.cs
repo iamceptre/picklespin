@@ -18,7 +18,6 @@ public class AngelMind : MonoBehaviour
     [SerializeField] private ParticleSystem healedParticles;
     [SerializeField] private GiveExpToPlayer giveExpAfterHeal;
     [SerializeField] private BoxCollider scriptActivationTrigger;
-    private Renderer angelRenderer;
     private Helper_Arrow helperArrow;
     private AngelHealingMinigame minigame;
 
@@ -33,7 +32,6 @@ public class AngelMind : MonoBehaviour
 
     [Header("Spawner Logic and Refrences")]
     public bool isActive;
-    private Renderer _rend;
     private Collider _collider;
     private BoxCollider _activationTrigger;
 
@@ -53,7 +51,6 @@ public class AngelMind : MonoBehaviour
         }
 
         _activationTrigger.enabled = state;
-        _rend.enabled = state;
         unhealedLoopEmmiter.gameObject.SetActive(state);
         _collider.enabled = state;
         isActive = state;
@@ -72,7 +69,6 @@ public class AngelMind : MonoBehaviour
 
     private void Awake()
     {
-        _rend = GetComponent<Renderer>();
         _collider = GetComponent<SphereCollider>();
         angelTorchManager = GetComponent<AngelTorchManager>();
         _activationTrigger = GetComponentInChildren<BoxCollider>();
@@ -80,7 +76,6 @@ public class AngelMind : MonoBehaviour
 
     private void Start()
     {
-        angelRenderer = gameObject.GetComponent<Renderer>();
         minigame = AngelHealingMinigame.instance;
         helperArrow = Helper_Arrow.instance;
         playerHP = PlayerHP.instance;
@@ -107,8 +102,6 @@ public class AngelMind : MonoBehaviour
         healedLoopEmmiter.Play();
 
         RuntimeManager.PlayOneShot(angelHealedSoundEvent);
-
-        angelRenderer.material.SetColor("_Color", Color.green);
 
         eyesManager.Open();
 

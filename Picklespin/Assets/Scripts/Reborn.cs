@@ -2,6 +2,7 @@ using DG.Tweening;
 using FMODUnity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Reborn : MonoBehaviour
@@ -22,6 +23,8 @@ public class Reborn : MonoBehaviour
 
     private SnapshotManager snapshotManager;
 
+    [SerializeField] private UnityEvent OnClickEvent;
+
     private void Awake()
     {
         myText = GetComponent<TMP_Text>();
@@ -30,17 +33,22 @@ public class Reborn : MonoBehaviour
     void Start()
     {
         snapshotManager = SnapshotManager.instance;
-        FMODResetManager.instance.ResetFMOD(true);
         portalAfterClosing = PortalAfterClosing.instance;
         myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, howMuchToSpaceout, animationTime).SetLoops(-1, LoopType.Yoyo);
         myTween.SetUpdate(UpdateType.Normal, true);
         System.GC.Collect();
     }
 
+    private void OnEnable()
+    {
+        FMODResetManager.instance.ResetFMOD(false);
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            OnClickEvent.Invoke();
             myTween.Kill();
             myTween = myRectTransform.DOScale(1.618f, 2).SetEase(Ease.OutExpo);
             myTween.SetUpdate(UpdateType.Normal, true);

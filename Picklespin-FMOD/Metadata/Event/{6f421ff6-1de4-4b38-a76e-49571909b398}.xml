@@ -76,7 +76,7 @@
 			<value>500</value>
 		</property>
 		<property name="maximumDistance">
-			<value>55</value>
+			<value>70</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{488a4e7b-2263-491e-9a65-6648cd2c71ea}" />
@@ -97,7 +97,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{f6b4dfe2-0f58-4a93-a0d0-265746f4e868}">
 		<property name="volume">
-			<value>1</value>
+			<value>-4</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{43918ae0-477a-437c-9192-9a43c68e7ec2}</destination>

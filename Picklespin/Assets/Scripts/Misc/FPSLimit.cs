@@ -43,7 +43,7 @@ public class FPSLimit : MonoBehaviour
 
         if (framerateLimit <= 29)
         {
-            Debug.Log("set auto fps limit");
+            //Debug.Log("set auto fps limit");
             Application.targetFrameRate = monitorRefreshRate;
             return;
         }
@@ -51,12 +51,12 @@ public class FPSLimit : MonoBehaviour
         if (framerateLimit >= 240)
         {
             Application.targetFrameRate = -1;
-            Debug.Log("fps set to no limit");
+            //Debug.Log("fps set to no limit");
             return;
         }
 
         Application.targetFrameRate = (int)framerateLimit;
-        Debug.Log("manual fps limit set to " + framerateLimit);
+        //Debug.Log("manual fps limit set to " + framerateLimit);
     }
 
 

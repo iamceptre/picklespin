@@ -86,7 +86,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{7c87375b-f246-47c8-9a4a-9c6b119c3058}">
 		<property name="volume">
-			<value>-29</value>
+			<value>-26</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{a11a4dcb-4eb3-440a-bff9-bb7073470d97}</destination>
@@ -111,6 +111,7 @@
 	<object class="MixerBusPanner" id="{6ce36262-5a6b-4976-abe6-cdf4ff3669c3}" />
 	<object class="MixerBusEffectChain" id="{a11a4dcb-4eb3-440a-bff9-bb7073470d97}">
 		<relationship name="effects">
+			<destination>{0b72a980-3959-40f4-86f8-6e540fe4512f}</destination>
 			<destination>{b91a597f-b26e-40ae-aebf-92757048cb17}</destination>
 		</relationship>
 	</object>
@@ -136,6 +137,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{bfc17e8a-eef1-4fc1-9a54-e95d74c8af35}" />
+	<object class="ThreeEQEffect" id="{0b72a980-3959-40f4-86f8-6e540fe4512f}">
+		<property name="lowGain">
+			<value>10</value>
+		</property>
+		<property name="lowCrossover">
+			<value>3000</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{b91a597f-b26e-40ae-aebf-92757048cb17}" />
 	<object class="RandomizerModulator" id="{d5919f44-365c-4c36-8b0e-392b26f3dd40}">
 		<property name="nameOfPropertyBeingModulated">

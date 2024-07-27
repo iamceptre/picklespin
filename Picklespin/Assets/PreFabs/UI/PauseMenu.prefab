@@ -51,6 +51,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 0
 --- !u!114 &3145077759115617724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +277,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 0
 --- !u!114 &8262808296634163390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,6 +613,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8f6f9674cbbb4c8358d34e720580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_TITLE_SPACEOUT
+  playSoundOnHover: 0
 --- !u!114 &9127677269758004522
 MonoBehaviour:
   m_ObjectHideFlags: 0

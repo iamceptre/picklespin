@@ -2,12 +2,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using FMODUnity;
 
 public class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
     private TMP_Text myText;
     private Tween myTween;
+    [SerializeField] private EventReference hoverSound;
+    [SerializeField] bool playSoundOnHover = false;
+
 
     private void Awake()
     {
@@ -24,6 +28,12 @@ public class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
        myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, 16, 0.2f).SetEase(Ease.OutExpo);
        myTween.SetUpdate(UpdateType.Normal, true);
+
+        if (playSoundOnHover)
+        {
+            RuntimeManager.PlayOneShot(hoverSound);
+        }
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

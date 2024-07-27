@@ -41,17 +41,15 @@ public class ParticleMoveTowards : MonoBehaviour
         {
             float distanceToPlayer = Vector3.Distance(publicPlayerTransform.PlayerTransform.position, particles[i].position);
 
-            if (distanceToPlayer < 2f)
+
+            if (distanceToPlayer < 0.75f)
             {
+                particles[i].remainingLifetime = 0f;
+
                 if (particleSuckedInSoundEmitter != null)
                 {
                     particleSuckedInSoundEmitter.Play();
                 }
-            }
-
-            if (distanceToPlayer < 0.1f)
-            {
-                particles[i].remainingLifetime = 0f;
             }
 
             Vector3 directionToTarget = (publicPlayerTransform.PlayerTransform.position - particles[i].position).normalized;

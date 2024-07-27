@@ -25,7 +25,7 @@ public class LoadSelectedScene : MonoBehaviour
     public void Do()
     {
         if (fmodResetManager != null)
-            fmodResetManager.ResetFMOD(true);
+            fmodResetManager.ResetFMOD(false);
 
         if (snapshotManager != null)
             snapshotManager.StopAllSnapshots();

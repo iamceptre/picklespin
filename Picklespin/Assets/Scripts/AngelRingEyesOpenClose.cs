@@ -7,6 +7,9 @@ public class AngelRingEyesOpenClose : MonoBehaviour
     private Material openEyeMaterial;
     [SerializeField] private Renderer[] eyeRends;
     private Color closedMatColor;
+    [SerializeField] private AngelEyeOpen angelEyeOpenManager;
+
+    private bool firstSet = false;
 
     private void Awake()
     {
@@ -22,6 +25,7 @@ public class AngelRingEyesOpenClose : MonoBehaviour
 
     public void Open()
     {
+        angelEyeOpenManager.OpenEye(true);
         for (int i = 0; i < eyeRends.Length; i++)
         {
             eyeRends[i].material = openEyeMaterial;
@@ -32,6 +36,12 @@ public class AngelRingEyesOpenClose : MonoBehaviour
 
     public void Close()
     {
+        if (firstSet)
+        {
+            angelEyeOpenManager.OpenEye(false);
+        }
+        firstSet = true;
+
         for (int i = 0; i < eyeRends.Length; i++)
         {
             eyeRends[i].material = closedEyeMaterial;

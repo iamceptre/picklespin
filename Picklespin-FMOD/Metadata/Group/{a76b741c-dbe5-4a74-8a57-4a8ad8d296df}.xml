@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{a76b741c-dbe5-4a74-8a57-4a8ad8d296df}">
+		<property name="name">
+			<value>deathscreen</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{0269f1d7-7435-4615-8719-fee8abc0c993}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{e6907a81-3a15-4f6c-9adb-3f3b96f6a1b0}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{0269f1d7-7435-4615-8719-fee8abc0c993}">
+		<relationship name="effects">
+			<destination>{c30707b8-5cf1-498f-9fb6-1452f531fecc}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{e6907a81-3a15-4f6c-9adb-3f3b96f6a1b0}" />
+	<object class="MixerBusFader" id="{c30707b8-5cf1-498f-9fb6-1452f531fecc}" />
+</objects>

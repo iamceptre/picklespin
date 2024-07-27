@@ -59,11 +59,7 @@
 			<value>76</value>
 		</property>
 	</object>
-	<object class="SpatialiserEffect" id="{8b1a3e1b-f250-488c-8d73-af15577a766a}">
-		<property name="distanceRolloffType">
-			<value>1</value>
-		</property>
-	</object>
+	<object class="SpatialiserEffect" id="{8b1a3e1b-f250-488c-8d73-af15577a766a}" />
 	<object class="Automator" id="{b9f21cee-c03c-46ed-b3ce-2d35868c5f26}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>cutoff</value>
