@@ -93,16 +93,23 @@ public class SetOnFire : MonoBehaviour
     public void KillFromFire() //spalenie
     {
         if (!burned) {
-            emitter.Stop();
-            burned = true;
-            particleEmission.enabled = false;
-            effectParticle.Stop();
-            diedFromBurnParticle.SetActive(true);
-            cachedAiHP.deathEvent.Invoke();
-            enabled = false;
+            StartCoroutine(WaitAndKill());
         }
     }
 
+    private IEnumerator WaitAndKill()
+    {
+        yield return null;
+        yield return null;
+        yield return null;
+        emitter.Stop();
+        burned = true;
+        particleEmission.enabled = false;
+        effectParticle.Stop();
+        diedFromBurnParticle.SetActive(true);
+        cachedAiHP.deathEvent.Invoke();
+        enabled = false;
+    }
 
     private void AiHpBarRefresher()
     {

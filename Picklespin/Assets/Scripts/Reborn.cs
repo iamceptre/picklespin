@@ -25,6 +25,8 @@ public class Reborn : MonoBehaviour
 
     [SerializeField] private UnityEvent OnClickEvent;
 
+    private bool clickable = true; //can probably optimize it with enabled = false
+
     private void Awake()
     {
         myText = GetComponent<TMP_Text>();
@@ -46,8 +48,9 @@ public class Reborn : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) && clickable)
         {
+            clickable = false;
             OnClickEvent.Invoke();
             myTween.Kill();
             myTween = myRectTransform.DOScale(1.618f, 2).SetEase(Ease.OutExpo);
@@ -57,6 +60,7 @@ public class Reborn : MonoBehaviour
 
             myTween = myText.DOColor(transparentMe, 2).SetEase(Ease.OutExpo).OnComplete(() =>
             {
+                clickable = true;
                 snapshotManager.StopAllSnapshots();
                 Time.timeScale = 1;
                 DOTween.KillAll();

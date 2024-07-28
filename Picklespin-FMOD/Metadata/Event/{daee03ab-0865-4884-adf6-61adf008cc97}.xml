@@ -67,7 +67,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{38e5e04d-e9eb-4633-aa35-d2c80afb1b64}">
 		<property name="maxVoices">
-			<value>3</value>
+			<value>8</value>
 		</property>
 		<property name="minimumDistance">
 			<value>0.5</value>
@@ -147,6 +147,9 @@
 	<object class="SingleSound" id="{fa6a0724-034a-433d-9550-915f9c53ab8a}">
 		<property name="startOffset">
 			<value>49.5</value>
+		</property>
+		<property name="pitch">
+			<value>0.600000024</value>
 		</property>
 		<property name="looping">
 			<value>true</value>

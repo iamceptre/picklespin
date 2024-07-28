@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{20a2afb4-46ba-47e1-9943-8281cd87c928}">
 		<property name="name">
-			<value>UI_TITLE_SPACEOUT</value>
+			<value>UI_WHISPER</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -103,6 +103,9 @@
 	</object>
 	<object class="MixerBusPanner" id="{94bad198-e7ea-46d9-8a18-609fb1bceb5c}" />
 	<object class="MultiSound" id="{b705dc31-b087-4c08-ba2a-0b27d57822c4}">
+		<property name="startOffset">
+			<value>2</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{1cefdcdf-1864-4b83-9e1e-e6c0062ddb84}</destination>
 			<destination>{a744d3e4-e5a8-4905-85ac-05969345e333}</destination>

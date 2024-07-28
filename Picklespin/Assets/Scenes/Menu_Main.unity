@@ -1426,12 +1426,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 393372617}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.365958, y: -0.1402973, z: -14.072556}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 15.566992, y: -4.510732, z: -29.679554}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1810163614}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &540879384
 GameObject:
@@ -1567,6 +1567,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540879384}
   m_CullTransparentMesh: 1
+--- !u!1 &624457535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 624457536}
+  - component: {fileID: 624457537}
+  m_Layer: 0
+  m_Name: Whisper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &624457536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624457535}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1810163614}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &624457537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624457535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 547532724
+      Data2: 1205946042
+      Data3: -2122169447
+      Data4: 684296141
+    Path: event:/UI/UI_WHISPER
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!224 &640237892 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6000538841571310974, guid: 4040665060c49294cafec1a910ea6285, type: 3}
@@ -4243,6 +4306,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1810163613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1810163614}
+  m_Layer: 0
+  m_Name: Sounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1810163614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810163613}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.201034, y: 4.3704348, z: 15.606998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 393372619}
+  - {fileID: 624457536}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1922860998
 GameObject:
   m_ObjectHideFlags: 0
@@ -4549,8 +4645,8 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
-  playSoundOnHover: 1
+    Path: event:/UI/UI_WHISPER
+  playSoundOnHover: 0
 --- !u!224 &254949499164649005
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4617,6 +4713,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1244291981927328627}
         m_TargetAssemblyTypeName: MoveToAnotherCanvas, Assembly-CSharp
         m_MethodName: Do
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 624457537}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4940,8 +5048,8 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
-  playSoundOnHover: 1
+    Path: event:/UI/UI_WHISPER
+  playSoundOnHover: 0
 --- !u!222 &1181160854470018868
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4997,6 +5105,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3185351304599687968}
         m_TargetAssemblyTypeName: MoveToAnotherCanvas, Assembly-CSharp
         m_MethodName: Do
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 624457537}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5944,8 +6064,8 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
-  playSoundOnHover: 1
+    Path: event:/UI/UI_WHISPER
+  playSoundOnHover: 0
 --- !u!114 &6969819936917739751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5964,8 +6084,8 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
-  playSoundOnHover: 1
+    Path: event:/UI/UI_WHISPER
+  playSoundOnHover: 0
 --- !u!114 &7420612056256587807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6223,6 +6343,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 624457537}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 318013936}
         m_TargetAssemblyTypeName: BulkSettingsManager, Assembly-CSharp
         m_MethodName: SaveAllSettings
@@ -6303,6 +6435,18 @@ MonoBehaviour:
       - m_Target: {fileID: 8262808297401006787}
         m_TargetAssemblyTypeName: LoadSelectedScene, Assembly-CSharp
         m_MethodName: Do
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 624457537}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6481,4 +6625,4 @@ SceneRoots:
   - {fileID: 46470756}
   - {fileID: 1409237353}
   - {fileID: 760267520070700102}
-  - {fileID: 393372619}
+  - {fileID: 1810163614}

@@ -14,6 +14,10 @@ public class ScrollTexture : MonoBehaviour
     private void Start()
     {
         rend = GetComponent<Renderer>();
+        if (rend == null)
+        {
+            rend = GetComponent<SkinnedMeshRenderer>();
+        }
         //offset = new Vector2(0, 0);
         RandomizeStartingOffset();
     }

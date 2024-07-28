@@ -10128,10 +10128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellName: energy
-  damage: 2
+  damage: 3
   magickaCost: 15
-  speed: 75
-  myCooldown: 0.1
+  speed: 65
+  myCooldown: 0.2
   castDuration: 0
   timeBeforeOff: 4
   fadeOutLight: 0

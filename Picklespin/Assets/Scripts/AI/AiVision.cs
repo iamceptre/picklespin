@@ -26,15 +26,16 @@ public class AiVision : MonoBehaviour
 
     private void Update()
     {
-        if (hitMeCooldown >= 0)
-        {
+        //if (hitMeCooldown >= 0)
+        //{
             //PlayerJustHitMeCooldown();
-        }
+        //}
     }
 
 
     public void FieldOfViewCheck()
     {
+        
         
 
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
@@ -69,6 +70,10 @@ public class AiVision : MonoBehaviour
         {
             seeingPlayer = true;
         }
+        
+
+        seeingPlayer = true;
+
     }
 
     public void PlayerJustHitMeCooldown()
@@ -80,7 +85,7 @@ public class AiVision : MonoBehaviour
             playerJustHitMe = false;
         }
         
-       // seeingPlayer = true;
+        seeingPlayer = true;
     }
 
 

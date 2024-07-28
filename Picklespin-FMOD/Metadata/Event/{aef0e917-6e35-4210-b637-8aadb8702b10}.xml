@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{3d7e6cbd-25b5-4d75-bfb4-17019cf86a09}">
 		<property name="volume">
-			<value>-20.5</value>
+			<value>-18</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{efedd3a5-a1cf-4088-a68c-30e247711b62}</destination>
@@ -109,6 +109,9 @@
 		<property name="attackTime">
 			<value>5200</value>
 		</property>
+		<property name="attackShape">
+			<value>-0.215306789</value>
+		</property>
 		<property name="releaseTime">
 			<value>10000</value>
 		</property>
@@ -126,7 +129,6 @@
 		<property name="startOffset">
 			<value>49.5</value>
 		</property>
-		<property name="name" />
 		<property name="looping">
 			<value>true</value>
 		</property>
