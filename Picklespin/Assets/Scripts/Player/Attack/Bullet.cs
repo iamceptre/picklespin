@@ -314,7 +314,7 @@ public class Bullet : MonoBehaviour
 
         for (int i = 0; i < _particleSystem.Length; i++)
         {
-            _particleSystem[i].Clear();
+            //_particleSystem[i].Clear();
             _particleSystem[i].Stop();
         }
 
