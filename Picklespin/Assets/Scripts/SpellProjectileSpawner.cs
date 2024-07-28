@@ -56,7 +56,7 @@ public class SpellProjectileSpawner : MonoBehaviour
     {
         PreInstantiatePurple();
         PreInstantiateFireball();
-        PreInstantiateLight();
+       // PreInstantiateLight();
     }
 
 

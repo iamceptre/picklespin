@@ -9979,7 +9979,9 @@ MonoBehaviour:
   explosionSoundEmitter: {fileID: 7177393306444495002}
   iWillBeCritical: 0
   hitSomething: 0
-  _particleSystem: {fileID: 7638488778309636166}
+  _particleSystem:
+  - {fileID: 657162142028719279}
+  - {fileID: 7638488778309636166}
   _light: {fileID: 3909137637185279755}
   lightSpell: {fileID: 0}
 --- !u!135 &3294087684524820873
@@ -10044,6 +10046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedY: 0.2
   scrollSpeedX: 0.25
+  randomUVoffsetAtEnable: 0
 --- !u!114 &7520822979644434691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10105,7 +10108,7 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
-  OverrideMaxDistance: 55
+  OverrideMaxDistance: 70
 --- !u!33 &2478233923998731032
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -429,7 +429,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  deadMaterial: {fileID: 2100000, guid: 22dd36ce72043a440861c5415657819f, type: 2}
+      - m_Target: {fileID: 6916539878835698435}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  deadMaterial: {fileID: 2100000, guid: 030c7f6b821077743929c7d247efba7d, type: 2}
   ashDissolveMaterial: {fileID: 2100000, guid: a40063f05290ad24381d0e26ba566ebc, type: 2}
   myRenderer: {fileID: 3145444640774657220}
   dissolveSpeed: 0.7

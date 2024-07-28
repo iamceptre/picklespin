@@ -10,7 +10,7 @@ public class Dissolver : MonoBehaviour
 
     [SerializeField] private Material deadMaterial;
     [SerializeField] private Material ashDissolveMaterial;
-    private float dissolveProgress; //1 is visible, 0 is not
+    private float dissolveProgress; //0 is visible, 1 is not
     private float ashDissolveProgress;
     [SerializeField] private Renderer myRenderer;
     private Renderer ashRenderer;
@@ -22,12 +22,10 @@ public class Dissolver : MonoBehaviour
     [SerializeField] private GameObject ashPile;
     [SerializeField] private Collider myCollider;
 
-    private bool dudeDissolved = false;
-
     [SerializeField] private NavMeshAgent myNavMeshAgent;
     [SerializeField] private StateManager myStateManager;
 
-    private int progress = Shader.PropertyToID("_Progress");
+    private int progress = Shader.PropertyToID("_DissolveAmount");
 
 
     public void StartDissolve()
@@ -45,7 +43,7 @@ public class Dissolver : MonoBehaviour
         }
 
         myRenderer.material = deadMaterial;
-        dissolveProgress = 0.7f;
+        dissolveProgress = 0;
         StartCoroutine(Animate());
         SpawnAshBeneath();
     }
@@ -54,19 +52,14 @@ public class Dissolver : MonoBehaviour
 
     private IEnumerator Animate()
     {
-        while (dissolveProgress >= 0)
+        while (dissolveProgress <= 1)
         {
-            dissolveProgress -= Time.deltaTime * dissolveSpeed;
+            dissolveProgress += Time.deltaTime * dissolveSpeed;
             myRenderer.material.SetFloat(progress, dissolveProgress);
-
-            if (dissolveProgress <= 0 && !dudeDissolved)
-            {
-                dudeDissolved = true;
-                WhatToDoAfterDissolve();
-            }
-
             yield return null;
         }
+        WhatToDoAfterDissolve();
+        yield break;
     }
 
     private void WhatToDoAfterDissolve()
@@ -102,12 +95,14 @@ public class Dissolver : MonoBehaviour
 
     private IEnumerator UndissolveAsh()
     {
-        while (ashDissolveProgress < 1)
+        ashDissolveProgress = 0.9f;
+        while (ashDissolveProgress > 0)
         {
-            ashDissolveProgress = 0.7f - dissolveProgress;
+            ashDissolveProgress = 0.9f - dissolveProgress; //mirrors the enemies dissolve
             ashRenderer.material.SetFloat(progress, ashDissolveProgress);
             yield return null;
         }
+        yield break;
     }
 
 }

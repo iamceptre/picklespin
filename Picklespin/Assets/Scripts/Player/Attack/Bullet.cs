@@ -63,7 +63,7 @@ public class Bullet : MonoBehaviour
     private Renderer _renderer;
     private Rigidbody _rigidbody;
     private SphereCollider _collider;
-    [SerializeField] [Tooltip("tailParticle")]private ParticleSystem _particleSystem;
+    [SerializeField] [Tooltip("tailParticle")]private ParticleSystem[] _particleSystem;
     [SerializeField] private Light _light;
     private Color _lightColor;
     private GameObject _gameObject;
@@ -115,9 +115,15 @@ public class Bullet : MonoBehaviour
 
     public void OnShoot()
     {
-        _particleSystem.Clear();
-        _particleSystem.Stop();
-        _particleSystem.Play();
+        for (int i = 0; i < _particleSystem.Length; i++)
+        {
+            _particleSystem[i].Clear();
+            _particleSystem[i].Stop();
+            _particleSystem[i].Play();
+        }
+
+
+
         RuntimeManager.PlayOneShot(shootSound);
 
         if (applyProjectileForce != null)
@@ -305,8 +311,14 @@ public class Bullet : MonoBehaviour
     {
         _collider.enabled = false;
         _renderer.enabled = false;
-        _particleSystem.Clear();
-        _particleSystem.Stop();
+
+        for (int i = 0; i < _particleSystem.Length; i++)
+        {
+            _particleSystem[i].Clear();
+            _particleSystem[i].Stop();
+        }
+
+
         _rigidbody.isKinematic = true;
 
         if (!fadeOutLight)

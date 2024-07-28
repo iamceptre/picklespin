@@ -11,6 +11,8 @@ public class ScrollTexture : MonoBehaviour
     private float offsetY;
     private float offsetX;
 
+    [SerializeField] private bool randomUVoffsetAtEnable = false;
+
     private void Start()
     {
         rend = GetComponent<Renderer>();
@@ -20,6 +22,21 @@ public class ScrollTexture : MonoBehaviour
         }
         //offset = new Vector2(0, 0);
         RandomizeStartingOffset();
+    }
+
+    private void OnEnable()
+    {
+        if (randomUVoffsetAtEnable)
+        {
+            offsetX = Randomize01();
+            offsetY = Randomize01();
+        }
+    }
+
+    private float Randomize01()
+    {
+        float random01 = Random.Range(0, 1);
+        return random01;
     }
 
     private void RandomizeStartingOffset()
