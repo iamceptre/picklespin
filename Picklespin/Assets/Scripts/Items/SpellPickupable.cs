@@ -28,6 +28,8 @@ public class SpellPickupable : MonoBehaviour
 
     public int spellClass; //0 - LO, 1 - HI, 2 - FINAl
 
+    private HandBopAfterItemPickup handBop;
+
 
 
     private void Awake()
@@ -45,6 +47,7 @@ public class SpellPickupable : MonoBehaviour
 
     private void Start()
     {
+        handBop = HandBopAfterItemPickup.instance;
         unlockedSpells = UnlockedSpells.instance;
         ammo = Ammo.instance;
         myLightRange = myLight.range;
@@ -84,6 +87,7 @@ public class SpellPickupable : MonoBehaviour
                 mySound.Stop();
             }
 
+            handBop.Do();
             unlockedSpells.UnlockASpell(spellID);
             spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
             spellSpawnerScript.avaliableSpawnPointsCount++;
@@ -100,17 +104,6 @@ public class SpellPickupable : MonoBehaviour
             spellSpawnerScript.spellsLoPool.Release(this);
             return;
         }
-
-        /*
-
-        if (spellClass == 1) {
-            spellSpawnerScript.spellsHiPool.Release(this);
-            return ;
-        }
-        */
-
-        // spellSpawnerScript.spellsFinalPool.Release(this); //this does not even need to be a pool, could be a single object
-
     }
 
 

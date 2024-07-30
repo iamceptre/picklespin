@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class ItemAfterPickingUp : MonoBehaviour
 {
 
+    private HandBopAfterItemPickup handBopPickup;
     private Light myLight;
     private float myLightIntestivity;
     private Collider myCollider;
@@ -38,8 +39,14 @@ public class ItemAfterPickingUp : MonoBehaviour
         myLightIntestivity = myLight.intensity;
     }
 
+    private void Start()
+    {
+        handBopPickup = HandBopAfterItemPickup.instance;
+    }
+
     public void Pickup()
     {
+        handBopPickup.Do();
         transform.DOKill();
         myLight.DOKill();
         myCollider.enabled = false;

@@ -8,7 +8,7 @@ using FMOD.Studio;
 public class Attack : MonoBehaviour
 {
 
-    [SerializeField] private Animator handAnimator;
+    private Animator handAnimator;
     public static Attack instance { get; private set; }
 
     private PlayCastBlast playCastBlast;
@@ -64,6 +64,7 @@ public class Attack : MonoBehaviour
 
     private void Start()
     {
+        handAnimator = PublicPlayerHandAnimator.instance._animator;
         ammo = Ammo.instance;
         playCastBlast = PlayCastBlast.instance;
         ammoDisplay = AmmoDisplay.instance;
@@ -105,7 +106,8 @@ public class Attack : MonoBehaviour
 
     private void ShootFail()
     {
-        handAnimator.SetTrigger("Shoot_Fail");
+        //handAnimator.SetTrigger("Shoot_Fail");
+        handAnimator.SetTrigger("Hand_Fail");
         noManaLightAnimation.LightAnimation();
         spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
         spellcastInstance.start();

@@ -4,6 +4,7 @@ using FMODUnity;
 public class AngelMind : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private Door angelRoomDoor;
     [SerializeField] private LookAtPlayer lookAtPlayer;
     [SerializeField] private Animator angelRingsAnimator;
     [SerializeField] private Renderer[] additionalElements;
@@ -50,6 +51,7 @@ public class AngelMind : MonoBehaviour
             additionalElements[i].enabled = state;
         }
 
+        angelRoomDoor.isLocked = !state;
         _activationTrigger.enabled = state;
         unhealedLoopEmmiter.gameObject.SetActive(state);
         _collider.enabled = state;

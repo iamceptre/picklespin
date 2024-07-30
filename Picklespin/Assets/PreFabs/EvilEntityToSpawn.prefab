@@ -15294,7 +15294,7 @@ NavMeshAgent:
   m_Height: 4
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 1
 --- !u!54 &3921345591272335708
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15495,7 +15495,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   deadMaterial: {fileID: 2100000, guid: a40063f05290ad24381d0e26ba566ebc, type: 2}
-  ashDissolveMaterial: {fileID: 2100000, guid: a40063f05290ad24381d0e26ba566ebc, type: 2}
   myRenderer: {fileID: 3224164992363990641}
   dissolveSpeed: 0.5
   destroyAfterDissolve: 1

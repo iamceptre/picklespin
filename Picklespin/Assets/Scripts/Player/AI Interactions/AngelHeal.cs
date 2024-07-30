@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class AngelHeal : MonoBehaviour
 {
+    [SerializeField] private HandShakeWhenCannotHeal handShake;
     private Helper_Arrow helperArrow;
     AngelHealingMinigame minigame;
     [HideInInspector] public float healSpeedMultiplier = 1; //ITS BOOSTED WHEN IS 0
@@ -88,9 +89,16 @@ public class AngelHeal : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && isAimingAtAngel && !angel.healed)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !angel.healed)
         {
-            StartHealing();
+            if (isAimingAtAngel)
+            {
+                StartHealing();
+            }
+            else
+            {
+                handShake.ShakeHand();
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse1) && healSpeedMultiplier == 1)

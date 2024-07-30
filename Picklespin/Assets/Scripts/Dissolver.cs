@@ -9,7 +9,7 @@ public class Dissolver : MonoBehaviour
     [SerializeField] private UnityEvent afterDissolveEvent;
 
     [SerializeField] private Material deadMaterial;
-    [SerializeField] private Material ashDissolveMaterial;
+    //[SerializeField] private Material ashDissolveMaterial;
     private float dissolveProgress; //0 is visible, 1 is not
     private float ashDissolveProgress;
     [SerializeField] private Renderer myRenderer;
@@ -88,7 +88,7 @@ public class Dissolver : MonoBehaviour
             spawnedAsh.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
             ashRenderer = spawnedAsh.GetComponent<Renderer>();
             ashDissolveProgress = 0;
-            ashRenderer.material = ashDissolveMaterial;
+            //ashRenderer.material = ashDissolveMaterial;
             StartCoroutine(UndissolveAsh());
         }
     }

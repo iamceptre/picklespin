@@ -7,10 +7,9 @@ public class Door : MonoBehaviour
 {
     //LOGIC
     private KeyCode actionKey = KeyCode.E;
-    [SerializeField] private bool isLocked = false;
+    public bool isLocked = false;
     private bool isOpened;
     private Transform mainCamera;
-    private Ray ray;
     private Collider myCollider;
     [SerializeField] LayerMask layerMask;
     private bool buttonBuffer = false;
@@ -30,10 +29,15 @@ public class Door : MonoBehaviour
     private TipManager tipManager;
 
     //CACHE
-    private Transform _transform;
+    [SerializeField]private Transform _transform;
+    private Vector3 rotationVector = new Vector3(0, 0, 90);
+
+    //EXTERNAL REFERENCES 
+    private Animator handAnimator;
 
     private void Awake()
     {
+        if(_transform == null)
         _transform = transform;
     }
 
@@ -44,11 +48,12 @@ public class Door : MonoBehaviour
 
     void Start()
     {
+        handAnimator = PublicPlayerHandAnimator.instance._animator;
         startRot = _transform.localEulerAngles;
 
         DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
         DoorSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
+        mainCamera = CachedCameraMain.instance.transform;
         myCollider = gameObject.GetComponent<Collider>();
     }
 
@@ -72,17 +77,9 @@ public class Door : MonoBehaviour
 
         if (buttonBuffer && canButtonBuffer)
         {
-            ray = new Ray(mainCamera.position, mainCamera.forward);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 5, layerMask))
-            {
-                if (hit.collider.Equals(myCollider))
-                {
                     buttonBuffer = false;
                     LockedCheck();
                     canButtonBuffer = false;
-                }
-            }
         }
     }
 
@@ -95,6 +92,7 @@ public class Door : MonoBehaviour
         }
         else
         {
+            handAnimator.SetTrigger("Hand_Fail");
             DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             DoorSoundInstance.release();
             DoorSoundInstance = RuntimeManager.CreateInstance(DoorLockedEvent);
@@ -107,11 +105,13 @@ public class Door : MonoBehaviour
     {
         if (!isOpened)
         {
+            handAnimator.SetTrigger("Door_Open");
             OpenDoor();
-            tipManager.Hide(0);
+           // tipManager.Hide(0);
         }
         else
         {
+            handAnimator.SetTrigger("Door_Close");
             CloseDoor();
         }
     }
@@ -120,7 +120,7 @@ public class Door : MonoBehaviour
     private void OpenDoor()
     {
          _transform.DOKill();
-         _transform.DOLocalRotate(startRot + new Vector3(0,90), animationTime, RotateMode.Fast);
+         _transform.DOLocalRotate(startRot + rotationVector, animationTime, RotateMode.Fast);
 
         DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         DoorSoundInstance.release();
@@ -148,12 +148,10 @@ public class Door : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && !enabled)
         {
             enabled = true;
-
-            if (!isOpened && !isLocked)
+            if (!isLocked)
             {
                 tipManager.Show(0);
             }
-
         }
     }
 
