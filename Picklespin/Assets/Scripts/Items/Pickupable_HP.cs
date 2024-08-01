@@ -28,7 +28,7 @@ public class Pickupable_HP : MonoBehaviour
         {
             playerHP.GiveHPToPlayer(howMuchHPIGive);
             itemAfterPickingUp.Pickup();
-            //RuntimeManager.PlayOneShot(pickupSoundEvent);
+            RuntimeManager.PlayOneShot(pickupSoundEvent);
         }
     }
 

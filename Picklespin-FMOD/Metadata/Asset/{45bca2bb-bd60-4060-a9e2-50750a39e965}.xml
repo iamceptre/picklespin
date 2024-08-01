@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{45bca2bb-bd60-4060-a9e2-50750a39e965}">
+		<property name="assetPath">
+			<value>In_Game/Map/Objects/Doors/Doors_AngelRoom/Lock/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

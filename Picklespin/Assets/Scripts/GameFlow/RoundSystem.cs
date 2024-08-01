@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Collections;
 
 public class RoundSystem : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class RoundSystem : MonoBehaviour
 
     [HideInInspector] public float speedMultiplier = 1;
 
+    private WaitForSeconds second;
+    private float updateRate = 0.1f;
+
+    public bool isCounting = true;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -33,25 +39,37 @@ public class RoundSystem : MonoBehaviour
         }
 
         timer = roundDuration;
+        second = new WaitForSeconds(updateRate);
     }
     private void Start()
     {
         newRoundDisplayText = NewRoundDisplayText.instance;
         UpdateText();
+        StartCoroutine(Timer());
     }
 
-    private void Update()
-    {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime * speedMultiplier;
-            roundTimerGUI.value = timer / roundDuration;
-        }
-        else
-        {
-            NextRound();
-        }
 
+
+    private IEnumerator Timer()
+    {
+        while (true)
+        {
+            yield return second;
+
+            if (isCounting)
+            {
+
+                if (timer > 0)
+                {
+                    timer -= updateRate * speedMultiplier;
+                    roundTimerGUI.value = timer / roundDuration;
+                }
+                else
+                {
+                    NextRound();
+                }
+            }
+        }
     }
 
     private void NextRound()

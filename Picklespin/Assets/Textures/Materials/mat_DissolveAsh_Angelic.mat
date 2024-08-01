@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mat_DissolveAsh_Angelic
+  m_Shader: {fileID: 4800000, guid: 69671000ad675cf41b829a10771253c8, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _DISSOLVEGLOW_ON
+  - _EDGECOLORRAMP_USE
+  - _NORMALMAP
+  m_InvalidKeywords:
+  - EDGE_COLOR
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 1e9a662df25e39547b5b7fc9d039ceaa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DirectionMap:
+        m_Texture: {fileID: 2800000, guid: 5f59d89591687554b8ded8d5a81e41b4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveMap:
+        m_Texture: {fileID: 2800000, guid: b0c06c4710a74d5428ddd3c86fe0c99c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveMask:
+        m_Texture: {fileID: 2800000, guid: 89db8d852d3a7e44ebc8cd1ee68b459b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: 8b8c0d2a94fa4d540af8c62c70c48cd6, type: 3}
+        m_Scale: {x: 0.5, y: 0.5}
+        m_Offset: {x: 0, y: 0}
+    - _EdgeAroundRamp:
+        m_Texture: {fileID: 2800000, guid: 6e6ee1f34b0234741b0b85bb5a5fd843, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EdgeColorRamp:
+        m_Texture: {fileID: 2800000, guid: 2816c998c891cae4f8bec9e6ec34fe1b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2eea0ff7f8a4ec949baba112057590de, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 1e9a662df25e39547b5b7fc9d039ceaa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 2800000, guid: 8260d06c1607ba24a81537f83f3445f3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SubTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BumpScale: 1
+    - _CullMode: 0
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DissolveAmount: 0.663
+    - _DissolveDelay: 0.1
+    - _DissolveGlow: 1
+    - _DissolveGlowFollow: 0
+    - _DissolveGlowIntensity: 0.5
+    - _DissolveRampUp: 5
+    - _DstBlend: 0
+    - _Edge: 0.107
+    - _EdgeAround: 0.15
+    - _EdgeAroundHDR: 3
+    - _EdgeAroundPower: 3.26
+    - _EdgeDistortion: 0.525
+    - _EdgeThickness: 0.1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Progress: 1
+    - _RangeIn: 0.034
+    - _RangeOut: 0.001
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _TilingX: 1
+    - _TilingY: 1
+    - _UVSec: 0
+    - _UseEdgeColor: 1
+    - _UseEdgeColorRamp: 1
+    - _UseEdgeDistortion: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DissolveGlowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EdgeAroundColor: {r: 0.75, g: 0.027573511, b: 0.027573511, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _InnerEdgeColor: {r: 1, g: 1, b: 0, a: 1}
+    - _OuterEdgeColor: {r: 1, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []

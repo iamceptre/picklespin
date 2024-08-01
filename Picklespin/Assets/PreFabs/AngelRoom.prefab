@@ -56,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea99b2e19c14f144199915cd32e989aa, type: 2}
+  - {fileID: 2100000, guid: b211675beca022f4e8e233f1d3c02cc2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -898,6 +898,7 @@ GameObject:
   - component: {fileID: 7888636543206960622}
   - component: {fileID: 7901454569764357920}
   - component: {fileID: 8863073055230778384}
+  - component: {fileID: 3176164581591546080}
   m_Layer: 0
   m_Name: AngelRoomReverb_Activata
   m_TagString: Untagged
@@ -983,6 +984,18 @@ MonoBehaviour:
   churchReverbMainHall: 0
   corridorReverb: 0
   angelRoomReverb: 1
+--- !u!114 &3176164581591546080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4232921558251637416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf9fbe37f0cc834a8b26e17ec5260b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4556042239110279990
 GameObject:
   m_ObjectHideFlags: 0

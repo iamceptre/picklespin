@@ -1,7 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
-using FMOD.Studio;
 
 public class Door : MonoBehaviour
 {
@@ -20,10 +19,9 @@ public class Door : MonoBehaviour
     private float animationTime = 0.8f;
 
     //SOUND
-    [SerializeField] private EventReference doorOpenSoundEvent;
-    [SerializeField] private EventReference doorCloseSoundEvent;
-    [SerializeField] private EventReference DoorLockedEvent;
-    private EventInstance DoorSoundInstance;
+    [SerializeField] private StudioEventEmitter doorOpenSound;
+    [SerializeField] private StudioEventEmitter doorCloseSound;
+    [SerializeField] private StudioEventEmitter doorLockedSound;
 
     //TOOLTIPS
     private TipManager tipManager;
@@ -50,9 +48,6 @@ public class Door : MonoBehaviour
     {
         handAnimator = PublicPlayerHandAnimator.instance._animator;
         startRot = _transform.localEulerAngles;
-
-        DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
-        DoorSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
         mainCamera = CachedCameraMain.instance.transform;
         myCollider = gameObject.GetComponent<Collider>();
     }
@@ -93,10 +88,7 @@ public class Door : MonoBehaviour
         else
         {
             handAnimator.SetTrigger("Hand_Fail");
-            DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            DoorSoundInstance.release();
-            DoorSoundInstance = RuntimeManager.CreateInstance(DoorLockedEvent);
-            DoorSoundInstance.start();
+            doorLockedSound.Play();
         }
     }
 
@@ -122,10 +114,8 @@ public class Door : MonoBehaviour
          _transform.DOKill();
          _transform.DOLocalRotate(startRot + rotationVector, animationTime, RotateMode.Fast);
 
-        DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        DoorSoundInstance.release();
-        DoorSoundInstance = RuntimeManager.CreateInstance(doorOpenSoundEvent);
-        DoorSoundInstance.start();
+        doorLockedSound.Stop();
+        doorOpenSound.Play();
 
         isOpened = true;
     }
@@ -135,11 +125,9 @@ public class Door : MonoBehaviour
         _transform.DOKill();
         _transform.DOLocalRotate(startRot, animationTime, RotateMode.Fast);
 
-        DoorSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        DoorSoundInstance.release();
-        DoorSoundInstance = RuntimeManager.CreateInstance(doorCloseSoundEvent);
+        doorOpenSound.Stop();
+        doorCloseSound.Play();
 
-        DoorSoundInstance.start();
         isOpened = false;
     }
 

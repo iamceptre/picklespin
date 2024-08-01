@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{68b46843-b048-41ff-8dc6-fdd74a162104}">
+		<property name="name">
+			<value>church_ambiance</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{d87551ef-9622-4f17-a7b7-d8677aff32aa}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{c5ac4315-6889-47f3-9486-add91c5ef89f}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{e5388dc6-2c42-4987-804c-236cd53f258e}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{d87551ef-9622-4f17-a7b7-d8677aff32aa}">
+		<relationship name="effects">
+			<destination>{0f2d7380-687c-4c32-8769-d89db2edee02}</destination>
+			<destination>{fa75d345-8de6-4b6b-ba93-02b9d3435674}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{c5ac4315-6889-47f3-9486-add91c5ef89f}" />
+	<object class="MultibandEqEffect" id="{0f2d7380-687c-4c32-8769-d89db2edee02}">
+		<property name="filterTypeB">
+			<value>4</value>
+		</property>
+		<property name="frequencyA">
+			<value>22000</value>
+		</property>
+		<property name="frequencyB">
+			<value>20</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{fa75d345-8de6-4b6b-ba93-02b9d3435674}" />
+</objects>

@@ -51,7 +51,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private StudioEventEmitter explosionSoundEmitter;
     private ApplyProjectileForce applyProjectileForce;
 
-
     [Header("Misc")]
     [HideInInspector] public bool iWillBeCritical;
     [HideInInspector] public bool hitSomething = false;
@@ -138,34 +137,39 @@ public class Bullet : MonoBehaviour
         _pool.Release(this);
     }
 
+    
 
     private void OnCollisionEnter(Collision collision)
     {
-        hitSomething = true;
+
+
+            hitSomething = true;
 
             StopCoroutine(autoKill);
             hitSomething = true;
 
-                if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
-                {
-                    Collider collider = collision.gameObject.GetComponent<Collider>();
-                    HitRegistered(collider, refs, collision);
-        }
-        else //HIT THE WALL 
-        {
-            if(hitWall != null)
-            hitWall.Play();
-        }
+            if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
+            {
+                Collider collider = collision.gameObject.GetComponent<Collider>();
+                HitRegistered(collider, refs, collision);
+            }
+            else //HIT THE WALL 
+            {
+                if (hitWall != null)
+                    hitWall.Play();
+            }
 
             if (isRanged)
             {
                 RangeHitDetection(collision);
             }
-            
+
 
             SpawnExplosion();
             AfterExplosion();
     }
+
+    
 
 
     private void HitRegistered(Collider collider, AiReferences refs, Collision collision)
