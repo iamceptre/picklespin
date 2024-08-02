@@ -119,7 +119,7 @@ ParticleSystem:
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
-  cullingMode: 1
+  cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
@@ -4961,7 +4961,7 @@ ParticleSystem:
   lengthInSec: 5
   simulationSpeed: 4
   stopAction: 0
-  cullingMode: 1
+  cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
@@ -9807,6 +9807,7 @@ GameObject:
   - component: {fileID: 3036575118500837913}
   - component: {fileID: 6900475575876252167}
   - component: {fileID: 3005831588898276106}
+  - component: {fileID: 2931081986996436870}
   m_Layer: 0
   m_Name: TinyPurpleExplosion
   m_TagString: Untagged
@@ -14749,11 +14750,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1364902935
-      Data2: 1235094204
-      Data3: -745530716
-      Data4: -2104198156
-    Path: event:/PLACEHOLDER_UNCZ/spellHit
+      Data1: -1943995042
+      Data2: 1171907657
+      Data3: 327916420
+      Data4: -1986324807
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_EXPLOSION_V2
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -14763,8 +14764,21 @@ MonoBehaviour:
   AllowNonRigidbodyDoppler: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 5
-  OverrideMaxDistance: 100
+  OverrideMinDistance: 5.2000003
+  OverrideMaxDistance: 90
+--- !u!114 &2931081986996436870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4368244505431807670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdc6abde23964947a154e83507cc4a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flybyEmitter: {fileID: 2338245104682298501}
 --- !u!1 &5001862982371931948
 GameObject:
   m_ObjectHideFlags: 0
@@ -19777,6 +19791,7 @@ GameObject:
   - component: {fileID: 5946519115442919475}
   - component: {fileID: -9016218598823046184}
   - component: {fileID: 4632042321731720956}
+  - component: {fileID: 2338245104682298501}
   m_Layer: 0
   m_Name: wicked energy ball
   m_TagString: Untagged
@@ -19820,7 +19835,7 @@ MonoBehaviour:
   damage: 3
   magickaCost: 15
   speed: 65
-  myCooldown: 0.2
+  myCooldown: 0.3
   castDuration: 0
   timeBeforeOff: 4
   fadeOutLight: 0
@@ -19832,11 +19847,11 @@ MonoBehaviour:
   explosionFX: {fileID: 3036575118500837913}
   shootSound:
     Guid:
-      Data1: 1963473607
-      Data2: 1081434507
-      Data3: -643885943
-      Data4: -1090986781
-    Path: event:/PLACEHOLDER_UNCZ/shoot_test
+      Data1: -517294522
+      Data2: 1085733970
+      Data3: -1660154989
+      Data4: 283382226
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_SHOT
   pullupSound:
     Guid:
       Data1: 1498038090
@@ -20010,6 +20025,37 @@ MonoBehaviour:
   animationTime: 0.3
   startingValue: 1
   targetValue: 0.15
+--- !u!114 &2338245104682298501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 751821852
+      Data2: 1086113729
+      Data3: -1005995629
+      Data4: -24714783
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_FLYBY
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 5.4
+  OverrideMaxDistance: 70
 --- !u!1 &8727596881338035344
 GameObject:
   m_ObjectHideFlags: 0
@@ -20128,7 +20174,7 @@ ParticleSystem:
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
-  cullingMode: 1
+  cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0

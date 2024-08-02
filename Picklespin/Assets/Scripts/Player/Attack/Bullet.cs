@@ -232,7 +232,6 @@ public class Bullet : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(collision.GetContact(0).point, rangeRadius, detectionLayer);
 
-
         foreach (Collider col in colliders)
         {
             if (col.transform.TryGetComponent(out AiReferences areaRefs))

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{5ff80230-c7da-44de-8e3f-4db40b73fed2}">
+		<property name="assetPath">
+			<value>In_Game/Spells/PURPLE_SPELL/Explosion/Fat/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

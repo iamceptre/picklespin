@@ -91,6 +91,9 @@
 		<property name="color">
 			<value>Blue</value>
 		</property>
+		<property name="volume">
+			<value>-80</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{5623a987-942d-4c8c-888e-f1a956212b1f}</destination>
 		</relationship>

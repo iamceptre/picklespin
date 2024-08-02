@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{48eacf08-060c-41b6-b9ce-db9a8f850377}">
+		<property name="assetPath">
+			<value>In_Game/Spells/PURPLE_SPELL/Explosion/Reflections/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

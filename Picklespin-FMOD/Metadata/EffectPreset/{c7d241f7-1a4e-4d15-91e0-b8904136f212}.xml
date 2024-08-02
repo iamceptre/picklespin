@@ -16,7 +16,7 @@
 			<destination>{476b2e69-f176-4d19-8729-f085b68f3626}</destination>
 			<destination>{d9bc9902-3f66-48f4-8849-dcd489cb5cbc}</destination>
 			<destination>{4a2b33a3-31ba-4778-98b5-2f08d5141da9}</destination>
-			<destination>{c217b791-c9c2-4fb7-8847-97b680867e6e}</destination>
+			<destination>{9ecc6289-7fc1-47da-8138-380037144bc3}</destination>
 			<destination>{8b1a3e1b-f250-488c-8d73-af15577a766a}</destination>
 		</relationship>
 	</object>
@@ -51,12 +51,9 @@
 			<destination>{7b176fdd-70b8-4202-94be-45e96325535f}</destination>
 		</relationship>
 	</object>
-	<object class="LimiterEffect" id="{c217b791-c9c2-4fb7-8847-97b680867e6e}">
-		<property name="boost">
-			<value>3.4000001</value>
-		</property>
-		<property name="release">
-			<value>76</value>
+	<object class="GainEffect" id="{9ecc6289-7fc1-47da-8138-380037144bc3}">
+		<property name="gain">
+			<value>3</value>
 		</property>
 	</object>
 	<object class="SpatialiserEffect" id="{8b1a3e1b-f250-488c-8d73-af15577a766a}" />
