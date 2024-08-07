@@ -9,6 +9,8 @@ public class AngelRingEyesOpenClose : MonoBehaviour
     private Color closedMatColor;
     [SerializeField] private AngelEyeOpen angelEyeOpenManager;
 
+    [SerializeField] private TrailRenderer[] ringTrails;
+
     private bool firstSet = false;
 
     private void Awake()
@@ -31,6 +33,8 @@ public class AngelRingEyesOpenClose : MonoBehaviour
             eyeRends[i].material = openEyeMaterial;
             eyeRends[i].material.color = Color.black;
             eyeRends[i].material.DOColor(Color.white, 1);
+
+            ringTrails[i].emitting = true;
         }
     }
 
@@ -45,6 +49,7 @@ public class AngelRingEyesOpenClose : MonoBehaviour
         for (int i = 0; i < eyeRends.Length; i++)
         {
             eyeRends[i].material = closedEyeMaterial;
+            ringTrails[i].emitting = false;
         }
     }
 

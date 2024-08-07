@@ -62,18 +62,15 @@
 			<destination>{36526f77-8a44-45dc-b1c5-db237be176fe}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{75a551f1-c0ed-4016-843f-e14e0003dc57}</destination>
+			<destination>{6ca8b9ef-0090-4290-9963-82559bbb143e}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{38e5e04d-e9eb-4633-aa35-d2c80afb1b64}">
 		<property name="maxVoices">
-			<value>8</value>
+			<value>2</value>
 		</property>
-		<property name="minimumDistance">
-			<value>0.5</value>
-		</property>
-		<property name="maximumDistance">
-			<value>25</value>
+		<property name="voiceStealing">
+			<value>4</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{fc1f1627-53a6-4b65-8c8b-0dc03b7cc1d3}" />

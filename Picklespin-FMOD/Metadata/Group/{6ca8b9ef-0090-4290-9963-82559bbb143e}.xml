@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{6ca8b9ef-0090-4290-9963-82559bbb143e}">
+		<property name="name">
+			<value>Diagetic_Reverb_Sidechainee</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{fa786051-e086-40de-abf4-3ac5c682d5b4}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{98a70861-2973-4681-a343-a22414f6247a}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{75a551f1-c0ed-4016-843f-e14e0003dc57}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{fa786051-e086-40de-abf4-3ac5c682d5b4}">
+		<relationship name="effects">
+			<destination>{c1b260f8-d35c-4bbe-83c7-e405f300ebc0}</destination>
+			<destination>{7bb44ee3-8e09-426e-85de-6a1a4b605bbc}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{98a70861-2973-4681-a343-a22414f6247a}" />
+	<object class="CompressorEffect" id="{c1b260f8-d35c-4bbe-83c7-e405f300ebc0}">
+		<property name="threshold">
+			<value>-17</value>
+		</property>
+		<property name="ratio">
+			<value>50</value>
+		</property>
+		<property name="attackTime">
+			<value>0.400000006</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{1f22d4aa-14c8-44e5-81c1-7807f81d7ce8}</destination>
+			<destination>{9a069e8a-d172-4d7b-8b09-33ca5d5fa7e4}</destination>
+			<destination>{41a57d62-f322-4306-a2bd-deb07b2f216d}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusFader" id="{7bb44ee3-8e09-426e-85de-6a1a4b605bbc}" />
+</objects>

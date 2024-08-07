@@ -56,12 +56,15 @@
 			<destination>{637c0ef8-4c78-4e10-9786-0e1896b474c2}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{75a551f1-c0ed-4016-843f-e14e0003dc57}</destination>
+			<destination>{69ac6491-abab-4943-8eaa-1e716771143a}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{a2cfa5e8-59ee-4dbc-acf0-8ca7ce3e64ba}">
 		<property name="maxVoices">
 			<value>2</value>
+		</property>
+		<property name="minimumDistance">
+			<value>2.79999995</value>
 		</property>
 		<property name="maximumDistance">
 			<value>50</value>

@@ -6,6 +6,7 @@ public class SpawnInEnemy : MonoBehaviour
 
     [SerializeField] private ParticleSystem spawnInParticles;
     [SerializeField] private Renderer toFadeIn;
+    private Color TransparentWhite = new Color(1, 1, 1, 0);
     private ParticleSystem.MainModule mainModule;
     [SerializeField] private float timeToSpawnIn;
     [SerializeField] private StateManager stateManager;
@@ -18,6 +19,7 @@ public class SpawnInEnemy : MonoBehaviour
 
     private IEnumerator Start()
     {
+        toFadeIn.material.color = TransparentWhite;
         mainModule = spawnInParticles.main;
         mainModule.startLifetime = timeToSpawnIn;
         spawnInParticles.Play();
@@ -34,18 +36,15 @@ public class SpawnInEnemy : MonoBehaviour
         startingColor = toFadeIn.material.color;
         float progress = 0;
 
-        while (true)
+        while (progress<=1)
         {
             progress += Time.deltaTime;
             Color color = new Color(startingColor.r, startingColor.g, startingColor.b, progress);
             mat.SetColor(colorProperty, color);
-            if (progress>=1)
-            {
-                mat.SetFloat("_Mode", 0);
-                yield break;
-            }
             yield return null;
         }
+
+        mat.SetFloat("_Mode", 0);
     }
 
 }

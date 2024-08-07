@@ -56,7 +56,14 @@
 			<destination>{e5388dc6-2c42-4987-804c-236cd53f258e}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{b477228b-b769-446c-9939-a5464a002842}" />
+	<object class="EventAutomatableProperties" id="{b477228b-b769-446c-9939-a5464a002842}">
+		<property name="minimumDistance">
+			<value>40</value>
+		</property>
+		<property name="maximumDistance">
+			<value>300</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{8008d280-2ba7-47f8-9622-9cc0bec2c50e}" />
 	<object class="GroupTrack" id="{7740953e-0276-4b07-b4fa-37dcc81d819f}">
 		<relationship name="modules">
@@ -111,7 +118,7 @@
 			<value>180</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>80</value>
+			<value>70</value>
 		</property>
 		<property name="maximumScatterDistance">
 			<value>250</value>
@@ -128,7 +135,7 @@
 			<value>6</value>
 		</property>
 		<property name="name">
-			<value>Audio 1</value>
+			<value>Creepy Ones</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{97fa3268-0807-492a-a003-a5cfcee0558c}</destination>
@@ -156,6 +163,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{2bfe276d-9c3b-4695-a592-65cec5dc51c0}">
 		<relationship name="effects">
+			<destination>{11057ffc-c34b-481b-95b8-c01fa1168763}</destination>
 			<destination>{32c670e5-445b-419d-a285-1895b363f5dc}</destination>
 		</relationship>
 	</object>
@@ -171,11 +179,27 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{97fa3268-0807-492a-a003-a5cfcee0558c}">
 		<relationship name="effects">
-			<destination>{43603308-2ee4-4384-912e-70da5e22b365}</destination>
 			<destination>{a46ed38c-6d26-4b52-92db-e30b3175de4e}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{0e38a620-cdcc-47fd-87bf-f20c7e4552bc}" />
+	<object class="SpatialiserEffect" id="{11057ffc-c34b-481b-95b8-c01fa1168763}">
+		<property name="distanceRolloffType">
+			<value>2</value>
+		</property>
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>12</value>
+		</property>
+		<property name="minimumExtent">
+			<value>180</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{d22130f2-7b47-4788-8227-752ccbb6a969}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{32c670e5-445b-419d-a285-1895b363f5dc}" />
 	<object class="SingleSound" id="{4ef4901e-a6d5-4bd0-932d-359d425d85e0}">
 		<relationship name="audioFile">
@@ -197,13 +221,13 @@
 			<destination>{a2ef7d38-ca42-4cbb-989b-ad4eb93bd8d6}</destination>
 		</relationship>
 	</object>
-	<object class="SpatialiserEffect" id="{43603308-2ee4-4384-912e-70da5e22b365}">
-		<property name="bypass">
-			<value>true</value>
+	<object class="MixerBusFader" id="{a46ed38c-6d26-4b52-92db-e30b3175de4e}" />
+	<object class="RandomizerModulator" id="{d22130f2-7b47-4788-8227-752ccbb6a969}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>minimumExtent</value>
 		</property>
-		<property name="distanceRolloffType">
-			<value>2</value>
+		<property name="amount">
+			<value>57</value>
 		</property>
 	</object>
-	<object class="MixerBusFader" id="{a46ed38c-6d26-4b52-92db-e30b3175de4e}" />
 </objects>

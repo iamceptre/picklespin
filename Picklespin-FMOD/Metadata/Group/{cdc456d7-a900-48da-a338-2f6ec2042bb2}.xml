@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{cdc456d7-a900-48da-a338-2f6ec2042bb2}">
+		<property name="name">
+			<value>Diagetic_No_Reverb_Sidechainers</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{bda2b45d-891b-48f0-ae37-384d5cf9d729}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{4e20e8fc-70d2-4a2f-acc7-dc82b8b1d935}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{e5388dc6-2c42-4987-804c-236cd53f258e}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{bda2b45d-891b-48f0-ae37-384d5cf9d729}">
+		<relationship name="effects">
+			<destination>{979afd87-1241-43d0-a6cf-5240f0d1f6c4}</destination>
+			<destination>{41a57d62-f322-4306-a2bd-deb07b2f216d}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{4e20e8fc-70d2-4a2f-acc7-dc82b8b1d935}" />
+	<object class="MixerBusFader" id="{979afd87-1241-43d0-a6cf-5240f0d1f6c4}" />
+	<object class="Sidechain" id="{41a57d62-f322-4306-a2bd-deb07b2f216d}" />
+</objects>

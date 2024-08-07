@@ -6,7 +6,7 @@ public class FPSLimit : MonoBehaviour
     public static FPSLimit instance { get; private set; }
 
     [Range(29, 240)]
-    [Tooltip("when set to 0, sets fps to monitors rate")]
+    [Tooltip("when set to minimum, sets fps to monitors rate")]
 
     public float framerateLimit;
     public int monitorRefreshRate;

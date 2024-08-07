@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{84786c19-4d85-463e-92b7-886e30763b5a}">
 		<property name="assetPath">
-			<value>cheatActivated.wav</value>
+			<value>Hidden/cheatActivated.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

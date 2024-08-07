@@ -9828,6 +9828,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 5453956725451283575}
   - {fileID: 5744331170296466259}
   - {fileID: 8047383319200939645}
   m_Father: {fileID: 3730440565517659764}
@@ -14764,7 +14765,7 @@ MonoBehaviour:
   AllowNonRigidbodyDoppler: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 5.2000003
+  OverrideMinDistance: 5.8
   OverrideMaxDistance: 90
 --- !u!114 &2931081986996436870
 MonoBehaviour:
@@ -14779,6 +14780,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flybyEmitter: {fileID: 2338245104682298501}
+--- !u!1 &4853526316413432217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5453956725451283575}
+  - component: {fileID: 176874182128313843}
+  m_Layer: 0
+  m_Name: reflectionsEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5453956725451283575
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853526316413432217}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7021188162298153706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &176874182128313843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853526316413432217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1839344150
+      Data2: 1107528409
+      Data3: -86665047
+      Data4: -1291279774
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_EXPLOSION_V2_Reflections
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 5
+  OverrideMaxDistance: 90
 --- !u!1 &5001862982371931948
 GameObject:
   m_ObjectHideFlags: 0
@@ -19863,6 +19927,7 @@ MonoBehaviour:
   doesThisSpellSetOnFire: 0
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 3005831588898276106}
+  explosionReflectionsSoundEmitter: {fileID: 176874182128313843}
   iWillBeCritical: 0
   hitSomething: 0
   _particleSystem:
@@ -19962,7 +20027,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 128
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0

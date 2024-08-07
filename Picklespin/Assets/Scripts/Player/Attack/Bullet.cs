@@ -49,6 +49,7 @@ public class Bullet : MonoBehaviour
     private IEnumerator autoKill;
     private WaitForSeconds autoKillTime;
     [SerializeField] private StudioEventEmitter explosionSoundEmitter;
+    [SerializeField] private StudioEventEmitter explosionReflectionsSoundEmitter;
     private ApplyProjectileForce applyProjectileForce;
 
     [Header("Misc")]
@@ -186,7 +187,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            //Damage Taken Small Play
+            refs.damageTakenSmall.Play();
         }
 
         RandomizeCritical();
@@ -249,7 +250,7 @@ public class Bullet : MonoBehaviour
     {
         damage *= 2;
         refs.HeadshotParticle.Play();
-        //maybe a low-key sound
+        refs.damageTakenEyeshot.Play();
     }
 
 
@@ -281,7 +282,7 @@ public class Bullet : MonoBehaviour
         {
             damage = originalDamage * 4;
             wasLastHitCritical = true;
-            RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
+            //RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
         }
         else
         {
@@ -306,6 +307,12 @@ public class Bullet : MonoBehaviour
     {
         _explosionFxGameObject.SetActive(true);
         explosionSoundEmitter.Play();
+
+        if (explosionReflectionsSoundEmitter != null)
+        {
+            explosionReflectionsSoundEmitter.Play();
+        }
+
         _explosionTransform.position = Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f);
         cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, cachedCameraMain.cachedTransform.position),originalDamage);
     }

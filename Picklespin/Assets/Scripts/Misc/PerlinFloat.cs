@@ -10,7 +10,7 @@ public class PerlinFloat : MonoBehaviour
 
     void Start()
     {
-        initialPosition = transform.position;
+        initialPosition = transform.localPosition;
     }
 
     void Update()
@@ -21,6 +21,6 @@ public class PerlinFloat : MonoBehaviour
 
         Vector3 noiseVector = new Vector3(x, y, z) * noiseScale * noiseStrength;
 
-        transform.position = initialPosition + noiseVector;
+        transform.localPosition = initialPosition + noiseVector;
     }
 }

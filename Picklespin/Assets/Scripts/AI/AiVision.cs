@@ -26,10 +26,10 @@ public class AiVision : MonoBehaviour
 
     private void Update()
     {
-        //if (hitMeCooldown >= 0)
-        //{
-            //PlayerJustHitMeCooldown();
-        //}
+        if (hitMeCooldown >= 0)
+        {
+            PlayerJustHitMeCooldown();
+        }
     }
 
 

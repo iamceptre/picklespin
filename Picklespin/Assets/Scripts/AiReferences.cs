@@ -11,6 +11,9 @@ public class AiReferences : MonoBehaviour
     public MaterialFlashWhenHit MaterialFlash;
     public ParticleSystem HeadshotParticle;
     public SetOnFire setOnFire;
+
     public StudioEventEmitter damageTakenBig;
+    public StudioEventEmitter damageTakenSmall;
+    public StudioEventEmitter damageTakenEyeshot;
 }
 

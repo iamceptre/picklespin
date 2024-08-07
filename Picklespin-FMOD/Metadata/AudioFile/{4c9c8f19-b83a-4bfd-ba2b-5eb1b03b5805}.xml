@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{4c9c8f19-b83a-4bfd-ba2b-5eb1b03b5805}">
 		<property name="assetPath">
-			<value>In_Game/Spells/PURPLE_SPELL_LOOP.wav</value>
+			<value>In_Game/Spells/PURPLE_SPELL/PURPLE_SPELL_FLYBY_LOOP.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

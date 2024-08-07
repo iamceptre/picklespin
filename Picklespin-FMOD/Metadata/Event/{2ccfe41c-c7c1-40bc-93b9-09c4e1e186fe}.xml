@@ -62,12 +62,12 @@
 			<destination>{999d23a9-287b-455a-b502-932c4fcb2517}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{75a551f1-c0ed-4016-843f-e14e0003dc57}</destination>
+			<destination>{6ca8b9ef-0090-4290-9963-82559bbb143e}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{7f5ba95e-00ef-4dcb-a1d8-15dd56b65b8a}">
 		<property name="maxVoices">
-			<value>5</value>
+			<value>2</value>
 		</property>
 		<property name="dopplerEnabled">
 			<value>true</value>
@@ -155,10 +155,10 @@
 			<value>0.215306774</value>
 		</property>
 		<property name="releaseTime">
-			<value>400</value>
+			<value>420</value>
 		</property>
 		<property name="releaseShape">
-			<value>-1.00000048</value>
+			<value>-0.315885156</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
@@ -341,7 +341,7 @@
 	</object>
 	<object class="AutomationPoint" id="{caae702d-0714-49f4-9fe8-402ab5af0406}">
 		<property name="position">
-			<value>0.23000000000000001</value>
+			<value>0.12</value>
 		</property>
 		<property name="value">
 			<value>0</value>

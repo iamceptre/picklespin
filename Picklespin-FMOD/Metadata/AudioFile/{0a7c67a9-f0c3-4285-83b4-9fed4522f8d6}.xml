@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{0a7c67a9-f0c3-4285-83b4-9fed4522f8d6}">
 		<property name="assetPath">
-			<value>vine-boom.mp3</value>
+			<value>Hidden/vine-boom.mp3</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

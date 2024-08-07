@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{6bc9859d-96fd-4d22-ad67-a07ace427865}">
 		<property name="assetPath">
-			<value>73429-Martial_arts_ninja_star_throw_whip_spin_twirl-BLASTWAVEFX-09314.wav</value>
+			<value>Hidden/73429-Martial_arts_ninja_star_throw_whip_spin_twirl-BLASTWAVEFX-09314.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

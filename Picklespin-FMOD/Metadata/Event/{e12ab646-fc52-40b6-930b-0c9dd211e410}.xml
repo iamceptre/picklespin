@@ -56,7 +56,7 @@
 			<destination>{3942a8ff-06c2-4f32-b16c-e76240e64b48}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e5388dc6-2c42-4987-804c-236cd53f258e}</destination>
+			<destination>{cdc456d7-a900-48da-a338-2f6ec2042bb2}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{a17c6925-a1c5-4a02-b884-3e2c19efdb70}">
@@ -80,7 +80,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{882f3f67-30c1-4688-bd05-0067f866d079}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-2.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{3a34ccfb-e271-439a-bd9b-5354bda2f840}</destination>
@@ -142,6 +142,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{543e8612-9432-475b-8650-cbedb798d52e}">
 		<relationship name="effects">
+			<destination>{a6c146bf-3dad-41a0-92d1-98e4cdb68392}</destination>
 			<destination>{953a9625-3789-4fa2-95fa-d5ade396ec80}</destination>
 		</relationship>
 	</object>
@@ -163,7 +164,7 @@
 	</object>
 	<object class="MultiSound" id="{2783b652-54d3-46fb-9d1f-d54df9beee04}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-11</value>
 		</property>
 		<property name="pitch">
 			<value>-0.699999988</value>
@@ -172,6 +173,7 @@
 			<destination>{e5e8666f-0d90-4d5d-916d-da9f8fbb939f}</destination>
 			<destination>{24ba36e4-05d0-46e1-b2df-c26ba2195a1a}</destination>
 			<destination>{23473ece-9be2-468c-984d-2741bf0553f5}</destination>
+			<destination>{478ae3dc-0b1d-4b9b-8bb6-494b49a6dd04}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{0d2b39e0-699f-44d6-bf6b-e7384022e0ff}</destination>
@@ -180,8 +182,8 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{13025e26-da20-486d-8d06-7502fb4a2e09}">
-		<property name="startOffset">
-			<value>1</value>
+		<property name="volume">
+			<value>-1</value>
 		</property>
 		<property name="pitch">
 			<value>1</value>
@@ -198,6 +200,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d1aa9adb-a82e-46d5-a5ef-c24d68612046}" />
+	<object class="ThreeEQEffect" id="{a6c146bf-3dad-41a0-92d1-98e4cdb68392}">
+		<property name="lowGain">
+			<value>-3</value>
+		</property>
+		<property name="lowCrossover">
+			<value>60</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{953a9625-3789-4fa2-95fa-d5ade396ec80}" />
 	<object class="RandomizerModulator" id="{6b9a24f1-4dcd-434d-b2de-27dece4dc70f}">
 		<property name="nameOfPropertyBeingModulated">
@@ -278,6 +291,14 @@
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{478ae3dc-0b1d-4b9b-8bb6-494b49a6dd04}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>1.5</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{0d2b39e0-699f-44d6-bf6b-e7384022e0ff}">
