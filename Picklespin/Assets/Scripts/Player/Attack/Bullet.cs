@@ -183,14 +183,16 @@ public class Bullet : MonoBehaviour
 
         if (castDuration != 0)
         {
+            if(refs.damageTakenBig != null)
             refs.damageTakenBig.Play();
         }
         else
         {
-            refs.damageTakenSmall.Play();
+            if (refs.damageTakenSmall != null)
+                refs.damageTakenSmall.Play();
         }
 
-        RandomizeCritical();
+        RandomizeCritical(refs);
 
         flashWhenHit.StopAllCoroutines();
 
@@ -248,7 +250,7 @@ public class Bullet : MonoBehaviour
 
     private void Headshot(AiReferences refs)
     {
-        damage *= 2;
+        damage *= 4;
         refs.HeadshotParticle.Play();
         refs.damageTakenEyeshot.Play();
     }
@@ -265,7 +267,7 @@ public class Bullet : MonoBehaviour
 
 
 
-    private void RandomizeCritical()
+    private void RandomizeCritical(AiReferences refs)
     {
         int criticalTreshold;
 
@@ -280,9 +282,10 @@ public class Bullet : MonoBehaviour
 
         if (Random.Range(0,10) >= criticalTreshold || iWillBeCritical)
         {
+            refs.damageTakenCritical.Play();
             damage = originalDamage * 4;
             wasLastHitCritical = true;
-            //RuntimeManager.PlayOneShot("event:/PLACEHOLDER_UNCZ/ohh"); //CRITICAL SOUND
+           
         }
         else
         {

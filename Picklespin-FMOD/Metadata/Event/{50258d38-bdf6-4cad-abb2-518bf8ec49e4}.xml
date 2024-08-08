@@ -103,7 +103,7 @@
 			<value>60</value>
 		</property>
 		<property name="volume">
-			<value>10</value>
+			<value>6</value>
 		</property>
 		<property name="polyphony">
 			<value>2</value>
@@ -118,10 +118,10 @@
 			<value>180</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>70</value>
+			<value>90</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>250</value>
+			<value>150</value>
 		</property>
 		<property name="pitchRandomization">
 			<value>0.5</value>

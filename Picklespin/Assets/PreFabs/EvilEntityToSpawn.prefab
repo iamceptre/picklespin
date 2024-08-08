@@ -55,13 +55,13 @@ MonoBehaviour:
   Event: 
   PlayEvent: 0
   StopEvent: 0
-  AllowFadeout: 0
+  AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   AllowNonRigidbodyDoppler: 0
   Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 9.2
+  OverrideAttenuation: 1
+  OverrideMinDistance: 7
   OverrideMaxDistance: 200
 --- !u!1 &333262333370702003
 GameObject:
@@ -9872,7 +9872,7 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 4
-  OverrideMaxDistance: 30
+  OverrideMaxDistance: 80
 --- !u!1 &1015043977020373037
 GameObject:
   m_ObjectHideFlags: 0
@@ -10068,9 +10068,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2438827793723102762}
+  - {fileID: 7487231644249175909}
   - {fileID: 2956990357459203935}
   - {fileID: 1600598033613579602}
   - {fileID: 7774238600877212544}
+  - {fileID: 8799377792007654619}
   - {fileID: 7285991346893043575}
   m_Father: {fileID: 685529607316862035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10090,6 +10092,7 @@ MonoBehaviour:
   - {fileID: 2449716031361776003}
   - {fileID: 2477817380849591454}
   - {fileID: 6511597942865099906}
+  - {fileID: 3791637008925572460}
 --- !u!1 &2625562711823078883
 GameObject:
   m_ObjectHideFlags: 0
@@ -10118,11 +10121,11 @@ Transform:
   m_GameObject: {fileID: 2625562711823078883}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.3999996, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 5.0959997, z: 0.36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2909215849085508077}
+  m_Father: {fileID: 685529607316862035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &7736395116358722587
 CapsuleCollider:
@@ -10143,8 +10146,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.7
+  m_Radius: 0.25
+  m_Height: 0.55
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &8530334580075811554
@@ -15089,13 +15092,13 @@ MonoBehaviour:
   Event: 
   PlayEvent: 0
   StopEvent: 0
-  AllowFadeout: 0
+  AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   AllowNonRigidbodyDoppler: 0
   Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 6
+  OverrideAttenuation: 1
+  OverrideMinDistance: 7
   OverrideMaxDistance: 200
 --- !u!1 &3874819672449624741
 GameObject:
@@ -15277,6 +15280,69 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4025411625855345091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7487231644249175909}
+  - component: {fileID: 3791637008925572460}
+  m_Layer: 8
+  m_Name: Damage_Taken_Critical
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7487231644249175909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4025411625855345091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4696411816746988995}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3791637008925572460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4025411625855345091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1098383224
+      Data2: 1175236626
+      Data3: -315881824
+      Data4: -1122234702
+    Path: event:/ENEMIES/ENEMY_CRITICAL_DAMAGE_TAKEN
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 0
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 7
+  OverrideMaxDistance: 90
 --- !u!1 &4043917402506409367
 GameObject:
   m_ObjectHideFlags: 0
@@ -15506,7 +15572,8 @@ GameObject:
   - component: {fileID: 2640075809853599693}
   - component: {fileID: 2707532075923604859}
   - component: {fileID: 4999213635134841563}
-  - component: {fileID: 5122440517595141109}
+  - component: {fileID: 5290907628487221130}
+  - component: {fileID: 3942065418115510607}
   m_Layer: 8
   m_Name: EvilEntityToSpawn
   m_TagString: EvilEntity
@@ -15523,10 +15590,12 @@ Transform:
   m_GameObject: {fileID: 5576000824764681535}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.93797, y: 1.5, z: 38.108753}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 5655927370273584645}
+  - {fileID: 1053583928403918803}
   - {fileID: 5179267843130176379}
   - {fileID: 4696411816746988995}
   - {fileID: 5705132776607002516}
@@ -15720,6 +15789,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4136347119202134635}
+        m_TargetAssemblyTypeName: PlayAshSoloSoundWhenNotLit, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   hp: 100
 --- !u!114 &7181874480254964230
 MonoBehaviour:
@@ -15866,9 +15947,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1
-  m_Height: 4
+  m_Height: 4.3
   m_Direction: 1
-  m_Center: {x: 0, y: 2.42, z: 0}
+  m_Center: {x: 0, y: 2.74, z: 0}
 --- !u!114 &2640075809853599693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15911,7 +15992,7 @@ MonoBehaviour:
   toFadeIn: {fileID: 3224164992363990641}
   timeToSpawnIn: 1
   stateManager: {fileID: 8820470844452918188}
---- !u!114 &5122440517595141109
+--- !u!114 &5290907628487221130
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15933,6 +16014,30 @@ MonoBehaviour:
   damageTakenBig: {fileID: 2477817380849591454}
   damageTakenSmall: {fileID: 6511597942865099906}
   damageTakenEyeshot: {fileID: 3664082017059148743}
+  damageTakenCritical: {fileID: 3791637008925572460}
+--- !u!136 &3942065418115510607
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576000824764681535}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.64
+  m_Height: 1.26
+  m_Direction: 1
+  m_Center: {x: 0, y: 5.44, z: -0.24}
 --- !u!1 &5704715387363407611
 GameObject:
   m_ObjectHideFlags: 0
@@ -15988,13 +16093,13 @@ MonoBehaviour:
   Event: 
   PlayEvent: 0
   StopEvent: 0
-  AllowFadeout: 0
+  AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   AllowNonRigidbodyDoppler: 0
   Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 2.8
+  OverrideAttenuation: 1
+  OverrideMinDistance: 7
   OverrideMaxDistance: 50
 --- !u!1 &5822582043937475088
 GameObject:
@@ -21014,7 +21119,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -21022,6 +21127,84 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &6530369100761030754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5655927370273584645}
+  - component: {fileID: 7211618719791262908}
+  - component: {fileID: 6011829167838953829}
+  m_Layer: 8
+  m_Name: Hitbox
+  m_TagString: EvilEntity
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5655927370273584645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530369100761030754}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.5, z: -0.048}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 685529607316862035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &7211618719791262908
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530369100761030754}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5028943542984386984, guid: d010c62b8a1515f44a0134aa837b8874, type: 3}
+--- !u!114 &6011829167838953829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530369100761030754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94fe9388dca7a342ad77a2b7875f906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 9088957210784467254}
+  Vision: {fileID: 7390506993609888115}
+  HpUiBar: {fileID: 3817865884643380506}
+  GiveExp: {fileID: 6714385560574647472}
+  MaterialFlash: {fileID: 2640075809853599693}
+  HeadshotParticle: {fileID: 8530334580075811554}
+  setOnFire: {fileID: 2725608640265330799}
+  damageTakenBig: {fileID: 2477817380849591454}
+  damageTakenSmall: {fileID: 6511597942865099906}
+  damageTakenEyeshot: {fileID: 3664082017059148743}
+  damageTakenCritical: {fileID: 0}
 --- !u!1 &7225600910775972138
 GameObject:
   m_ObjectHideFlags: 0
@@ -21054,7 +21237,6 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1053583928403918803}
   - {fileID: 3698917503605042989}
   m_Father: {fileID: 685529607316862035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21605,6 +21787,83 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8748240008185367024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8799377792007654619}
+  - component: {fileID: 6295402893895950529}
+  - component: {fileID: 4136347119202134635}
+  m_Layer: 8
+  m_Name: Ash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8799377792007654619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8748240008185367024}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4696411816746988995}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6295402893895950529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8748240008185367024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1887398605
+      Data2: 1083563793
+      Data3: -1083049599
+      Data4: 1446955907
+    Path: event:/ENEMIES/ENEMY_ASH
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 7
+  OverrideMaxDistance: 70
+--- !u!114 &4136347119202134635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8748240008185367024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a8d46949f043841854489533924c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _setOnFire: {fileID: 2725608640265330799}
 --- !u!1 &8887703673856709267
 GameObject:
   m_ObjectHideFlags: 0

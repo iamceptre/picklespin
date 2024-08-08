@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{8c60db6e-55cc-4fda-afac-f056488cd25e}">
+		<property name="assetPath">
+			<value>In_Game/NPC/Enemies/CRITICAL_HIT/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

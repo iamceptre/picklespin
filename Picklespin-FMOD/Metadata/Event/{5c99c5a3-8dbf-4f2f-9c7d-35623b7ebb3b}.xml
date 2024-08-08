@@ -62,7 +62,10 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{b3c65e7e-366f-4208-a3b5-c0549eaee0e8}">
 		<property name="maxVoices">
-			<value>2</value>
+			<value>1</value>
+		</property>
+		<property name="voiceStealing">
+			<value>4</value>
 		</property>
 		<property name="dopplerEnabled">
 			<value>true</value>
@@ -71,10 +74,10 @@
 			<value>500</value>
 		</property>
 		<property name="minimumDistance">
-			<value>0</value>
+			<value>2.4000001</value>
 		</property>
 		<property name="maximumDistance">
-			<value>30</value>
+			<value>45</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{47bd553d-df7d-4c3f-a9d0-02ab5f69231f}" />
@@ -159,7 +162,7 @@
 			<value>true</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{6a539b62-ae5b-4257-a6c6-889c9706e34b}</destination>
+			<destination>{0970e96a-df22-432f-924c-b0a6f20530ec}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{2e07c577-9ed9-43dd-bd84-4aa6dffbd58f}" />

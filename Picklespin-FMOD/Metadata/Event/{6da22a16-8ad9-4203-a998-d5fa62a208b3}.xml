@@ -73,7 +73,7 @@
 			<value>5</value>
 		</property>
 		<property name="maximumDistance">
-			<value>90</value>
+			<value>150</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{e4a12f2e-0178-4554-9846-1ca9dc265264}" />
@@ -298,7 +298,7 @@
 	</object>
 	<object class="SpatialiserEffect" id="{3bcc824f-a5a4-4ea6-b002-bbead9664538}">
 		<property name="distanceRolloffType">
-			<value>2</value>
+			<value>4</value>
 		</property>
 		<property name="minimumDistance">
 			<value>5</value>
@@ -316,7 +316,7 @@
 			<value>20</value>
 		</property>
 		<property name="minimumExtent">
-			<value>268</value>
+			<value>180</value>
 		</property>
 		<property name="userStereoSeparation">
 			<value>0</value>
@@ -380,7 +380,10 @@
 			<value>0.0023014959723820483</value>
 		</property>
 		<property name="value">
-			<value>-6</value>
+			<value>-10</value>
+		</property>
+		<property name="curveShape">
+			<value>-0.587577224</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{0d88542c-54dd-492d-bba1-c43392f22d00}">
@@ -388,7 +391,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>-16.5</value>
+			<value>-27.1428566</value>
 		</property>
 	</object>
 	<object class="Automator" id="{44be007a-263b-43f7-a152-db787705a5fd}">
