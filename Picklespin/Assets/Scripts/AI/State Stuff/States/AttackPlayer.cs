@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,6 +15,10 @@ public class AttackPlayer : State
     [SerializeField] private float attackSpeed = 8;
 
     private int howMuchDamageIdeal = 10;
+
+    [SerializeField] private StudioEventEmitter attackSoundEmitter;
+
+    private int attackCounter = 0;
 
     private void Start()
     {
@@ -54,16 +59,21 @@ public class AttackPlayer : State
     {
         if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 5)
         {
-            if (!playerHP.isLowHP) {
-                playerHP.hp -= howMuchDamageIdeal;
-            }
-            else
-            {
-                playerHP.hp -= (int)(howMuchDamageIdeal * 0.5f);
-            }
+            attackCounter++;
 
-            hpBarDisplay.Refresh(false);
-            playerHP.PlayerHurtSound();
+            if (attackCounter % 2 == 0) {
+                if (!playerHP.isLowHP) {
+                    playerHP.hp -= howMuchDamageIdeal;
+                }
+                else
+                {
+                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.5f);
+                }
+
+                attackSoundEmitter.Play();
+                hpBarDisplay.Refresh(false);
+                playerHP.PlayerHurtSound();
+            }
         }
     }
 

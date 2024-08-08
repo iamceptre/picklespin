@@ -18,4 +18,10 @@ public class PauseTimerOnEnter : MonoBehaviour
         }
     }
 
+
+    private void OnDisable()
+    {
+        roundSystem.isCounting = true;
+    }
+
 }

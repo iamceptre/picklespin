@@ -118,8 +118,8 @@ MonoBehaviour:
   AllowNonRigidbodyDoppler: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0.5
-  OverrideMaxDistance: 15
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!114 &5360117758721513091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9089,9 +9089,9 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0
+    m_Bias: 0.2
     m_NormalBias: 0.33
-    m_NearPlane: 0.1
+    m_NearPlane: 0.4
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -9118,7 +9118,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1

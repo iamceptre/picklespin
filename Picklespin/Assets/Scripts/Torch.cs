@@ -1,6 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class Torch : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class Torch : MonoBehaviour
     private float _lightIntensity;
     [SerializeField] private LightFluctuation _fluctuation;
 
+
+    [SerializeField] private UnityEvent additionalOnEvent;
+    [SerializeField] private UnityEvent additionalOffEvent;
+
     private void Awake()
     {
         _lightIntensity = _light.intensity;
@@ -22,6 +27,7 @@ public class Torch : MonoBehaviour
 
     public void On()
     {
+        additionalOnEvent.Invoke();
         _light.DOKill();
         _emitter.Play();
         ParticleSystem.EmissionModule emission = _particleSystem.emission;
@@ -54,6 +60,7 @@ public class Torch : MonoBehaviour
 
     public void Off()
     {
+        additionalOffEvent.Invoke();
         _particleSystem.Stop();
         _light.DOKill();
         _emitter.Stop();

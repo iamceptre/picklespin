@@ -1,5 +1,6 @@
 using UnityEngine;
 using FMODUnity;
+using UnityEngine.Events;
 
 public class AngelMind : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class AngelMind : MonoBehaviour
     public bool isActive;
     private Collider _collider;
     private BoxCollider _activationTrigger;
+
+    [Header("Additional Event")]
+    [SerializeField] private UnityEvent additionalHealedEvent;
 
 
     public void SetActive(bool state)
@@ -115,6 +119,7 @@ public class AngelMind : MonoBehaviour
         giveExpAfterHeal.GiveExp();
         scriptActivationTrigger.size = Vector3.zero;
         minigame.RandomizeTurboAreaPosition();
+        additionalHealedEvent.Invoke();
     }
 
 

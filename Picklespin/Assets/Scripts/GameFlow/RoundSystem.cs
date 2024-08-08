@@ -13,6 +13,7 @@ public class RoundSystem : MonoBehaviour
     private float timer;
     [SerializeField] private float roundDuration;
     [SerializeField] private Slider roundTimerGUI;
+    private CanvasGroup roundCanvasGroup;
 
     [SerializeField] private UnityEvent[] RoundEvent;
     [SerializeField] private UnityEvent LastRoundEvent;
@@ -27,6 +28,9 @@ public class RoundSystem : MonoBehaviour
 
     public bool isCounting = true;
 
+    private float greyedOutOpacity = 0.33f;
+    private float normalOpacity = 1f;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -38,6 +42,8 @@ public class RoundSystem : MonoBehaviour
             instance = this;
         }
 
+        roundCanvasGroup = GetComponent<CanvasGroup>();
+        SetGreyedOutOpacity(true);
         timer = roundDuration;
         second = new WaitForSeconds(updateRate);
     }
@@ -59,6 +65,8 @@ public class RoundSystem : MonoBehaviour
             if (isCounting)
             {
 
+                SetGreyedOutOpacity(false);
+
                 if (timer > 0)
                 {
                     timer -= updateRate * speedMultiplier;
@@ -68,6 +76,30 @@ public class RoundSystem : MonoBehaviour
                 {
                     NextRound();
                 }
+            }
+            else
+            {
+                SetGreyedOutOpacity(true);
+            }
+        }
+    }
+
+
+    private void SetGreyedOutOpacity(bool greyout)
+    {
+        if (!greyout)
+        {
+            if (roundCanvasGroup.alpha != normalOpacity)
+            {
+                roundCanvasGroup.alpha = normalOpacity;
+            }
+            return;
+        }
+        else
+        {
+            if (roundCanvasGroup.alpha != greyedOutOpacity)
+            {
+                roundCanvasGroup.alpha = greyedOutOpacity;
             }
         }
     }

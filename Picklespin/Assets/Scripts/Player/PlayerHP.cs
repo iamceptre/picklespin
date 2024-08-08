@@ -106,7 +106,7 @@ public class PlayerHP : MonoBehaviour
     public void PlayerHurtSound() //initial signal goes here
     {
         if (!godMode) {
-            RuntimeManager.PlayOneShot(hurtSound);
+          //  RuntimeManager.PlayOneShot(hurtSound);
             PlayerHurtVisual();
             CheckIfPlayerIsDead();
             CheckIfPlayerIsLowHP();

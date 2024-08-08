@@ -122,6 +122,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{40ae4fde-6738-4841-ae41-e366de90c64b}">
 		<relationship name="effects">
+			<destination>{82561e83-e877-4d12-806e-7c1c469aa7ed}</destination>
 			<destination>{6a095a43-d453-4bfe-87d6-24ab80740e47}</destination>
 		</relationship>
 	</object>
@@ -142,6 +143,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{203ccbf6-9c49-4d85-ad24-1b19cfca3e00}" />
+	<object class="ThreeEQEffect" id="{82561e83-e877-4d12-806e-7c1c469aa7ed}">
+		<property name="lowGain">
+			<value>-80</value>
+		</property>
+		<property name="lowCrossover">
+			<value>240</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{6a095a43-d453-4bfe-87d6-24ab80740e47}" />
 	<object class="ADSRModulator" id="{b78056a6-5df4-4796-8957-9e8c7e0ead37}">
 		<property name="nameOfPropertyBeingModulated">
