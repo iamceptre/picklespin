@@ -74,10 +74,10 @@
 			<value>500</value>
 		</property>
 		<property name="minimumDistance">
-			<value>2.4000001</value>
+			<value>1.80000007</value>
 		</property>
 		<property name="maximumDistance">
-			<value>45</value>
+			<value>40</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{47bd553d-df7d-4c3f-a9d0-02ab5f69231f}" />
@@ -141,7 +141,7 @@
 			<value>500</value>
 		</property>
 		<property name="releaseTime">
-			<value>20</value>
+			<value>240</value>
 		</property>
 		<property name="releaseShape">
 			<value>-0.271852672</value>

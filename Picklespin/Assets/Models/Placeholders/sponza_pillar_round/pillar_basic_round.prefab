@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 83cb755a1c129ea4ea8868469c0caf9f, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 52dd552050eac7a4db9c4da0cf88770b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2297392677745567753, guid: d67e0fdcac559e94196ee25f4eda0351, type: 3}
     - target: {fileID: 919132149155446097, guid: 52dd552050eac7a4db9c4da0cf88770b, type: 3}
       propertyPath: m_Name
       value: pillar_basic_round_top_ornament
@@ -122,6 +126,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2e238616c6f202a41a2d200e21384a0d, type: 2}
+    - target: {fileID: -5754084199372789682, guid: b7f35b6c18640414986980472bbe5268, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -7747052164776000931, guid: 842d9d2add54f694d990bde15de22a2d, type: 3}
     - target: {fileID: 919132149155446097, guid: b7f35b6c18640414986980472bbe5268, type: 3}
       propertyPath: m_Name
       value: pillar_basic_round_lower_ornament

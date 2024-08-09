@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Pool;
 using FMODUnity;
+using UnityEngine.Events;
 
 public class SpellPickupable : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class SpellPickupable : MonoBehaviour
     public int spellClass; //0 - LO, 1 - HI, 2 - FINAl
 
     private HandBopAfterItemPickup handBop;
+
+   [SerializeField] private UnityEvent additionalPickupEvent;
 
 
 
@@ -81,6 +84,8 @@ public class SpellPickupable : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player")) //SPELL PICKUP
         {
+
+            additionalPickupEvent.Invoke();
 
             if (mySound != null)
             {

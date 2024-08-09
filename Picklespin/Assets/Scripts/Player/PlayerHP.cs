@@ -31,6 +31,8 @@ public class PlayerHP : MonoBehaviour
     private float exposureAmount = 1;
 
     private SnapshotManager snapshotManager;
+
+    [SerializeField] private EventReference tinnitusEventReference;
     
 
     private void Awake()
@@ -85,6 +87,7 @@ public class PlayerHP : MonoBehaviour
     {
         if (!isLowHP)
         {
+            RuntimeManager.PlayOneShot(tinnitusEventReference);
             StartCoroutine(LowHpEffect());
             isLowHP = true;
             snapshotManager.LowHp.Play();

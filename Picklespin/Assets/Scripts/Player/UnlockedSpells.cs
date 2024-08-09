@@ -27,7 +27,6 @@ public class UnlockedSpells : MonoBehaviour
     [Header("Spell Unlock Light GUI")]
     [SerializeField] private Image spellUnlockedLight;
     private RectTransform lightRect;
-    [SerializeField] private EventReference spellUnlockedSound;
 
     private void Awake()
     {
@@ -64,7 +63,6 @@ public class UnlockedSpells : MonoBehaviour
             spellUnlocked[spellID] = true;
 
             lockedSpellTint[spellID].SetActive(false);
-            RuntimeManager.PlayOneShot(spellUnlockedSound);
 
             spellUnlockedLight.enabled = true;
             spellUnlockLight();

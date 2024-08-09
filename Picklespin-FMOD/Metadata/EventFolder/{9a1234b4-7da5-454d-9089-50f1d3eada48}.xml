@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EventFolder" id="{9a1234b4-7da5-454d-9089-50f1d3eada48}">
+		<property name="name">
+			<value>TINNITUS</value>
+		</property>
+		<relationship name="folder">
+			<destination>{4ec1a115-6b77-4ad0-8d9f-84bbf7a7ed24}</destination>
+		</relationship>
+	</object>
+</objects>
