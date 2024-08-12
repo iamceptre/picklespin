@@ -35,6 +35,7 @@
 			<destination>{1f22d4aa-14c8-44e5-81c1-7807f81d7ce8}</destination>
 			<destination>{9a069e8a-d172-4d7b-8b09-33ca5d5fa7e4}</destination>
 			<destination>{41a57d62-f322-4306-a2bd-deb07b2f216d}</destination>
+			<destination>{5f7138b4-aae4-476d-88d7-9162b75dfc09}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{7bb44ee3-8e09-426e-85de-6a1a4b605bbc}" />

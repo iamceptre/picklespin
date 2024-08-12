@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{2f291c89-ad73-4e30-885d-a6b49edb842f}">
 		<property name="assetPath">
-			<value>In_Game/NPC/Angels/ANGEL_HEALED_LOOP.wav</value>
+			<value>In_Game/NPC/Angels/ANGEL_HEALED_LOOP_OLD.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{ceef9a4d-5b98-4dc2-ae86-f680d2b4528f}">
 		<property name="assetPath">
-			<value>TINNITUS_3.wav</value>
+			<value>In_Game/Player/Tinnitus/TINNITUS_3.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

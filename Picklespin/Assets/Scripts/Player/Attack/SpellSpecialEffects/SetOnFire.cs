@@ -8,7 +8,9 @@ public class SetOnFire : MonoBehaviour
 
     [Header("Assets")]
     [SerializeField] private StudioEventEmitter emitter;
+    [SerializeField] private Light fireLight;
     [SerializeField] private GameObject diedFromBurnParticle; //both particle and sound
+
 
     [SerializeField] private ParticleSystem effectParticle;
     private ParticleSystem.EmissionModule particleEmission;
@@ -31,7 +33,7 @@ public class SetOnFire : MonoBehaviour
 
     private void Awake()
     {
-        particleEmission = effectParticle.emission;   
+        particleEmission = effectParticle.emission;
         particleMain = effectParticle.main;
     }
 
@@ -58,19 +60,20 @@ public class SetOnFire : MonoBehaviour
 
     private void FireUp()
     {
-        killer = DecreaseHPoverTime();
-        StopCoroutine(killer);
-        StartCoroutine(killer);
-
-        particleEmission.enabled = true;
-        effectParticle.Play();
-
         if (!imOnFire)
         {
-            emitter.Play();
-        }
+            imOnFire = true;
+            killer = DecreaseHPoverTime();
+            StopCoroutine(killer);
+            StartCoroutine(killer);
 
-        imOnFire = true;
+            particleEmission.enabled = true;
+            effectParticle.Play();
+
+            emitter.Play();
+            fireLight.gameObject.SetActive(true);
+            fireLight.enabled = true;
+        }
     }
 
 
@@ -81,7 +84,7 @@ public class SetOnFire : MonoBehaviour
             cachedAiHP.hp -= howMuchDamageIdeal;
             AiHpBarRefresher();
 
-            if (cachedAiHP.hp<=0)
+            if (cachedAiHP.hp <= 0)
             {
                 KillFromFire(); //die from fire
             }
@@ -92,7 +95,8 @@ public class SetOnFire : MonoBehaviour
 
     public void KillFromFire() //spalenie
     {
-        if (!burned) {
+        if (!burned)
+        {
             StartCoroutine(WaitAndKill());
         }
     }
@@ -103,6 +107,8 @@ public class SetOnFire : MonoBehaviour
         yield return null;
         yield return null;
         emitter.Stop();
+        fireLight.enabled = false;
+        fireLight.gameObject.SetActive(false);
         burned = true;
         particleEmission.enabled = false;
         effectParticle.Stop();
@@ -138,6 +144,8 @@ public class SetOnFire : MonoBehaviour
         particleEmission.enabled = false;
         imOnFire = false;
         emitter.Stop();
+        fireLight.enabled = false;
+        fireLight.gameObject.SetActive(false);
         effectParticle.Stop();
         StopAllCoroutines();
         enabled = false;

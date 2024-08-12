@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{310688f9-5887-4357-b5c5-dc16ceb28187}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
+		<property name="name">
+			<value>Healing_Beam</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{ee8c840a-388a-4475-8027-5996588412d4}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{26de5bf5-8ca7-4211-9721-d1502b371bcc}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{e5388dc6-2c42-4987-804c-236cd53f258e}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{ee8c840a-388a-4475-8027-5996588412d4}">
+		<relationship name="effects">
+			<destination>{78da203b-8529-4207-ad1f-b539142418cd}</destination>
+			<destination>{5f7138b4-aae4-476d-88d7-9162b75dfc09}</destination>
+			<destination>{9722ccd0-0bc2-4e0d-98c1-976550eb2138}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{26de5bf5-8ca7-4211-9721-d1502b371bcc}" />
+	<object class="MixerBusFader" id="{78da203b-8529-4207-ad1f-b539142418cd}" />
+	<object class="Sidechain" id="{5f7138b4-aae4-476d-88d7-9162b75dfc09}" />
+	<object class="GainEffect" id="{9722ccd0-0bc2-4e0d-98c1-976550eb2138}">
+		<property name="gain">
+			<value>8</value>
+		</property>
+	</object>
+</objects>

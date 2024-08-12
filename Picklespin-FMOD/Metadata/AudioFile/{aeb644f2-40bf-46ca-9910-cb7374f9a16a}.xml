@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{aeb644f2-40bf-46ca-9910-cb7374f9a16a}">
 		<property name="assetPath">
-			<value>angel_heal_boost_minigame.wav</value>
+			<value>placeholders/angel_heal_boost_minigame.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

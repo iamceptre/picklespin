@@ -95,11 +95,12 @@ public class Door : MonoBehaviour
 
     private void OpenCloseDecider()
     {
+        tipManager.Hide(0);
+
         if (!isOpened)
         {
             handAnimator.SetTrigger("Door_Open");
             OpenDoor();
-           // tipManager.Hide(0);
         }
         else
         {

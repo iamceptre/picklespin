@@ -31,8 +31,7 @@ public class AngelHeal : MonoBehaviour
     [HideInInspector] public AngelMind angel;
     private AiHealth aiHealth;
 
-    [SerializeField] private EventReference healingBeamEvent;
-    private FMOD.Studio.EventInstance healingBeamInstance;
+    [SerializeField] private StudioEventEmitter healingBeamEmitter;
 
 
     [SerializeField] private ManaLightAnimation manaLightAnimation;
@@ -65,7 +64,6 @@ public class AngelHeal : MonoBehaviour
         tipManager.Hide(1);
         minigame = AngelHealingMinigame.instance;
         minigame.enabled = false;
-        healingBeamInstance = RuntimeManager.CreateInstance(healingBeamEvent);
     }
 
     void Update()
@@ -111,6 +109,7 @@ public class AngelHeal : MonoBehaviour
 
     private void StartHealing()
     {
+        healingBeamEmitter.Play();
         if (healingRoutine != null)
         {
             StopCoroutine(healingRoutine);
@@ -142,7 +141,7 @@ public class AngelHeal : MonoBehaviour
             healingParticlesScript.StopEmitting();
             FadeOutGui();
             minigame.enabled = false;
-            healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            healingBeamEmitter.Stop();
             //Debug.Log("CancelHealing");
         }
     }
@@ -188,7 +187,6 @@ public class AngelHeal : MonoBehaviour
         isHealing = true;
         handAnimator.SetTrigger("Healing_Beam");
         helperArrow.HideArrow();
-        healingBeamInstance.start();
         tipManager.Hide(1);
         minigame.enabled = true;
         minigame.InitializeMinigame();
@@ -218,7 +216,7 @@ public class AngelHeal : MonoBehaviour
         StopAiming();
 
         healingParticlesScript.StopEmitting();
-        healingBeamInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        healingBeamEmitter.Stop();
         handRenderer.material = handOGMaterial;
         angel.AfterHealedAction();
         minigame.enabled = false;

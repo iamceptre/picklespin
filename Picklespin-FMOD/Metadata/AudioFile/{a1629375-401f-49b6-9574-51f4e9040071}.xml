@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{a1629375-401f-49b6-9574-51f4e9040071}">
 		<property name="assetPath">
-			<value>se_crash_nights.wav</value>
+			<value>placeholders/se_crash_nights.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

@@ -4952,6 +4952,69 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &4527643146909250257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4729440377628102903}
+  - component: {fileID: 3130796228460902992}
+  m_Layer: 0
+  m_Name: reflectionsEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4729440377628102903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527643146909250257}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.49999997, y: 0.49999997, z: 0.49999997}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8800743308747880159}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3130796228460902992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527643146909250257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1839344150
+      Data2: 1107528409
+      Data3: -86665047
+      Data4: -1291279774
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_EXPLOSION_V2_Reflections
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 5
+  OverrideMaxDistance: 150
 --- !u!1 &5001862982371931948
 GameObject:
   m_ObjectHideFlags: 0
@@ -9968,15 +10031,16 @@ MonoBehaviour:
     Path: event:/SPELLS/FIREBALL/FIREBALL_SHOT
   pullupSound:
     Guid:
-      Data1: 1585686292
-      Data2: 1201211164
-      Data3: -1681641856
-      Data4: -1589454864
-    Path: event:/PLACEHOLDER_UNCZ/fireball_pullup
+      Data1: 2125253775
+      Data2: 1129272436
+      Data3: 887744681
+      Data4: 807212642
+    Path: event:/SPELLS/FIREBALL/FIREBALL_UI_SELECT
   hitWall: {fileID: 1780142605118750544}
   doesThisSpellSetOnFire: 1
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 7177393306444495002}
+  explosionReflectionsSoundEmitter: {fileID: 3130796228460902992}
   iWillBeCritical: 0
   hitSomething: 0
   _particleSystem:
@@ -10061,6 +10125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howMuchDamageIdeal: 2
   emitter: {fileID: 0}
+  fireLight: {fileID: 0}
   diedFromBurnParticle: {fileID: 0}
   effectParticle: {fileID: 0}
   cachedAiHP: {fileID: 0}
@@ -15156,6 +15221,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 4729440377628102903}
   - {fileID: 8808444406149589447}
   - {fileID: 8800793839336123699}
   - {fileID: 3905415930793442797}

@@ -19,6 +19,7 @@ public class MoveToAnotherCanvas : MonoBehaviour
     {
         if (canvasGroupFrom == null)
         {
+            canvasGroupFrom.interactable = false;
             canvasToGoFrom.enabled = false;
             Debug.Log("no canvas group on selected FromCanvas, skipping the aniomation...");
             Do2();
@@ -42,6 +43,7 @@ public class MoveToAnotherCanvas : MonoBehaviour
 
         if (canvasGroupTo != null)
         {
+            canvasGroupTo.interactable = transform;
             canvasGroupTo.alpha = 0;
             canvasGroupTo.DOFade(1, 0.08f);
         }

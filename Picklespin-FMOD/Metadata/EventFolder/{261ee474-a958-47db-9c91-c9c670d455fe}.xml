@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EventFolder" id="{261ee474-a958-47db-9c91-c9c670d455fe}">
+		<property name="name">
+			<value>HEALING_BEAM</value>
+		</property>
+		<relationship name="folder">
+			<destination>{bc71549e-b67c-4dd7-8353-215300e87ce0}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -7,6 +7,8 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
     public Transform target;
     private Renderer _rend;
 
+    private HelperSpirit helperSpirit;
+
     private void Awake()
     {
         _rend = GetComponent<Renderer>();
@@ -21,6 +23,11 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
         }
     }
 
+    private void Start()
+    {
+        helperSpirit = HelperSpirit.instance;
+    }
+
     private void Update()
     {
         Vector3 targetDirection = (target.position - transform.position).normalized;
@@ -29,12 +36,20 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
 
     public void HideArrow()
     {
+        if (helperSpirit != null)
+        {
+            helperSpirit.HideSpirit();
+        }
         //Debug.Log("hideing arrow");
         _rend.enabled = false;
         enabled = false;
     }
 
     public void ShowArrow(Transform _target) {
+        if (helperSpirit != null)
+        {
+            helperSpirit.ShowSpirit(_target);
+        }
         target = _target;
         ShowArrow();
     }
