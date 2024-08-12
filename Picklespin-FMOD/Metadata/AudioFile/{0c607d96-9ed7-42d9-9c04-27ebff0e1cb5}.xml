@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{0c607d96-9ed7-42d9-9c04-27ebff0e1cb5}">
 		<property name="assetPath">
-			<value>In_Game/Map/Ambience/Dynamic_One_Shots/bats_1.wav</value>
+			<value>In_Game/Map/Ambience/Dynamic_One_Shots/Dungeon/bats_1.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

@@ -282,7 +282,10 @@ public class Bullet : MonoBehaviour
 
         if (Random.Range(0,10) >= criticalTreshold || iWillBeCritical)
         {
-            refs.damageTakenCritical.Play();
+            if (refs.damageTakenCritical != null)
+            {
+                refs.damageTakenCritical.Play();
+            }
             damage = originalDamage * 4;
             wasLastHitCritical = true;
            

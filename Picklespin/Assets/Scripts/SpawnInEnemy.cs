@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
@@ -45,6 +46,7 @@ public class SpawnInEnemy : MonoBehaviour
         }
 
         mat.SetFloat("_Mode", 0);
+        yield break;    
     }
 
 }

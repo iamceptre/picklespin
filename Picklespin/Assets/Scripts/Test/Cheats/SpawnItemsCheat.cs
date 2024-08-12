@@ -21,7 +21,7 @@ public class SpawnItemsCheat : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.L))
             {
-                spellSpawner.SpawnSpellsLo();
+                spellSpawner.SpawnSpellsLo(1);
                 cheatActivatedFeedback.Do("spawn low spells");
             }
 

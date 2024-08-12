@@ -57,6 +57,9 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{1f1c8fb0-5d4a-4c1f-b58a-1456eac28ff4}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
 		<property name="maximumDistance">
 			<value>45</value>
 		</property>
@@ -106,7 +109,7 @@
 			<value>500</value>
 		</property>
 		<property name="maximumTimeDelay">
-			<value>40000</value>
+			<value>5000</value>
 		</property>
 		<property name="polyphony">
 			<value>1</value>
@@ -135,7 +138,7 @@
 			<value>Purple</value>
 		</property>
 		<property name="volume">
-			<value>-8</value>
+			<value>-3</value>
 		</property>
 		<property name="name">
 			<value>Bats</value>

@@ -10,6 +10,8 @@ public class AmbianceManager : MonoBehaviour
     [SerializeField] private bool playAmbianceSetOnStart = true;
     [SerializeField] private int startingAmbiance = 0;
 
+    private int cachedIndex = -1;
+
     private void Start()
     {
         StartingAmbiance(startingAmbiance);
@@ -17,8 +19,9 @@ public class AmbianceManager : MonoBehaviour
 
     private void StartingAmbiance(int index)
     {
-        PlaySelectedDynamic(index);
-        PlaySelectedStatic(index);
+        dynamicBgEmitter[index].Play();
+        staticBgEmitter[index].Play();  
+        cachedIndex = index;
     }
 
     public void StopAllDynamic()
@@ -31,18 +34,26 @@ public class AmbianceManager : MonoBehaviour
     public void StopSelectedDynamic(int index)
     {
             dynamicBgEmitter[index].Stop();
+        cachedIndex = index;
     }
 
     public void PlaySelectedDynamic(int index)
     {
-        StopAllDynamic();
-        dynamicBgEmitter[index].Play();
+        if (index != cachedIndex) {
+            StopAllDynamic();
+            dynamicBgEmitter[index].Play();
+        }
+        cachedIndex = index;
     }
 
     public void PlaySelectedStatic(int index)
     {
-        StopAllStatic();
-        staticBgEmitter[index].Play();
+        if (index != cachedIndex)
+        {
+            StopAllStatic();
+            staticBgEmitter[index].Play();
+        }
+        cachedIndex = index;
     }
 
     public void StopAllStatic()
@@ -56,5 +67,6 @@ public class AmbianceManager : MonoBehaviour
     public void StopSelectedStatic(int index)
     {
         staticBgEmitter[index].Stop();
+        cachedIndex = index;
     }
 }

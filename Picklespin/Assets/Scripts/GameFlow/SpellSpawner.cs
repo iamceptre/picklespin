@@ -20,6 +20,8 @@ public class SpellSpawner : MonoBehaviour
 
     private int rrrandom;
 
+    private NewRoundDisplayText newRoundDisplayText;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -64,12 +66,12 @@ public class SpellSpawner : MonoBehaviour
     }
 
 
-    public void SpawnSpellsLo()
+    public void SpawnSpellsLo(int howManyToSpawn)
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnRoutine(howManyToSpawn));
     }
 
-    private IEnumerator SpawnRoutine()
+    private IEnumerator SpawnRoutine(int howManyToSpawn)
     {
         for (int i = 0; i < howManyToSpawn; i++)
         {

@@ -57,8 +57,8 @@ MonoBehaviour:
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 1
   OverrideMinDistance: 7
@@ -9868,7 +9868,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 4
@@ -10146,8 +10146,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.27
-  m_Height: 0.6
+  m_Radius: 0.3
+  m_Height: 0.7
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &8530334580075811554
@@ -15094,8 +15094,8 @@ MonoBehaviour:
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 1
   OverrideMinDistance: 7
@@ -15338,7 +15338,7 @@ MonoBehaviour:
   AllowFadeout: 0
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 7
@@ -16095,8 +16095,8 @@ MonoBehaviour:
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 1
   OverrideMinDistance: 7
@@ -21362,7 +21362,7 @@ MonoBehaviour:
   AllowFadeout: 0
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 3
@@ -21508,7 +21508,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 10
@@ -21673,7 +21673,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -21846,7 +21846,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 1
   OverrideMinDistance: 7
