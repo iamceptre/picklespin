@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{232d455d-246f-4f26-bcfe-a2050ce4d0cb}">
+		<property name="assetPath">
+			<value>In_Game/Map/Ambience/Dynamic_One_Shots/Birds/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{61399258-5a91-4f72-86f0-c1ca9efe25aa}</destination>
+		</relationship>
+	</object>
+</objects>

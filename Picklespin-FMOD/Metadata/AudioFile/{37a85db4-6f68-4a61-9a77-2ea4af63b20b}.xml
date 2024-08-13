@@ -4,9 +4,6 @@
 		<property name="assetPath">
 			<value>In_Game/Spells/Fireball/FIRE_CASTING.wav</value>
 		</property>
-		<property name="isStreaming">
-			<value>true</value>
-		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

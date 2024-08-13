@@ -8,20 +8,16 @@ public class ActivateSelectedReverbOnTriggerEnter : MonoBehaviour
     [SerializeField] private bool churchReverbMainHall; //index 0
     [SerializeField] private bool corridorReverb; //index 1
     [SerializeField] private bool angelRoomReverb; //index 2
-
-
-    [SerializeField] private UnityEvent onEnterEvent;
-
-    [Header("Ambiance Events: ")]
-    //add some crazy ambiance events, make then so that by playing just one ambiance from unity, the whole ambience changes (both dynamic and static (nested events ig))
-
+    
     private SnapshotManager snapshotManager;
+    private AmbianceManager ambianceManager;
 
     private int reverbIndex;
 
     private void Start()
     {
         snapshotManager = SnapshotManager.instance;
+        ambianceManager = AmbianceManager.instance;
 
         if (churchReverbMainHall)
         {
@@ -48,7 +44,7 @@ public class ActivateSelectedReverbOnTriggerEnter : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             snapshotManager.PlayReverbSnapshot(reverbIndex);
-            onEnterEvent.Invoke();
+            ambianceManager.PlaySelectedSet(reverbIndex);
         }
     }
 

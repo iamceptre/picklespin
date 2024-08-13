@@ -4,6 +4,9 @@
 		<property name="assetPath">
 			<value>In_Game/Map/Ambience/Static/Ambience_Church_Main_Loopable.wav</value>
 		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
 		</property>

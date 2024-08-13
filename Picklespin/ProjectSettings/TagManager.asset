@@ -16,6 +16,9 @@ TagManager:
   - AngelTrigger
   - WinGateKey
   - Hitbox_Head
+  - Carpet
+  - Concrete
+  - Wood
   layers:
   - Default
   - TransparentFX

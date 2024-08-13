@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{b6afebd4-f29f-4ff4-ac16-57adfe672439}">
 		<property name="volume">
-			<value>-39</value>
+			<value>-40</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{172994aa-7cbc-4626-a629-78dfad75c975}</destination>
@@ -103,6 +103,11 @@
 	</object>
 	<object class="MixerBusPanner" id="{e3df1cee-0b45-414f-9456-6a3fe14e276c}" />
 	<object class="MultiSound" id="{d8776a64-295f-41eb-a647-47efb7ae41c4}">
+		<relationship name="modulators">
+			<destination>{852e431b-a5dd-4249-bc22-3a46a34f7e06}</destination>
+			<destination>{630b89c9-de85-4ad8-8e87-5f7db180e9c0}</destination>
+			<destination>{78071be0-0cf6-4b6d-8a5d-1d40f0b97586}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{5cf95b62-ddaf-46a9-ac06-28da83b9cd52}</destination>
 			<destination>{ce083a43-dcc7-448e-8766-c50b4ecc9acc}</destination>
@@ -112,6 +117,30 @@
 	</object>
 	<object class="MixerBusFader" id="{1df29c9d-847d-4538-b4ce-62f1c603a036}" />
 	<object class="MixerBusFader" id="{0e61eb28-2fec-4320-ae13-d82d4d0cce32}" />
+	<object class="RandomizerModulator" id="{852e431b-a5dd-4249-bc22-3a46a34f7e06}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>6.5</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{630b89c9-de85-4ad8-8e87-5f7db180e9c0}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="amount">
+			<value>6</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{78071be0-0cf6-4b6d-8a5d-1d40f0b97586}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>2</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{5cf95b62-ddaf-46a9-ac06-28da83b9cd52}">
 		<relationship name="audioFile">
 			<destination>{7c500a2a-20b1-4ba6-af3a-bf6fe67904a6}</destination>

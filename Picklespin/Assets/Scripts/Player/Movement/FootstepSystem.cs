@@ -5,11 +5,12 @@ using FMODUnity;
 public class FootstepSystem : MonoBehaviour
 {
     public static FootstepSystem instance { private set; get; }
+    [SerializeField] private FloorTypeDetector floorTypeDetector;
 
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private StudioEventEmitter footstepEmitter;
+    public StudioEventEmitter footstepEmitter;
     [SerializeField] private StudioEventEmitter evenFootstepLayerEmitter;
     [SerializeField] private StudioEventEmitter jumpEventEmitter;
 
@@ -41,7 +42,7 @@ public class FootstepSystem : MonoBehaviour
     private void Awake()
     {
         //THOOSE ARE IN HALF
-        walkFootstepSpaceSecs = new WaitForSeconds(walkFootstepSpace*0.5f);
+        walkFootstepSpaceSecs = new WaitForSeconds(walkFootstepSpace * 0.5f);
         runFootstepSpaceSecs = new WaitForSeconds(runFootstepSpace * 0.5f);
         sneakFootstepSpaceSecs = new WaitForSeconds(sneakFootstepSpace * 0.5f);
 
@@ -124,12 +125,13 @@ public class FootstepSystem : MonoBehaviour
     {
         while (isRoutineRunning)
         {
-                yield return currentFootstepSpace;
-                footstepCount++;
-                PlayFoostepSound();
-                isFootstepIgnored = false;
-                yield return currentFootstepSpace;
-            }
+            yield return currentFootstepSpace;
+            footstepCount++;
+            floorTypeDetector.Check();
+            PlayFoostepSound();
+            isFootstepIgnored = false;
+            yield return currentFootstepSpace;
+        }
     }
 
 

@@ -14762,7 +14762,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 5.8
@@ -14838,7 +14838,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 5
@@ -19918,11 +19918,11 @@ MonoBehaviour:
     Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_SHOT
   pullupSound:
     Guid:
-      Data1: 1498038090
-      Data2: 1299607637
-      Data3: -1224385138
-      Data4: -71727395
-    Path: event:/PLACEHOLDER_UNCZ/purpleSpell_pullup
+      Data1: -997813149
+      Data2: 1273696267
+      Data3: -645807224
+      Data4: 1870522865
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_UI_SELECT
   hitWall: {fileID: 0}
   doesThisSpellSetOnFire: 0
   handCastingPoint: {fileID: 0}
@@ -20116,7 +20116,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 5.4

@@ -284,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        
+        footstepSystem.SendJumpSignal();
         NormalGravity();
 
         if (bhop != null && bhop.canBhop)
@@ -297,7 +297,6 @@ public class PlayerMovement : MonoBehaviour
             jumpPushForward();
             moveDirection.y = jumpPower;
             footstepSystem.StopAllCoroutines();
-            footstepSystem.SendJumpSignal();
         }
     }
 

@@ -116,6 +116,12 @@
 		<property name="attackShape">
 			<value>-0.333775461</value>
 		</property>
+		<property name="releaseTime">
+			<value>2000</value>
+		</property>
+		<property name="releaseShape">
+			<value>0.162485629</value>
+		</property>
 		<property name="finalValue">
 			<value>-80</value>
 		</property>
@@ -138,7 +144,6 @@
 			<value>true</value>
 		</property>
 		<relationship name="modulators">
-			<destination>{b78056a6-5df4-4796-8957-9e8c7e0ead37}</destination>
 			<destination>{46d5bd7e-5b4f-4f59-b04d-18abe33aa7a2}</destination>
 		</relationship>
 		<relationship name="audioFile">
@@ -158,23 +163,6 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{6a095a43-d453-4bfe-87d6-24ab80740e47}" />
-	<object class="ADSRModulator" id="{b78056a6-5df4-4796-8957-9e8c7e0ead37}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>volume</value>
-		</property>
-		<property name="initialValue">
-			<value>-80</value>
-		</property>
-		<property name="attackTime">
-			<value>380</value>
-		</property>
-		<property name="releaseTime">
-			<value>280</value>
-		</property>
-		<property name="finalValue">
-			<value>-80</value>
-		</property>
-	</object>
 	<object class="RandomizerModulator" id="{46d5bd7e-5b4f-4f59-b04d-18abe33aa7a2}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>startOffset</value>
