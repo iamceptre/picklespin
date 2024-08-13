@@ -83,7 +83,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{8240076e-7ecc-45bf-8b29-972789a8dc19}">
 		<property name="volume">
-			<value>-21.5</value>
+			<value>-20.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{98cd9def-c3cd-47e8-90a3-b3ab54c68ec8}</destination>
@@ -122,6 +122,9 @@
 		<property name="volume">
 			<value>-5</value>
 		</property>
+		<property name="pitch">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{a788c8f4-b220-43ed-a003-9b29657ef2fb}</destination>
 			<destination>{22d83289-bac8-40c2-95bd-ba21533d24e0}</destination>
@@ -148,7 +151,7 @@
 	</object>
 	<object class="MultiSound" id="{27228454-2083-45b9-b726-8d1dbd40dc53}">
 		<property name="volume">
-			<value>-15</value>
+			<value>-13</value>
 		</property>
 		<relationship name="sounds">
 			<destination>{84fbb62e-c19e-4a92-8a01-1542501a13af}</destination>
@@ -166,8 +169,14 @@
 		<property name="lowGain">
 			<value>-3</value>
 		</property>
+		<property name="highGain">
+			<value>1</value>
+		</property>
 		<property name="lowCrossover">
 			<value>300</value>
+		</property>
+		<property name="highCrossover">
+			<value>7000</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>

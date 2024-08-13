@@ -12,7 +12,7 @@ public class AmbianceManager : MonoBehaviour
     [SerializeField] private bool playAmbianceSetOnStart = true;
     [SerializeField] private int startingAmbiance = 0;
 
-    private int cachedIndex = -1;
+    public int cachedIndex = -1;
 
     private void Awake()
     {
@@ -68,7 +68,11 @@ public class AmbianceManager : MonoBehaviour
             StopAllDynamic();
             StopAllStatic();
             dynamicBgEmitter[index].Play();
-            staticBgEmitter[index].Play();
+
+            if (index != 0) //NEVER PLAYS THE MAIN CHURCH WIND AGAIN
+            {
+                staticBgEmitter[index].Play();
+            }
         }
 
         cachedIndex = index;
@@ -89,7 +93,9 @@ public class AmbianceManager : MonoBehaviour
     {
         for (int i = 0; i < dynamicBgEmitter.Length; i++)
         {
-            staticBgEmitter[i].Stop();
+            if (i != 0) { //NEVERS STOPS THE CHURCH MAIN WIND
+                staticBgEmitter[i].Stop();
+            }
         }
     }
 
@@ -98,4 +104,5 @@ public class AmbianceManager : MonoBehaviour
         staticBgEmitter[index].Stop();
         cachedIndex = index;
     }
+
 }

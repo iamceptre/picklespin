@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ActivateSelectedReverbOnTriggerEnter : MonoBehaviour
 {
@@ -43,8 +42,11 @@ public class ActivateSelectedReverbOnTriggerEnter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            snapshotManager.PlayReverbSnapshot(reverbIndex);
-            ambianceManager.PlaySelectedSet(reverbIndex);
+            if (ambianceManager.cachedIndex != reverbIndex)
+            {
+                snapshotManager.PlayReverbSnapshot(reverbIndex);
+                ambianceManager.PlaySelectedSet(reverbIndex);
+            }
         }
     }
 
