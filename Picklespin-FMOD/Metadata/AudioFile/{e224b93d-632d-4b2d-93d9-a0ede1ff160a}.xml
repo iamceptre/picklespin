@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{e224b93d-632d-4b2d-93d9-a0ede1ff160a}">
 		<property name="assetPath">
-			<value>In_Game/UI/UI_KEY_APPEAR_3.wav</value>
+			<value>In_Game/UI/KEY/APPEAR/UI_KEY_APPEAR_3.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

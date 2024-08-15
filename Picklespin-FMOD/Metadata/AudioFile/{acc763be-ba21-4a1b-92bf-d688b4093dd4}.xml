@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{acc763be-ba21-4a1b-92bf-d688b4093dd4}">
 		<property name="assetPath">
-			<value>WOOD_5.wav</value>
+			<value>In_Game/Map/Ambience/Dynamic_One_Shots/WOOD_5.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

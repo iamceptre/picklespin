@@ -8,8 +8,9 @@
 			<value>ReverbSnapshots</value>
 		</property>
 		<relationship name="items">
-			<destination>{2457b916-00b3-4775-b9f9-bf03fe593d05}</destination>
 			<destination>{e75dd39d-3a93-4e37-aea2-446636d3e25a}</destination>
+			<destination>{2457b916-00b3-4775-b9f9-bf03fe593d05}</destination>
+			<destination>{92c60038-305b-482a-b6a4-bf688511721a}</destination>
 		</relationship>
 	</object>
 </objects>

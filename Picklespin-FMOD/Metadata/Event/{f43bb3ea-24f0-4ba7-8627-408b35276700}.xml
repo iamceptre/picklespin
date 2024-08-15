@@ -120,7 +120,7 @@
 	<object class="MixerBusPanner" id="{ec10e4d2-a240-45d8-ab02-a75c4b25c4fa}" />
 	<object class="MultiSound" id="{39e15a13-9d3f-4ee0-96f9-f6afbe8dbd98}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-7</value>
 		</property>
 		<property name="pitch">
 			<value>1</value>
@@ -167,13 +167,13 @@
 	<object class="MixerBusFader" id="{04e02111-7591-43f4-81e1-a72aaa8cc76f}" />
 	<object class="ThreeEQEffect" id="{a1496ac1-2176-4f9b-91d6-8f32e0d81e37}">
 		<property name="lowGain">
-			<value>-3</value>
+			<value>-5</value>
 		</property>
 		<property name="highGain">
 			<value>1</value>
 		</property>
 		<property name="lowCrossover">
-			<value>300</value>
+			<value>280</value>
 		</property>
 		<property name="highCrossover">
 			<value>7000</value>

@@ -18,7 +18,10 @@ public class PlayerPrefsSliderManager : MonoBehaviour
 
     public void SaveSetting() {
 
+        if (settingName != null && _slider != null)
+        {
             PlayerPrefs.SetFloat(settingName, _slider.value);
+        }
             //Debug.Log("saved " + settingName + " to " + _slider.value);
             return;
     }
@@ -26,7 +29,10 @@ public class PlayerPrefsSliderManager : MonoBehaviour
 
     public void LoadSetting()
     {
-        _slider.value = PlayerPrefs.GetFloat(settingName, _slider.value);
+        if (settingName != null && _slider != null)
+        {
+            _slider.value = PlayerPrefs.GetFloat(settingName, _slider.value);
+        }
         //do rest of the loading in coresponding scripts like MouseLook, VolumeSettingLoader etc
     }
 

@@ -25,7 +25,7 @@ public class Reborn : MonoBehaviour
 
     [SerializeField] private UnityEvent OnClickEvent;
 
-    private bool clickable = true; //can probably optimize it with enabled = false
+    private bool clickable = true;
 
     private void Awake()
     {
@@ -39,11 +39,6 @@ public class Reborn : MonoBehaviour
         myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, howMuchToSpaceout, animationTime).SetLoops(-1, LoopType.Yoyo);
         myTween.SetUpdate(UpdateType.Normal, true);
         System.GC.Collect();
-    }
-
-    private void OnEnable()
-    {
-        FMODResetManager.instance.ResetFMOD(false);
     }
 
     private void Update()
@@ -61,10 +56,9 @@ public class Reborn : MonoBehaviour
             myTween = myText.DOColor(transparentMe, 2).SetEase(Ease.OutExpo).OnComplete(() =>
             {
                 clickable = true;
-                snapshotManager.StopAllSnapshots();
                 Time.timeScale = 1;
                 DOTween.KillAll();
-                FMODResetManager.instance.ResetFMOD(true);
+                FMODResetManager.instance.ResetFMOD(false);
                 SetScene();
             });
             myTween.SetUpdate(UpdateType.Normal, true);
@@ -84,7 +78,7 @@ public class Reborn : MonoBehaviour
         }
         else
         {
-            //Debug.Log("loading selected scene");
+            //Debug.Log("loading selected scene " + sceneindex);
             SceneManager.LoadScene(sceneindex);
         }
     }

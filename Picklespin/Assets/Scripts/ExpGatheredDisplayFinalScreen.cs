@@ -36,8 +36,6 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
     {
         Attack.instance.enabled = false;
         MouselookXY_old.instance.enabled = false;
-        FMODResetManager.instance.ResetFMOD(false);
-        //Time.timeScale = 0;
 
        Tween slowdown = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.2f).SetEase(Ease.OutExpo).OnComplete(() =>
         {

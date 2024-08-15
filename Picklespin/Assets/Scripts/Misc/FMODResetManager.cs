@@ -8,6 +8,7 @@ public class FMODResetManager : MonoBehaviour
     public static FMODResetManager instance;
 
     private Bus MasterBus;
+    private Bus diageticBus;
 
     private SnapshotManager snapshotManager;
 
@@ -26,7 +27,9 @@ public class FMODResetManager : MonoBehaviour
     private void Start()
     {
         snapshotManager = SnapshotManager.instance;
-        MasterBus = RuntimeManager.GetBus("bus:/");
+        //MasterBus = RuntimeManager.GetBus("bus:/");
+        MasterBus = RuntimeManager.GetBus("bus:/diagetic_ALL");
+        diageticBus = RuntimeManager.GetBus("bus:/diagetic_ALL");
     }
     public void ResetFMOD(bool immediate)
     {
@@ -43,5 +46,12 @@ public class FMODResetManager : MonoBehaviour
             MasterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
 
+        diageticBus.setMute(false);
+
+    }
+
+    public void MuteDiagetic()
+    {
+        diageticBus.setMute(true);
     }
 }

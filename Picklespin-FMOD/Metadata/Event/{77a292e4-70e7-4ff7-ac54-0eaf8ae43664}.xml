@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{77a292e4-70e7-4ff7-ac54-0eaf8ae43664}">
 		<property name="name">
-			<value>LAND_HIGH</value>
+			<value>LAND_HIGH_CONCRETE</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{570943b9-5f18-4d8a-8e19-9e143d2518c8}</destination>
+			<destination>{dc04ed63-f4ec-40d0-98d2-156990d51144}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{8ab79458-740c-423f-ac1e-d0a548cc8c07}</destination>
@@ -59,7 +59,14 @@
 			<destination>{75a551f1-c0ed-4016-843f-e14e0003dc57}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{c1a386dd-ba1f-4faa-9707-3f24e4983d83}" />
+	<object class="EventAutomatableProperties" id="{c1a386dd-ba1f-4faa-9707-3f24e4983d83}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
+		<property name="priority">
+			<value>3</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{efdd34a0-06b7-469c-b89f-ad1b6355b4fe}" />
 	<object class="Timeline" id="{15cfd256-8448-46a5-be51-16dd5e033875}">
 		<property name="isProxyEnabled">
@@ -73,7 +80,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{b9749a75-4a17-4593-965e-147fc8554db4}">
 		<property name="volume">
-			<value>-3.5</value>
+			<value>-14.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{af4b96a9-f897-41e9-8fe9-da9f4f760454}</destination>

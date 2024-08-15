@@ -80,7 +80,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{d6e46457-e4b6-4e54-b0a9-5e24e4cf098e}">
 		<property name="volume">
-			<value>-14</value>
+			<value>-12</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{019e3758-04e2-42e1-ab51-23a97f3af982}</destination>
@@ -98,8 +98,6 @@
 		</property>
 		<relationship name="sounds">
 			<destination>{f64ea940-adef-441b-8e4d-7c4de66f6aeb}</destination>
-			<destination>{72c9631b-ed72-47d3-abd3-b10f5bc72061}</destination>
-			<destination>{0f012299-2a7f-4542-af44-be20f0e35968}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{6b173296-a8ef-4e3f-ad83-0e38b5078ab2}">
@@ -110,86 +108,20 @@
 	<object class="MixerBusPanner" id="{1031cd0f-d456-40c9-8c70-944925a7c67a}" />
 	<object class="MixerBusEffectChain" id="{019e3758-04e2-42e1-ab51-23a97f3af982}">
 		<relationship name="effects">
-			<destination>{82b19065-bad5-4d27-936c-f7be2239f2b6}</destination>
 			<destination>{e8256f18-66d2-4a3d-9ac1-68a664cc7826}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a30c0f4a-b652-460a-b405-0c319901f983}" />
 	<object class="MultiSound" id="{f64ea940-adef-441b-8e4d-7c4de66f6aeb}">
-		<property name="volume">
-			<value>10</value>
-		</property>
 		<relationship name="sounds">
-			<destination>{0bc087b3-0732-45ea-8446-084364b016db}</destination>
-			<destination>{2927f741-43cd-4187-a901-ca47dc9b7359}</destination>
 			<destination>{c052f8c0-e887-4041-a7cc-f24fd56413f9}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{72c9631b-ed72-47d3-abd3-b10f5bc72061}">
-		<property name="volume">
-			<value>-4.5</value>
-		</property>
-		<relationship name="sounds">
-			<destination>{c472643e-362f-4fc0-87f8-6863efc54540}</destination>
-			<destination>{439db418-3144-40c4-93dc-0e2f43253fe6}</destination>
-			<destination>{87844563-5463-46c7-b98e-71d1aaf78269}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{0f012299-2a7f-4542-af44-be20f0e35968}">
-		<property name="startOffset">
-			<value>6.5</value>
-		</property>
-		<property name="volume">
-			<value>-5.5</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{7621058a-2c31-4678-9141-02f30139c2b2}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{2a5e6453-0548-40e3-9c3a-32860124799f}" />
-	<object class="SFXReverbEffect" id="{82b19065-bad5-4d27-936c-f7be2239f2b6}">
-		<property name="decayTime">
-			<value>700</value>
-		</property>
-		<property name="lowShelfGain">
-			<value>-36</value>
-		</property>
-		<property name="earlyLateMix">
-			<value>63</value>
-		</property>
-		<property name="wetLevel">
-			<value>-8</value>
-		</property>
-	</object>
 	<object class="MixerBusFader" id="{e8256f18-66d2-4a3d-9ac1-68a664cc7826}" />
-	<object class="SingleSound" id="{0bc087b3-0732-45ea-8446-084364b016db}">
-		<relationship name="audioFile">
-			<destination>{d5265149-849a-4386-84bc-338843a296d8}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{2927f741-43cd-4187-a901-ca47dc9b7359}">
-		<relationship name="audioFile">
-			<destination>{d07fcfee-9af4-460f-8415-e2e73b4811c5}</destination>
-		</relationship>
-	</object>
 	<object class="SingleSound" id="{c052f8c0-e887-4041-a7cc-f24fd56413f9}">
 		<relationship name="audioFile">
 			<destination>{4e37b16a-9a73-4269-ba78-592e19d7d2c9}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{c472643e-362f-4fc0-87f8-6863efc54540}">
-		<relationship name="audioFile">
-			<destination>{d51b1ff8-a900-4337-8429-ba21e9082dc3}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{439db418-3144-40c4-93dc-0e2f43253fe6}">
-		<relationship name="audioFile">
-			<destination>{a0f47ac6-5d06-4d1f-94d5-951443751633}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{87844563-5463-46c7-b98e-71d1aaf78269}">
-		<relationship name="audioFile">
-			<destination>{44577f93-1721-40c4-b03e-ff60d44f31b9}</destination>
 		</relationship>
 	</object>
 </objects>

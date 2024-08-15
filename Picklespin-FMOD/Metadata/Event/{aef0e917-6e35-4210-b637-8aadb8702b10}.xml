@@ -73,10 +73,10 @@
 	</object>
 	<object class="EventMixerMaster" id="{3d7e6cbd-25b5-4d75-bfb4-17019cf86a09}">
 		<property name="volume">
-			<value>-18</value>
+			<value>-12</value>
 		</property>
 		<relationship name="modulators">
-			<destination>{efedd3a5-a1cf-4088-a68c-30e247711b62}</destination>
+			<destination>{38ad4528-46e6-4d09-b880-c0c1928f5fa8}</destination>
 		</relationship>
 		<relationship name="effectChain">
 			<destination>{1183d39f-3712-4723-ad50-ba79af7f0546}</destination>
@@ -99,7 +99,7 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{879b4173-947b-4ac1-8d0f-c3714c879d5a}" />
-	<object class="ADSRModulator" id="{efedd3a5-a1cf-4088-a68c-30e247711b62}">
+	<object class="ADSRModulator" id="{38ad4528-46e6-4d09-b880-c0c1928f5fa8}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
 		</property>
@@ -107,13 +107,16 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>5200</value>
+			<value>3000</value>
 		</property>
 		<property name="attackShape">
-			<value>-0.215306789</value>
+			<value>-0.490500957</value>
 		</property>
 		<property name="releaseTime">
-			<value>10000</value>
+			<value>4000</value>
+		</property>
+		<property name="releaseShape">
+			<value>-0.333775461</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>

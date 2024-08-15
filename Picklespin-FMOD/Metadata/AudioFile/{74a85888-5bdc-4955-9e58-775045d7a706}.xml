@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{74a85888-5bdc-4955-9e58-775045d7a706}">
 		<property name="assetPath">
-			<value>In_Game/UI/MENU/UI_WHISPER_4.wav</value>
+			<value>In_Game/UI/MENU/WHISPER/UI_WHISPER_4.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

@@ -35,7 +35,7 @@ public class AmbianceManager : MonoBehaviour
     private void StartingAmbiance(int index)
     {
         dynamicBgEmitter[index].Play();
-        staticBgEmitter[index].Play();  
+        staticBgEmitter[index].Play();
         cachedIndex = index;
     }
 
@@ -48,13 +48,14 @@ public class AmbianceManager : MonoBehaviour
     }
     public void StopSelectedDynamic(int index)
     {
-            dynamicBgEmitter[index].Stop();
+        dynamicBgEmitter[index].Stop();
         cachedIndex = index;
     }
 
     public void PlaySelectedDynamic(int index)
     {
-        if (index != cachedIndex) {
+        if (index != cachedIndex)
+        {
             StopAllDynamic();
             dynamicBgEmitter[index].Play();
         }
@@ -67,6 +68,7 @@ public class AmbianceManager : MonoBehaviour
         {
             StopAllDynamic();
             StopAllStatic();
+
             dynamicBgEmitter[index].Play();
 
             if (index != 0) //NEVER PLAYS THE MAIN CHURCH WIND AGAIN
@@ -93,7 +95,8 @@ public class AmbianceManager : MonoBehaviour
     {
         for (int i = 0; i < dynamicBgEmitter.Length; i++)
         {
-            if (i != 0) { //NEVERS STOPS THE CHURCH MAIN WIND
+            if (i != 0)
+            { //NEVERS STOPS THE CHURCH MAIN WIND
                 staticBgEmitter[i].Stop();
             }
         }

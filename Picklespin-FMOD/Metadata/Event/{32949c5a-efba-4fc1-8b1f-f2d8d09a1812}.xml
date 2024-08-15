@@ -50,6 +50,7 @@
 			<destination>{9db29db5-e38a-4f81-9cf8-a224db9ae9dd}</destination>
 			<destination>{3e0be78d-8177-4fd0-87a8-f8445ec5ba27}</destination>
 			<destination>{fb4e1b1b-23c4-49cc-8924-dcef893464fc}</destination>
+			<destination>{b27b0ec7-cc08-41c4-838e-8240fb8216ec}</destination>
 		</relationship>
 		<relationship name="modules">
 			<destination>{352259b7-3169-43ab-8e5b-316e10660e64}</destination>
@@ -71,7 +72,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{6b6a7da0-8d20-4cd5-93fc-5ea737c642b7}">
 		<property name="maxVoices">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="voiceStealing">
 			<value>4</value>
@@ -104,8 +105,11 @@
 	</object>
 	<object class="EventMixerMaster" id="{270fca05-fd79-4435-b99d-0f537a790ec6}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-7</value>
 		</property>
+		<relationship name="automators">
+			<destination>{9ec688b2-2587-4c8c-a7c6-d9090ebc5ee0}</destination>
+		</relationship>
 		<relationship name="modulators">
 			<destination>{42b23869-0275-4b6e-bab2-1d7f67baa4a9}</destination>
 		</relationship>
@@ -154,6 +158,11 @@
 			<destination>{cf1b7213-958d-416e-a6ef-44fba4490f76}</destination>
 		</relationship>
 	</object>
+	<object class="AutomationTrack" id="{b27b0ec7-cc08-41c4-838e-8240fb8216ec}">
+		<relationship name="automator">
+			<destination>{9ec688b2-2587-4c8c-a7c6-d9090ebc5ee0}</destination>
+		</relationship>
+	</object>
 	<object class="MultiSound" id="{352259b7-3169-43ab-8e5b-316e10660e64}">
 		<property name="playbackMode">
 			<value>1</value>
@@ -171,6 +180,14 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{7e320e3c-9de4-4629-8f84-12784ea13bb2}" />
+	<object class="Automator" id="{9ec688b2-2587-4c8c-a7c6-d9090ebc5ee0}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>volume</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{650f4fca-9912-4318-9b0e-98a4398a3adb}</destination>
+		</relationship>
+	</object>
 	<object class="ADSRModulator" id="{42b23869-0275-4b6e-bab2-1d7f67baa4a9}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
@@ -274,6 +291,15 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{99adf321-3092-4469-821e-a01f392820ad}" />
+	<object class="AutomationCurve" id="{650f4fca-9912-4318-9b0e-98a4398a3adb}">
+		<relationship name="parameter">
+			<destination>{2d3177fb-cb39-495a-9f23-0d75f7199f42}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{1f66d780-e137-4141-abc4-81083482a293}</destination>
+			<destination>{5e9764f6-e7fd-4bf6-8cb7-d9a71c0a02d2}</destination>
+		</relationship>
+	</object>
 	<object class="HighpassSimpleEffect" id="{745ac7ae-8cf1-45b5-aba5-0ad98b7ccc43}">
 		<property name="cutoff">
 			<value>10</value>
@@ -407,6 +433,22 @@
 			<value>5.5</value>
 		</property>
 	</object>
+	<object class="AutomationPoint" id="{1f66d780-e137-4141-abc4-81083482a293}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>-2.5</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{5e9764f6-e7fd-4bf6-8cb7-d9a71c0a02d2}">
+		<property name="position">
+			<value>0.2019704433497537</value>
+		</property>
+		<property name="value">
+			<value>-7.5</value>
+		</property>
+	</object>
 	<object class="Automator" id="{c09afc5d-bc1b-4cb6-b401-daa9c1422742}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>cutoff</value>
@@ -525,6 +567,9 @@
 		<property name="value">
 			<value>0</value>
 		</property>
+		<property name="curveShape">
+			<value>-0.0621841513</value>
+		</property>
 	</object>
 	<object class="AutomationPoint" id="{4d07cb22-0c93-41eb-aecf-8c2781f67752}">
 		<property name="position">
@@ -548,6 +593,9 @@
 		</property>
 		<property name="value">
 			<value>0</value>
+		</property>
+		<property name="curveShape">
+			<value>-0.109711193</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{31f2395b-09cd-4cb2-899d-e3b1880b1599}">

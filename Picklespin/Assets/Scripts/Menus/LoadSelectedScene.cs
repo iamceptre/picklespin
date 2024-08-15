@@ -14,6 +14,11 @@ public class LoadSelectedScene : MonoBehaviour
     private FMODResetManager fmodResetManager;
     private SnapshotManager snapshotManager;
 
+    [SerializeField] private FadeOutImageOnEnable fadeInVeins;
+    [SerializeField] private GameObject fadeInGroup;
+
+    private bool clickable = true;
+
     private void Start()
     {
         fmodResetManager = FMODResetManager.instance;
@@ -24,21 +29,25 @@ public class LoadSelectedScene : MonoBehaviour
 
     public void Do()
     {
-        if (fmodResetManager != null)
-            fmodResetManager.ResetFMOD(false);
-
-        if (snapshotManager != null)
-            snapshotManager.StopAllSnapshots();
-
-        if (loadingBar == null)
+        if (clickable)
         {
-            SwitchScene();
-        }
-        else
-        {
-            StartCoroutine(LoadNewGameWithBar());
-        }
+            clickable = false;
+            if (fmodResetManager != null)
+                fmodResetManager.ResetFMOD(false);
 
+            if (snapshotManager != null)
+                snapshotManager.StopAllSnapshots();
+
+            if (loadingBar == null)
+            {
+                SwitchScene();
+            }
+            else
+            {
+                StartCoroutine(LoadNewGameWithBar());
+            }
+
+        }
     }
 
     private void SwitchScene()
@@ -54,15 +63,36 @@ public class LoadSelectedScene : MonoBehaviour
         loadingBarCanvas.enabled = true;
         yield return new WaitForEndOfFrame();
         AsyncOperation operation = SceneManager.LoadSceneAsync(selectedSceneIndex);
+        operation.allowSceneActivation = false;
+
         Time.timeScale = 1.0f;
 
-        while (!operation.isDone)
+        if (fadeInVeins != null)
         {
-            float progress = Mathf.Clamp01(operation.progress / .9f);
-            loadingBar.value = progress;
-            loadingText.text = (int)progress * 100 + "%";
-            yield return null;
+            fadeInGroup.SetActive(true);
+            while (operation.progress < 0.9f || !fadeInVeins.fadedIn)
+            {
+                Loader(operation);
+                yield return null;
+            }
+        }
+        else
+        {
+            while (operation.progress < 0.9f)
+            {
+                Loader(operation);
+                yield return null;
+            }
         }
 
+        clickable = true;
+        operation.allowSceneActivation = true;
+    }
+
+    private void Loader(AsyncOperation operation)
+    {
+        float progress = Mathf.Clamp01(operation.progress / .9f);
+        loadingBar.value = progress;
+        loadingText.text = 100 * ((int)progress) + "%";
     }
 }

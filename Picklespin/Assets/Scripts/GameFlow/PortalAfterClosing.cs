@@ -129,6 +129,7 @@ public class PortalAfterClosing : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         PortalClosedScreen.enabled = true;
+        PortalClosedScreen.gameObject.SetActive(true); 
         myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>
         {
             BlackOutScreen();

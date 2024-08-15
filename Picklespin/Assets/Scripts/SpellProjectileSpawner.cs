@@ -17,7 +17,7 @@ public class SpellProjectileSpawner : MonoBehaviour
 
     [Header("Purple")]
     private ObjectPool<Bullet> purpleSpellPool;
-    private int pooledPurpleSpellsCount = 20;
+    private int pooledPurpleSpellsCount = 14;
 
     [Header("Fireball")]
     private ObjectPool<Bullet> fireballSpellPool;

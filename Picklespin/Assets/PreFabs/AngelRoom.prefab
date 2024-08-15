@@ -260,6 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5602279936578436466}
   - component: {fileID: 570945673282515346}
+  - component: {fileID: 5732905226163726115}
   m_Layer: 6
   m_Name: Die
   m_TagString: Untagged
@@ -298,6 +299,18 @@ MonoBehaviour:
   expSourceName: killed the hope
   wasLastShotAHeadshot: 0
   manaSuckParticles: {fileID: 42564252489400758}
+--- !u!114 &5732905226163726115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018722614142381067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3154d96a7cf68049bfdac9ac03573f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1022820636036483467
 GameObject:
   m_ObjectHideFlags: 0
@@ -10094,11 +10107,11 @@ MonoBehaviour:
   eyesManager: {fileID: 4364309144121889610}
   angelHealedSoundEvent:
     Guid:
-      Data1: -1765704324
-      Data2: 1165827984
-      Data3: -700140658
-      Data4: 2134639907
-    Path: event:/ANGELS/HEAL_ONESHOT
+      Data1: 1935547979
+      Data2: 1292853482
+      Data3: -8227673
+      Data4: -29138184
+    Path: event:/ANGELS/HEAL_ONESHOT_V2
   healedParticles: {fileID: 4435688068558383525}
   giveExpAfterHeal: {fileID: 7371242577392167853}
   scriptActivationTrigger: {fileID: 1056809553663382193}
@@ -10200,6 +10213,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1338490457104099785}
         m_TargetAssemblyTypeName: AngelMind, Assembly-CSharp
         m_MethodName: StopMySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5732905226163726115}
+        m_TargetAssemblyTypeName: DontKillMePrompt, Assembly-CSharp
+        m_MethodName: ShowPrompt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10385,10 +10410,11 @@ Transform:
   m_GameObject: {fileID: 2230698395378710805}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 74, y: 0, z: 56}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6592339139295782114}
   - {fileID: 8610809329592111443}
   - {fileID: 7326393568944362546}
   - {fileID: 545428482709964014}
@@ -20995,12 +21021,12 @@ MonoBehaviour:
   StopEvent: 12
   AllowFadeout: 1
   TriggerOnce: 0
-  Preload: 0
+  Preload: 1
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 3.4
-  OverrideMaxDistance: 30
+  OverrideMinDistance: 4
+  OverrideMaxDistance: 35
 --- !u!1 &7886084925048109399
 GameObject:
   m_ObjectHideFlags: 0
@@ -21058,12 +21084,12 @@ MonoBehaviour:
   StopEvent: 12
   AllowFadeout: 1
   TriggerOnce: 0
-  Preload: 0
+  Preload: 1
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 5
-  OverrideMaxDistance: 60
+  OverrideMinDistance: 4
+  OverrideMaxDistance: 35
 --- !u!1 &8060132385785742649
 GameObject:
   m_ObjectHideFlags: 0
@@ -26020,6 +26046,103 @@ Transform:
   - {fileID: 12040621143310375}
   m_Father: {fileID: 7326393568944362546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8479423180238349010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6592339139295782114}
+  - component: {fileID: 7974874748485786145}
+  - component: {fileID: 140786708488101419}
+  - component: {fileID: 8733724586965883496}
+  m_Layer: 0
+  m_Name: AngelRoomSoundscape_Activata
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &6592339139295782114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479423180238349010}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1364476381116299179}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7974874748485786145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479423180238349010}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 16, y: 4, z: 15}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &140786708488101419
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479423180238349010}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &8733724586965883496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479423180238349010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e351d0d4cd6e144b65d694caf96778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  churchReverbMainHall: 0
+  corridorReverb: 0
+  angelRoomReverb: 1
 --- !u!1 &8496357332205810362
 GameObject:
   m_ObjectHideFlags: 0

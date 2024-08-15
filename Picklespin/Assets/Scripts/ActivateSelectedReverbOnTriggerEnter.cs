@@ -20,19 +20,19 @@ public class ActivateSelectedReverbOnTriggerEnter : MonoBehaviour
 
         if (churchReverbMainHall)
         {
-            reverbIndex = 0;
+            reverbIndex = 0; //church
             return;
         }
 
         if (corridorReverb)
         {
-            reverbIndex = 1;
+            reverbIndex = 1; //dungeon
             return;
         }
 
         if (angelRoomReverb)
         {
-            reverbIndex = 2;
+            reverbIndex = 2; //angelroom
             return;
         }
     }

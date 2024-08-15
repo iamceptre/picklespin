@@ -4,6 +4,7 @@ using System.Collections;
 
 public class FogManager : MonoBehaviour
 {
+    [SerializeField] private SetDustIntensity dustIntensity;
     [SerializeField] private float[] fogLevels;
     private float currentFogLevel;
     [SerializeField] private Color[] fogColors;
@@ -26,6 +27,8 @@ public class FogManager : MonoBehaviour
         RenderSettings.fogDensity = currentFogLevel;
     });
 
+        dustIntensity.SetIntensity(currentFogLevel * 7);
+
     }
 
     public void SetFogColor(int index)
@@ -41,8 +44,8 @@ public class FogManager : MonoBehaviour
         {
             currentFogColor = Color.Lerp(currentFogColor, fogColors[index], t);
             RenderSettings.fogColor = currentFogColor;
-            t += (Time.deltaTime/animationDuration);
-            yield return null;  
+            t += (Time.deltaTime / animationDuration);
+            yield return null;
         }
         RenderSettings.fogColor = fogColors[index];
         yield break;

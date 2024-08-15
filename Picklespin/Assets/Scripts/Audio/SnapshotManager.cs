@@ -1,5 +1,4 @@
 using UnityEngine;
-using FMOD.Studio;
 using FMODUnity;
 
 public class SnapshotManager : MonoBehaviour
@@ -15,6 +14,7 @@ public class SnapshotManager : MonoBehaviour
     [Header("Reverbs")]
     [SerializeField] private StudioEventEmitter churchReverb;
     [SerializeField] private StudioEventEmitter corridorReverb;
+    [SerializeField] private StudioEventEmitter angelReverb;
 
     private void Awake()
     {
@@ -33,20 +33,23 @@ public class SnapshotManager : MonoBehaviour
 
     private void Start()
     {
+       // StopAllSnapshots(); //nonsense, beacuse when loading a new scene, the reference is lost
         PlayReverbSnapshot(0);
     }
 
 
-    public void PlayReverbSnapshot(int index)
+    public void PlayReverbSnapshot(int index) //USE STOP ALL BEFORE PLAYING INSTEAD TO AVOID SPAGHETII
     {
         switch (index)
         {
             case 0: //church
+                angelReverb.Stop();
                 corridorReverb.Stop();
                 churchReverb.Play();
                 break;
 
             case 1: //corridor
+                angelReverb.Stop();
                 churchReverb.Stop();
                 corridorReverb.Play();
                 break;
@@ -54,6 +57,7 @@ public class SnapshotManager : MonoBehaviour
             case 2: //angel
                 churchReverb.Stop();
                 corridorReverb.Stop();
+                angelReverb.Play();
                 break;
 
             default:
@@ -75,7 +79,7 @@ public class SnapshotManager : MonoBehaviour
                 break;
 
             case 2: //angel
-                Debug.Log("there is no angelroom reverb stop function");
+                angelReverb.Stop();
                 break;
 
             default:
@@ -92,8 +96,7 @@ public class SnapshotManager : MonoBehaviour
         StopReverbSnapshot(0);
         StopReverbSnapshot(1);
         StopReverbSnapshot(2);
+        StopReverbSnapshot(3);
     }
-
-
 
 }

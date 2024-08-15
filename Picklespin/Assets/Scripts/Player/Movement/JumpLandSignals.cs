@@ -4,6 +4,10 @@ using System.Collections;
 
 public class JumpLandSignals : MonoBehaviour
 {
+    public static JumpLandSignals instance;
+
+    private FloorTypeDetector floorTypeDetector;
+
     [SerializeField] private CharacterController characterController;
     private FootstepSystem footstepSystem;
     private CameraShake cameraShake;
@@ -12,8 +16,8 @@ public class JumpLandSignals : MonoBehaviour
 
     [SerializeField] private bool landed = false;
 
-    [SerializeField] private StudioEventEmitter landSoftEmitter;
-    [SerializeField] private StudioEventEmitter landHardEmitter;
+    public StudioEventEmitter landSoftEmitter;
+    public StudioEventEmitter landHardEmitter;
 
     private CharacterControllerVelocity speedometer;
 
@@ -25,8 +29,21 @@ public class JumpLandSignals : MonoBehaviour
     private float fallingTimerTreshold = 0.5f;
     public bool isFallingLongEnough = false;
 
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
     private void Start()
     {
+        floorTypeDetector = FloorTypeDetector.instance;
         speedometer = CharacterControllerVelocity.instance;
         playerMovement = PlayerMovement.instance;
         cameraShake = CameraShake.instance;
@@ -66,6 +83,7 @@ public class JumpLandSignals : MonoBehaviour
 
             if (isFallingLongEnough)
             {
+                floorTypeDetector.LandingCheck();
                 isLandingHardDecider();
                 footstepSystem.RefreshFootstepTimer();
                 cameraShake.LandCameraShake(lastLandCameraShakeStrenght);
@@ -102,6 +120,7 @@ public class JumpLandSignals : MonoBehaviour
 
 
     }
+
 
 
 

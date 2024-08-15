@@ -5,7 +5,7 @@ using FMODUnity;
 public class FootstepSystem : MonoBehaviour
 {
     public static FootstepSystem instance { private set; get; }
-    [SerializeField] private FloorTypeDetector floorTypeDetector;
+    private FloorTypeDetector floorTypeDetector;
 
 
     [SerializeField] private CharacterController controller;
@@ -60,6 +60,13 @@ public class FootstepSystem : MonoBehaviour
         currentFootstepSpace = new WaitForSeconds(fixedFootstepSpace);
     }
 
+    private void Start()
+    {
+        floorTypeDetector = FloorTypeDetector.instance;
+        footstepTimerRoutine = FootstepTimer();
+        cachedFixedFootstepSpace = fixedFootstepSpace;
+    }
+
     public void SetNewFootstepSpace(int movementState)
     {
         switch (movementState)
@@ -85,13 +92,6 @@ public class FootstepSystem : MonoBehaviour
                 break;
         }
 
-    }
-
-    private void Start()
-    {
-
-        footstepTimerRoutine = FootstepTimer();
-        cachedFixedFootstepSpace = fixedFootstepSpace;
     }
 
     private void Update()

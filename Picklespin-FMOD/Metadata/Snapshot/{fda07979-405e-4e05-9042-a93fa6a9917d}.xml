@@ -19,11 +19,6 @@
 		<relationship name="snapshotMasterTrack">
 			<destination>{cb9ada5a-5b4a-460b-9073-52b3e0ca708b}</destination>
 		</relationship>
-		<relationship name="snapshotProperties">
-			<destination>{cf9818af-66ab-419a-967f-8135d587a45c}</destination>
-			<destination>{871f96a6-4578-44de-b9b4-9c363b6c5761}</destination>
-			<destination>{e337ddad-f458-4aff-be78-1daa5121d24b}</destination>
-		</relationship>
 		<relationship name="snapshotTracks">
 			<destination>{1cfec080-812c-4f6e-a6d5-806158708949}</destination>
 		</relationship>
@@ -36,39 +31,6 @@
 	<object class="MarkerTrack" id="{f0f1820c-3a96-45d6-a2b1-05f694c2b1cb}" />
 	<object class="Timeline" id="{d4ad9039-073d-4de0-a871-39cca2ab1d54}" />
 	<object class="SnapshotMasterTrack" id="{cb9ada5a-5b4a-460b-9073-52b3e0ca708b}" />
-	<object class="SnapshotProperty" id="{cf9818af-66ab-419a-967f-8135d587a45c}">
-		<property name="propertyName">
-			<value>frequencyA</value>
-		</property>
-		<property name="value">
-			<value>3203.24121</value>
-		</property>
-		<relationship name="automatableObject">
-			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
-		</relationship>
-	</object>
-	<object class="SnapshotProperty" id="{871f96a6-4578-44de-b9b4-9c363b6c5761}">
-		<property name="propertyName">
-			<value>qualityA</value>
-		</property>
-		<property name="value">
-			<value>0.686068952</value>
-		</property>
-		<relationship name="automatableObject">
-			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
-		</relationship>
-	</object>
-	<object class="SnapshotProperty" id="{e337ddad-f458-4aff-be78-1daa5121d24b}">
-		<property name="propertyName">
-			<value>gainA</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-		<relationship name="automatableObject">
-			<destination>{d22ef9f9-437f-44c7-a5a2-2f0c3387dce5}</destination>
-		</relationship>
-	</object>
 	<object class="SnapshotTrack" id="{1cfec080-812c-4f6e-a6d5-806158708949}">
 		<relationship name="mixerStrip">
 			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>

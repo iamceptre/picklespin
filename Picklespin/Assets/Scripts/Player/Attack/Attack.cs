@@ -111,6 +111,7 @@ public class Attack : MonoBehaviour
         noManaLightAnimation.LightAnimation();
         spellcastInstance = RuntimeManager.CreateInstance(shootFailEvent);
         spellcastInstance.start();
+        spellcastInstance.release();
     }
 
     private void SuccesfulShoot()

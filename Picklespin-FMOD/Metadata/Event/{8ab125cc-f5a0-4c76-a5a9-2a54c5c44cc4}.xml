@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{8ab125cc-f5a0-4c76-a5a9-2a54c5c44cc4}">
 		<property name="name">
-			<value>LAND_LOW</value>
+			<value>LAND_LOW_CONCRETE</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{570943b9-5f18-4d8a-8e19-9e143d2518c8}</destination>
+			<destination>{dc04ed63-f4ec-40d0-98d2-156990d51144}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{4392e0b1-a117-4d4b-b865-300ee507323f}</destination>
@@ -59,7 +59,14 @@
 			<destination>{75a551f1-c0ed-4016-843f-e14e0003dc57}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{b642002a-a7b6-4398-99f3-4f9fd30aa97e}" />
+	<object class="EventAutomatableProperties" id="{b642002a-a7b6-4398-99f3-4f9fd30aa97e}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
+		<property name="priority">
+			<value>3</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{7b62611f-a3c9-4e0a-99d1-89a20ae14d2c}" />
 	<object class="Timeline" id="{3858303a-af2f-4da0-9df1-7b92503d3420}">
 		<property name="isProxyEnabled">
@@ -118,6 +125,9 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{2a3dfeba-111c-4a6b-b569-bdd9d92f94dc}">
+		<property name="volume">
+			<value>-2</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{200c69d0-77ed-42e9-9267-dd8a71c18451}</destination>
 		</relationship>
