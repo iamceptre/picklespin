@@ -29,11 +29,20 @@ public class MoveToAnotherCanvas : MonoBehaviour
             return;
         }
 
+
         RuntimeManager.PlayOneShot("event:/UI/UI_WHISPER");
+
+
         canvasGroupFrom.alpha = 1;
         canvasGroupFrom.DOKill();
+
+        canvasGroupTo.DOKill();
+        canvasGroupTo.alpha = 0;
+
+
         canvasGroupFrom.DOFade(0, 0.05f).OnComplete(() =>
         {
+
             canvasToGoFrom.enabled = false;
             canvasToGoFrom.gameObject.SetActive(false);
             Do2();
@@ -48,10 +57,11 @@ public class MoveToAnotherCanvas : MonoBehaviour
 
         if (canvasGroupTo != null)
         {
-            canvasGroupTo.DOKill();
-            canvasGroupTo.interactable = transform;
-            canvasGroupTo.alpha = 0;
-            canvasGroupTo.DOFade(1, 0.08f);
+            canvasGroupTo.interactable = true;
+            canvasGroupTo.DOFade(1, 0.08f).OnComplete(() =>
+            {
+                canvasGroupTo.alpha = 1;
+            });
         }
 
     }

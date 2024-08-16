@@ -1,5 +1,4 @@
 using FMODUnity;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 public class AttackPlayer : State
@@ -14,7 +13,7 @@ public class AttackPlayer : State
 
     [SerializeField] private float attackSpeed = 8;
 
-    private int howMuchDamageIdeal = 10;
+    [SerializeField] private int howMuchDamageIdeal = 10;
 
     [SerializeField] private StudioEventEmitter attackSoundEmitter;
 
@@ -67,7 +66,7 @@ public class AttackPlayer : State
                 }
                 else
                 {
-                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.5f);
+                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.25f);
                 }
 
                 attackSoundEmitter.Play();

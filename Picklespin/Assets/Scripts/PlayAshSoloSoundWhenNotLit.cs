@@ -16,9 +16,12 @@ public class PlayAshSoloSoundWhenNotLit : MonoBehaviour
 
     public void Play()
     {
-        if (!_setOnFire.enabled)
+        if (_emitter != null)
         {
-        _emitter.Play();
+            if (!_setOnFire.enabled)
+            {
+                _emitter.Play();
+            }
         }
     }
 

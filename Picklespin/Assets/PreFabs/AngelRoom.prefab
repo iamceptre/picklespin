@@ -10107,11 +10107,11 @@ MonoBehaviour:
   eyesManager: {fileID: 4364309144121889610}
   angelHealedSoundEvent:
     Guid:
-      Data1: 1935547979
-      Data2: 1292853482
-      Data3: -8227673
-      Data4: -29138184
-    Path: event:/ANGELS/HEAL_ONESHOT_V2
+      Data1: -1765704324
+      Data2: 1165827984
+      Data3: -700140658
+      Data4: 2134639907
+    Path: event:/ANGELS/HEAL_ONESHOT
   healedParticles: {fileID: 4435688068558383525}
   giveExpAfterHeal: {fileID: 7371242577392167853}
   scriptActivationTrigger: {fileID: 1056809553663382193}
@@ -10235,6 +10235,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   hp: 1
+  bodyDamageMultiplier: 1
+  eyeDamageMultiplier: 4
+  aiHealthUI: {fileID: 0}
+  eventOnDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6572068718953228771
 MonoBehaviour:
   m_ObjectHideFlags: 0

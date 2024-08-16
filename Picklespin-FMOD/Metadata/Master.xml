@@ -8,7 +8,7 @@
 			<value>Master Bus</value>
 		</property>
 		<property name="maxInstances">
-			<value>64</value>
+			<value>32</value>
 		</property>
 		<property name="instanceStealing">
 			<value>1</value>

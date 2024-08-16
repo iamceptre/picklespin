@@ -4,56 +4,46 @@ public class ScrollTexture : MonoBehaviour
 {
     [SerializeField] private float scrollSpeedY = 0.4f;
     [SerializeField] private float scrollSpeedX = 0.3f;
+    [SerializeField] private bool randomUVoffsetAtEnable = false;
 
     private Renderer rend;
     private Vector2 offset;
+    private bool isVisible;
 
-    private float offsetY;
-    private float offsetX;
-
-    [SerializeField] private bool randomUVoffsetAtEnable = false;
-
-    private void Start()
+    private void Awake()
     {
-        rend = GetComponent<Renderer>();
-        if (rend == null)
-        {
-            rend = GetComponent<SkinnedMeshRenderer>();
-        }
-        //offset = new Vector2(0, 0);
-        RandomizeStartingOffset();
-    }
+        rend = GetComponent<Renderer>() ?? GetComponent<SkinnedMeshRenderer>();
 
-    private void OnEnable()
-    {
         if (randomUVoffsetAtEnable)
         {
-            offsetX = Randomize01();
-            offsetY = Randomize01();
+            offset = new Vector2(Random.value, Random.value);
         }
-    }
-
-    private float Randomize01()
-    {
-        float random01 = Random.Range(0, 1);
-        return random01;
-    }
-
-    private void RandomizeStartingOffset()
-    {
-        offset = new Vector2(Random.Range(-1,1), Random.Range(-1, 1));
+        else
+        {
+            offset = Vector2.zero;
+        }
     }
 
     private void Update()
     {
-        
-        offsetY = Time.time * scrollSpeedY;
-        offsetX = Time.time * scrollSpeedX;
+        if (!isVisible)
+        {
+            return;
+        }
 
-        offset.y = offsetY;
-        offset.x = offsetX;
+        offset.x += scrollSpeedX * Time.deltaTime;
+        offset.y += scrollSpeedY * Time.deltaTime;
 
-        
         rend.material.SetTextureOffset("_MainTex", offset);
+    }
+
+    private void OnBecameVisible()
+    {
+        isVisible = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        isVisible = false;
     }
 }

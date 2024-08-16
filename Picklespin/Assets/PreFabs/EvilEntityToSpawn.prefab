@@ -10102,9 +10102,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1053583928403918803}
-  - component: {fileID: 7736395116358722587}
   - component: {fileID: 8530334580075811554}
   - component: {fileID: 6839636234561450768}
+  - component: {fileID: 3590205204082857848}
   m_Layer: 8
   m_Name: Head_Hitbox
   m_TagString: Hitbox_Head
@@ -10127,29 +10127,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 685529607316862035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &7736395116358722587
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2625562711823078883}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 0.7
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &8530334580075811554
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -15005,6 +14982,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &3590205204082857848
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2625562711823078883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.45, y: 0.45, z: 0.25}
+  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!1 &2997318481151839732
 GameObject:
   m_ObjectHideFlags: 0
@@ -15398,8 +15396,8 @@ MeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -15473,7 +15471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loosingPlayer: {fileID: 5976180761306544218}
-  attackSpeed: 25
+  attackSpeed: 30
+  howMuchDamageIdeal: 10
   attackSoundEmitter: {fileID: 9064666203966580678}
 --- !u!1 &5560399968248190549
 GameObject:
@@ -15802,6 +15801,19 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   hp: 100
+  bodyDamageMultiplier: 1
+  eyeDamageMultiplier: 4
+  aiHealthUI: {fileID: 3817865884643380506}
+  eventOnDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  eventOnDamageTakenEye:
+    m_PersistentCalls:
+      m_Calls: []
+  myHitboxes:
+  - {fileID: 2450276633478797400}
+  - {fileID: 3942065418115510607}
+  - {fileID: 3590205204082857848}
 --- !u!114 &7181874480254964230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21506,7 +21518,7 @@ MonoBehaviour:
   PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
-  TriggerOnce: 0
+  TriggerOnce: 1
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []

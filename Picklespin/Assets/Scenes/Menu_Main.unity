@@ -696,7 +696,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186992055}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
@@ -789,6 +789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingName: Volume
+  sliderEmitterToFixSoundOnStart: {fileID: 0}
 --- !u!114 &186992059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,7 +797,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186992055}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f2035d357b02ad43a779eedeb2877f3, type: 3}
   m_Name: 
@@ -851,7 +852,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186992055}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
@@ -3291,6 +3292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingName: FramerateLimit
+  sliderEmitterToFixSoundOnStart: {fileID: 0}
 --- !u!114 &754520548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3669,11 +3671,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -2036171
-      Data2: 1198018133
-      Data3: 173162127
-      Data4: -278085846
-    Path: event:/UI/UI_BUTTON_CLICK
+      Data1: 1020058409
+      Data2: 1211309031
+      Data3: 185189536
+      Data4: -1364386927
+    Path: event:/UI/UI_BUTTON_CLICK_BACK
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -6146,6 +6148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingName: MouseSensitivity
+  sliderEmitterToFixSoundOnStart: {fileID: 0}
 --- !u!114 &1364549391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6904,7 +6907,7 @@ RectTransform:
   m_Father: {fileID: 1775538671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11025,11 +11028,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -2036171
-      Data2: 1198018133
-      Data3: 173162127
-      Data4: -278085846
-    Path: event:/UI/UI_BUTTON_CLICK
+      Data1: 1020058409
+      Data2: 1211309031
+      Data3: 185189536
+      Data4: -1364386927
+    Path: event:/UI/UI_BUTTON_CLICK_BACK
   Event: 
   PlayEvent: 0
   StopEvent: 0

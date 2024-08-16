@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 
 public class SpellSpawner : MonoBehaviour
 {
+    //private Vector3 hiddenPosition = new Vector3(0, -50, 0);
     //[SerializeField] private GameObject[] spellsHi;
     public static SpellSpawner instance;
 
@@ -87,18 +88,14 @@ public class SpellSpawner : MonoBehaviour
 
     private void SpawnLo()
     {
-        Randomize();
+        //Randomize();
         SpellPickupable spawned = spellsLoPool.Get();
-        spawned.transform.position = spawnPoints[rrrandom].position;
+        //Debug.Log(spawned.transform.position);
+        //spawned.transform.position = spawnPoints[rrrandom].position;
+        //Debug.Log(spawnPoints[rrrandom].position + " Should be the same as " + spawned.transform.position);
         spawned.SetOccupiedWaypoint(rrrandom, this, 0);
     }
 
-
-
-    public void SpawnLastSpell()
-    {
-        Debug.Log("zongi! tyœ wygra³ w tê grê :-D");
-    }
 
 
 
@@ -106,6 +103,7 @@ public class SpellSpawner : MonoBehaviour
     {
         int maxRange = spawnPoints.Length;
         int minRange = 0;
+
 
         while (isSpawnPointTaken[rrrandom])
         {
@@ -127,14 +125,26 @@ public class SpellSpawner : MonoBehaviour
 
     private SpellPickupable CreateItem()
     {
-        SpellPickupable itemInstance = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)]); 
+        SpellPickupable itemInstance = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)]);
         itemInstance.SetPool(spellsLoPool);
+        //itemInstance.transform.position = hiddenPosition;
         return itemInstance;
     }
 
     private void OnGetFromPool(SpellPickupable pooledItem)
     {
+        int maxRange = spawnPoints.Length;
+        int minRange = 0;
+
+        rrrandom = Random.Range(minRange, maxRange);
+
+        while (isSpawnPointTaken[rrrandom])
+        {
+            rrrandom = Random.Range(minRange, maxRange);
+        }
+
         pooledItem.gameObject.SetActive(true);
+        pooledItem.transform.position = spawnPoints[rrrandom].position;
     }
 
     private void OnReleaseToPool(SpellPickupable pooledItem)

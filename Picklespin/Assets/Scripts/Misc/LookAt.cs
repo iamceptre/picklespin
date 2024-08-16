@@ -5,7 +5,7 @@ public class LookAt : MonoBehaviour
 
     [SerializeField] private Transform whatToLookAt;
 
-    private void Awake()
+    private void Start()
     {
         if (whatToLookAt == null)
         {

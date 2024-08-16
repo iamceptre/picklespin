@@ -4,49 +4,89 @@ using UnityEngine;
 
 public class SpawnInEnemy : MonoBehaviour
 {
-
     [SerializeField] private ParticleSystem spawnInParticles;
     [SerializeField] private Renderer toFadeIn;
-    private Color TransparentWhite = new Color(1, 1, 1, 0);
-    private ParticleSystem.MainModule mainModule;
     [SerializeField] private float timeToSpawnIn;
     [SerializeField] private StateManager stateManager;
 
+    private static readonly Color TransparentWhite = new Color(1, 1, 1, 0);
+    private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+    private Material material;
     private WaitForSeconds timeToSpawnInYield;
 
-    private Color startingColor;
+    private void Awake()
+    {
+        // Cache the material and pre-allocate the wait time
+        material = toFadeIn.material;
+        timeToSpawnInYield = new WaitForSeconds(timeToSpawnIn);
 
-    private int colorProperty = Shader.PropertyToID("_Color");
+        // Initialize the material
+        InitializeMaterialForFade();
+    }
 
     private IEnumerator Start()
     {
-        toFadeIn.material.color = TransparentWhite;
-        mainModule = spawnInParticles.main;
+        PlaySpawnParticles();
+        yield return timeToSpawnInYield;
+
+        yield return FadeInMaterial();
+        SetMaterialToOpaqueMode();
+    }
+
+    private void PlaySpawnParticles()
+    {
+        var mainModule = spawnInParticles.main;
         mainModule.startLifetime = timeToSpawnIn;
         spawnInParticles.Play();
-        timeToSpawnInYield = new WaitForSeconds(timeToSpawnIn);
-        yield return timeToSpawnInYield;
-        stateManager.StartAI();
-        StartCoroutine(FadeInMaterial());
-        yield break;
+    }
+
+    private void InitializeMaterialForFade()
+    {
+        material.SetColor(ColorProperty, TransparentWhite);
+        SetMaterialToFadeMode();
     }
 
     private IEnumerator FadeInMaterial()
     {
-        Material mat = toFadeIn.material;
-        startingColor = toFadeIn.material.color;
-        float progress = 0;
+        float elapsedTime = 0f;
+        float fadeSpeed = 1f / timeToSpawnIn;
 
-        while (progress<=1)
+        Color startingColor = TransparentWhite;
+
+        while (elapsedTime < timeToSpawnIn)
         {
-            progress += Time.deltaTime;
-            Color color = new Color(startingColor.r, startingColor.g, startingColor.b, progress);
-            mat.SetColor(colorProperty, color);
+            elapsedTime += Time.deltaTime;
+            float progress = Mathf.Clamp01(elapsedTime * fadeSpeed);
+            Color currentColor = new Color(startingColor.r, startingColor.g, startingColor.b, progress);
+            material.SetColor(ColorProperty, currentColor);
             yield return null;
         }
 
-        mat.SetFloat("_Mode", 0);
-        yield break;    
+        material.SetColor(ColorProperty, Color.white);
+        stateManager.StartAI();
     }
 
+    private void SetMaterialToFadeMode()
+    {
+        material.SetFloat("_Mode", 2);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+    }
+
+    private void SetMaterialToOpaqueMode()
+    {
+        material.SetFloat("_Mode", 0);
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+        material.SetInt("_ZWrite", 1);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.DisableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
+    }
 }

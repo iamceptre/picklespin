@@ -221,6 +221,10 @@ PrefabInstance:
       value: pillar_basic_round
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2f7ea530715af7e45bf55628b736e629, type: 3}
+      propertyPath: m_TagString
+      value: Concrete
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2f7ea530715af7e45bf55628b736e629, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}

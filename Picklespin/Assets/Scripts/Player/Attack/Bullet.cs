@@ -36,7 +36,6 @@ public class Bullet : MonoBehaviour
     [Header("References")]
     private AiHealth aiHealth;
     private AiVision aiVision;
-    private AiHealthUiBar aiHealthUI;
     private CameraShake cameraShake;
     private DamageUI_Spawner damageUiSpawner;
     private GiveExpToPlayer giveExpToPlayer;
@@ -177,7 +176,6 @@ public class Bullet : MonoBehaviour
     {
         aiHealth = refs.Health;
         aiVision = refs.Vision;
-        aiHealthUI = refs.HpUiBar;
         giveExpToPlayer = refs.GiveExp;
         flashWhenHit = refs.MaterialFlash;
 
@@ -202,6 +200,7 @@ public class Bullet : MonoBehaviour
             Headshot(refs);
             giveExpToPlayer.wasLastShotAHeadshot = true;
             flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
+            return;
         }
         else
         {
@@ -209,24 +208,8 @@ public class Bullet : MonoBehaviour
             flashWhenHit.StartCoroutine(flashWhenHit.Flash());
         }
 
-        aiHealth.hp -= damage;
-
-        damageUiSpawner.Spawn(collider.transform.position, damage, wasLastHitCritical);
-
-        if (aiHealth.hp <= 0)
-        {
-            collider.enabled = false;
-            aiHealth.deathEvent.Invoke();
-        }
-        else
-        {
-            ApplySpecialEffect(refs);
-        }
-
-        if (aiHealthUI != null)
-        {
-            aiHealthUI.RefreshBar();
-        }
+        aiHealth.TakeDamage(damage, false, wasLastHitCritical);
+        ApplySpecialEffect(refs);
         HitGetsYouNoticed();
     }
 
@@ -250,7 +233,7 @@ public class Bullet : MonoBehaviour
 
     private void Headshot(AiReferences refs)
     {
-        damage *= 4;
+        aiHealth.TakeDamage(damage, true, wasLastHitCritical);
         refs.HeadshotParticle.Play();
         refs.damageTakenEyeshot.Play();
     }
@@ -258,10 +241,15 @@ public class Bullet : MonoBehaviour
 
     private void ApplySpecialEffect(AiReferences aiRefs)
     {
-        if (doesThisSpellSetOnFire)
+        if (aiHealth.hp > 0)
         {
-            var setOnFire = aiRefs.setOnFire;
-            setOnFire.enabled = true;
+            if (doesThisSpellSetOnFire)
+            {
+                if (aiRefs.setOnFire != null)
+                {
+                    aiRefs.setOnFire.enabled = true;
+                }
+            }
         }
     }
 

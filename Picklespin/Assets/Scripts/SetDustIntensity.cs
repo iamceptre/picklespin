@@ -30,7 +30,7 @@ public class SetDustIntensity : MonoBehaviour
         currentIntensity = intensity;
         _mainModule.startColor = new Color(_mainModule.startColor.color.r, _mainModule.startColor.color.g, _mainModule.startColor.color.b, currentIntensity);
 
-        sandParticleMain.startColor = new Color(sandParticleMain.startColor.color.r, sandParticleMain.startColor.color.g, sandParticleMain.startColor.color.b, currentIntensity * 2);
+        sandParticleMain.startColor = new Color(sandParticleMain.startColor.color.r, sandParticleMain.startColor.color.g, sandParticleMain.startColor.color.b, currentIntensity * 4);
 
         float windiness = (currentIntensity * 10) - 0.19f;
 

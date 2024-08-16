@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class Nik : MonoBehaviour
     private WaitForSeconds hidetime = new WaitForSeconds(5);
 
     private KeyCode nikKey = KeyCode.N;
+
+    [SerializeField] private StudioEventEmitter _emitter;
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class Nik : MonoBehaviour
 
             if (Input.GetKey(nikKey))
             {
+                _emitter.Play();
                 _renderer.enabled = true;
                 yield return showtime;
                 _renderer.enabled = false;

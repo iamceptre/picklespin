@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,8 @@ public class PlayerPrefsSliderManager : MonoBehaviour
 {
     private Slider _slider;
     [SerializeField] private string settingName = "setMyName";
+
+    [SerializeField] StudioEventEmitter sliderEmitterToFixSoundOnStart;
 
     private void Awake()
     {
