@@ -45,6 +45,8 @@ public class Attack : MonoBehaviour
 
     public Bullet currentBullet;
 
+    private CameraShakeManagerV2 camShakeManager;
+
 
     private void Awake()
     {
@@ -69,6 +71,7 @@ public class Attack : MonoBehaviour
         playCastBlast = PlayCastBlast.instance;
         ammoDisplay = AmmoDisplay.instance;
         spellProjectileSpawner = SpellProjectileSpawner.instance;
+        camShakeManager = CameraShakeManagerV2.instance;
     }
 
     void Update()
@@ -129,6 +132,7 @@ public class Attack : MonoBehaviour
         ammoDisplay.Refresh(false);
         spellCooldown.StartCooldown(castCooldownTime);
         spellProjectileSpawner.SpawnSpell(selectedBulletIndex);
+        SendShakeSignalShoot(selectedBulletIndex);
     }
 
 
@@ -145,14 +149,16 @@ public class Attack : MonoBehaviour
 
     private IEnumerator SpellCasting()
     {
+
         if (ammo.ammo >= currentBullet.magickaCost)
         {
             spellCooldown.myCanvas.enabled = true;
             playCastBlast.StartCastingParticles(selectedBulletIndex);
             PlayerMovement.instance.SlowMeDown();
             handAnimator.SetTrigger("Spell_Casting");
+            SendShakeSignalCastStart(selectedBulletIndex);
 
-           
+
             while (castingProgress < currentlySelectedCastDuration)
             {
 
@@ -205,6 +211,51 @@ public class Attack : MonoBehaviour
         playCastBlast.StopCastingParticles(selectedBulletIndex);
         spellCooldown.DisableComponents();
         CancelCasting.Invoke();
+    }
+
+
+    private void SendShakeSignalShoot(int selectedBulletIndex)
+    {
+        switch (selectedBulletIndex)
+        {
+            case 0: //purple
+                camShakeManager.ShakeSelected(4);
+                break;
+
+            case 1: //fireball
+                camShakeManager.ShakeSelected(5);
+                break;
+
+            case 2: //light?
+
+                break;
+
+            default:
+                Debug.Log("there is not such a bullet indexed");
+                break;
+        }
+    }
+
+    private void SendShakeSignalCastStart(int selectedBulletIndex)
+    {
+        switch (selectedBulletIndex)
+        {
+            case 0: //purple
+                
+                break;
+
+            case 1: //fireball
+                camShakeManager.ShakeSelected(7);
+                break;
+
+            case 2: //light?
+
+                break;
+
+            default:
+                Debug.Log("there is not such a bullet indexed");
+                break;
+        }
     }
 
 }

@@ -15001,7 +15001,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.45, y: 0.45, z: 0.25}
+  m_Size: {x: 0.55, y: 0.7, z: 0.5}
   m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!1 &2997318481151839732
 GameObject:
@@ -15471,7 +15471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loosingPlayer: {fileID: 5976180761306544218}
-  attackSpeed: 30
+  attackSpeed: 26
   howMuchDamageIdeal: 10
   attackSoundEmitter: {fileID: 9064666203966580678}
 --- !u!1 &5560399968248190549
@@ -15804,12 +15804,6 @@ MonoBehaviour:
   bodyDamageMultiplier: 1
   eyeDamageMultiplier: 4
   aiHealthUI: {fileID: 3817865884643380506}
-  eventOnDamageTaken:
-    m_PersistentCalls:
-      m_Calls: []
-  eventOnDamageTakenEye:
-    m_PersistentCalls:
-      m_Calls: []
   myHitboxes:
   - {fileID: 2450276633478797400}
   - {fileID: 3942065418115510607}
@@ -21425,7 +21419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPlayer: {fileID: 9126885967048436367}
   waypointWander: {fileID: 0}
-  waypointWanderForSpawnedOnes: {fileID: 0}
+  waypointWanderForSpawnedOnes: {fileID: 2849707897815361534}
   currentTimedown: 5
   loosingTimedown: 3
   lostPlayer: 1

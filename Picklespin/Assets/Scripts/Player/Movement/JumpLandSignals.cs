@@ -10,7 +10,7 @@ public class JumpLandSignals : MonoBehaviour
 
     [SerializeField] private CharacterController characterController;
     private FootstepSystem footstepSystem;
-    private CameraShake cameraShake;
+    private CameraShakeManagerV2 camShakeManager;
     private PlayerMovement playerMovement;
     [SerializeField] private HearingRange hearingRange;
 
@@ -46,7 +46,7 @@ public class JumpLandSignals : MonoBehaviour
         floorTypeDetector = FloorTypeDetector.instance;
         speedometer = CharacterControllerVelocity.instance;
         playerMovement = PlayerMovement.instance;
-        cameraShake = CameraShake.instance;
+        camShakeManager = CameraShakeManagerV2.instance;
         footstepSystem = FootstepSystem.instance;
     }
 
@@ -86,7 +86,6 @@ public class JumpLandSignals : MonoBehaviour
                 floorTypeDetector.LandingCheck();
                 isLandingHardDecider();
                 footstepSystem.RefreshFootstepTimer();
-                cameraShake.LandCameraShake(lastLandCameraShakeStrenght);
                 hearingRange.RunExtendedHearingRange();
             }
         }
@@ -131,10 +130,12 @@ public class JumpLandSignals : MonoBehaviour
 
             if (speedometer.verticalVelocity <= 10) //is landing hard treshold
             {
+                camShakeManager.ShakeSelected(0); //add organic shake multiplier based on jump velocity
                 landSoftEmitter.Play();
             }
             else
             {
+                camShakeManager.ShakeSelected(1);
                 landHardEmitter.Play();
             }
 

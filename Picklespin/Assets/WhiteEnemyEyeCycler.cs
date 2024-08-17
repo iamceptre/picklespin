@@ -3,32 +3,56 @@ using UnityEngine;
 
 public class WhiteEnemyEyeCycler : MonoBehaviour
 {
-    //make it random in the future, i mean create some set variables, and let coroutine random WaitForSeconds from those
-    private WaitForSeconds onTime = new WaitForSeconds(4);
-    private WaitForSeconds offTime = new WaitForSeconds(6);
+    private WaitForSeconds onTimeQuick = new WaitForSeconds(3);
+    private WaitForSeconds onTimeLong = new WaitForSeconds(5);
 
-    [SerializeField] private GameObject eye;
+    private WaitForSeconds offTimeQuick= new WaitForSeconds(3);
+    private WaitForSeconds offTimeLong = new WaitForSeconds(7);
+
+    [SerializeField] private WhiteEnemyEye eye;
     [SerializeField] private Collider headshotHitbox;
-    [SerializeField] private GameObject eyeShutDown;
-
 
     [SerializeField] private AiHealth aiHp;
     [SerializeField] private ShowSelectedTip tip;
+
 
 
     private IEnumerator Start()
     {
         headshotHitbox.enabled = false;
 
+
         while (enabled)
         {
-            yield return offTime;
-            eye.SetActive(true);
+
+            int random1 = Random01();
+            int random2 = Random01();
+
+            if (random1 == 0)
+            {
+                yield return offTimeLong;
+            }
+            else
+            {
+                yield return offTimeQuick;
+            }
+
+            eye.On();
             headshotHitbox.enabled = true;
-            yield return onTime;
-            eye.SetActive(false);
+
+
+            if (random2 == 0)
+            {
+                yield return onTimeLong;
+            }
+            else
+            {
+                yield return onTimeQuick;
+            }
+
+
+            eye.Off();
             headshotHitbox.enabled = false;
-            eyeShutDown.SetActive(true);
         }
     }
 
@@ -39,6 +63,14 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
         {
             tip.Show();
         }
+    }
+
+
+    private int Random01()
+    {
+        int randomized = Random.Range(0, 2);
+        Debug.Log(randomized);
+        return randomized;
     }
 
 }

@@ -66,7 +66,7 @@ public class AttackPlayer : State
                 }
                 else
                 {
-                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.25f);
+                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.33f);
                 }
 
                 attackSoundEmitter.Play();

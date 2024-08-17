@@ -21,14 +21,15 @@ public class EnemyCounter : MonoBehaviour
     private void Start()
     {
         roundSystem = RoundSystem.instance;
-        UpdateRoundSystemSpeedMultiplier();
+        //UpdateRoundSystemSpeedMultiplier();
     }
 
-    public void UpdateRoundSystemSpeedMultiplier()
+    public void UpdateRoundSystemSpeedMultiplier() //boundle this with enemyCount modification
     {
         if (EnemyCount <= 0)
         {
             roundSystem.speedMultiplier = 3f;
+            //Debug.Log(EnemyCount);
         }
     }
 }

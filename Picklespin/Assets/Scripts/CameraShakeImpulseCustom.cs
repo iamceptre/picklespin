@@ -5,7 +5,7 @@ public class CameraShakeImpulseCustom : MonoBehaviour
 
     [SerializeField] private bool basedOnDistance;
 
-    private CameraShake cameraShake;
+    //private CameraShake cameraShake;
     private CachedCameraMain cachedCameraMain;
 
     [SerializeField] private float shakeStrenght;
@@ -13,7 +13,7 @@ public class CameraShakeImpulseCustom : MonoBehaviour
 
     private void Start()
     {
-        cameraShake = CameraShake.instance;
+        //cameraShake = CameraShake.instance;
         cachedCameraMain = CachedCameraMain.instance;
     }
 
@@ -49,7 +49,7 @@ public class CameraShakeImpulseCustom : MonoBehaviour
     private void SendShakeImpulseDistance()
     {
         float distance = Vector3.Distance(cachedCameraMain.cachedTransform.position, gameObject.transform.position);
-        cameraShake.EnemyExplosionShake(distance, shakeStrenght, shakeDuration);
+        //cameraShake.EnemyExplosionShake(distance, shakeStrenght, shakeDuration);
     }
 
 }

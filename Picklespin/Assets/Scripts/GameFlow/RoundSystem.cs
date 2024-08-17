@@ -21,7 +21,7 @@ public class RoundSystem : MonoBehaviour
     [SerializeField] private TMP_Text newRoundText;
     private NewRoundDisplayText newRoundDisplayText;
 
-    [HideInInspector] public float speedMultiplier = 1;
+    public float speedMultiplier = 1;
 
     private WaitForSeconds second;
     private float updateRate = 0.1f;

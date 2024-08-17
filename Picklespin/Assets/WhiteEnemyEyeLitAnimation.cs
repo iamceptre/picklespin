@@ -19,7 +19,7 @@ public class WhiteEnemyEyeLitAnimation : MonoBehaviour
     {
         if (_sprite == null)
         {
-            GetComponents();
+            Initialize();
         }
 
         _sprite.DOKill();
@@ -31,7 +31,7 @@ public class WhiteEnemyEyeLitAnimation : MonoBehaviour
     }
 
 
-    private void GetComponents()
+    private void Initialize()
     {
             _sprite = GetComponent<SpriteRenderer>();
             _transform = transform;

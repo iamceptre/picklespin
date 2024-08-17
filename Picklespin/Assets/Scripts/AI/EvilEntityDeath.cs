@@ -2,6 +2,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Events;
+using System.Collections;
 
 public class EvilEntityDeath : MonoBehaviour
 {
@@ -12,12 +13,19 @@ public class EvilEntityDeath : MonoBehaviour
 
     private Dissolver dissolver;
 
+    private CameraShakeManagerV2 camShakeManager;
+
     private void Awake()
     {
         if (aiHealthUiBar == null)
         {
             aiHealthUiBar = gameObject.GetComponent<AiHealthUiBar>();
         }
+    }
+
+    private void Start()
+    {
+        camShakeManager = CameraShakeManagerV2.instance;
     }
 
 
@@ -33,11 +41,12 @@ public class EvilEntityDeath : MonoBehaviour
         evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
         RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
         evilEntityDeathSoundReference.start();
+        evilEntityDeathSoundReference.release();
+        StartCoroutine(ShakeLater());
         dissolver = gameObject.GetComponent<Dissolver>();
         dissolver.StartDissolve();
 
         deathEvent.Invoke(); //additional death behaviour
-
 
     }
 
@@ -48,6 +57,14 @@ public class EvilEntityDeath : MonoBehaviour
         {
             setOnFireScirpt.KillFromFire(); //die during being on fire
         }
+    }
+
+
+    private IEnumerator ShakeLater()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        camShakeManager.ShakeSelected(6);
     }
 
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,14 +11,17 @@ public class AiHealth : MonoBehaviour
     private DamageUI_Spawner damageUiSpawner;
     [SerializeField] private AiHealthUiBar aiHealthUI;
 
-    [SerializeField] private UnityEvent eventOnDamageTaken;
-    [SerializeField] private UnityEvent eventOnDamageTakenEye;
+   // [SerializeField] private UnityEvent eventOnDamageTaken;
+   // [SerializeField] private UnityEvent eventOnDamageTakenEye;
 
     [SerializeField] private Collider[] myHitboxes;
+
+    private CameraShakeManagerV2 camShakeManager;
 
     private void Start()
     {
         damageUiSpawner = DamageUI_Spawner.instance;
+        camShakeManager = CameraShakeManagerV2.instance;
     }
 
 
@@ -28,11 +32,12 @@ public class AiHealth : MonoBehaviour
 
         if (eyeshot)
         {
+            StartCoroutine(ShakeLater(3));
             actualDamage = damage * eyeDamageMultiplier;
         }
         else
         {
-            eventOnDamageTaken.Invoke();
+            camShakeManager.ShakeSelected(2);
             actualDamage = damage * bodyDamageMultiplier;
         }
 
@@ -71,6 +76,13 @@ public class AiHealth : MonoBehaviour
             deathEvent.Invoke();
         }
 
+    }
+
+    private IEnumerator ShakeLater(int index)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        camShakeManager.ShakeSelected(index);
     }
 
 }

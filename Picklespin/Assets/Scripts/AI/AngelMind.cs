@@ -50,6 +50,7 @@ public class AngelMind : MonoBehaviour
 
         unhealedLoopEmmiter.Play();
 
+
         for (int i = 0; i < additionalElements.Length; i++)
         {
             additionalElements[i].enabled = state;

@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     private int originalDamage;
 
     [Header("Stats")]
+    [SerializeField] private int spellID;
     public string spellName;
     [SerializeField] private int damage = 15;
     public int magickaCost = 30;
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour
     [Header("References")]
     private AiHealth aiHealth;
     private AiVision aiVision;
-    private CameraShake cameraShake;
+    private CameraShakeManagerV2 camShakeManager;
     private DamageUI_Spawner damageUiSpawner;
     private GiveExpToPlayer giveExpToPlayer;
     [HideInInspector] public Transform handCastingPoint;
@@ -62,7 +63,7 @@ public class Bullet : MonoBehaviour
     private Renderer _renderer;
     private Rigidbody _rigidbody;
     private SphereCollider _collider;
-    [SerializeField] [Tooltip("tailParticle")]private ParticleSystem[] _particleSystem;
+    [SerializeField][Tooltip("tailParticle")] private ParticleSystem[] _particleSystem;
     [SerializeField] private Light _light;
     private Color _lightColor;
     private GameObject _gameObject;
@@ -88,7 +89,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         damageUiSpawner = DamageUI_Spawner.instance;
-        cameraShake = CameraShake.instance;
+        camShakeManager = CameraShakeManagerV2.instance;
         cachedCameraMain = CachedCameraMain.instance;
         ammo = Ammo.instance;
         spellProjectileSpawner = SpellProjectileSpawner.instance;
@@ -137,39 +138,39 @@ public class Bullet : MonoBehaviour
         _pool.Release(this);
     }
 
-    
+
 
     private void OnCollisionEnter(Collision collision)
     {
 
 
-            hitSomething = true;
+        hitSomething = true;
 
-            StopCoroutine(autoKill);
-            hitSomething = true;
+        StopCoroutine(autoKill);
+        hitSomething = true;
 
-            if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
-            {
-                Collider collider = collision.gameObject.GetComponent<Collider>();
-                HitRegistered(collider, refs, collision);
-            }
-            else //HIT THE WALL 
-            {
-                if (hitWall != null)
-                    hitWall.Play();
-            }
+        if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
+        {
+            Collider collider = collision.gameObject.GetComponent<Collider>();
+            HitRegistered(collider, refs, collision);
+        }
+        else //HIT THE WALL 
+        {
+            if (hitWall != null)
+                hitWall.Play();
+        }
 
-            if (isRanged)
-            {
-                RangeHitDetection(collision);
-            }
+        if (isRanged)
+        {
+            RangeHitDetection(collision);
+        }
 
 
-            SpawnExplosion();
-            AfterExplosion();
+        SpawnExplosion();
+        AfterExplosion();
     }
 
-    
+
 
 
     private void HitRegistered(Collider collider, AiReferences refs, Collision collision)
@@ -181,8 +182,8 @@ public class Bullet : MonoBehaviour
 
         if (castDuration != 0)
         {
-            if(refs.damageTakenBig != null)
-            refs.damageTakenBig.Play();
+            if (refs.damageTakenBig != null)
+                refs.damageTakenBig.Play();
         }
         else
         {
@@ -259,7 +260,7 @@ public class Bullet : MonoBehaviour
     {
         int criticalTreshold;
 
-        if(ammo.ammo < ammo.maxAmmo * 0.2f) //20% or less mana
+        if (ammo.ammo < ammo.maxAmmo * 0.2f) //20% or less mana
         {
             criticalTreshold = 5;
         }
@@ -268,15 +269,15 @@ public class Bullet : MonoBehaviour
             criticalTreshold = 9;
         }
 
-        if (Random.Range(0,10) >= criticalTreshold || iWillBeCritical)
+        if (Random.Range(0, 10) >= criticalTreshold || iWillBeCritical)
         {
             if (refs.damageTakenCritical != null)
             {
                 refs.damageTakenCritical.Play();
             }
-            damage = originalDamage * 4;
+            damage = (int)(originalDamage * 1.5f);
             wasLastHitCritical = true;
-           
+
         }
         else
         {
@@ -308,7 +309,7 @@ public class Bullet : MonoBehaviour
         }
 
         _explosionTransform.position = Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f);
-        cameraShake.ExplosionNearbyShake(Vector3.Distance(transform.position, cachedCameraMain.cachedTransform.position),originalDamage);
+        SendShakeSignal();
     }
 
     public void AfterExplosion()
@@ -342,6 +343,22 @@ public class Bullet : MonoBehaviour
         _pool = pool;
     }
 
+
+    private void SendShakeSignal()
+    {
+        switch (spellID)
+        {
+            case 1: //fireball
+                camShakeManager.ShakeSelected(8); //add shake multiplier by distance
+                break;
+
+            default:
+
+                break;
+
+        }
+
+    }
 
 
 }
