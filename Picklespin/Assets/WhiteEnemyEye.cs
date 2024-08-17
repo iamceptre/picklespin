@@ -14,15 +14,18 @@ public class WhiteEnemyEye : MonoBehaviour
     [SerializeField] private GameObject shutdownFadeOutSprite;
 
     [SerializeField] private StudioEventEmitter eyeOpenEmitter;
+    [SerializeField] private Collider headshotHitbox;
 
     private void Awake()
     {
         lightTargetIntensity = _light.intensity;
+        headshotHitbox.enabled = false;
     }
 
 
     public void On()
     {
+        headshotHitbox.enabled = true;
         eyeOpenEmitter.Play();
         _rend.enabled = true;
         EyeFlashAnimation.Flash();
@@ -38,6 +41,7 @@ public class WhiteEnemyEye : MonoBehaviour
         _light.DOIntensity(0, 1).OnComplete(() =>
         {
             _light.enabled = false;
+            headshotHitbox.enabled = false;
         });
     }
 

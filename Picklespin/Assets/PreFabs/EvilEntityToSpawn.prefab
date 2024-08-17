@@ -15472,7 +15472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loosingPlayer: {fileID: 5976180761306544218}
   attackSpeed: 26
-  howMuchDamageIdeal: 10
+  howMuchDamageIdeal: 15
   attackSoundEmitter: {fileID: 9064666203966580678}
 --- !u!1 &5560399968248190549
 GameObject:
@@ -15804,6 +15804,9 @@ MonoBehaviour:
   bodyDamageMultiplier: 1
   eyeDamageMultiplier: 4
   aiHealthUI: {fileID: 3817865884643380506}
+  eventOnDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
   myHitboxes:
   - {fileID: 2450276633478797400}
   - {fileID: 3942065418115510607}

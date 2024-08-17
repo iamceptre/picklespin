@@ -9,9 +9,10 @@ public class AiHealth : MonoBehaviour
     [SerializeField] private float bodyDamageMultiplier = 1.0f;
     [SerializeField] private float eyeDamageMultiplier = 4.0f;
     private DamageUI_Spawner damageUiSpawner;
+    private RoundSystem roundSystem;
     [SerializeField] private AiHealthUiBar aiHealthUI;
 
-   // [SerializeField] private UnityEvent eventOnDamageTaken;
+    [SerializeField] private UnityEvent eventOnDamageTaken;
    // [SerializeField] private UnityEvent eventOnDamageTakenEye;
 
     [SerializeField] private Collider[] myHitboxes;
@@ -22,29 +23,34 @@ public class AiHealth : MonoBehaviour
     {
         damageUiSpawner = DamageUI_Spawner.instance;
         camShakeManager = CameraShakeManagerV2.instance;
+        roundSystem = RoundSystem.instance;
     }
 
 
 
     public void TakeDamage(int damage, bool eyeshot, bool wasLastHitCritical)
     {
-        float actualDamage;
-
-        if (eyeshot)
+        if (roundSystem.isCounting)
         {
-            StartCoroutine(ShakeLater(3));
-            actualDamage = damage * eyeDamageMultiplier;
-        }
-        else
-        {
-            camShakeManager.ShakeSelected(2);
-            actualDamage = damage * bodyDamageMultiplier;
-        }
+            float actualDamage;
 
-        hp -= actualDamage;
-        SpawnDamageNumbers((int)actualDamage, wasLastHitCritical);
-        RefreshUI();
-        CheckIfDead();
+            if (eyeshot)
+            {
+                StartCoroutine(ShakeLater(3));
+                actualDamage = damage * eyeDamageMultiplier;
+            }
+            else
+            {
+                camShakeManager.ShakeSelected(2);
+                actualDamage = damage * bodyDamageMultiplier;
+                eventOnDamageTaken.Invoke();
+            }
+
+            hp -= actualDamage;
+            SpawnDamageNumbers((int)actualDamage, wasLastHitCritical);
+            RefreshUI();
+            CheckIfDead();
+        }
     }
 
 

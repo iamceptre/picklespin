@@ -15619,6 +15619,7 @@ MonoBehaviour:
   EyeFlashAnimation: {fileID: 5550135724489938074}
   shutdownFadeOutSprite: {fileID: 4212601007226901752}
   eyeOpenEmitter: {fileID: 4558805355016975023}
+  headshotHitbox: {fileID: 7736395116358722587}
 --- !u!1 &4212601007226901752
 GameObject:
   m_ObjectHideFlags: 0
@@ -16109,6 +16110,21 @@ MonoBehaviour:
   bodyDamageMultiplier: 0
   eyeDamageMultiplier: 4
   aiHealthUI: {fileID: 3817865884643380506}
+  eventOnDamageTaken:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1526282098459522516}
+        m_TargetAssemblyTypeName: ShowSelectedTip, Assembly-CSharp
+        m_MethodName: Show
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   myHitboxes:
   - {fileID: 2450276633478797400}
   - {fileID: 3248080351808889868}
@@ -16339,7 +16355,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 1491536803079320224}
-  headshotHitbox: {fileID: 7736395116358722587}
   aiHp: {fileID: 9088957210784467254}
   tip: {fileID: 1526282098459522516}
 --- !u!114 &1526282098459522516

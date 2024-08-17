@@ -10,7 +10,6 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
     private WaitForSeconds offTimeLong = new WaitForSeconds(7);
 
     [SerializeField] private WhiteEnemyEye eye;
-    [SerializeField] private Collider headshotHitbox;
 
     [SerializeField] private AiHealth aiHp;
     [SerializeField] private ShowSelectedTip tip;
@@ -19,7 +18,6 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
 
     private IEnumerator Start()
     {
-        headshotHitbox.enabled = false;
 
 
         while (enabled)
@@ -38,7 +36,6 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
             }
 
             eye.On();
-            headshotHitbox.enabled = true;
 
 
             if (random2 == 0)
@@ -52,7 +49,6 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
 
 
             eye.Off();
-            headshotHitbox.enabled = false;
         }
     }
 
@@ -69,7 +65,7 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
     private int Random01()
     {
         int randomized = Random.Range(0, 2);
-        Debug.Log(randomized);
+        //Debug.Log(randomized);
         return randomized;
     }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 public class ShowSelectedTip : MonoBehaviour
 {
     [SerializeField] private bool triggerOnce = true;
-    private bool triggerred = false;
+    private static bool triggerred = false;
     [SerializeField] private bool showAndHide = true;
 
     [SerializeField] private int tipIndexToDisplay;

@@ -16,7 +16,7 @@ public class FloorTypeDetector : MonoBehaviour
     [SerializeField] private StudioEventEmitter carpetLandingEvent;
     [SerializeField] private StudioEventEmitter woodLandingEvent;
 
-    private float raycastLength = 3f;
+    private float raycastLength = 30f;
     private int hitTagCached;
     private int landingHitTagCached;
 

@@ -10241,6 +10241,7 @@ MonoBehaviour:
   eventOnDamageTaken:
     m_PersistentCalls:
       m_Calls: []
+  myHitboxes: []
 --- !u!114 &6572068718953228771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15750,7 +15751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fe0c4b8984d1c4a8638f1564a6fc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howMuchXpIGive: 200
+  howMuchXpIGive: 333
   expSourceName: healed an angel
   wasLastShotAHeadshot: 0
   manaSuckParticles: {fileID: 42564252489400758}
