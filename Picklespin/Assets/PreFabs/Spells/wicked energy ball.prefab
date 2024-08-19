@@ -19896,7 +19896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellID: 0
-  spellName: Voidshard
+  spellName: Netherlight
   damage: 5
   magickaCost: 15
   speed: 65

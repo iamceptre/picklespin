@@ -59,7 +59,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{a2cfa5e8-59ee-4dbc-acf0-8ca7ce3e64ba}">
 		<property name="maxVoices">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<property name="minimumDistance">
 			<value>2.79999995</value>

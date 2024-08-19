@@ -66,13 +66,13 @@ public class WaypointsForSpawner : State
         if (CurrentTarget != null)
         {
 
-            if (Vector3.Distance(transform.position, CurrentTarget.position) < 1 && canIncrement)
+            if (Vector3.Distance(transform.position, CurrentTarget.position) < 3 && canIncrement)
             {
                 Invoke("UpdateDestination", waitOnWaypointTime);
                 IncreaseWaypoint();
             }
 
-            if (Vector3.Distance(transform.position, CurrentTarget.position) > 2 && !canIncrement)
+            if (Vector3.Distance(transform.position, CurrentTarget.position) > 4 && !canIncrement)
             {
                 canIncrement = true;
             }
