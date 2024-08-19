@@ -677,7 +677,7 @@
 			<value>8</value>
 		</property>
 		<property name="minimumExtent">
-			<value>82</value>
+			<value>180</value>
 		</property>
 		<property name="panBlend">
 			<value>0.669999957</value>

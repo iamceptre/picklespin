@@ -72,7 +72,7 @@ public class AiHealth : MonoBehaviour
 
     private void CheckIfDead()
     {
-        if (hp <= 0)
+        if ((int)hp <= 0)
         {
             for (int i = 0; i < myHitboxes.Length; i++)
             {
@@ -86,7 +86,6 @@ public class AiHealth : MonoBehaviour
 
     private IEnumerator ShakeLater(int index)
     {
-        yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
         camShakeManager.ShakeSelected(index);
     }

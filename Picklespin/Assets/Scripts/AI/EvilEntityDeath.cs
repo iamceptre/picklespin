@@ -6,8 +6,8 @@ using System.Collections;
 
 public class EvilEntityDeath : MonoBehaviour
 {
-    [SerializeField] private EventReference evilEntityDeathSound;
-    private EventInstance evilEntityDeathSoundReference;
+    //[SerializeField] private EventReference evilEntityDeathSound;
+    //private EventInstance evilEntityDeathSoundReference;
     [SerializeField] private UnityEvent deathEvent;
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
 
@@ -38,10 +38,10 @@ public class EvilEntityDeath : MonoBehaviour
             aiHealthUiBar.FadeOut();
         }
 
-        evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
-        RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
-        evilEntityDeathSoundReference.start();
-        evilEntityDeathSoundReference.release();
+        //evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
+        //RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
+        //evilEntityDeathSoundReference.start();
+        //evilEntityDeathSoundReference.release();
         StartCoroutine(ShakeLater());
         dissolver = gameObject.GetComponent<Dissolver>();
         dissolver.StartDissolve();

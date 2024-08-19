@@ -30,7 +30,6 @@ public class SpawnInEnemy : MonoBehaviour
         yield return timeToSpawnInYield;
 
         yield return FadeInMaterial();
-        SetMaterialToOpaqueMode();
     }
 
     private void PlaySpawnParticles()
@@ -43,7 +42,7 @@ public class SpawnInEnemy : MonoBehaviour
     private void InitializeMaterialForFade()
     {
         material.SetColor(ColorProperty, TransparentWhite);
-        SetMaterialToFadeMode();
+        // SetMaterialToFadeMode();
     }
 
     private IEnumerator FadeInMaterial()
@@ -63,15 +62,16 @@ public class SpawnInEnemy : MonoBehaviour
         }
 
         material.SetColor(ColorProperty, Color.white);
+        material.SetInt("_ZWrite", 1);
         stateManager.StartAI();
     }
 
     private void SetMaterialToFadeMode()
     {
         material.SetFloat("_Mode", 2);
-        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        material.SetInt("_ZWrite", 0);
+        material.SetInteger("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInteger("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInteger("_ZWrite", 0);
         material.DisableKeyword("_ALPHATEST_ON");
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
@@ -81,12 +81,12 @@ public class SpawnInEnemy : MonoBehaviour
     private void SetMaterialToOpaqueMode()
     {
         material.SetFloat("_Mode", 0);
-        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-        material.SetInt("_ZWrite", 1);
-        material.DisableKeyword("_ALPHATEST_ON");
-        material.DisableKeyword("_ALPHABLEND_ON");
-        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        //material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        //material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+        material.SetInteger("_ZWrite", 1);
+        //material.DisableKeyword("_ALPHATEST_ON");
+        //material.DisableKeyword("_ALPHABLEND_ON");
+        //material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
     }
 }

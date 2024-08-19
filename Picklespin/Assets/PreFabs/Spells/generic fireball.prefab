@@ -10009,7 +10009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellID: 1
-  spellName: fireball
+  spellName: Fireball
   damage: 10
   magickaCost: 50
   speed: 25

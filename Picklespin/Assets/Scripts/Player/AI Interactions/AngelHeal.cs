@@ -212,6 +212,8 @@ public class AngelHeal : MonoBehaviour
             return;
         }
 
+        aiHealth.hp = 100;
+
         healSpeedMultiplier = 1;
         StopAiming();
 

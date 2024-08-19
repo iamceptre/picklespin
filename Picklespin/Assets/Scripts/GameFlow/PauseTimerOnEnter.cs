@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class PauseTimerOnEnter : MonoBehaviour
@@ -21,6 +20,10 @@ public class PauseTimerOnEnter : MonoBehaviour
 
     private void OnDisable()
     {
+        if (roundSystem == null)
+        {
+            roundSystem = RoundSystem.instance;
+        }
         roundSystem.isCounting = true;
     }
 

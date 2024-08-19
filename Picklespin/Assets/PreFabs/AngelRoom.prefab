@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 1065284503094238670}
   - component: {fileID: 4136412263620153963}
   - component: {fileID: 2198753051302880929}
+  - component: {fileID: 2763008182209400933}
   m_Layer: 0
   m_Name: AngelRing_Ground
   m_TagString: Untagged
@@ -217,6 +218,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2763008182209400933
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397291141157439348}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8314571269056883277, guid: 5eb4990bbb988f149ab6f53e7fd7e570, type: 3}
 --- !u!1 &835244726647521129
 GameObject:
   m_ObjectHideFlags: 0
@@ -10234,9 +10257,81 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 65909613886607028}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7484260118281307340}
+        m_TargetAssemblyTypeName: LightPulse, Assembly-CSharp
+        m_MethodName: FadeOutAndDisable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1058289258702497194}
+        m_TargetAssemblyTypeName: DissolveBounce, Assembly-CSharp
+        m_MethodName: FadeOutAndDisable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1058289258702497194}
+        m_TargetAssemblyTypeName: DissolveBounce, Assembly-CSharp
+        m_MethodName: FadeOutAndDisable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9023855576841303838}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2763008182209400933}
+        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   hp: 1
-  bodyDamageMultiplier: 1
-  eyeDamageMultiplier: 4
+  bodyDamageMultiplier: 25
+  eyeDamageMultiplier: 0
   aiHealthUI: {fileID: 0}
   eventOnDamageTaken:
     m_PersistentCalls:
@@ -10421,10 +10516,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6592339139295782114}
-  - {fileID: 8610809329592111443}
+  - {fileID: 7656658504510660070}
   - {fileID: 7326393568944362546}
   - {fileID: 545428482709964014}
+  - {fileID: 6592339139295782114}
+  - {fileID: 8610809329592111443}
   - {fileID: 6949455125051520508}
   - {fileID: 7981044004471294912}
   - {fileID: 6861996463270259253}
@@ -15707,6 +15803,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf9fbe37f0cc834a8b26e17ec5260b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4229459373552954642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7656658504510660070}
+  - component: {fileID: 9023855576841303838}
+  m_Layer: 6
+  m_Name: Death_Emitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7656658504510660070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4229459373552954642}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1364476381116299179}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9023855576841303838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4229459373552954642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1787112860
+      Data2: 1080658139
+      Data3: 1936146315
+      Data4: -1919122722
+    Path: event:/ANGELS/ANGEL_DEATH
+  Event: 
+  PlayEvent: 0
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 6
+  OverrideMaxDistance: 40
 --- !u!1 &4556042239110279990
 GameObject:
   m_ObjectHideFlags: 0
@@ -21096,7 +21255,7 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 4
-  OverrideMaxDistance: 35
+  OverrideMaxDistance: 100
 --- !u!1 &8060132385785742649
 GameObject:
   m_ObjectHideFlags: 0
@@ -29826,7 +29985,6 @@ GameObject:
   - component: {fileID: 6412587555913890641}
   - component: {fileID: 8175299392796976900}
   - component: {fileID: 7484260118281307340}
-  - component: {fileID: 8950497049298117101}
   m_Layer: 0
   m_Name: AngelRing_Ground_Light
   m_TagString: Untagged
@@ -29925,19 +30083,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationTime: 1
   lowestIntensity: 0.2
---- !u!114 &8950497049298117101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8927650629753899587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c224bb77325c04ba218df9b7a87124, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationTime: 0.5
 --- !u!1001 &454176948300574652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29986,6 +30131,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 155651785175899679, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+      propertyPath: _trail.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 155651785175899679, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+      propertyPath: _trail.Array.data[0]
+      value: 
+      objectReference: {fileID: 9217237748370720981}
+    - target: {fileID: 155651785175899679, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+      propertyPath: _trail.Array.data[1]
+      value: 
+      objectReference: {fileID: 1189972228188282119}
+    - target: {fileID: 155651785175899679, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+      propertyPath: _trail.Array.data[2]
+      value: 
+      objectReference: {fileID: 2266064215633409653}
     - target: {fileID: 763254012968366568, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
       propertyPath: m_Name
       value: AngelRings
@@ -30056,6 +30217,16 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 819343625301675651, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
   m_PrefabInstance: {fileID: 454176948300574652}
   m_PrefabAsset: {fileID: 0}
+--- !u!96 &1189972228188282119 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 1643302491848078011, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+  m_PrefabInstance: {fileID: 454176948300574652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!96 &2266064215633409653 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 1819211132157417929, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+  m_PrefabInstance: {fileID: 454176948300574652}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &3368066554141860698 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2949938194757422310, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
@@ -30106,6 +30277,11 @@ MeshRenderer:
 --- !u!23 &8767707775254919330 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 9214549845914654494, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
+  m_PrefabInstance: {fileID: 454176948300574652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!96 &9217237748370720981 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 8766181231920752489, guid: bcab5933c6a76be4da30fa13e36b7b3a, type: 3}
   m_PrefabInstance: {fileID: 454176948300574652}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1383102369648365294

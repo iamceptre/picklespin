@@ -14842,7 +14842,7 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 5
-  OverrideMaxDistance: 90
+  OverrideMaxDistance: 150
 --- !u!1 &5001862982371931948
 GameObject:
   m_ObjectHideFlags: 0
@@ -19895,8 +19895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellName: energy
-  damage: 4
+  spellID: 0
+  spellName: Voidshard
+  damage: 5
   magickaCost: 15
   speed: 65
   myCooldown: 1

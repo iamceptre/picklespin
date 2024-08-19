@@ -5,6 +5,7 @@ public class AngelRingFalloff : MonoBehaviour
 {
     [SerializeField] private Collider[] _collider;
     [SerializeField] private Rigidbody[] _rb;
+    [SerializeField] private TrailRenderer[] _trail;
     [SerializeField] private Animator animator;
 
     private WaitForSeconds timeBeforeDisablingCollider = new WaitForSeconds(3);
@@ -20,6 +21,7 @@ public class AngelRingFalloff : MonoBehaviour
         {
             _rb[i].isKinematic = false;
             _collider[i].enabled = true;
+            _trail[i].enabled = false;
         }
 
         StartCoroutine(WaitAndDisableCollider());

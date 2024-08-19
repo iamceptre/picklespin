@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="MixerMaster" id="{5ddb48f1-77cc-4c71-88b8-028504473097}">
-		<property name="volume">
-			<value>5</value>
-		</property>
 		<property name="name">
 			<value>Master Bus</value>
 		</property>
@@ -39,7 +36,7 @@
 	<object class="MixerBusFader" id="{9ca18f0d-bef0-45be-b644-e76fddb85bfd}" />
 	<object class="CompressorEffect" id="{34297202-8763-49c1-a4b3-90c503bd208d}">
 		<property name="threshold">
-			<value>-14</value>
+			<value>-17.5</value>
 		</property>
 		<property name="ratio">
 			<value>1.39999998</value>

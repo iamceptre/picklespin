@@ -149,6 +149,9 @@ public class Bullet : MonoBehaviour
         StopCoroutine(autoKill);
         hitSomething = true;
 
+        SpawnExplosion();
+        AfterExplosion();
+
         if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
         {
             Collider collider = collision.gameObject.GetComponent<Collider>();
@@ -156,6 +159,8 @@ public class Bullet : MonoBehaviour
         }
         else //HIT THE WALL 
         {
+            PlayExplosionSounds();
+
             if (hitWall != null)
                 hitWall.Play();
         }
@@ -166,8 +171,6 @@ public class Bullet : MonoBehaviour
         }
 
 
-        SpawnExplosion();
-        AfterExplosion();
     }
 
 
@@ -200,13 +203,13 @@ public class Bullet : MonoBehaviour
         {
             Headshot(refs);
             giveExpToPlayer.wasLastShotAHeadshot = true;
-            flashWhenHit.StartCoroutine(flashWhenHit.FlashHeadshot());
+            flashWhenHit.FlashHeadshot();
             return;
         }
         else
         {
             giveExpToPlayer.wasLastShotAHeadshot = false;
-            flashWhenHit.StartCoroutine(flashWhenHit.Flash());
+            flashWhenHit.Flash();
         }
 
         aiHealth.TakeDamage(damage, false, wasLastHitCritical);
@@ -301,6 +304,14 @@ public class Bullet : MonoBehaviour
     private void SpawnExplosion()
     {
         _explosionFxGameObject.SetActive(true);
+
+        _explosionTransform.position = Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f);
+        SendShakeSignal();
+    }
+
+
+    private void PlayExplosionSounds()
+    {
         explosionSoundEmitter.Play();
 
         if (explosionReflectionsSoundEmitter != null)
@@ -308,8 +319,6 @@ public class Bullet : MonoBehaviour
             explosionReflectionsSoundEmitter.Play();
         }
 
-        _explosionTransform.position = Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f);
-        SendShakeSignal();
     }
 
     public void AfterExplosion()

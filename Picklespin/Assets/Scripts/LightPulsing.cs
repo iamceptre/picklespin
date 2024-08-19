@@ -27,4 +27,15 @@ public class LightPulse : MonoBehaviour
     }
 
 
+    public void FadeOutAndDisable()
+    {
+        lightSource.DOKill();
+        lightSource.DOIntensity(0, animationTime * 0.5f).OnComplete(() =>
+        {
+            lightSource.enabled = false;
+            enabled = false;
+        });
+    }
+
+
 }

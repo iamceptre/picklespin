@@ -21,7 +21,7 @@ public class EnemyCounter : MonoBehaviour
     private void Start()
     {
         roundSystem = RoundSystem.instance;
-        //UpdateRoundSystemSpeedMultiplier();
+        UpdateRoundSystemSpeedMultiplier(); //commenting this out will make the first round longer (good for showcase)
     }
 
     public void UpdateRoundSystemSpeedMultiplier() //boundle this with enemyCount modification

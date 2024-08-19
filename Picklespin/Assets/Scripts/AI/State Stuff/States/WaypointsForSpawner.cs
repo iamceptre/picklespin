@@ -1,16 +1,16 @@
-using System.Collections;
+using Pathfinding;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class WaypointsForSpawner : State
 {
     public Transform[] cachedPoint;
     [SerializeField] private Transform[] waypoints;
 
-    private NavMeshAgent agent;
+    [SerializeField] private AIPath aiPath;
+    [SerializeField] private AIDestinationSetter destinationSetter;
     [SerializeField] private int waypointIndex;
-    [HideInInspector] public Vector3 target;
-    private AiVision aiVision;
+    [HideInInspector] public Transform CurrentTarget;
+    [SerializeField] private AiVision aiVision;
     [SerializeField] private AttackPlayer attackPlayer;
     private bool canIncrement = true;
     [SerializeField] private float idleSpeed = 3.5f;
@@ -22,13 +22,10 @@ public class WaypointsForSpawner : State
 
     private float waitOnWaypointTime = 2;
 
-    //bool imStuck;
 
     private int rrrandom;
     private int previousNumber = -1;
-
-    private WaitForSeconds stuckCheckTime = new WaitForSeconds(1);
-
+    
     public override State RunCurrentState() //This shit runs periodically 
     {
         if (aiVision.seeingPlayer)
@@ -44,8 +41,6 @@ public class WaypointsForSpawner : State
 
     private void Awake()
     {
-        agent = GetComponentInParent<NavMeshAgent>();
-        aiVision = GetComponentInParent<AiVision>();
         waypointIndex = 0;
     }
 
@@ -68,58 +63,38 @@ public class WaypointsForSpawner : State
     private void RefreshWaypoint()
     {
 
-        //CalculateVelocity();
-        //StuckCheck();
-
-        if (Vector3.Distance(transform.position, target) < 1 && canIncrement)
+        if (CurrentTarget != null)
         {
-            Invoke("UpdateDestination", waitOnWaypointTime);
-            IncreaseWaypoint();
+
+            if (Vector3.Distance(transform.position, CurrentTarget.position) < 1 && canIncrement)
+            {
+                Invoke("UpdateDestination", waitOnWaypointTime);
+                IncreaseWaypoint();
+            }
+
+            if (Vector3.Distance(transform.position, CurrentTarget.position) > 2 && !canIncrement)
+            {
+                canIncrement = true;
+            }
         }
 
-        if (Vector3.Distance(transform.position, target) > 2 && !canIncrement)
-        {
-            canIncrement = true;
-        }
-
-    }
-
-
-    private void StuckCheck()
-    {
-        if (velocity < 0.2)
-        {
-            StartCoroutine(StuckCheckTimer());
-        }
-        else
-        {
-            StopAllCoroutines();
-        }
-    }
-
-
-    private IEnumerator StuckCheckTimer()
-    {
-        yield return stuckCheckTime;
-        //imStuck = true;
-        canIncrement = true;
     }
 
 
     public void UpdateDestination()
     {
-        agent.speed = idleSpeed;
+        aiPath.maxSpeed = idleSpeed;
 
         if (waypoints.Length > 0)
         {
-            target = waypoints[waypointIndex].position;
+            CurrentTarget = waypoints[waypointIndex];
         }
         else
         {
-            target = startingPos;
+            CurrentTarget = null;
 
         }
-        agent.SetDestination(target);
+        destinationSetter.target = CurrentTarget;
     }
 
 
@@ -127,7 +102,6 @@ public class WaypointsForSpawner : State
     {
         canIncrement = false;
         waypointIndex++;
-        //imStuck = false;
         if (waypointIndex == waypoints.Length)
         {
             waypointIndex = 0;

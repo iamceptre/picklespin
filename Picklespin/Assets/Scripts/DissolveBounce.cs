@@ -81,4 +81,23 @@ public class DissolveBounce : MonoBehaviour
             myTween.Pause();
         }
     }
+
+    public void FadeOutAndDisable()
+    {
+        if (myTween != null && myTween.IsActive())
+        {
+            myTween.Kill();
+        }
+
+
+        myTween = DOTween.To(() => dissolve, x => dissolve = x, 1, animationTime*0.5f)
+            .OnUpdate(() =>
+            {
+                myMaterial.SetFloat(Progress, dissolve);
+            })
+            .OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
+    }
 }

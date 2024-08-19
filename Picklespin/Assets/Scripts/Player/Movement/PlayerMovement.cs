@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector][Range(0, 100)] public float stamina = 100;
     private Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
+    private CameraShakeManagerV2 camShakeManager;
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool anyMovementKeysPressed;
     [HideInInspector] public float externalPushForce = 1; //1 means no difference at all
@@ -64,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
         SetCameraBobSpeed();
         footstepSystem.SetNewFootstepSpace(1);
+        camShakeManager = CameraShakeManagerV2.instance;
     }
 
     public void StairGravity()
@@ -286,6 +288,7 @@ public class PlayerMovement : MonoBehaviour
     {
         footstepSystem.SendJumpSignal();
         NormalGravity();
+        camShakeManager.ShakeSelected(9);
 
         if (bhop != null && bhop.canBhop)
         {

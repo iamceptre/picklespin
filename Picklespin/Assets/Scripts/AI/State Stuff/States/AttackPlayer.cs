@@ -1,4 +1,5 @@
 using FMODUnity;
+using Pathfinding;
 using UnityEngine;
 using UnityEngine.AI;
 public class AttackPlayer : State
@@ -7,24 +8,24 @@ public class AttackPlayer : State
     private HpBarDisplay hpBarDisplay;
     private PublicPlayerTransform playerTransform;
 
-    private NavMeshAgent agent;
+    [SerializeField] private AIDestinationSetter destinationSetter;
+    [SerializeField] private AIPath aiPath;
+
+    [SerializeField] private AiVision aiVision;
     [SerializeField] private LoosingPlayer loosingPlayer;
-    private AiVision aiVision;
 
     [SerializeField] private float attackSpeed = 8;
-
     [SerializeField] private int howMuchDamageIdeal = 10;
-
     [SerializeField] private StudioEventEmitter attackSoundEmitter;
 
     private int attackCounter = 0;
+
+    public bool canAttack = true;
 
     private void Start()
     {
         playerTransform = PublicPlayerTransform.instance;
         playerHP = PlayerHP.instance;
-        aiVision = GetComponentInParent<AiVision>();
-        agent = GetComponentInParent<NavMeshAgent>();
         hpBarDisplay = HpBarDisplay.instance;
     }
 
@@ -48,10 +49,21 @@ public class AttackPlayer : State
     void RunToPlayer()
     {
         StopAllCoroutines();
-        agent.speed = attackSpeed;
+        aiPath.maxSpeed = attackSpeed;
         loosingPlayer.lostPlayer = false;
-        agent.SetDestination(playerTransform.PlayerTransform.position);
-        AttackWhenClose();
+        destinationSetter.target = playerTransform.PlayerTransform;
+
+        if (canAttack)
+        {
+            AttackWhenClose();
+        }
+    }
+
+
+
+    public void SetCanAttack(bool state)
+    {
+        canAttack = state;
     }
 
     void AttackWhenClose()
@@ -60,13 +72,13 @@ public class AttackPlayer : State
         {
             attackCounter++;
 
-            if (attackCounter % 2 == 0) {
+            if (attackCounter % 2 != 0) {
                 if (!playerHP.isLowHP) {
                     playerHP.hp -= howMuchDamageIdeal;
                 }
                 else
                 {
-                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.33f);
+                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.5f);
                 }
 
                 attackSoundEmitter.Play();
