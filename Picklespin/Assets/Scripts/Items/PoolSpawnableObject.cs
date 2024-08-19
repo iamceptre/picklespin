@@ -5,8 +5,6 @@ public class PoolSpawnableObject : MonoBehaviour
 {
     private PickupableBonusesSpawner pickupableBonusesSpawner;
     private int myOccupiedWaypointIndex;
-    [SerializeField] private Pickupable_Item pickupableItem;
-
     private ObjectPool<PoolSpawnableObject> _pool;
 
 

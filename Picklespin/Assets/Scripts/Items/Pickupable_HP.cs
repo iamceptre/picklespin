@@ -8,11 +8,11 @@ public class Pickupable_HP : MonoBehaviour
     private HpBarDisplay hpBarDisplay;
     
     private BarLightsAnimation barLightsAnimation;
+    private ScreenFlashTint screenFlashTint;
 
     [SerializeField] private int howMuchHPIGive;
 
     [SerializeField] EventReference pickupSoundEvent;
-    //[SerializeField] EventReference pickupSoundEventFull;
 
 
     private void Start()
@@ -20,6 +20,7 @@ public class Pickupable_HP : MonoBehaviour
         playerHP = PlayerHP.instance;
         hpBarDisplay = HpBarDisplay.instance;
         barLightsAnimation = BarLightsAnimation.instance;
+        screenFlashTint = ScreenFlashTint.instance;
     }
 
     public void GiveHPToPlayer()
@@ -29,6 +30,7 @@ public class Pickupable_HP : MonoBehaviour
             playerHP.GiveHPToPlayer(howMuchHPIGive);
             itemAfterPickingUp.Pickup();
             RuntimeManager.PlayOneShot(pickupSoundEvent);
+            screenFlashTint.Flash(0);
         }
     }
 

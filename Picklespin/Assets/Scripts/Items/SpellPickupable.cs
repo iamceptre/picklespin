@@ -33,6 +33,8 @@ public class SpellPickupable : MonoBehaviour
 
    [SerializeField] private UnityEvent additionalPickupEvent;
 
+    private ScreenFlashTint screenFlashTint;
+
 
 
     private void Awake()
@@ -53,6 +55,7 @@ public class SpellPickupable : MonoBehaviour
         handBop = HandBopAfterItemPickup.instance;
         unlockedSpells = UnlockedSpells.instance;
         ammo = Ammo.instance;
+        screenFlashTint = ScreenFlashTint.instance;
         myLightRange = myLight.range;
         myLightColor = myLight.color;
 
@@ -94,6 +97,7 @@ public class SpellPickupable : MonoBehaviour
 
             handBop.Do();
             unlockedSpells.UnlockASpell(spellID);
+            screenFlashTint.Flash(spellID + 3, 2f); // +3 because the first 3 index entries are for potions
             spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
             spellSpawnerScript.avaliableSpawnPointsCount++;
             spellSpawnerScript.ClampSpawnCount();

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
 
 public class Dissolver : MonoBehaviour
@@ -22,9 +21,6 @@ public class Dissolver : MonoBehaviour
     [SerializeField] private GameObject ashPile;
     [SerializeField] private Collider myCollider;
 
-    [SerializeField] private NavMeshAgent myNavMeshAgent;
-    [SerializeField] private StateManager myStateManager;
-
     private int progress = Shader.PropertyToID("_DissolveAmount");
 
 
@@ -32,15 +28,6 @@ public class Dissolver : MonoBehaviour
     {
         myCollider.enabled = false;
 
-        if (myStateManager != null)
-        {
-            Destroy(myStateManager);
-        }
-
-        if (myNavMeshAgent != null)
-        {
-            myNavMeshAgent.enabled = false;
-        }
 
         myRenderer.material = deadMaterial;
         dissolveProgress = 0;
@@ -80,7 +67,7 @@ public class Dissolver : MonoBehaviour
         Vector3 positionOffset = new Vector3(0, Random.Range(0.28f, 0.35f));
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, Mathf.Infinity))
+        if (Physics.Raycast(transform.position + Vector3.up, -Vector3.up, out hit, Mathf.Infinity)) //+ Vector3.up to make the raycast shoot from above the ground
         {
             float randomY = Random.Range(0, 360);
             var spawnedAsh = Instantiate(ashPile, hit.point + positionOffset, new Quaternion(0, randomY, 0, 0));
