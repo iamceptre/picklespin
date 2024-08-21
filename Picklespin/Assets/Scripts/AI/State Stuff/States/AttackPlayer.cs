@@ -16,6 +16,7 @@ public class AttackPlayer : State
 
     [SerializeField] private float attackSpeed = 8;
     [SerializeField] private int howMuchDamageIdeal = 10;
+    [SerializeField] private float meleeAttackRange = 4;
     [SerializeField] private StudioEventEmitter attackSoundEmitter;
 
     private int attackCounter = 0;
@@ -68,7 +69,7 @@ public class AttackPlayer : State
 
     void AttackWhenClose()
     {
-        if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < 5)
+        if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < meleeAttackRange)
         {
             attackCounter++;
 

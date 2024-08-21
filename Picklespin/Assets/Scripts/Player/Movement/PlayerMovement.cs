@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public float defaultHeight;
     public float crouchHeight;
     [HideInInspector][Range(0, 100)] public float stamina = 100;
-    private Vector3 moveDirection = Vector3.zero;
+    public Vector3 moveDirection = Vector3.zero;
     public CharacterController characterController;
     private CameraShakeManagerV2 camShakeManager;
     [HideInInspector] public bool isRunning;
@@ -195,6 +195,7 @@ public class PlayerMovement : MonoBehaviour
         float curSpeedX = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical");
         float curSpeedY = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal");
         float movementDirectionY = moveDirection.y;
+
         moveDirection = ((forward * curSpeedX * externalPushForce) + (right * curSpeedY)) * speedMultiplier;
 
         if (Input.GetButton("Jump") && characterController.isGrounded)
@@ -268,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (characterController.isGrounded)
         {
-            if (anyMovementKeysPressed)                                                  //if player is moving then the stamina recovery is slower 
+            if (anyMovementKeysPressed)//if player is moving then the stamina recovery is slower 
 
             {
                 stamina += Time.deltaTime * 10;

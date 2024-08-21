@@ -22,7 +22,6 @@ public class AngelMind : MonoBehaviour
     [SerializeField] private BoxCollider scriptActivationTrigger;
     private Helper_Arrow helperArrow;
     private AngelHealingMinigame minigame;
-    private CameraShakeManagerV2 camShakeManager;
 
     [Header("Emmiter References")]
 
@@ -90,7 +89,6 @@ public class AngelMind : MonoBehaviour
         ammo = Ammo.instance;
         playerMovement = PlayerMovement.instance;
         playerEXP = PlayerEXP.instance;
-        camShakeManager = CameraShakeManagerV2.instance;
         eyesManager.Close();
     }
 
@@ -115,8 +113,6 @@ public class AngelMind : MonoBehaviour
         eyesManager.Open();
 
         angelTorchManager.OffTorch();
-
-        camShakeManager.ShakeSelected(10);
 
         GiveHPToPlayer();
         Invoke("GiveStaminaToPlayer", 0.2f);

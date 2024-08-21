@@ -35,7 +35,10 @@ public class CameraShakeManagerV2 : MonoBehaviour
     {
         for (int i = 0; i < cameraShakes.Length; i++)
         {
-            cameraShakes[i].CancelShake();
+            if (cameraShakes[i] != null)
+            {
+                cameraShakes[i].CancelShake();
+            }
         }
     }
 

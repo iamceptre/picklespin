@@ -8,6 +8,7 @@ public class AngelHeal : MonoBehaviour
 {
     [SerializeField] private HandShakeWhenCannotHeal handShake;
     private Helper_Arrow helperArrow;
+    private ScreenFlashTint screenFlashTint;
     AngelHealingMinigame minigame;
     [HideInInspector] public float healSpeedMultiplier = 1; //ITS BOOSTED WHEN IS 0
 
@@ -63,6 +64,7 @@ public class AngelHeal : MonoBehaviour
         helperArrow = Helper_Arrow.instance;
         tipManager.Hide(1);
         minigame = AngelHealingMinigame.instance;
+        screenFlashTint = ScreenFlashTint.instance;
         minigame.enabled = false;
     }
 
@@ -225,6 +227,7 @@ public class AngelHeal : MonoBehaviour
         minigameCanvasGroup.DOKill();
         minigameCanvasGroup.alpha = 0;
         FadeOutGui();
+        screenFlashTint.Flash(5, 4);
         angel.healed = true;
     }
 
