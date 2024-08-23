@@ -15477,7 +15477,7 @@ MonoBehaviour:
   aiPath: {fileID: 7323594540175906757}
   aiVision: {fileID: 7390506993609888115}
   loosingPlayer: {fileID: 5976180761306544218}
-  attackSpeed: 16
+  attackSpeed: 12
   howMuchDamageIdeal: 15
   meleeAttackRange: 4
   attackSoundEmitter: {fileID: 9064666203966580678}
@@ -16078,7 +16078,7 @@ MonoBehaviour:
     maximumPeriod: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
+  maxAcceleration: 10
   rotationSpeed: 150
   slowdownDistance: 10
   pickNextWaypointDist: 3

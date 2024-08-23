@@ -1,123 +1,112 @@
 using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
+using System.Collections;
 
 public class Door : MonoBehaviour
 {
-    //LOGIC
-    private KeyCode actionKey = KeyCode.E;
-    public bool isLocked = false;
-    private bool isOpened;
-    private Transform mainCamera;
-    private Collider myCollider;
-    [SerializeField] LayerMask layerMask;
-    private bool buttonBuffer = false;
-    private bool canButtonBuffer = true;
-
-    //ROTATION
-    private Vector3 startRot;
-    private float animationTime = 0.8f;
-
-    //SOUND
+    // CONFIGURABLE PARAMETERS
+    [SerializeField] private LayerMask layerMask;  // Assign this to only the "Door" layer
+    [SerializeField] private Transform _transform;
     [SerializeField] private StudioEventEmitter doorOpenSound;
     [SerializeField] private StudioEventEmitter doorCloseSound;
     [SerializeField] private StudioEventEmitter doorLockedSound;
 
-    //TOOLTIPS
-    private TipManager tipManager;
+    private static readonly WaitForSeconds refreshRate = new WaitForSeconds(0.5f);
+    private static readonly Vector3 rotationVector = new Vector3(0, 0, 90);
+    private static readonly float animationTime = 0.8f;
+    private static readonly float maxDistance = 7f;
 
-    //CACHE
-    [SerializeField]private Transform _transform;
-    private Vector3 rotationVector = new Vector3(0, 0, 90);
+    // LOGIC
+    private KeyCode actionKey = KeyCode.E;
+    public bool isLocked = false;
+    private bool isOpened = false;
+    private bool buttonBuffer = false;
+    private bool canButtonBuffer = true;
 
-    //EXTERNAL REFERENCES 
+    // CACHED COMPONENTS
+    private Transform mainCamera;
     private Animator handAnimator;
+    private TipManager tipManager;
+    [SerializeField] private Collider myCollider;
+    private Vector3 startRot;
 
     private void Awake()
     {
-        if(_transform == null)
-        _transform = transform;
+        _transform = _transform != null ? _transform : transform;
+        startRot = _transform.localEulerAngles;
     }
 
-    private void OnEnable()
-    {
-        tipManager = TipManager.instance;
-    }
-
-    void Start()
+    private void Start()
     {
         handAnimator = PublicPlayerHandAnimator.instance._animator;
-        startRot = _transform.localEulerAngles;
-        mainCamera = CachedCameraMain.instance.transform;
-        myCollider = gameObject.GetComponent<Collider>();
+        mainCamera = CachedCameraMain.instance.cachedTransform;
+        tipManager = TipManager.instance;
+        enabled = false;
     }
 
-
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(actionKey))
-        { 
-            buttonBuffer = true;
+        {
+            if (canButtonBuffer)
+            {
+                buttonBuffer = true;
+                canButtonBuffer = false;
+                PerformRaycastCheck();
+            }
         }
         else
         {
             buttonBuffer = false;
-        }
-
-        if (Input.GetKeyUp(actionKey))
-        {
             canButtonBuffer = true;
-        }
-
-
-        if (buttonBuffer && canButtonBuffer)
-        {
-                    buttonBuffer = false;
-                    LockedCheck();
-                    canButtonBuffer = false;
         }
     }
 
-
-    private void LockedCheck()
+    private void PerformRaycastCheck()
     {
-        if (!isLocked)
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, 5f, layerMask))
         {
-            OpenCloseDecider();
+            if (hit.collider == myCollider)
+            {
+                HandleDoorInteraction();
+            }
         }
-        else
+    }
+
+    private void HandleDoorInteraction()
+    {
+        if (isLocked)
         {
             handAnimator.SetTrigger("Hand_Fail");
             doorLockedSound.Play();
         }
+        else
+        {
+            ToggleDoor();
+        }
     }
 
-
-    private void OpenCloseDecider()
+    private void ToggleDoor()
     {
         tipManager.Hide(0);
 
-        if (!isOpened)
+        if (isOpened)
         {
-            handAnimator.SetTrigger("Door_Open");
-            OpenDoor();
+            CloseDoor();
         }
         else
         {
-            handAnimator.SetTrigger("Door_Close");
-            CloseDoor();
+            OpenDoor();
         }
     }
 
-
     private void OpenDoor()
     {
-         _transform.DOKill();
-         _transform.DOLocalRotate(startRot + rotationVector, animationTime, RotateMode.Fast);
-
-        doorLockedSound.Stop();
+        _transform.DOKill();
+        _transform.DOLocalRotate(startRot + rotationVector, animationTime, RotateMode.Fast);
+        doorCloseSound.Stop();
         doorOpenSound.Play();
-
         isOpened = true;
     }
 
@@ -125,18 +114,19 @@ public class Door : MonoBehaviour
     {
         _transform.DOKill();
         _transform.DOLocalRotate(startRot, animationTime, RotateMode.Fast);
-
         doorOpenSound.Stop();
         doorCloseSound.Play();
-
         isOpened = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !enabled)
+        if (other.CompareTag("Player"))
         {
             enabled = true;
+            StopAllCoroutines();
+            StartCoroutine(DisableWhenPlayerGoesAway());
+
             if (!isLocked)
             {
                 tipManager.Show(0);
@@ -144,14 +134,17 @@ public class Door : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private IEnumerator DisableWhenPlayerGoesAway()
     {
-        if (other.gameObject.CompareTag("Player") && enabled)
+        while (enabled)
         {
-            enabled = false;
-            tipManager.Hide(0);
+            yield return refreshRate;
+
+            if (Vector3.Distance(mainCamera.position, _transform.position) > maxDistance)
+            {
+                tipManager.Hide(0);
+                enabled = false;
+            }
         }
     }
-
 }
-

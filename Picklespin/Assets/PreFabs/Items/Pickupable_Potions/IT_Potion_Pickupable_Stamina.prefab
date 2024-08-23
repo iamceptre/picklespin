@@ -16,6 +16,18 @@ PrefabInstance:
       propertyPath: imStamina
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchHpIGive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchManaIGive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchStaminaIGive
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1825327412384273683, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1

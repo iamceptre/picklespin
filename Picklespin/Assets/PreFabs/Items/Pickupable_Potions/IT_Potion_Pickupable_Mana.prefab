@@ -16,6 +16,18 @@ PrefabInstance:
       propertyPath: imMana
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchHpIGive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchManaIGive
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchStaminaIGive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1825327412384273683, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -63,6 +75,10 @@ PrefabInstance:
     - target: {fileID: 6680809000139152427, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
       propertyPath: m_Color.rgba
       value: 4278845954
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945677933371336245, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -9944,7 +9944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupableItem: {fileID: 0}
 --- !u!114 &2361716839078369107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10133,7 +10132,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0

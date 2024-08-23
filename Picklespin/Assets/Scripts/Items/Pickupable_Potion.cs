@@ -88,15 +88,12 @@ public class Pickupable_Potion : MonoBehaviour
                 break;
 
             default:
+                Debug.Log("potion type not set");
                 break;
+
 
         }
 
-
-
-        itemAfterPickingUp.Pickup();
-        pickupSoundEmitter.Play();
-        screenFlashTint.Flash(myPotionTypeIndex);
     }
 
     private void GiveHPToPlayer()
@@ -104,12 +101,27 @@ public class Pickupable_Potion : MonoBehaviour
         if (playerHP.hp < playerHP.maxHp)
         {
             playerHP.GiveHPToPlayer(howMuchHpIGive);
+            Afterpick();
+        }
+        else
+        {
+            Debug.Log("hp, not picking the potion up");
+            return;   
         }
     }
 
     private void GiveStaminaToPlayer()
     {
-        playerMovement.GiveStaminaToPlayer(howMuchStaminaIGive);
+        if (playerMovement.stamina < 100)
+        {
+            playerMovement.GiveStaminaToPlayer(howMuchStaminaIGive);
+            Afterpick();
+        }
+        else
+        {
+            Debug.Log("stamina full, not picking the potion up");
+            return;
+        }
     }
 
     private void GiveManaToPlayer()
@@ -117,7 +129,21 @@ public class Pickupable_Potion : MonoBehaviour
         if (ammo.ammo < ammo.maxAmmo)
         {
             ammo.GiveManaToPlayer(howMuchManaIGive);
+            Afterpick();
         }
+        else
+        {
+            Debug.Log("mana full, not picking the potion up");
+            return;
+        }
+    }
+
+
+    private void Afterpick()
+    {
+        itemAfterPickingUp.Pickup();
+        pickupSoundEmitter.Play();
+        screenFlashTint.Flash(myPotionTypeIndex);
     }
 
 }

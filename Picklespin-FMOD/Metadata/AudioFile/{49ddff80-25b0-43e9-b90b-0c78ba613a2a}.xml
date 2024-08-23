@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{49ddff80-25b0-43e9-b90b-0c78ba613a2a}">
 		<property name="assetPath">
-			<value>In_Game/NPC/Angels/ANGEL_DEATH.wav</value>
+			<value>In_Game/NPC/Angels/Angel_Death/ANGEL_DEATH.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

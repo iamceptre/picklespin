@@ -42,4 +42,6 @@ public class CameraShakeManagerV2 : MonoBehaviour
         }
     }
 
+
+
 }

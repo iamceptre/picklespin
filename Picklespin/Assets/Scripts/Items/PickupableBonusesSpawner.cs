@@ -15,6 +15,8 @@ public class PickupableBonusesSpawner : MonoBehaviour
     [HideInInspector] public bool[] isSpawnPointTaken;
     [HideInInspector] public int avaliableSpawnPointsCount;
 
+    private Vector3 initialSpawnPosition = new Vector3 (0, -50, 0);
+
 
     private int rrrandom;
 
@@ -113,6 +115,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
     {
         PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]); //split every potion into separate pools so you can do weighted random
         itemInstance.SetPool(allPotionsPool);
+        itemInstance.transform.position = initialSpawnPosition;
         return itemInstance;
     }
 

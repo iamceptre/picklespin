@@ -717,6 +717,8 @@ GameObject:
   - component: {fileID: 3555558729990811728}
   - component: {fileID: 9182227517882754858}
   - component: {fileID: 2621309141511098538}
+  - component: {fileID: 6019486459688405425}
+  - component: {fileID: 4845438626838853598}
   m_Layer: 11
   m_Name: Ring2
   m_TagString: Untagged
@@ -840,6 +842,52 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 273793445022461687, guid: ea56b2f74aadb394da1c8439bb6daa66, type: 3}
+--- !u!114 &6019486459688405425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4240768743796962433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fmodEmitter: {fileID: 4845438626838853598}
+  velocityThreshold: 1
+  collisionTag: Concrete
+--- !u!114 &4845438626838853598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4240768743796962433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -786701952
+      Data2: 1104870177
+      Data3: -487453561
+      Data4: 470037035
+    Path: event:/DEV/TEST_BOOP
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 1
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4953786382118237834
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,6 +901,8 @@ GameObject:
   - component: {fileID: 7965138886979375687}
   - component: {fileID: 5383665448441634101}
   - component: {fileID: 3683146140631095720}
+  - component: {fileID: 790822105803094576}
+  - component: {fileID: 6430933899365479607}
   m_Layer: 11
   m_Name: Ring1
   m_TagString: Untagged
@@ -976,6 +1026,52 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4405890238795297944, guid: ea56b2f74aadb394da1c8439bb6daa66, type: 3}
+--- !u!114 &790822105803094576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953786382118237834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fmodEmitter: {fileID: 6430933899365479607}
+  velocityThreshold: 1
+  collisionTag: Concrete
+--- !u!114 &6430933899365479607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953786382118237834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 2002376458
+      Data2: 1330171959
+      Data3: -608404332
+      Data4: -576171963
+    Path: event:/DEV/TEST_BEEP
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 1
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5210084072687768678
 GameObject:
   m_ObjectHideFlags: 0
@@ -6451,8 +6547,6 @@ MonoBehaviour:
   destroyAfterDissolve: 0
   ashPile: {fileID: 1837265447444119675, guid: 4664bbd101753eb4481e8d8fbadfd455, type: 3}
   myCollider: {fileID: 6323646034741378003}
-  myNavMeshAgent: {fileID: 0}
-  myStateManager: {fileID: 0}
 --- !u!114 &3896489033850119827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6529,6 +6623,8 @@ GameObject:
   - component: {fileID: 2984993803356486270}
   - component: {fileID: 5847833911731721211}
   - component: {fileID: 7585187172331169047}
+  - component: {fileID: 6494751081687317126}
+  - component: {fileID: 587316444011681452}
   m_Layer: 11
   m_Name: Ring3
   m_TagString: Untagged
@@ -6652,6 +6748,52 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -423084300730588792, guid: ea56b2f74aadb394da1c8439bb6daa66, type: 3}
+--- !u!114 &6494751081687317126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6667101301592291699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fmodEmitter: {fileID: 587316444011681452}
+  velocityThreshold: 1
+  collisionTag: Concrete
+--- !u!114 &587316444011681452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6667101301592291699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 2002376458
+      Data2: 1330171959
+      Data3: -608404332
+      Data4: -576171963
+    Path: event:/DEV/TEST_BEEP
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 1
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7047719781282471789
 GameObject:
   m_ObjectHideFlags: 0

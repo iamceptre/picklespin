@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4811780342279408905}
   - component: {fileID: 1215839320778307887}
   - component: {fileID: 2496875029789364157}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Door_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -91,19 +91,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213998075380432748}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: feedb5daff89a104bb7edd6fa46878a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLocked: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 8
+  _transform: {fileID: 6682502471349808115}
   doorOpenSound: {fileID: 6279908529394073880}
   doorCloseSound: {fileID: 7280266385843592682}
   doorLockedSound: {fileID: 3013012321252679432}
-  _transform: {fileID: 6682502471349808115}
+  isLocked: 0
+  myCollider: {fileID: 4081230609593342116}
 --- !u!1 &439044543119054622
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +163,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -259,7 +260,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -459,7 +460,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1

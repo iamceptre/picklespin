@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StopAiForAsec : MonoBehaviour
 {
-    private WaitForSeconds waitTime = new WaitForSeconds(1.5f);
+    private WaitForSeconds waitTime = new WaitForSeconds(1.2f);
 
     [SerializeField] private AIPath aiPath;
 

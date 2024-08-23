@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerReturn" id="{e8ceac13-b49d-4a31-9e99-cdaad9a03c47}">
+		<property name="name">
+			<value>Reverb_AngelRoom</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{a1240e5e-35ec-49f3-9870-13c496f7e239}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{a096e33d-b52f-48d1-8636-2dce32e1d7c0}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{a1240e5e-35ec-49f3-9870-13c496f7e239}">
+		<relationship name="effects">
+			<destination>{8fd818f8-6517-4537-b3ff-10d3349da167}</destination>
+			<destination>{7b52f080-7ea0-46ec-9363-e590633f491a}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{a096e33d-b52f-48d1-8636-2dce32e1d7c0}" />
+	<object class="ConvolutionReverbEffect" id="{8fd818f8-6517-4537-b3ff-10d3349da167}">
+		<property name="endFrame">
+			<value>57277</value>
+		</property>
+		<relationship name="referenceableData">
+			<destination>{abb6a682-429a-4818-946a-ef5f3620cd35}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusFader" id="{7b52f080-7ea0-46ec-9363-e590633f491a}" />
+</objects>
