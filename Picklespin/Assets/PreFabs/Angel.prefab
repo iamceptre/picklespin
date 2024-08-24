@@ -812,14 +812,14 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &2621309141511098538
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -830,7 +830,7 @@ MeshCollider:
   m_Material: {fileID: 13400000, guid: 94d6de23b8451cf4cb3540ddd4f39083, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 1
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -849,14 +849,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4240768743796962433}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fmodEmitter: {fileID: 4845438626838853598}
-  velocityThreshold: 1
-  collisionTag: Concrete
+  startDelay: 0.15
+  minimumVolume: -9
+  minimumVolumeVelocity: 1
+  maxVolume: 0
+  maxVolumeVelocity: 5
 --- !u!114 &4845438626838853598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,22 +875,22 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -786701952
-      Data2: 1104870177
-      Data3: -487453561
-      Data4: 470037035
-    Path: event:/DEV/TEST_BOOP
+      Data1: 1480846875
+      Data2: 1328767113
+      Data3: -1971888217
+      Data4: 2043689619
+    Path: event:/ANGELS/ANGEL_RING_HIT
   Event: 
   PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
-  TriggerOnce: 1
+  TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMinDistance: 6
+  OverrideMaxDistance: 40
 --- !u!1 &4953786382118237834
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,14 +999,14 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &3683146140631095720
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1014,7 +1017,7 @@ MeshCollider:
   m_Material: {fileID: 13400000, guid: 94d6de23b8451cf4cb3540ddd4f39083, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 1
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1033,14 +1036,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4953786382118237834}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fmodEmitter: {fileID: 6430933899365479607}
-  velocityThreshold: 1
-  collisionTag: Concrete
+  startDelay: 0.15
+  minimumVolume: -9
+  minimumVolumeVelocity: 1
+  maxVolume: 0
+  maxVolumeVelocity: 5
 --- !u!114 &6430933899365479607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1056,22 +1062,22 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 2002376458
-      Data2: 1330171959
-      Data3: -608404332
-      Data4: -576171963
-    Path: event:/DEV/TEST_BEEP
+      Data1: 1480846875
+      Data2: 1328767113
+      Data3: -1971888217
+      Data4: 2043689619
+    Path: event:/ANGELS/ANGEL_RING_HIT
   Event: 
   PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
-  TriggerOnce: 1
+  TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMinDistance: 6
+  OverrideMaxDistance: 40
 --- !u!1 &5210084072687768678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,6 +1161,10 @@ MonoBehaviour:
   - {fileID: 4935498328454720493}
   - {fileID: 2695943225333821905}
   - {fileID: 7467623210988816368}
+  _playFmodOnCollision:
+  - {fileID: 790822105803094576}
+  - {fileID: 6019486459688405425}
+  - {fileID: 6494751081687317126}
   animator: {fileID: 8390489672857772459}
 --- !u!114 &4833570428212290369
 MonoBehaviour:
@@ -6461,7 +6471,8 @@ MonoBehaviour:
   eventOnDamageTaken:
     m_PersistentCalls:
       m_Calls: []
-  myHitboxes: []
+  myHitboxes:
+  - {fileID: 6323646034741378003}
 --- !u!114 &4932969254293128640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6474,13 +6485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48cf48bae6e6e934b8739611b3ca99a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angelDeathSound:
-    Guid:
-      Data1: 9659512
-      Data2: 1147874116
-      Data3: 1386071680
-      Data4: 744172401
-    Path: event:/PLACEHOLDER_UNCZ/Empty_Placeholder
 --- !u!135 &6323646034741378003
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6718,14 +6722,14 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &7585187172331169047
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6736,7 +6740,7 @@ MeshCollider:
   m_Material: {fileID: 13400000, guid: 94d6de23b8451cf4cb3540ddd4f39083, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 1
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6755,14 +6759,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667101301592291699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fmodEmitter: {fileID: 587316444011681452}
-  velocityThreshold: 1
-  collisionTag: Concrete
+  startDelay: 0.15
+  minimumVolume: -9
+  minimumVolumeVelocity: 1
+  maxVolume: 0
+  maxVolumeVelocity: 5
 --- !u!114 &587316444011681452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6778,22 +6785,22 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 2002376458
-      Data2: 1330171959
-      Data3: -608404332
-      Data4: -576171963
-    Path: event:/DEV/TEST_BEEP
+      Data1: 1480846875
+      Data2: 1328767113
+      Data3: -1971888217
+      Data4: 2043689619
+    Path: event:/ANGELS/ANGEL_RING_HIT
   Event: 
   PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
-  TriggerOnce: 1
+  TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMinDistance: 6
+  OverrideMaxDistance: 40
 --- !u!1 &7047719781282471789
 GameObject:
   m_ObjectHideFlags: 0

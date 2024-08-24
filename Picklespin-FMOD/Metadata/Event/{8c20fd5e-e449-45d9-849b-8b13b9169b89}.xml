@@ -164,7 +164,7 @@
 			<value>Red</value>
 		</property>
 		<property name="volume">
-			<value>-2.5</value>
+			<value>-4</value>
 		</property>
 		<property name="name">
 			<value>BODY</value>
@@ -181,7 +181,7 @@
 	</object>
 	<object class="MultiSound" id="{fdad1001-7e2e-4b13-9999-6589f7743bdb}">
 		<property name="start">
-			<value>0.029999999999999999</value>
+			<value>0.01</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{9e28576e-2998-442a-abfe-1f6fa2e10700}</destination>
@@ -476,8 +476,14 @@
 	<object class="MixerBusFader" id="{360b5d62-9587-4498-9ee3-c43ff9686e97}" />
 	<object class="MixerBusFader" id="{221fd8e5-e702-4683-9003-9326ef2a1278}" />
 	<object class="ThreeEQEffect" id="{1f0fc2d8-9417-41b1-94e9-867cf8e5d36a}">
+		<property name="highGain">
+			<value>3.5</value>
+		</property>
 		<property name="lowCrossover">
 			<value>280</value>
+		</property>
+		<property name="highCrossover">
+			<value>7000</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>

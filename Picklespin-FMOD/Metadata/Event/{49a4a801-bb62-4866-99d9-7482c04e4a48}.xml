@@ -5,7 +5,7 @@
 			<value>gorilla_roar</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{ac61883c-dfba-44d1-863b-4f24096a2cef}</destination>
@@ -117,7 +117,6 @@
 	<object class="MixerBusPanner" id="{ac3a362e-8371-4235-901d-ba0bf760e70a}" />
 	<object class="MixerBusEffectChain" id="{2b9bf1ee-2c3c-4213-8b84-fb04878f859e}">
 		<relationship name="effects">
-			<destination>{42290dbf-7ee4-4320-b20a-3c5e498616fa}</destination>
 			<destination>{bbfc82a3-2388-4789-a5d6-45357601a32c}</destination>
 			<destination>{2e234d34-8b40-4cb2-9903-95424ef28f75}</destination>
 		</relationship>
@@ -135,14 +134,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{4e260014-1a11-42e9-b1be-aa4c83129ff0}" />
-	<object class="ProxyEffect" id="{42290dbf-7ee4-4320-b20a-3c5e498616fa}">
-		<property name="inputFormat">
-			<value>1</value>
-		</property>
-		<relationship name="preset">
-			<destination>{fe66a424-cb35-4570-b0ba-c7c8000ba033}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{bbfc82a3-2388-4789-a5d6-45357601a32c}" />
 	<object class="LimiterEffect" id="{2e234d34-8b40-4cb2-9903-95424ef28f75}">
 		<property name="boost">

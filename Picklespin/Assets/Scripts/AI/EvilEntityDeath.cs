@@ -1,19 +1,16 @@
 using UnityEngine;
-using FMODUnity;
-using FMOD.Studio;
 using UnityEngine.Events;
 using System.Collections;
 
 public class EvilEntityDeath : MonoBehaviour
 {
-    //[SerializeField] private EventReference evilEntityDeathSound;
-    //private EventInstance evilEntityDeathSoundReference;
     [SerializeField] private UnityEvent deathEvent;
     [SerializeField] private AiHealthUiBar aiHealthUiBar;
 
     private Dissolver dissolver;
 
     private CameraShakeManagerV2 camShakeManager;
+    private ScreenFlashTint screenFlashTint;
 
     private void Awake()
     {
@@ -26,6 +23,7 @@ public class EvilEntityDeath : MonoBehaviour
     private void Start()
     {
         camShakeManager = CameraShakeManagerV2.instance;
+        screenFlashTint = ScreenFlashTint.instance;
     }
 
 
@@ -38,10 +36,7 @@ public class EvilEntityDeath : MonoBehaviour
             aiHealthUiBar.FadeOut();
         }
 
-        //evilEntityDeathSoundReference = RuntimeManager.CreateInstance(evilEntityDeathSound);
-        //RuntimeManager.AttachInstanceToGameObject(evilEntityDeathSoundReference, GetComponent<Transform>());
-        //evilEntityDeathSoundReference.start();
-        //evilEntityDeathSoundReference.release();
+        screenFlashTint.Flash(6);
         StartCoroutine(ShakeLater());
         dissolver = gameObject.GetComponent<Dissolver>();
         dissolver.StartDissolve();

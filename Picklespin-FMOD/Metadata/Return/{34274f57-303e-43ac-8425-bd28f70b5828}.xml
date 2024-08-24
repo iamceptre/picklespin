@@ -26,7 +26,7 @@
 	<object class="MixerBusPanner" id="{c2bcec46-1539-4dad-84d1-748fd5e8f046}" />
 	<object class="DelayEffect" id="{52b27eb7-3c6d-480a-a68b-09357993248b}">
 		<property name="delay">
-			<value>40</value>
+			<value>70</value>
 		</property>
 		<property name="feedback">
 			<value>0</value>
@@ -53,10 +53,10 @@
 	</object>
 	<object class="ConvolutionReverbEffect" id="{eb8bc034-fe59-4ddc-8e5f-6416b6038ef4}">
 		<property name="endFrame">
-			<value>118696</value>
+			<value>112568</value>
 		</property>
 		<relationship name="referenceableData">
-			<destination>{433b52d7-430c-4f18-be26-71b751b065a1}</destination>
+			<destination>{777ea6f1-c557-47d3-9c34-ef2110c44e47}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{62eaf4e6-4b36-4880-b055-d7a180be304b}" />

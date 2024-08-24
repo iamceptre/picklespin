@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +11,8 @@ public class WinGate : MonoBehaviour
 
     [SerializeField] private UnityEvent showTooltipEvent;
     [SerializeField] private UnityEvent hideTooltipEvent;
+
+    [SerializeField] private StudioEventEmitter portalEnterOneshot;
 
 
     private void Start()
@@ -25,6 +28,7 @@ public class WinGate : MonoBehaviour
         {
             if (inventory.WinGateKey)
             {
+                portalEnterOneshot.Play();
                 win.WinFunction();
             }
             else

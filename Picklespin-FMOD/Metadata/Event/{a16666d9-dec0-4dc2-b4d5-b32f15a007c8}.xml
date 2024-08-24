@@ -199,7 +199,7 @@
 			<value>3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>1000</value>
+			<value>900</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
 			<value>3500</value>
@@ -222,7 +222,7 @@
 			<value>Blue Light 1</value>
 		</property>
 		<property name="volume">
-			<value>-20.5</value>
+			<value>-17.5</value>
 		</property>
 		<property name="name">
 			<value>Water_Drops</value>

@@ -63,6 +63,9 @@
 		<property name="maxVoices">
 			<value>1</value>
 		</property>
+		<property name="priority">
+			<value>1</value>
+		</property>
 		<property name="triggerCooldown">
 			<value>200</value>
 		</property>

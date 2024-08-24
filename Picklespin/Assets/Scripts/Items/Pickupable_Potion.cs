@@ -105,7 +105,7 @@ public class Pickupable_Potion : MonoBehaviour
         }
         else
         {
-            Debug.Log("hp, not picking the potion up");
+            //Debug.Log("full hp, not picking the potion up");
             return;   
         }
     }
@@ -119,7 +119,7 @@ public class Pickupable_Potion : MonoBehaviour
         }
         else
         {
-            Debug.Log("stamina full, not picking the potion up");
+            //Debug.Log("stamina full, not picking the potion up");
             return;
         }
     }
@@ -133,7 +133,7 @@ public class Pickupable_Potion : MonoBehaviour
         }
         else
         {
-            Debug.Log("mana full, not picking the potion up");
+            //Debug.Log("mana full, not picking the potion up");
             return;
         }
     }

@@ -52,7 +52,12 @@ public class AttackPlayer : State
         StopAllCoroutines();
         aiPath.maxSpeed = attackSpeed;
         loosingPlayer.lostPlayer = false;
-        destinationSetter.target = playerTransform.PlayerTransform;
+
+        if (destinationSetter.target != playerTransform.PlayerTransform)
+        {
+            destinationSetter.target = playerTransform.PlayerTransform;
+        }
+
 
         if (canAttack)
         {

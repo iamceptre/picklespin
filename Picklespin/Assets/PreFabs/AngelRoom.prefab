@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 7981044004471294912}
   - component: {fileID: 1710231556992453991}
   - component: {fileID: 5396822122427815031}
+  - component: {fileID: 6778809413813398476}
   m_Layer: 0
   m_Name: Room_Atmos_Particle
   m_TagString: Untagged
@@ -4979,6 +4980,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &6778809413813398476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022820636036483467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 803711044
+      Data2: 1152002378
+      Data3: -1417341034
+      Data4: -499014758
+    Path: event:/MAP/Ambience/Static/Angelroom_Glitter_Static_BG
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 7
+  OverrideMaxDistance: 20
 --- !u!1 &1045847101197429213
 GameObject:
   m_ObjectHideFlags: 0
@@ -14770,6 +14802,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 6778809413813398476}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   additionalOffEvent:
     m_PersistentCalls:
       m_Calls:
@@ -14789,6 +14833,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6778809413813398476}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Stop
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24175,7 +24231,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1383102369648365294}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: feedb5daff89a104bb7edd6fa46878a2, type: 3}
   m_Name: 
@@ -24213,50 +24269,6 @@ PrefabInstance:
       propertyPath: additionalHealedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 21960444615510838}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: TriggerOnce
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Path
-      value: event:/ANGELS/ANGEL_RING_HIT
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: OverrideMaxDistance
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: OverrideMinDistance
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data1
-      value: 1480846875
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data2
-      value: 1328767113
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data3
-      value: -1971888217
-      objectReference: {fileID: 0}
-    - target: {fileID: 587316444011681452, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data4
-      value: 2043689619
-      objectReference: {fileID: 0}
-    - target: {fileID: 790822105803094576, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 790822105803094576, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: startDelay
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 790822105803094576, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: velocityThreshold
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 1645630405786229440, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_Name
       value: Angel
@@ -24265,150 +24277,6 @@ PrefabInstance:
       propertyPath: torch
       value: 
       objectReference: {fileID: 828602372167584711}
-    - target: {fileID: 2621309141511098538, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_Convex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2621309141511098538, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3683146140631095720, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_Convex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3683146140631095720, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: TriggerOnce
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Path
-      value: event:/ANGELS/ANGEL_RING_HIT
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: OverrideMaxDistance
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: OverrideMinDistance
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data1
-      value: 1480846875
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data2
-      value: 1328767113
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data3
-      value: -1971888217
-      objectReference: {fileID: 0}
-    - target: {fileID: 4845438626838853598, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data4
-      value: 2043689619
-      objectReference: {fileID: 0}
-    - target: {fileID: 5022545496566536845, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: _playFmodOnCollision.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5022545496566536845, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: _playFmodOnCollision.Array.data[0]
-      value: 
-      objectReference: {fileID: 4239428626608621523}
-    - target: {fileID: 5022545496566536845, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: _playFmodOnCollision.Array.data[1]
-      value: 
-      objectReference: {fileID: 7180262102056711250}
-    - target: {fileID: 5022545496566536845, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: _playFmodOnCollision.Array.data[2]
-      value: 
-      objectReference: {fileID: 7641787157497251685}
-    - target: {fileID: 5383665448441634101, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5383665448441634101, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 2048
-      objectReference: {fileID: 0}
-    - target: {fileID: 5847833911731721211, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5847833911731721211, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 2048
-      objectReference: {fileID: 0}
-    - target: {fileID: 6019486459688405425, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6019486459688405425, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: startDelay
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6019486459688405425, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: velocityThreshold
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: TriggerOnce
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Path
-      value: event:/ANGELS/ANGEL_RING_HIT
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: OverrideMaxDistance
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: OverrideMinDistance
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data1
-      value: 1480846875
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data2
-      value: 1328767113
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data3
-      value: -1971888217
-      objectReference: {fileID: 0}
-    - target: {fileID: 6430933899365479607, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: EventReference.Guid.Data4
-      value: 2043689619
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494751081687317126, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494751081687317126, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: startDelay
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494751081687317126, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: velocityThreshold
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 7441454294599896326, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: myHitboxes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7441454294599896326, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: myHitboxes.Array.data[0]
-      value: 
-      objectReference: {fileID: 7489191290838140464}
     - target: {fileID: 7441454294599896326, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: deathEvent.m_PersistentCalls.m_Calls.Array.data[6].m_Target
       value: 
@@ -24429,14 +24297,6 @@ PrefabInstance:
       propertyPath: deathEvent.m_PersistentCalls.m_Calls.Array.data[10].m_Target
       value: 
       objectReference: {fileID: 2763008182209400933}
-    - target: {fileID: 7585187172331169047, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_Convex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7585187172331169047, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7754690642595653543, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -24477,14 +24337,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9182227517882754858, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9182227517882754858, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 2048
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24495,46 +24347,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 165504218010378580, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
   m_PrefabInstance: {fileID: 3471405995002592739}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4239428626608621523 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 790822105803094576, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-  m_PrefabInstance: {fileID: 3471405995002592739}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6607584746757151300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7754690642595653543, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
   m_PrefabInstance: {fileID: 3471405995002592739}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7180262102056711250 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6019486459688405425, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-  m_PrefabInstance: {fileID: 3471405995002592739}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!135 &7489191290838140464 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 6323646034741378003, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-  m_PrefabInstance: {fileID: 3471405995002592739}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7641787157497251685 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6494751081687317126, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
-  m_PrefabInstance: {fileID: 3471405995002592739}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fad5fb65711b476469e780c538474f7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

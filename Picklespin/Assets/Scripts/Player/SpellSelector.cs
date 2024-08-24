@@ -43,23 +43,27 @@ public class SpellSelector : MonoBehaviour
     private void ChooseSpell(int pressedNumber)
     {
 
-        inventoryBarSelectedSpell.NumberBump(pressedNumber);
-
-
-        if (unlockedSpells.spellUnlocked[pressedNumber] == true)
+        if (!Input.GetKey(KeyCode.Mouse0)) //lock changing spells when casting
         {
-            unlockedSpells.SelectingUnlockedAuraAnimation(pressedNumber);
-            attack.SelectSpell(pressedNumber);
-            currentlySelectedSpell = pressedNumber;
-            inventoryBarSelectedSpell.SelectionChanged(pressedNumber);
-        }
-        else
-        {
-            RuntimeManager.PlayOneShot(spellLockedSoundEvent);
-            unlockedSpells.spellLockedIconAnimation(pressedNumber);
-        }
+
+            inventoryBarSelectedSpell.NumberBump(pressedNumber);
 
 
+            if (unlockedSpells.spellUnlocked[pressedNumber] == true)
+            {
+                unlockedSpells.SelectingUnlockedAuraAnimation(pressedNumber);
+                attack.SelectSpell(pressedNumber);
+                currentlySelectedSpell = pressedNumber;
+                inventoryBarSelectedSpell.SelectionChanged(pressedNumber);
+            }
+            else
+            {
+                RuntimeManager.PlayOneShot(spellLockedSoundEvent);
+                unlockedSpells.spellLockedIconAnimation(pressedNumber);
+            }
+
+
+        }
     }
 
 

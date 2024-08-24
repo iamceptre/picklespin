@@ -5,7 +5,7 @@
 			<value>died_from_burn</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{b82e73af-b42b-4497-ada3-c8d3e5aa4d48}</destination>
@@ -108,7 +108,6 @@
 	<object class="MixerBusPanner" id="{73d9bd63-ec95-440f-8b10-3adebe5549a7}" />
 	<object class="MixerBusEffectChain" id="{dc453984-dfb9-4bc0-ac01-6504d124a310}">
 		<relationship name="effects">
-			<destination>{484663b8-ffe1-4d59-a541-cb335456f15b}</destination>
 			<destination>{104fdd27-0854-4a1d-ab6c-e4c6f1c7de36}</destination>
 			<destination>{0063fa1d-314a-4ae1-80b2-359cc2d5898e}</destination>
 		</relationship>
@@ -125,14 +124,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{de522142-4093-48bf-8237-d3a7c6780648}" />
-	<object class="ProxyEffect" id="{484663b8-ffe1-4d59-a541-cb335456f15b}">
-		<property name="inputFormat">
-			<value>1</value>
-		</property>
-		<relationship name="preset">
-			<destination>{fe66a424-cb35-4570-b0ba-c7c8000ba033}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{104fdd27-0854-4a1d-ab6c-e4c6f1c7de36}" />
 	<object class="LimiterEffect" id="{0063fa1d-314a-4ae1-80b2-359cc2d5898e}">
 		<property name="boost">

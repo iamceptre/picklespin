@@ -141,7 +141,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{b4a8e49e-c373-4030-86bf-b7ffbba1bee0}">
 		<property name="volume">
-			<value>-3</value>
+			<value>0.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{1a5282af-3c4b-49b7-b8ac-5e7c1b01598e}</destination>
@@ -253,7 +253,7 @@
 			<value>10</value>
 		</property>
 		<property name="polyphony">
-			<value>2</value>
+			<value>4</value>
 		</property>
 		<property name="soundStealing">
 			<value>3</value>
@@ -320,16 +320,16 @@
 			<value>10</value>
 		</property>
 		<property name="polyphony">
-			<value>2</value>
+			<value>3</value>
 		</property>
 		<property name="soundStealing">
 			<value>3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>4500</value>
+			<value>800</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>14000</value>
+			<value>4000</value>
 		</property>
 		<property name="spawnRate">
 			<value>80</value>
@@ -352,7 +352,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{58d8ac5f-1b65-425c-9286-2e8c9b28801c}">
 		<property name="volume">
-			<value>-5.5</value>
+			<value>-5</value>
 		</property>
 		<property name="name">
 			<value>Winds_Basic</value>
@@ -390,10 +390,10 @@
 			<value>3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>16000</value>
+			<value>10000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>70000</value>
+			<value>30000</value>
 		</property>
 		<property name="spawnRate">
 			<value>50</value>
@@ -416,7 +416,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{17ac5a3a-4f03-46f1-b50b-12843deb82cb}">
 		<property name="volume">
-			<value>-2</value>
+			<value>-1</value>
 		</property>
 		<property name="name">
 			<value>Birds_Other</value>
@@ -454,10 +454,10 @@
 			<value>3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>5000</value>
+			<value>3500</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>16000</value>
+			<value>9000</value>
 		</property>
 		<property name="spawnRate">
 			<value>36</value>
@@ -483,7 +483,7 @@
 			<value>Purple</value>
 		</property>
 		<property name="volume">
-			<value>1</value>
+			<value>2.5</value>
 		</property>
 		<property name="name">
 			<value>Nightbirds</value>
@@ -1083,7 +1083,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-2</value>
+			<value>-1.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{0958694b-80ef-4b42-9bf0-7816ce0ee2dd}">
@@ -1091,7 +1091,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>6</value>
+			<value>6.5</value>
 		</property>
 	</object>
 	<object class="AutomationCurve" id="{9b36acbb-0bfb-4639-9a6b-968bcf9075f7}">

@@ -21,7 +21,6 @@ public class Door : MonoBehaviour
     private KeyCode actionKey = KeyCode.E;
     public bool isLocked = false;
     private bool isOpened = false;
-    private bool buttonBuffer = false;
     private bool canButtonBuffer = true;
 
     // CACHED COMPONENTS
@@ -47,18 +46,16 @@ public class Door : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(actionKey))
+        if (Input.GetKey(actionKey)) //button buffer
         {
             if (canButtonBuffer)
             {
-                buttonBuffer = true;
                 canButtonBuffer = false;
                 PerformRaycastCheck();
             }
         }
         else
         {
-            buttonBuffer = false;
             canButtonBuffer = true;
         }
     }
@@ -108,6 +105,7 @@ public class Door : MonoBehaviour
         doorCloseSound.Stop();
         doorOpenSound.Play();
         isOpened = true;
+        handAnimator.SetTrigger("Door_Open");
     }
 
     private void CloseDoor()
@@ -117,6 +115,7 @@ public class Door : MonoBehaviour
         doorOpenSound.Stop();
         doorCloseSound.Play();
         isOpened = false;
+        handAnimator.SetTrigger("Door_Close");
     }
 
     private void OnTriggerEnter(Collider other)

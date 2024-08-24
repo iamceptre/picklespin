@@ -3,6 +3,8 @@ using FMODUnity;
 using UnityEngine.Pool;
 using System.Collections;
 using DG.Tweening;
+using System.Collections.Generic; // Add this for HashSet
+
 public class Bullet : MonoBehaviour
 {
     private int originalDamage;
@@ -22,7 +24,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private bool isRanged = false;
     [SerializeField] private float rangeRadius = 5.0f;
     [SerializeField] private LayerMask detectionLayer;
-
 
     [Header("Assets")]
     [SerializeField] private ParticleSystem explosionFX;
@@ -69,6 +70,7 @@ public class Bullet : MonoBehaviour
     private GameObject _gameObject;
     public LightSpell lightSpell;
 
+    private HashSet<Collider> hitColliders; // Add this for tracking hit colliders
 
     void Awake()
     {
@@ -84,6 +86,8 @@ public class Bullet : MonoBehaviour
 
         autoKillTime = new WaitForSeconds(timeBeforeOff);
         applyProjectileForce = GetComponent<ApplyProjectileForce>();
+
+        hitColliders = new HashSet<Collider>(); // Initialize the HashSet
     }
 
     private void Start()
@@ -101,7 +105,6 @@ public class Bullet : MonoBehaviour
         ReturnToPool();
     }
 
-
     private void OnEnable()
     {
         _explosionFxGameObject.SetActive(false);
@@ -111,6 +114,8 @@ public class Bullet : MonoBehaviour
         _light.enabled = true;
         autoKill = AutoKill();
         StartCoroutine(autoKill);
+
+        hitColliders.Clear(); // Clear the HashSet when the bullet is enabled
     }
 
     public void OnShoot()
@@ -121,8 +126,6 @@ public class Bullet : MonoBehaviour
             _particleSystem[i].Stop();
             _particleSystem[i].Play();
         }
-
-
 
         RuntimeManager.PlayOneShot(shootSound);
 
@@ -138,12 +141,8 @@ public class Bullet : MonoBehaviour
         _pool.Release(this);
     }
 
-
-
     private void OnCollisionEnter(Collision collision)
     {
-
-
         hitSomething = true;
 
         StopCoroutine(autoKill);
@@ -152,29 +151,32 @@ public class Bullet : MonoBehaviour
         SpawnExplosion();
         AfterExplosion();
 
-        if (collision.transform.TryGetComponent(out AiReferences refs)) //direct hit detection
-        {
-            Collider collider = collision.gameObject.GetComponent<Collider>();
-            HitRegistered(collider, refs, collision);
-        }
-        else //HIT THE WALL 
-        {
-            PlayExplosionSounds();
-
-            if (hitWall != null)
-                hitWall.Play();
-        }
-
         if (isRanged)
         {
             RangeHitDetection(collision);
         }
+        else
+        {
+            Collider collisionCollider = collision.collider;
 
+            if (collision.transform.TryGetComponent(out AiReferences refs)) // Direct hit detection
+            {
+                //Debug.Log("direct hit detected");
+                if (hitColliders.Contains(collisionCollider)) // Check if already hit
+                    return;
 
+                hitColliders.Add(collisionCollider); // Mark this collider as hit
+                HitRegistered(collisionCollider, refs, collision);
+            }
+            else // HIT THE WALL 
+            {
+                //Debug.Log("indirect hit detected");
+                PlayExplosionSounds();
+            }
+        }
+
+ 
     }
-
-
-
 
     private void HitRegistered(Collider collider, AiReferences refs, Collision collision)
     {
@@ -186,18 +188,22 @@ public class Bullet : MonoBehaviour
         if (castDuration != 0)
         {
             if (refs.damageTakenBig != null)
-                refs.damageTakenBig.Play();
+            {
+                SetCriticalToNo();
+                refs.damageTakenBig.Play(); //ENEMY DAMAGE TAKEN AND EXPLOSION SOUND
+            }
         }
         else
         {
             if (refs.damageTakenSmall != null)
+            {
+                RandomizeCritical(refs);
                 refs.damageTakenSmall.Play();
+            }
         }
 
-        RandomizeCritical(refs);
 
         flashWhenHit.StopAllCoroutines();
-
 
         if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
         {
@@ -220,20 +226,22 @@ public class Bullet : MonoBehaviour
 
     private void RangeHitDetection(Collision collision)
     {
+        PlayExplosionSounds();
+
         Collider[] colliders = Physics.OverlapSphere(collision.GetContact(0).point, rangeRadius, detectionLayer);
 
         foreach (Collider col in colliders)
         {
             if (col.transform.TryGetComponent(out AiReferences areaRefs))
             {
-                if (col != collision.collider) // Avoid double hitting the same object
+                if (col != collision.collider && !hitColliders.Contains(col) && areaRefs.setOnFire != null) // Avoid double hitting the same object
                 {
+                    hitColliders.Add(col); // Mark this collider as hit
                     HitRegistered(col, areaRefs, collision);
                 }
             }
         }
     }
-
 
     private void Headshot(AiReferences refs)
     {
@@ -241,7 +249,6 @@ public class Bullet : MonoBehaviour
         refs.HeadshotParticle.Play();
         refs.damageTakenEyeshot.Play();
     }
-
 
     private void ApplySpecialEffect(AiReferences aiRefs)
     {
@@ -256,8 +263,6 @@ public class Bullet : MonoBehaviour
             }
         }
     }
-
-
 
     private void RandomizeCritical(AiReferences refs)
     {
@@ -284,15 +289,17 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            damage = originalDamage;
-            wasLastHitCritical = false;
+            SetCriticalToNo();
         }
-
-
     }
 
+    private void SetCriticalToNo()
+    {
+        damage = originalDamage;
+        wasLastHitCritical = false;
+    }
 
-    private void HitGetsYouNoticed() //make it notice all AIs around
+    private void HitGetsYouNoticed() // Make it notice all AIs around
     {
         if (aiVision != null)
         {
@@ -309,16 +316,20 @@ public class Bullet : MonoBehaviour
         SendShakeSignal();
     }
 
-
     private void PlayExplosionSounds()
     {
         explosionSoundEmitter.Play();
+        //Debug.Log(explosionSoundEmitter);
 
         if (explosionReflectionsSoundEmitter != null)
         {
             explosionReflectionsSoundEmitter.Play();
         }
 
+        if (hitWall != null)
+        {
+            hitWall.Play();
+        }
     }
 
     public void AfterExplosion()
@@ -331,7 +342,6 @@ public class Bullet : MonoBehaviour
             //_particleSystem[i].Clear();
             _particleSystem[i].Stop();
         }
-
 
         _rigidbody.isKinematic = true;
 
@@ -352,22 +362,16 @@ public class Bullet : MonoBehaviour
         _pool = pool;
     }
 
-
     private void SendShakeSignal()
     {
         switch (spellID)
         {
-            case 1: //fireball
-                camShakeManager.ShakeSelected(8); //add shake multiplier by distance
+            case 1: // Fireball
+                camShakeManager.ShakeSelected(8);
                 break;
 
             default:
-
                 break;
-
         }
-
     }
-
-
 }
