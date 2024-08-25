@@ -6978,6 +6978,7 @@ GameObject:
   - component: {fileID: 129265399450528948}
   - component: {fileID: 1107245509681356906}
   - component: {fileID: 7734548083766262162}
+  - component: {fileID: 7681917714364249453}
   m_Layer: 0
   m_Name: EyeLid
   m_TagString: Untagged
@@ -7098,6 +7099,37 @@ MonoBehaviour:
   scrollSpeedY: 0.4
   scrollSpeedX: 0.3
   randomUVoffsetAtEnable: 0
+--- !u!114 &7681917714364249453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182455209412715650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 983403388
+      Data2: 1285197121
+      Data3: 1453023138
+      Data4: -1243816458
+    Path: event:/ANGELS/ANGEL_EYE_OPEN
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 4
+  OverrideMaxDistance: 40
 --- !u!1 &7357618010817522330
 GameObject:
   m_ObjectHideFlags: 0

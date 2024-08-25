@@ -32,8 +32,8 @@ TagManager:
   - PostProcess
   - FallingFloor
   - AngelRings
-  - 
-  - 
+  - Bullet
+  - Hitbox
   - 
   - 
   - 

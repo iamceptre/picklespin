@@ -16,5 +16,6 @@ public class AiReferences : MonoBehaviour
     public StudioEventEmitter damageTakenSmall;
     public StudioEventEmitter damageTakenEyeshot;
     public StudioEventEmitter damageTakenCritical;
+
 }
 

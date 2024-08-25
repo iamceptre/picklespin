@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 577029935282376179}
   - component: {fileID: 6154881719012150420}
   - component: {fileID: 6409948739457110738}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TailTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4854,7 +4854,7 @@ GameObject:
   - component: {fileID: 3214975967755900380}
   - component: {fileID: 519457598077125182}
   - component: {fileID: 3062841055513323983}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: sprinklessss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9696,7 +9696,7 @@ GameObject:
   - component: {fileID: 8047383319200939645}
   - component: {fileID: 5317234955387641493}
   - component: {fileID: 6375833277071192656}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9808,7 +9808,7 @@ GameObject:
   - component: {fileID: 6900475575876252167}
   - component: {fileID: 3005831588898276106}
   - component: {fileID: 2931081986996436870}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TinyPurpleExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14790,7 +14790,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5453956725451283575}
   - component: {fileID: 176874182128313843}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: reflectionsEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14853,7 +14853,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3135732170723765606}
   - component: {fileID: 3909137637185279755}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14948,7 +14948,7 @@ GameObject:
   - component: {fileID: 5744331170296466259}
   - component: {fileID: 4712923549206713878}
   - component: {fileID: 6956030665796214126}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shockwave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19856,7 +19856,7 @@ GameObject:
   - component: {fileID: -9016218598823046184}
   - component: {fileID: 4632042321731720956}
   - component: {fileID: 2338245104682298501}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: wicked energy ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20000,7 +20000,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -20027,7 +20027,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -20133,7 +20133,7 @@ GameObject:
   - component: {fileID: 262125431694156872}
   - component: {fileID: 7594717108277968959}
   - component: {fileID: 8312430218449341608}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TailParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5493,6 +5493,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_Enemy_EvilEntity_White
       objectReference: {fileID: 0}
+    - target: {fileID: 6065010270577158356, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: m_Height
+      value: 6.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065010270577158356, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: m_Center.y
+      value: 3.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: expSourceName
       value: exiled the cold
@@ -5545,10 +5553,6 @@ PrefabInstance:
       propertyPath: bodyDamageMultiplier
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9088957210784467254, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
-      propertyPath: myHitboxes.Array.data[1]
-      value: 
-      objectReference: {fileID: 6497019051316480330}
     - target: {fileID: 9088957210784467254, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: eventOnDamageTaken.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -5627,9 +5631,6 @@ PrefabInstance:
       addedObject: {fileID: 3986065468695279394}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5576000824764681535, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
-      insertIndex: 8
-      addedObject: {fileID: 6497019051316480330}
-    - targetCorrespondingSourceObject: {fileID: 5576000824764681535, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6377398423150146435}
     - targetCorrespondingSourceObject: {fileID: 7225600910775972138, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
@@ -5687,27 +5688,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5576000824764681535, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
   m_PrefabInstance: {fileID: 3444865886151497540}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &6497019051316480330
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7111025965555882619}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 256
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.37, y: 1.79, z: 0.1}
-  m_Center: {x: 0, y: 7, z: -0.15}
 --- !u!114 &6377398423150146435
 MonoBehaviour:
   m_ObjectHideFlags: 0

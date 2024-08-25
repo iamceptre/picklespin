@@ -19,16 +19,12 @@ public class Dissolver : MonoBehaviour
     [SerializeField] private bool destroyAfterDissolve = false;
 
     [SerializeField] private GameObject ashPile;
-    [SerializeField] private Collider myCollider;
 
     private int progress = Shader.PropertyToID("_DissolveAmount");
 
 
     public void StartDissolve()
     {
-        myCollider.enabled = false;
-
-
         myRenderer.material = deadMaterial;
         dissolveProgress = 0;
         StartCoroutine(Animate());

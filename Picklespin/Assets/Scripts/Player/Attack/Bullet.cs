@@ -3,7 +3,6 @@ using FMODUnity;
 using UnityEngine.Pool;
 using System.Collections;
 using DG.Tweening;
-using System.Collections.Generic; // Add this for HashSet
 
 public class Bullet : MonoBehaviour
 {
@@ -70,8 +69,6 @@ public class Bullet : MonoBehaviour
     private GameObject _gameObject;
     public LightSpell lightSpell;
 
-    private HashSet<Collider> hitColliders; // Add this for tracking hit colliders
-
     void Awake()
     {
         originalDamage = damage;
@@ -86,8 +83,6 @@ public class Bullet : MonoBehaviour
 
         autoKillTime = new WaitForSeconds(timeBeforeOff);
         applyProjectileForce = GetComponent<ApplyProjectileForce>();
-
-        hitColliders = new HashSet<Collider>(); // Initialize the HashSet
     }
 
     private void Start()
@@ -114,8 +109,6 @@ public class Bullet : MonoBehaviour
         _light.enabled = true;
         autoKill = AutoKill();
         StartCoroutine(autoKill);
-
-        hitColliders.Clear(); // Clear the HashSet when the bullet is enabled
     }
 
     public void OnShoot()
@@ -141,45 +134,79 @@ public class Bullet : MonoBehaviour
         _pool.Release(this);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.GetType() == typeof(BoxCollider) && collider.CompareTag("Hitbox_Head"))
+        {
+            GeneralAfterHit(collider, true);
+        }
+        else if (collider.GetType() == typeof(MeshCollider) && collider.CompareTag("EvilEntity"))
+        {
+            GeneralAfterHit(collider, false);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision) //leftovers
     {
         hitSomething = true;
 
         StopCoroutine(autoKill);
-        hitSomething = true;
 
-        SpawnExplosion();
-        AfterExplosion();
 
         if (isRanged)
         {
             RangeHitDetection(collision);
         }
-        else
+
+        Collider collisionCollider = collision.collider;
+
+
+        if (collisionCollider.TryGetComponent(out AiReferences refs))
+        { 
+            HitRegistered(collisionCollider, refs, false);
+        }
+        else // HIT THE WALL 
         {
-            Collider collisionCollider = collision.collider;
-
-            if (collision.transform.TryGetComponent(out AiReferences refs)) // Direct hit detection
-            {
-                //Debug.Log("direct hit detected");
-                if (hitColliders.Contains(collisionCollider)) // Check if already hit
-                    return;
-
-                hitColliders.Add(collisionCollider); // Mark this collider as hit
-                HitRegistered(collisionCollider, refs, collision);
-            }
-            else // HIT THE WALL 
-            {
-                //Debug.Log("indirect hit detected");
-                PlayExplosionSounds();
-            }
+            PlayExplosionSounds();
         }
 
- 
+
+        SpawnExplosion();
+        AfterExplosion();
+
     }
 
-    private void HitRegistered(Collider collider, AiReferences refs, Collision collision)
+
+    private void GeneralAfterHit(Collider collider, bool weakPointHit)
     {
+        hitSomething = true;
+        StopCoroutine(autoKill);
+
+        if (isRanged)
+        {
+            RangeHitDetection(collider);
+        }
+
+        Transform grandparentTransform = collider.transform.parent?.parent;
+
+        if (grandparentTransform.TryGetComponent(out AiReferences refs))
+        {
+            HitRegistered(collider, refs, weakPointHit);
+        }
+        else
+        {
+            PlayExplosionSounds();
+        }
+
+
+        SpawnExplosion();
+        AfterExplosion();
+    }
+
+
+    private void HitRegistered(Collider collider, AiReferences refs, bool weakPointHit)
+    {
+        _collider.enabled = false;
         aiHealth = refs.Health;
         aiVision = refs.Vision;
         giveExpToPlayer = refs.GiveExp;
@@ -205,7 +232,7 @@ public class Bullet : MonoBehaviour
 
         flashWhenHit.StopAllCoroutines();
 
-        if (collision.collider.gameObject.transform.CompareTag("Hitbox_Head"))
+        if (weakPointHit)
         {
             Headshot(refs);
             giveExpToPlayer.wasLastShotAHeadshot = true;
@@ -234,10 +261,27 @@ public class Bullet : MonoBehaviour
         {
             if (col.transform.TryGetComponent(out AiReferences areaRefs))
             {
-                if (col != collision.collider && !hitColliders.Contains(col) && areaRefs.setOnFire != null) // Avoid double hitting the same object
+                if (col != collision.collider && areaRefs.setOnFire != null)
                 {
-                    hitColliders.Add(col); // Mark this collider as hit
-                    HitRegistered(col, areaRefs, collision);
+                    HitRegistered(col, areaRefs, false);
+                }
+            }
+        }
+    }
+
+    private void RangeHitDetection(Collider collider)
+    {
+        PlayExplosionSounds();
+
+        Collider[] colliders = Physics.OverlapSphere(collider.transform.position, rangeRadius, detectionLayer);
+
+        foreach (Collider col in colliders)
+        {
+            if (col.transform.TryGetComponent(out AiReferences areaRefs))
+            {
+                if (col != collider && areaRefs.setOnFire != null)
+                {
+                    HitRegistered(col, areaRefs, false);
                 }
             }
         }

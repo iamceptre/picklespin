@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using FMODUnity;
 
 public class AngelEyeOpen : MonoBehaviour
 {
@@ -9,9 +10,23 @@ public class AngelEyeOpen : MonoBehaviour
     private float actualAnimationTarget;
     private float animationTime = 3;
 
+    private StudioEventEmitter _emitter;
+
     private void Awake()
     {
         _skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        _emitter = GetComponent<StudioEventEmitter>();
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+
+            _emitter.Play();
+
+        }
     }
 
     public void OpenEye(bool open)
@@ -31,6 +46,8 @@ public class AngelEyeOpen : MonoBehaviour
         {
             _skinnedMeshRenderer.SetBlendShapeWeight(2, eyeOpenness);
         });
+
+        _emitter.Play();
     }
 
 }
