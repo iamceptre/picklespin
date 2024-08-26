@@ -220,10 +220,12 @@ public class Attack : MonoBehaviour
         {
             case 0: //purple
                 camShakeManager.ShakeSelected(4);
+                camShakeManager.ShakeHand(0.3f, 0.2f, 30);
                 break;
 
             case 1: //fireball
                 camShakeManager.ShakeSelected(5);
+                camShakeManager.ShakeHand(0.2f, 0.5f, 15);
                 break;
 
             case 2: //light?

@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using System.Collections;
+using DG.Tweening;
 
 public class JumpLandSignals : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class JumpLandSignals : MonoBehaviour
     [SerializeField] private CharacterController characterController;
     private FootstepSystem footstepSystem;
     private CameraShakeManagerV2 camShakeManager;
+    [SerializeField] private Transform cameraMovement;
     private PlayerMovement playerMovement;
     [SerializeField] private HearingRange hearingRange;
 
@@ -84,11 +86,26 @@ public class JumpLandSignals : MonoBehaviour
             if (isFallingLongEnough)
             {
                 floorTypeDetector.LandingCheck();
+                LandCameraMovement(speedometer.verticalVelocity);
                 isLandingHardDecider();
                 footstepSystem.RefreshFootstepTimer();
                 hearingRange.RunExtendedHearingRange();
             }
         }
+    }
+
+
+    private void LandCameraMovement(float strenght)
+    {
+        strenght = Mathf.Clamp(strenght * 0.07f, 0.2f, 2);
+        //Debug.Log("camera movement strenght " + strenght );
+        cameraMovement.DOLocalMoveY(-0.4f * strenght, 0.15f).SetEase(Ease.OutExpo).OnComplete(() =>
+        {
+            cameraMovement.DOLocalMoveY(0, 0.3f * strenght).SetEase(Ease.OutSine);
+        });
+
+        camShakeManager.ShakeHand(strenght * 0.1f, 0.2f, 13);
+
     }
 
 

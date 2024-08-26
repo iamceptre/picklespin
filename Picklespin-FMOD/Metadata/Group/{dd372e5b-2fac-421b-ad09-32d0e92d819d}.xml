@@ -4,6 +4,9 @@
 		<property name="name">
 			<value>UI</value>
 		</property>
+		<property name="maxInstances">
+			<value>5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{236006a6-aaee-4686-bb71-a239bd57db83}</destination>
 		</relationship>

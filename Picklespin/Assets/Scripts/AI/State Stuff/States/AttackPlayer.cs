@@ -1,7 +1,6 @@
 using FMODUnity;
 using Pathfinding;
 using UnityEngine;
-using UnityEngine.AI;
 public class AttackPlayer : State
 {
     private PlayerHP playerHP;
@@ -79,17 +78,17 @@ public class AttackPlayer : State
             attackCounter++;
 
             if (attackCounter % 2 != 0) {
+
+                 attackSoundEmitter.Play();
+
                 if (!playerHP.isLowHP) {
-                    playerHP.hp -= howMuchDamageIdeal;
+                    playerHP.TakeDamage(howMuchDamageIdeal);
                 }
                 else
                 {
-                    playerHP.hp -= (int)(howMuchDamageIdeal * 0.5f);
+                    playerHP.TakeDamage((int)(howMuchDamageIdeal * 0.5f));
                 }
 
-                attackSoundEmitter.Play();
-                hpBarDisplay.Refresh(false);
-                playerHP.PlayerHurtSound();
             }
         }
     }

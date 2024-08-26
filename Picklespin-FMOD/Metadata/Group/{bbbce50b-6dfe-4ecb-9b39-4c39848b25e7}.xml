@@ -4,6 +4,9 @@
 		<property name="name">
 			<value>music</value>
 		</property>
+		<property name="maxInstances">
+			<value>1</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{40f5f92c-795f-4ec0-87d9-1269d069d8f3}</destination>
 		</relationship>

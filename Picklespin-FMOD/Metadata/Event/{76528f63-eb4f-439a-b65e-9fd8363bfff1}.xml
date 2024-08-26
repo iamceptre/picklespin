@@ -63,6 +63,9 @@
 		<property name="maxVoices">
 			<value>1</value>
 		</property>
+		<property name="priority">
+			<value>1</value>
+		</property>
 	</object>
 	<object class="MarkerTrack" id="{265e4045-502c-4312-bf14-c8db6f99a8c7}" />
 	<object class="Timeline" id="{fd71d756-7d56-46f7-9143-c8fd4281f82d}">
@@ -76,6 +79,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{05320e76-a17e-4647-b73e-1af64cb02d9c}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{99cd3381-3a11-488e-99c8-793ce5bef5c9}</destination>
 		</relationship>

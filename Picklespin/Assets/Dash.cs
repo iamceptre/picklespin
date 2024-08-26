@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Dash : MonoBehaviour
 {
+    private PlayerHP playerHP;
     [SerializeField] private StudioEventEmitter dashEmitter;
     [SerializeField] private float dashDuration = 0.4f;
     [SerializeField] private float dashSpeedMultiplier = 1.2f;
@@ -28,6 +29,7 @@ public class Dash : MonoBehaviour
         playerMovement = PlayerMovement.instance;
         camShakeManager = CameraShakeManagerV2.instance;
         screenFlashTint = ScreenFlashTint.instance;
+        playerHP = PlayerHP.instance;
     }
 
     private void Update()
@@ -56,7 +58,7 @@ public class Dash : MonoBehaviour
     {
         isDashing = true;
         isWaitingForSecondClick = false;
-
+        playerHP.invincible = true;
         dashEmitter.Play();
         camShakeManager.ShakeSelected(11);
         screenFlashTint.Flash(5);
@@ -81,6 +83,7 @@ public class Dash : MonoBehaviour
         }
 
         playerMovement.speedMultiplier = originalSpeedMultiplier;
+        playerHP.invincible = false;
         StartCoroutine(WaitForGrounded());
     }
 

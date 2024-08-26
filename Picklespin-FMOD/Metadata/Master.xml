@@ -39,19 +39,19 @@
 	<object class="MixerBusFader" id="{9ca18f0d-bef0-45be-b644-e76fddb85bfd}" />
 	<object class="CompressorEffect" id="{34297202-8763-49c1-a4b3-90c503bd208d}">
 		<property name="threshold">
-			<value>-17</value>
+			<value>-12</value>
 		</property>
 		<property name="ratio">
 			<value>1.45000005</value>
-		</property>
-		<property name="attackTime">
-			<value>3.60000014</value>
 		</property>
 		<property name="releaseTime">
 			<value>180</value>
 		</property>
 	</object>
 	<object class="LimiterEffect" id="{e5e268bd-8da0-4c93-9de2-a752e4bbbb86}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
 		<property name="ceiling">
 			<value>-1.5</value>
 		</property>

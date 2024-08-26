@@ -22,6 +22,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private EventReference hpAqquiredSound;
 
     public bool godMode = false;
+    public bool invincible = false;
 
     [HideInInspector] public bool isLowHP = false;
     [SerializeField] private PostProcessVolume ppVolume;
@@ -33,7 +34,7 @@ public class PlayerHP : MonoBehaviour
     private SnapshotManager snapshotManager;
 
     [SerializeField] private EventReference tinnitusEventReference;
-    
+
 
     private void Awake()
     {
@@ -106,15 +107,22 @@ public class PlayerHP : MonoBehaviour
     }
 
 
-    public void PlayerHurtSound() //initial signal goes here
+    public void TakeDamage(int damage)
     {
-        if (!godMode) {
-          //  RuntimeManager.PlayOneShot(hurtSound);
-            PlayerHurtVisual();
-            CheckIfPlayerIsDead();
-            CheckIfPlayerIsLowHP();
+        if (godMode || invincible)
+        {
+            return;
         }
+
+        hp -= damage;
+        //RuntimeManager.PlayOneShot(hurtSound);
+        PlayerHurtVisual();
+        CheckIfPlayerIsDead();
+        CheckIfPlayerIsLowHP();
+        hpBarDisplay.Refresh(false);
+
     }
+
 
     private void PlayerHurtVisual()
     {
