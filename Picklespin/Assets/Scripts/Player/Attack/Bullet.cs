@@ -107,6 +107,7 @@ public class Bullet : MonoBehaviour
         _renderer.enabled = true;
         _rigidbody.isKinematic = false;
         _light.enabled = true;
+        hitSomething = false;
         autoKill = AutoKill();
         StartCoroutine(autoKill);
     }
@@ -136,13 +137,18 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.GetType() == typeof(BoxCollider) && collider.CompareTag("Hitbox_Head"))
+        if (!hitSomething)
         {
-            GeneralAfterHit(collider, true);
-        }
-        else if (collider.GetType() == typeof(MeshCollider) && collider.CompareTag("EvilEntity"))
-        {
-            GeneralAfterHit(collider, false);
+            if (collider.CompareTag("Hitbox_Head"))
+            {
+                hitSomething = true;
+                GeneralAfterHit(collider, true);
+            }
+            else if (collider.CompareTag("NPC_Hitbox"))
+            {
+                hitSomething = true;
+                GeneralAfterHit(collider, false);
+            }
         }
     }
 
@@ -179,7 +185,6 @@ public class Bullet : MonoBehaviour
 
     private void GeneralAfterHit(Collider collider, bool weakPointHit)
     {
-        hitSomething = true;
         StopCoroutine(autoKill);
 
         if (isRanged)

@@ -19,6 +19,7 @@ TagManager:
   - Carpet
   - Concrete
   - Wood
+  - NPC_Hitbox
   layers:
   - Default
   - TransparentFX
