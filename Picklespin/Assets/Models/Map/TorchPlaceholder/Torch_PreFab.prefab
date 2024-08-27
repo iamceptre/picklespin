@@ -4953,6 +4953,7 @@ GameObject:
   - component: {fileID: 6891636050665673914}
   - component: {fileID: 3803130914535457831}
   - component: {fileID: 2140128497275035421}
+  - component: {fileID: 9105973929467942855}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -5078,6 +5079,58 @@ Halo:
     serializedVersion: 2
     rgba: 4278719255
   m_Size: 1
+--- !u!114 &9105973929467942855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7799337286964934545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38989ca1f0525704d8dc063137548e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightType: 2
+  lastLightType: 2
+  lightTypeMA: 0
+  calculationMode: 0
+  tracePointSettingMode: 0
+  lightMode: 1
+  shadowmaskMode: 0
+  targetLight: {fileID: 8446259236141660494}
+  parentGameObject: {fileID: 7799337286964934545}
+  position: {x: -4.488, y: 5.8585887, z: -7.6284747}
+  forward: {x: 0, y: 0.9396926, z: -0.3420204}
+  saveNearbyProbes: 0
+  saveRadius: 0
+  range: 10
+  useSourceParameters: 1
+  reverseDirection: 0
+  angle: 0
+  customTracePoints: 0
+  accurateTrace: 0
+  accuracy: 0
+  lastAccuracy: 0
+  isDirectional: 0
+  tracePointSize: 0.3
+  lastTracePointSize: 0
+  lastMesh: {fileID: 0}
+  tracePoints: []
+  tracePointsData: []
+  mainTracePoint:
+    position: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    name: 
+    pointGameObject: {fileID: 0}
+  parentVolume: {fileID: 0}
+  showOptionsInManagerWindow: 0
+  intensity: 1.1
+  resetEditor: 0
+  showLightOnScene: 0
+  saveOnOutOfRange: 0
+  isHDRP: 0
+  hdrpAreaSize: {x: 0, y: 0}
 --- !u!1 &8844188799840188057
 GameObject:
   m_ObjectHideFlags: 0

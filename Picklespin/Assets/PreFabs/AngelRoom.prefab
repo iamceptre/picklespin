@@ -15316,6 +15316,7 @@ GameObject:
   - component: {fileID: 6655673623842505646}
   - component: {fileID: 237267461599317803}
   - component: {fileID: 4045239076310397233}
+  - component: {fileID: 2554789078250302177}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -15429,6 +15430,58 @@ MonoBehaviour:
   floatSpeed: 1
   noiseScale: 0.1
   noiseStrength: 0.2
+--- !u!114 &2554789078250302177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4996277676181605745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38989ca1f0525704d8dc063137548e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightType: 2
+  lastLightType: 2
+  lightTypeMA: 0
+  calculationMode: 0
+  tracePointSettingMode: 0
+  lightMode: 1
+  shadowmaskMode: 0
+  targetLight: {fileID: 6655673623842505646}
+  parentGameObject: {fileID: 4996277676181605745}
+  position: {x: -4.467, y: 5.7147007, z: -7.4566517}
+  forward: {x: 0, y: 0.993961, z: -0.109734535}
+  saveNearbyProbes: 0
+  saveRadius: 0
+  range: 16
+  useSourceParameters: 1
+  reverseDirection: 0
+  angle: 0
+  customTracePoints: 0
+  accurateTrace: 0
+  accuracy: 0
+  lastAccuracy: 0
+  isDirectional: 0
+  tracePointSize: 0.3
+  lastTracePointSize: 0
+  lastMesh: {fileID: 0}
+  tracePoints: []
+  tracePointsData: []
+  mainTracePoint:
+    position: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    name: 
+    pointGameObject: {fileID: 0}
+  parentVolume: {fileID: 0}
+  showOptionsInManagerWindow: 0
+  intensity: 3
+  resetEditor: 0
+  showLightOnScene: 0
+  saveOnOutOfRange: 0
+  isHDRP: 0
+  hdrpAreaSize: {x: 0, y: 0}
 --- !u!1 &8060132385785742649
 GameObject:
   m_ObjectHideFlags: 0
@@ -20378,7 +20431,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8610809329592111443}
   - component: {fileID: 3161204475368165659}
-  m_Layer: 6
+  - component: {fileID: 9016699199392750784}
+  m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20462,6 +20516,58 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &9016699199392750784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496357332205810362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38989ca1f0525704d8dc063137548e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightType: 2
+  lastLightType: 2
+  lightTypeMA: 0
+  calculationMode: 0
+  tracePointSettingMode: 0
+  lightMode: 2
+  shadowmaskMode: 0
+  targetLight: {fileID: 3161204475368165659}
+  parentGameObject: {fileID: 8496357332205810362}
+  position: {x: 0, y: 3, z: 1}
+  forward: {x: 0, y: 0, z: 1}
+  saveNearbyProbes: 0
+  saveRadius: 0
+  range: 10
+  useSourceParameters: 1
+  reverseDirection: 0
+  angle: 0
+  customTracePoints: 0
+  accurateTrace: 0
+  accuracy: 0
+  lastAccuracy: 0
+  isDirectional: 0
+  tracePointSize: 0.3
+  lastTracePointSize: 0
+  lastMesh: {fileID: 0}
+  tracePoints: []
+  tracePointsData: []
+  mainTracePoint:
+    position: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    name: 
+    pointGameObject: {fileID: 0}
+  parentVolume: {fileID: 0}
+  showOptionsInManagerWindow: 0
+  intensity: 0.7
+  resetEditor: 0
+  showLightOnScene: 0
+  saveOnOutOfRange: 0
+  isHDRP: 0
+  hdrpAreaSize: {x: 0, y: 0}
 --- !u!1 &8842972367169257141
 GameObject:
   m_ObjectHideFlags: 0

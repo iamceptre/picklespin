@@ -99,9 +99,9 @@ public class JumpLandSignals : MonoBehaviour
     {
         strenght = Mathf.Clamp(strenght * 0.07f, 0.2f, 2);
         //Debug.Log("camera movement strenght " + strenght );
-        cameraMovement.DOLocalMoveY(-0.4f * strenght, 0.15f).SetEase(Ease.OutExpo).OnComplete(() =>
+        cameraMovement.DOLocalMoveY(-0.4f * strenght, 0.1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            cameraMovement.DOLocalMoveY(0, 0.3f * strenght).SetEase(Ease.OutSine);
+            cameraMovement.DOLocalMoveY(0, 0.3f * strenght).SetEase(Ease.InOutSine);
         });
 
         camShakeManager.ShakeHand(strenght * 0.1f, 0.2f, 13);

@@ -1,12 +1,12 @@
+using Pathfinding;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class HelperSpirit : MonoBehaviour
 {
     public static HelperSpirit instance;
 
-    private NavMeshAgent _agent;
+    private AIDestinationSetter aIDestinationSetter;
     private Vector3 _targetAngel;
     private PublicPlayerTransform playerTransform;
     private WaitForSeconds refreshEverySeconds = new WaitForSeconds(0.25f);
@@ -27,7 +27,7 @@ public class HelperSpirit : MonoBehaviour
 
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        aIDestinationSetter = GetComponent<AIDestinationSetter>();
         _trail = GetComponent<TrailRenderer>();
 
 
@@ -45,7 +45,7 @@ public class HelperSpirit : MonoBehaviour
     {
         distanceTreshold = angelDistanceTreshold;
         playerTransform = PublicPlayerTransform.instance;
-        startingSpeed = _agent.speed;
+        //startingSpeed = _agent.speed;
     }
 
     private IEnumerator Checker()
@@ -67,8 +67,8 @@ public class HelperSpirit : MonoBehaviour
         {
             currentlyGoingToAngel = false;
             currentTarget = playerTransform.PlayerTransform.position;
-            _agent.SetDestination(currentTarget);
-            _agent.transform.position = currentTarget;
+            //aIDestinationSetter.target = currentTarget;
+           // _agent.transform.position = currentTarget;
             //_agent.speed = 999;
             distanceTreshold = playerDistanceTreshold;
             _trail.Clear();
@@ -78,7 +78,7 @@ public class HelperSpirit : MonoBehaviour
             //_agent.speed = startingSpeed;
             currentlyGoingToAngel = true;
             currentTarget = _targetAngel;
-            _agent.SetDestination(currentTarget);
+           // _agent.SetDestination(currentTarget);
             distanceTreshold = angelDistanceTreshold;
         }
 
@@ -86,7 +86,7 @@ public class HelperSpirit : MonoBehaviour
 
     public void HideSpirit()
     {
-        _agent.isStopped = true;
+        //_agent.isStopped = true;
         gameObject.SetActive(false);
         StopAllCoroutines();
     }
@@ -94,10 +94,10 @@ public class HelperSpirit : MonoBehaviour
     public void ShowSpirit(Transform _target)
     {
         gameObject.SetActive(true);
-        _agent.isStopped = false;
+        //_agent.isStopped = false;
         currentTarget = _target.position;
         _targetAngel = currentTarget;
-        _agent.SetDestination(_targetAngel);
+        //_agent.SetDestination(_targetAngel);
         StartCoroutine(Checker());
     }
 
