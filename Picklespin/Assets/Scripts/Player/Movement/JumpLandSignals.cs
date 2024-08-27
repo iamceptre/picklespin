@@ -82,10 +82,10 @@ public class JumpLandSignals : MonoBehaviour
             landed = true;
             ignoreFirstLanding = false;
             playerMovement.externalPushForce = 1;
+            floorTypeDetector.Check();
 
             if (isFallingLongEnough)
             {
-                floorTypeDetector.LandingCheck();
                 LandCameraMovement(speedometer.verticalVelocity);
                 isLandingHardDecider();
                 footstepSystem.RefreshFootstepTimer();

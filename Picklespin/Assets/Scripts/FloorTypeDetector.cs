@@ -17,7 +17,6 @@ public class FloorTypeDetector : MonoBehaviour
     [SerializeField] private StudioEventEmitter woodLandingEvent;
 
     private int hitTagCached;
-    private int landingHitTagCached;
 
     private static readonly int ConcreteTagHash = "Concrete".GetHashCode();
     private static readonly int CarpetTagHash = "Carpet".GetHashCode();
@@ -58,20 +57,6 @@ public class FloorTypeDetector : MonoBehaviour
     }
 
 
-    public void LandingCheck()
-    {
-        Ray ray = new Ray(transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-        {
-            int hitTag = hit.collider.tag.GetHashCode();
-
-            if (hitTag != landingHitTagCached)
-            {
-                ChangeFootstepSound(hitTag);
-                landingHitTagCached = hitTag;
-            }
-        }
-    }
 
     private void ChangeFootstepSound(int hitTagHash)
     {
