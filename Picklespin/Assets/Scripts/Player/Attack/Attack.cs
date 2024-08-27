@@ -225,7 +225,7 @@ public class Attack : MonoBehaviour
 
             case 1: //fireball
                 camShakeManager.ShakeSelected(5);
-                camShakeManager.ShakeHand(0.2f, 0.5f, 15);
+                camShakeManager.ShakeHand(0.4f, 0.2f, 15);
                 break;
 
             case 2: //light?

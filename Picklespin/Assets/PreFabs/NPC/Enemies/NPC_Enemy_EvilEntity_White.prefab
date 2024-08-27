@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 2651115027549397130}
   - component: {fileID: 5540798688103687215}
   - component: {fileID: 1827682999237575632}
-  m_Layer: 8
+  m_Layer: 1
   m_Name: Mist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5183,7 +5183,7 @@ GameObject:
   - component: {fileID: 3321445078997320050}
   - component: {fileID: 2302942585547026703}
   - component: {fileID: 1365997737139060169}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: EyeLitSPRITE
   m_TagString: Untagged
   m_Icon: {fileID: 0}

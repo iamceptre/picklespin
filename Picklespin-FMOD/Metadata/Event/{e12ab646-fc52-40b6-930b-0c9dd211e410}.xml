@@ -80,7 +80,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{882f3f67-30c1-4688-bd05-0067f866d079}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-1</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{3a34ccfb-e271-439a-bd9b-5354bda2f840}</destination>
@@ -148,7 +148,7 @@
 	<object class="MixerBusPanner" id="{744faf39-8902-4c92-8866-cae157489501}" />
 	<object class="MultiSound" id="{2213c28e-6ba1-4653-9f6e-6b443a0b6048}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-6</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{6b9a24f1-4dcd-434d-b2de-27dece4dc70f}</destination>
@@ -163,7 +163,7 @@
 	</object>
 	<object class="MultiSound" id="{2783b652-54d3-46fb-9d1f-d54df9beee04}">
 		<property name="volume">
-			<value>-11</value>
+			<value>-14</value>
 		</property>
 		<property name="pitch">
 			<value>-0.699999988</value>
@@ -191,11 +191,10 @@
 			<value>-1</value>
 		</property>
 		<property name="pitch">
-			<value>1</value>
+			<value>0.699999988</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{814e24ef-5316-4b23-a5cb-54fe05c8d465}</destination>
-			<destination>{d8057de1-53f8-47c4-9e61-4e5f9d55bdd1}</destination>
 			<destination>{788a5fc6-bea9-424d-aade-48d56ca339f8}</destination>
 		</relationship>
 		<relationship name="sounds">
@@ -211,7 +210,7 @@
 			<value>volume</value>
 		</property>
 		<property name="amount">
-			<value>12</value>
+			<value>4</value>
 		</property>
 	</object>
 	<object class="RandomizerModulator" id="{f2525830-4a2d-443f-aab1-6e62feb1774c}">
@@ -258,7 +257,7 @@
 			<value>volume</value>
 		</property>
 		<property name="amount">
-			<value>12.5</value>
+			<value>4.5</value>
 		</property>
 	</object>
 	<object class="ADSRModulator" id="{23473ece-9be2-468c-984d-2741bf0553f5}">
@@ -348,23 +347,15 @@
 			<value>6</value>
 		</property>
 	</object>
-	<object class="RandomizerModulator" id="{d8057de1-53f8-47c4-9e61-4e5f9d55bdd1}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>volume</value>
-		</property>
-		<property name="amount">
-			<value>1.5</value>
-		</property>
-	</object>
 	<object class="ADSRModulator" id="{788a5fc6-bea9-424d-aade-48d56ca339f8}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>
 		</property>
 		<property name="initialValue">
-			<value>24</value>
+			<value>30</value>
 		</property>
 		<property name="attackTime">
-			<value>200</value>
+			<value>180</value>
 		</property>
 		<property name="attackShape">
 			<value>-0.511739135</value>

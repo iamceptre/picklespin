@@ -5026,7 +5026,7 @@ GameObject:
   - component: {fileID: 8851099699862197895}
   - component: {fileID: 2197587249600294484}
   - component: {fileID: 130226223662744800}
-  m_Layer: 8
+  m_Layer: 1
   m_Name: SpawnInParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16276,7 +16276,7 @@ GameObject:
   - component: {fileID: 5179267843130176379}
   - component: {fileID: 3682317592650031572}
   - component: {fileID: 8652223866761789649}
-  m_Layer: 8
+  m_Layer: 1
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -42,13 +42,13 @@ MonoBehaviour:
   windDirection: {x: 0.95782626, y: 0, z: 0.28734788}
   turbulenceStrength: 2.72
   useXYPlane: 0
-  skyColor: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 0.8}
-  skyHaze: 150
+  skyColor: {r: 0.3589754, g: 0.28773582, b: 1, a: 1}
+  skyHaze: 420
   skySpeed: 0.136
   skyNoiseStrength: 1
   skyNoiseScale: 0.2
-  skyAlpha: 0.07
-  skyDepth: 0.999
+  skyAlpha: 0.057
+  skyDepth: 0.9
   stepping: 8
   steppingNear: 0
   dithering: 1

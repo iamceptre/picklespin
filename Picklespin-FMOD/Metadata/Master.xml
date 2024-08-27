@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="MixerMaster" id="{5ddb48f1-77cc-4c71-88b8-028504473097}">
-		<property name="volume">
-			<value>2</value>
-		</property>
 		<property name="name">
 			<value>Master Bus</value>
 		</property>
@@ -27,7 +24,7 @@
 		<relationship name="effects">
 			<destination>{9ca18f0d-bef0-45be-b644-e76fddb85bfd}</destination>
 			<destination>{34297202-8763-49c1-a4b3-90c503bd208d}</destination>
-			<destination>{e5e268bd-8da0-4c93-9de2-a752e4bbbb86}</destination>
+			<destination>{4208c7c9-0f3f-40fe-bcb2-e9e9aeeaceb6}</destination>
 			<destination>{55a6cf1d-86b2-42a9-a949-5cd0fc30a7cc}</destination>
 		</relationship>
 	</object>
@@ -48,16 +45,6 @@
 			<value>180</value>
 		</property>
 	</object>
-	<object class="LimiterEffect" id="{e5e268bd-8da0-4c93-9de2-a752e4bbbb86}">
-		<property name="bypass">
-			<value>true</value>
-		</property>
-		<property name="ceiling">
-			<value>-1.5</value>
-		</property>
-		<property name="release">
-			<value>30</value>
-		</property>
-	</object>
+	<object class="LimiterEffect" id="{4208c7c9-0f3f-40fe-bcb2-e9e9aeeaceb6}" />
 	<object class="LoudnessMeter" id="{55a6cf1d-86b2-42a9-a949-5cd0fc30a7cc}" />
 </objects>

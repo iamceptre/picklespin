@@ -15,7 +15,7 @@ public class AddedEXP_Gui : MonoBehaviour
     private RectTransform _textTransform;
     private Color startingColor;
 
-    private WaitForSeconds waitBeforeFadingTime = new WaitForSeconds(1);
+    private WaitForSeconds waitBeforeFadingTime = new WaitForSeconds(3);
 
     StringBuilder sb = new StringBuilder();
 
