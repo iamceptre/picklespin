@@ -1029,7 +1029,9 @@ MonoBehaviour:
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
+  m_BeforeStackBundles:
+  - assemblyQualifiedName: BeautifyForPPS.Beautify, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_AfterStackBundles: []
 --- !u!114 &192487937
 MonoBehaviour:
@@ -1845,7 +1847,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 0
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &318013936
 MonoBehaviour:
@@ -1871,7 +1873,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 318013930}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24a3e42a19bfd364f9153aca108474cf, type: 3}
   m_Name: 
@@ -3567,6 +3569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0145c28f58f9f81488ca2f82629da01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasToGoFrom: {fileID: 2058344104}
   canvasToGoTo: {fileID: 1108234190}
 --- !u!114 &837694748
 MonoBehaviour:
@@ -6279,6 +6282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0145c28f58f9f81488ca2f82629da01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasToGoFrom: {fileID: 1108234190}
   canvasToGoTo: {fileID: 2058344104}
 --- !u!114 &1404604386
 MonoBehaviour:
@@ -8884,6 +8888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0145c28f58f9f81488ca2f82629da01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasToGoFrom: {fileID: 0}
   canvasToGoTo: {fileID: 2058344104}
 --- !u!114 &2045712678
 MonoBehaviour:
@@ -9739,6 +9744,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2617093768842618413, guid: ccab147be2f3bb747b1544522229c963, type: 3}
+      propertyPath: m_FirstSelected
+      value: 
+      objectReference: {fileID: 1343065826}
     - target: {fileID: 4635345275477783729, guid: ccab147be2f3bb747b1544522229c963, type: 3}
       propertyPath: m_Name
       value: EventSystem
@@ -10040,6 +10049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0145c28f58f9f81488ca2f82629da01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasToGoFrom: {fileID: 318013933}
   canvasToGoTo: {fileID: 1108234190}
 --- !u!1001 &1254618395203971668
 PrefabInstance:
@@ -10491,6 +10501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0145c28f58f9f81488ca2f82629da01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasToGoFrom: {fileID: 1108234190}
   canvasToGoTo: {fileID: 318013933}
 --- !u!224 &3255704302091711019
 RectTransform:
