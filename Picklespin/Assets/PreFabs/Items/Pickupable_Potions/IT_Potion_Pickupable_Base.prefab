@@ -164,14 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9be6ee2df8982ea4aadd43105cbf0499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imHp: 0
-  imStamina: 0
-  imMana: 0
+  potionType: 0
+  howMuchExpIGive: 5
   itemAfterPickingUp: {fileID: 4773779664034127539}
   pickupSoundEmitter: {fileID: 8908050873450904441}
-  howMuchHpIGive: 20
-  howMuchStaminaIGive: 50
-  howMuchManaIGive: 100
+  howMuchIGive: 0
 --- !u!114 &4773779664034127539
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: potionType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchIGive
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
       propertyPath: howMuchHpIGive
       value: 0
       objectReference: {fileID: 0}

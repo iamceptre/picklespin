@@ -17,6 +17,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: howMuchIGive
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 188713312793987983, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
       propertyPath: howMuchManaIGive
       value: 0
       objectReference: {fileID: 0}

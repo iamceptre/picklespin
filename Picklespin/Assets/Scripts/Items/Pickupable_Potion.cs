@@ -3,148 +3,91 @@ using FMODUnity;
 
 public class Pickupable_Potion : MonoBehaviour
 {
+    private enum PotionType { HP, Stamina, Mana }
 
-    //POTION TYPE
     [Header("Potion Type")]
-    [SerializeField] private bool imHp;
-    [SerializeField] private bool imStamina;
-    [SerializeField] private bool imMana;
-    private int myPotionTypeIndex = -1;
+    [SerializeField] private PotionType potionType;
 
-    //REFERENCES
+    // EXP
+    [Header("Exp")]
+    [SerializeField] private int howMuchExpIGive = 5;
+
+    // REFERENCES
     [Header("References")]
     [SerializeField] private ItemAfterPickingUp itemAfterPickingUp;
-    [SerializeField] StudioEventEmitter pickupSoundEmitter;
+    [SerializeField] private StudioEventEmitter pickupSoundEmitter;
 
-    //HP
-    [Header("HP")]
+    // GENERAL STAT GAIN
+    [Header("Potion Effect")]
+    [SerializeField] private int howMuchIGive;
+
     private PlayerHP playerHP;
-    [SerializeField] private int howMuchHpIGive;
-
-    //STAMINA
-    [Header("Stamina")]
     private PlayerMovement playerMovement;
-    [SerializeField] private int howMuchStaminaIGive;
-
-    //MANA
-    [Header("Mana")]
     private Ammo ammo;
-    [SerializeField] private int howMuchManaIGive;
-
-
-    //GENERAL
+    private PlayerEXP playerExp;
     private BarLightsAnimation barLightsAnimation;
     private ScreenFlashTint screenFlashTint;
 
-
-    private void Awake()
-    {
-        if (imHp)
-        {
-            myPotionTypeIndex = 0; // 0 - HP
-            return;
-        }
-
-        if (imStamina)
-        {
-            myPotionTypeIndex = 1; // 1 - Stamina
-            return;
-        }
-
-        if (imMana)
-        {
-            myPotionTypeIndex = 2; // 2 - Mana
-            return;
-        }
-    }
+    private delegate void ResourceAction();
 
     private void Start()
     {
         playerHP = PlayerHP.instance;
         playerMovement = PlayerMovement.instance;
         ammo = Ammo.instance;
-
+        playerExp = PlayerEXP.instance;
         barLightsAnimation = BarLightsAnimation.instance;
         screenFlashTint = ScreenFlashTint.instance;
     }
 
-
     public void PickupPotion()
     {
-
-        switch (myPotionTypeIndex)
+        ResourceAction resourceAction = potionType switch
         {
+            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, playerHP.GiveHPToPlayer),
+            PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, playerMovement.GiveStaminaToPlayer),
+            PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, ammo.GiveManaToPlayer),
+            _ => null
+        };
 
-            case 0:
-                GiveHPToPlayer();
-                break;
-
-            case 1:
-                GiveStaminaToPlayer();
-                break;
-
-            case 2:
-                GiveManaToPlayer();
-                break;
-
-            default:
-                Debug.Log("potion type not set");
-                break;
-
-
+        if (resourceAction != null)
+        {
+            resourceAction.Invoke();
         }
-
+        else
+        {
+            Debug.LogError("Invalid potion type");
+        }
     }
 
-    private void GiveHPToPlayer()
+    private void TryGiveResource(int current, int max, System.Action<int> applyEffect)
     {
-        if (playerHP.hp < playerHP.maxHp)
+        if (current < max)
         {
-            playerHP.GiveHPToPlayer(howMuchHpIGive);
+            applyEffect(howMuchIGive);
+
+            string color = potionType switch
+            {
+                PotionType.HP => "<color=#E36464>",
+                PotionType.Stamina => "<color=#ADE78A>",
+                PotionType.Mana => "<color=#7D93F8>",
+                _ => "<color=white>" // default color
+            };
+
+            string message = $"{color}Picked up {potionType} potion</color>";
+            playerExp.GivePlayerExp(howMuchExpIGive, message);
             Afterpick();
         }
         else
         {
-            //Debug.Log("full hp, not picking the potion up");
-            return;   
+            Debug.Log($"{potionType} full, not picking the potion up");
         }
     }
-
-    private void GiveStaminaToPlayer()
-    {
-        if (playerMovement.stamina < 100)
-        {
-            playerMovement.GiveStaminaToPlayer(howMuchStaminaIGive);
-            Afterpick();
-        }
-        else
-        {
-            //Debug.Log("stamina full, not picking the potion up");
-            return;
-        }
-    }
-
-    private void GiveManaToPlayer()
-    {
-        if (ammo.ammo < ammo.maxAmmo)
-        {
-            ammo.GiveManaToPlayer(howMuchManaIGive);
-            Afterpick();
-        }
-        else
-        {
-            //Debug.Log("mana full, not picking the potion up");
-            return;
-        }
-    }
-
 
     private void Afterpick()
     {
         itemAfterPickingUp.Pickup();
         pickupSoundEmitter.Play();
-        screenFlashTint.Flash(myPotionTypeIndex);
+        screenFlashTint.Flash((int)potionType);
     }
-
 }
-
