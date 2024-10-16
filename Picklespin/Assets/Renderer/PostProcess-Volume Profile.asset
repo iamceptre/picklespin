@@ -1,507 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8169707707641227845
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d65e486e4de6e5448a8fbb43dc8756a0, type: 3}
-  m_Name: Grain
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  colored:
-    overrideState: 1
-    value: 0
-  intensity:
-    overrideState: 1
-    value: 0.308
-  size:
-    overrideState: 1
-    value: 1
-  lumContrib:
-    overrideState: 0
-    value: 0
---- !u!114 &-6907932697299348009
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
-  m_Name: Bloom
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  intensity:
-    overrideState: 1
-    value: 1
-  threshold:
-    overrideState: 1
-    value: 0.66
-  softKnee:
-    overrideState: 0
-    value: 0.5
-  clamp:
-    overrideState: 1
-    value: 5
-  diffusion:
-    overrideState: 0
-    value: 10
-  anamorphicRatio:
-    overrideState: 0
-    value: 0
-  color:
-    overrideState: 0
-    value: {r: 1, g: 1, b: 1, a: 1}
-  fastMode:
-    overrideState: 1
-    value: 1
-  dirtTexture:
-    overrideState: 0
-    value: {fileID: 2800000, guid: 8b8c0d2a94fa4d540af8c62c70c48cd6, type: 3}
-    defaultState: 1
-  dirtIntensity:
-    overrideState: 0
-    value: 284.97
---- !u!114 &-4284593167351147418
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffc809f97d8a84611bb7beeabe476b45, type: 3}
-  m_Name: Beautify
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  compareMode:
-    overrideState: 0
-    value: 1
-  compareLineAngle:
-    overrideState: 1
-    value: 1.86
-  compareLineWidth:
-    overrideState: 1
-    value: 0.0018
-  sharpenIntensity:
-    overrideState: 0
-    value: 25
-  sharpenDepthThreshold:
-    overrideState: 0
-    value: 0.035
-  sharpenMinDepth:
-    overrideState: 0
-    value: 0
-  sharpenMaxDepth:
-    overrideState: 0
-    value: 0.999
-  sharpenRelaxation:
-    overrideState: 0
-    value: 0.08
-  sharpenClamp:
-    overrideState: 0
-    value: 0.45
-  sharpenMotionSensibility:
-    overrideState: 0
-    value: 0.5
-  daltonize:
-    overrideState: 0
-    value: 0
-  sepia:
-    overrideState: 0
-    value: 0.12
-  saturate:
-    overrideState: 0
-    value: 0
-  brightness:
-    overrideState: 1
-    value: 1.05
-  contrast:
-    overrideState: 0
-    value: 1.03
-  tintColor:
-    overrideState: 0
-    value: {r: 1, g: 1, b: 1, a: 0}
-  tonemap:
-    overrideState: 0
-    value: 1
-  tonemapExposurePre:
-    overrideState: 0
-    value: 1.38
-  tonemapBrightnessPost:
-    overrideState: 0
-    value: 5
-  lut:
-    overrideState: 0
-    value: 1
-  lutIntensity:
-    overrideState: 0
-    value: 1
-  lutTexture:
-    overrideState: 0
-    value: {fileID: 2800000, guid: 51e44d1d7be4c48ada390d4ec96b8235, type: 3}
-    defaultState: 1
-  bloomIntensity:
-    overrideState: 1
-    value: 0.07
-  bloomThreshold:
-    overrideState: 1
-    value: 0.03
-  bloomMaxBrightness:
-    overrideState: 1
-    value: 1
-  bloomDepthAtten:
-    overrideState: 0
-    value: 0
-  bloomAntiflicker:
-    overrideState: 0
-    value: 0
-  bloomUltra:
-    overrideState: 0
-    value: 0
-  bloomDebug:
-    overrideState: 0
-    value: 0
-  bloomCustomize:
-    overrideState: 0
-    value: 0
-  bloomWeight0:
-    overrideState: 0
-    value: 0.5
-  bloomWeight1:
-    overrideState: 0
-    value: 0.5
-  bloomWeight2:
-    overrideState: 0
-    value: 0.5
-  bloomWeight3:
-    overrideState: 0
-    value: 0.5
-  bloomWeight4:
-    overrideState: 0
-    value: 0.5
-  bloomWeight5:
-    overrideState: 0
-    value: 0.5
-  bloomBoost0:
-    overrideState: 0
-    value: 0
-  bloomBoost1:
-    overrideState: 0
-    value: 0
-  bloomBoost2:
-    overrideState: 0
-    value: 0
-  bloomBoost3:
-    overrideState: 0
-    value: 0
-  bloomBoost4:
-    overrideState: 0
-    value: 0
-  bloomBoost5:
-    overrideState: 0
-    value: 0
-  anamorphicFlaresIntensity:
-    overrideState: 0
-    value: 0.01
-  anamorphicFlaresThreshold:
-    overrideState: 0
-    value: 0.08
-  anamorphicFlaresVertical:
-    overrideState: 0
-    value: 0
-  anamorphicFlaresSpread:
-    overrideState: 0
-    value: 1
-  anamorphicFlaresDepthAtten:
-    overrideState: 0
-    value: 0
-  anamorphicFlaresAntiflicker:
-    overrideState: 0
-    value: 0
-  anamorphicFlaresUltra:
-    overrideState: 0
-    value: 0
-  anamorphicFlaresTint:
-    overrideState: 0
-    value: {r: 0.5, g: 0.5, b: 1, a: 0}
-  sunFlaresIntensity:
-    overrideState: 0
-    value: 0
-  sunFlaresTint:
-    overrideState: 0
-    value: {r: 1, g: 1, b: 1, a: 1}
-  sunFlaresSolarWindSpeed:
-    overrideState: 0
-    value: 0.01
-  sunFlaresRotationDeadZone:
-    overrideState: 0
-    value: 0
-  sunFlaresDownsampling:
-    overrideState: 0
-    value: 1
-  sunFlaresLayerMask:
-    overrideState: 0
-    value:
-      serializedVersion: 2
-      m_Bits: 4294967295
-  sunFlaresSunIntensity:
-    overrideState: 0
-    value: 0.1
-  sunFlaresSunDiskSize:
-    overrideState: 0
-    value: 0.05
-  sunFlaresSunRayDiffractionIntensity:
-    overrideState: 0
-    value: 3.5
-  sunFlaresSunRayDiffractionThreshold:
-    overrideState: 0
-    value: 0.13
-  sunFlaresCoronaRays1Length:
-    overrideState: 0
-    value: 0.02
-  sunFlaresCoronaRays1Streaks:
-    overrideState: 0
-    value: 12
-  sunFlaresCoronaRays1Spread:
-    overrideState: 0
-    value: 0.001
-  sunFlaresCoronaRays1AngleOffset:
-    overrideState: 0
-    value: 0
-  sunFlaresCoronaRays2Length:
-    overrideState: 0
-    value: 0.05
-  sunFlaresCoronaRays2Streaks:
-    overrideState: 0
-    value: 12
-  sunFlaresCoronaRays2Spread:
-    overrideState: 0
-    value: 0.1
-  sunFlaresCoronaRays2AngleOffset:
-    overrideState: 0
-    value: 0
-  sunFlaresGhosts1Size:
-    overrideState: 0
-    value: 0.03
-  sunFlaresGhosts1Offset:
-    overrideState: 0
-    value: 1.04
-  sunFlaresGhosts1Brightness:
-    overrideState: 0
-    value: 0.037
-  sunFlaresGhosts2Size:
-    overrideState: 0
-    value: 0.1
-  sunFlaresGhosts2Offset:
-    overrideState: 0
-    value: 0.71
-  sunFlaresGhosts2Brightness:
-    overrideState: 0
-    value: 0.03
-  sunFlaresGhosts3Size:
-    overrideState: 0
-    value: 0.24
-  sunFlaresGhosts3Brightness:
-    overrideState: 0
-    value: 0.025
-  sunFlaresGhosts3Offset:
-    overrideState: 0
-    value: 0.31
-  sunFlaresGhosts4Size:
-    overrideState: 0
-    value: 0.016
-  sunFlaresGhosts4Offset:
-    overrideState: 0
-    value: 0
-  sunFlaresGhosts4Brightness:
-    overrideState: 0
-    value: 0.017
-  sunFlaresHaloOffset:
-    overrideState: 0
-    value: 0.22
-  sunFlaresHaloAmplitude:
-    overrideState: 0
-    value: 15.1415
-  sunFlaresHaloIntensity:
-    overrideState: 0
-    value: 0.01
-  lensDirtIntensity:
-    overrideState: 0
-    value: 0.3
-  lensDirtThreshold:
-    overrideState: 0
-    value: 0.5
-  lensDirtTexture:
-    overrideState: 0
-    value: {fileID: 2800000, guid: 3ffe6b2509a2b4ecfa7fbb37186a72c8, type: 3}
-    defaultState: 1
-  lensDirtSpread:
-    overrideState: 0
-    value: 3
-  eyeAdaptation:
-    overrideState: 0
-    value: 0
-  eyeAdaptationMinExposure:
-    overrideState: 0
-    value: 0.2
-  eyeAdaptationMaxExposure:
-    overrideState: 0
-    value: 5
-  eyeAdaptationSpeedToLight:
-    overrideState: 0
-    value: 0.4
-  eyeAdaptationSpeedToDark:
-    overrideState: 0
-    value: 0.2
-  purkinje:
-    overrideState: 0
-    value: 1
-  purkinjeAmount:
-    overrideState: 0
-    value: 1
-  purkinjeLuminanceThreshold:
-    overrideState: 0
-    value: 0.6
-  vignettingOuterRing:
-    overrideState: 0
-    value: 0
-  vignettingInnerRing:
-    overrideState: 0
-    value: 0
-  vignettingFade:
-    overrideState: 0
-    value: 0
-  vignettingCircularShape:
-    overrideState: 0
-    value: 0
-  vignettingAspectRatio:
-    overrideState: 0
-    value: 1
-  vignettingBlink:
-    overrideState: 0
-    value: 0
-  vignettingColor:
-    overrideState: 0
-    value: {r: 0, g: 0, b: 0, a: 1}
-  vignettingMask:
-    overrideState: 0
-    value: {fileID: 0}
-    defaultState: 1
-  depthOfField:
-    overrideState: 0
-    value: 1
-  depthOfFieldDebug:
-    overrideState: 0
-    value: 0
-  depthOfFieldFocusMode:
-    overrideState: 0
-    value: 0
-  depthOfFieldAutofocusMinDistance:
-    overrideState: 0
-    value: 0
-  depthOfFieldAutofocusMaxDistance:
-    overrideState: 0
-    value: 10000
-  depthofFieldAutofocusViewportPoint:
-    overrideState: 0
-    value: {x: 0.5, y: 0.5}
-  depthOfFieldAutofocusLayerMask:
-    overrideState: 0
-    value:
-      serializedVersion: 2
-      m_Bits: 4294967295
-  depthOfFieldExclusionLayerMask:
-    overrideState: 0
-    value:
-      serializedVersion: 2
-      m_Bits: 0
-  depthOfFieldExclusionLayerMaskDownsampling:
-    overrideState: 0
-    value: 1
-  depthOfFieldTransparencySupport:
-    overrideState: 0
-    value: 0
-  depthOfFieldTransparencyLayerMask:
-    overrideState: 0
-    value:
-      serializedVersion: 2
-      m_Bits: 4294967295
-  depthOfFieldTransparencySupportDownsampling:
-    overrideState: 0
-    value: 1
-  depthOfFieldExclusionBias:
-    overrideState: 0
-    value: 0.99
-  depthOfFieldDistance:
-    overrideState: 0
-    value: 10
-  depthOfFieldFocusSpeed:
-    overrideState: 0
-    value: 1
-  depthOfFieldDownsampling:
-    overrideState: 0
-    value: 2
-  depthOfFieldMaxSamples:
-    overrideState: 0
-    value: 4
-  depthOfFieldFocalLength:
-    overrideState: 0
-    value: 0.05
-  depthOfFieldAperture:
-    overrideState: 0
-    value: 2.8
-  depthOfFieldForegroundBlur:
-    overrideState: 0
-    value: 1
-  depthOfFieldForegroundBlurHQ:
-    overrideState: 0
-    value: 0
-  depthOfFieldForegroundDistance:
-    overrideState: 0
-    value: 0.25
-  depthOfFieldBokeh:
-    overrideState: 0
-    value: 1
-  depthOfFieldBokehThreshold:
-    overrideState: 0
-    value: 1
-  depthOfFieldBokehIntensity:
-    overrideState: 0
-    value: 2
-  depthOfFieldMaxBrightness:
-    overrideState: 0
-    value: 1000
-  depthOfFieldMaxDistance:
-    overrideState: 0
-    value: 1
-  depthOfFieldFilterMode:
-    overrideState: 0
-    value: 1
-  outline:
-    overrideState: 0
-    value: 0
-  outlineColor:
-    overrideState: 0
-    value: {r: 0, g: 0, b: 0, a: 0.8}
---- !u!114 &-3849575565834026275
+--- !u!114 &-8803111429720799986
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -519,16 +18,16 @@ MonoBehaviour:
     value: 1
   gradingMode:
     overrideState: 0
-    value: 0
+    value: 1
   externalLut:
-    overrideState: 0
-    value: {fileID: 0}
+    overrideState: 1
+    value: {fileID: 2800000, guid: 51e44d1d7be4c48ada390d4ec96b8235, type: 3}
     defaultState: 1
   tonemapper:
     overrideState: 1
     value: 2
   toneCurveToeStrength:
-    overrideState: 0
+    overrideState: 1
     value: 0
   toneCurveToeLength:
     overrideState: 0
@@ -543,8 +42,8 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   toneCurveGamma:
-    overrideState: 0
-    value: 1
+    overrideState: 1
+    value: 1.4
   ldrLut:
     overrideState: 0
     value: {fileID: 0}
@@ -553,20 +52,20 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 0
-    value: -2
-  tint:
-    overrideState: 0
-    value: 0
-  colorFilter:
     overrideState: 1
-    value: {r: 1.0604194, g: 1.0789194, b: 1.0966289, a: 1}
+    value: 0
+  tint:
+    overrideState: 1
+    value: -2
+  colorFilter:
+    overrideState: 0
+    value: {r: 0.9103774, g: 1, b: 0.9751048, a: 1}
   hueShift:
     overrideState: 0
-    value: -1
+    value: 0
   saturation:
     overrideState: 1
-    value: -15
+    value: -5
   brightness:
     overrideState: 0
     value: 0
@@ -575,16 +74,16 @@ MonoBehaviour:
     value: 1.5
   contrast:
     overrideState: 1
-    value: -14
+    value: -26
   mixerRedOutRedIn:
     overrideState: 0
-    value: 199
+    value: 100
   mixerRedOutGreenIn:
     overrideState: 0
-    value: 0
+    value: 72
   mixerRedOutBlueIn:
     overrideState: 0
-    value: -200
+    value: -2
   mixerGreenOutRedIn:
     overrideState: 0
     value: 0
@@ -596,19 +95,19 @@ MonoBehaviour:
     value: 0
   mixerBlueOutRedIn:
     overrideState: 0
-    value: 0
+    value: -5
   mixerBlueOutGreenIn:
     overrideState: 0
-    value: 0
+    value: -1
   mixerBlueOutBlueIn:
     overrideState: 0
-    value: 100
+    value: 112
   lift:
     overrideState: 0
-    value: {x: 0.86432374, y: 0.9074814, z: 1, w: 0}
+    value: {x: 0.7579289, y: 0.39160365, z: 1, w: 0}
   gamma:
     overrideState: 0
-    value: {x: 1, y: 0.9523761, z: 0.8187357, w: 0}
+    value: {x: 1, y: 0, z: 0.3600893, w: 0}
   gain:
     overrideState: 0
     value: {x: 1, y: 1, z: 1, w: 0}
@@ -1535,7 +1034,25 @@ MonoBehaviour:
     value:
       curve:
         serializedVersion: 2
-        m_Curve: []
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.38785046
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0.5023256
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -1543,140 +1060,176 @@ MonoBehaviour:
       m_ZeroValue: 0.5
       m_Range: 1
       cachedData:
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
+      - 0.38785046
+      - 0.38787133
+      - 0.38793343
+      - 0.38803616
+      - 0.38817886
+      - 0.38836083
+      - 0.38858148
+      - 0.3888401
+      - 0.38913608
+      - 0.38946873
+      - 0.38983738
+      - 0.39024144
+      - 0.3906802
+      - 0.39115304
+      - 0.39165926
+      - 0.39219823
+      - 0.3927693
+      - 0.39337185
+      - 0.39400515
+      - 0.39466858
+      - 0.39536148
+      - 0.39608324
+      - 0.39683312
+      - 0.39761055
+      - 0.39841482
+      - 0.3992453
+      - 0.4001013
+      - 0.40098223
+      - 0.40188736
+      - 0.4028161
+      - 0.40376773
+      - 0.40474167
+      - 0.4057372
+      - 0.4067537
+      - 0.4077905
+      - 0.40884697
+      - 0.40992242
+      - 0.41101623
+      - 0.4121277
+      - 0.4132562
+      - 0.41440108
+      - 0.4155617
+      - 0.41673738
+      - 0.41792744
+      - 0.4191313
+      - 0.42034823
+      - 0.42157763
+      - 0.4228188
+      - 0.4240711
+      - 0.42533392
+      - 0.42660654
+      - 0.4278883
+      - 0.4291786
+      - 0.43047678
+      - 0.43178216
+      - 0.43309405
+      - 0.43441188
+      - 0.43573493
+      - 0.43706256
+      - 0.43839416
+      - 0.439729
+      - 0.44106647
+      - 0.44240588
+      - 0.44374663
+      - 0.44508803
+      - 0.44642943
+      - 0.44777018
+      - 0.44910958
+      - 0.45044705
+      - 0.4517819
+      - 0.4531135
+      - 0.45444113
+      - 0.45576417
+      - 0.45708197
+      - 0.4583939
+      - 0.45969927
+      - 0.46099746
+      - 0.46228775
+      - 0.46356952
+      - 0.46484214
+      - 0.46610495
+      - 0.46735725
+      - 0.46859843
+      - 0.46982783
+      - 0.47104475
+      - 0.4722486
+      - 0.47343868
+      - 0.47461435
+      - 0.47577497
+      - 0.47691986
+      - 0.47804835
+      - 0.47915983
+      - 0.48025364
+      - 0.48132908
+      - 0.48238555
+      - 0.48342234
+      - 0.48443884
+      - 0.48543438
+      - 0.48640832
+      - 0.48735997
+      - 0.4882887
+      - 0.48919386
+      - 0.49007475
+      - 0.49093077
+      - 0.49176124
+      - 0.4925655
+      - 0.49334294
+      - 0.49409282
+      - 0.49481457
+      - 0.49550748
+      - 0.4961709
+      - 0.49680424
+      - 0.49740672
+      - 0.49797782
+      - 0.4985168
+      - 0.49902302
+      - 0.49949586
+      - 0.4999346
+      - 0.5003387
+      - 0.5007073
+      - 0.50104
+      - 0.501336
+      - 0.5015946
+      - 0.5018152
+      - 0.50199723
+      - 0.5021399
+      - 0.5022426
+      - 0.50230473
   lumVsSatCurve:
     overrideState: 0
     value:
       curve:
         serializedVersion: 2
-        m_Curve: []
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.31308413
+          inSlope: 4.4959965
+          outSlope: 4.4959965
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.100222714
+          value: 0.5
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.84632516
+          value: 0.5
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -9.891195
+          outSlope: -9.891195
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -1684,6 +1237,19 @@ MonoBehaviour:
       m_ZeroValue: 0.5
       m_Range: 1
       cachedData:
+      - 0.31308413
+      - 0.3461767
+      - 0.37535
+      - 0.40082216
+      - 0.42281133
+      - 0.44153577
+      - 0.45721358
+      - 0.47006297
+      - 0.48030216
+      - 0.48814923
+      - 0.49382243
+      - 0.4975399
+      - 0.49951988
       - 0.5
       - 0.5
       - 0.5
@@ -1780,38 +1346,100 @@ MonoBehaviour:
       - 0.5
       - 0.5
       - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
-      - 0.5
+      - 0.5000027
+      - 0.49982598
+      - 0.49906802
+      - 0.49731883
+      - 0.4941685
+      - 0.48920697
+      - 0.4820244
+      - 0.47221074
+      - 0.4593561
+      - 0.44305044
+      - 0.4228839
+      - 0.39844644
+      - 0.36932817
+      - 0.33511907
+      - 0.29540923
+      - 0.24978861
+      - 0.1978474
+      - 0.13917547
+      - 0.073363066
+--- !u!114 &-8169707707641227845
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d65e486e4de6e5448a8fbb43dc8756a0, type: 3}
+  m_Name: Grain
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  colored:
+    overrideState: 1
+    value: 0
+  intensity:
+    overrideState: 1
+    value: 0.308
+  size:
+    overrideState: 1
+    value: 1
+  lumContrib:
+    overrideState: 0
+    value: 0
+--- !u!114 &-6907932697299348009
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  intensity:
+    overrideState: 1
+    value: 1
+  threshold:
+    overrideState: 1
+    value: 0.55
+  softKnee:
+    overrideState: 0
+    value: 0.5
+  clamp:
+    overrideState: 1
+    value: 5
+  diffusion:
+    overrideState: 0
+    value: 10
+  anamorphicRatio:
+    overrideState: 0
+    value: 0
+  color:
+    overrideState: 0
+    value: {r: 1, g: 1, b: 1, a: 1}
+  fastMode:
+    overrideState: 1
+    value: 1
+  dirtTexture:
+    overrideState: 0
+    value: {fileID: 2800000, guid: 8b8c0d2a94fa4d540af8c62c70c48cd6, type: 3}
+    defaultState: 1
+  dirtIntensity:
+    overrideState: 0
+    value: 284.97
 --- !u!114 &-1667581277901193770
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1839,7 +1467,7 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.2
+    value: 0.27
   smoothness:
     overrideState: 0
     value: 0.2
@@ -1870,7 +1498,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - {fileID: -8169707707641227845}
-  - {fileID: -3849575565834026275}
+  - {fileID: -8803111429720799986}
   - {fileID: -1667581277901193770}
   - {fileID: -6907932697299348009}
-  - {fileID: -4284593167351147418}

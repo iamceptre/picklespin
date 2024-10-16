@@ -200,7 +200,7 @@
 	</object>
 	<object class="DelayEffect" id="{8c18fb28-9967-4194-99fb-a4d82b7ea376}">
 		<property name="delay">
-			<value>100</value>
+			<value>440</value>
 		</property>
 		<property name="feedback">
 			<value>0</value>

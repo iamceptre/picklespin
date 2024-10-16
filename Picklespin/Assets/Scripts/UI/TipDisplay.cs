@@ -14,13 +14,13 @@ public class TipDisplay : MonoBehaviour
     private void Awake()
     {
         myText = GetComponent<TMP_Text>();
-        myText.enabled = false;
         _canvas = GetComponentInParent<Canvas>();
     }
 
     private void Start()
     {
         tipManager = TipManager.instance;
+        myText.enabled = false;
     }
 
     public void ShowTip()

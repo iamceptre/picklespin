@@ -5142,6 +5142,7 @@ GameObject:
   - component: {fileID: 4889179302924232208}
   - component: {fileID: 6473732517741880606}
   - component: {fileID: 1219698844525551640}
+  - component: {fileID: 201593809242922449}
   m_Layer: 0
   m_Name: 3D_Model
   m_TagString: Untagged
@@ -5214,3 +5215,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &201593809242922449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8844188799840188057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14eac0ada197eab4b989d1d7e8ff2e34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perlinFloat: {fileID: 3803130914535457831}
+  lightFluctuation: {fileID: 6891636050665673914}

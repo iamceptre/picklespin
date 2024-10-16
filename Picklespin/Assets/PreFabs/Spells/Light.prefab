@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellID: 0
   spellName: light
   damage: 0
   magickaCost: 4
@@ -60,6 +61,11 @@ MonoBehaviour:
   castDuration: 0
   timeBeforeOff: 10
   fadeOutLight: 1
+  isRanged: 0
+  rangeRadius: 5
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 0
   explosionFX: {fileID: 1963724115557159621}
   shootSound:
     Guid:
@@ -67,7 +73,7 @@ MonoBehaviour:
       Data2: 1091138312
       Data3: 1879968661
       Data4: 1426133493
-    Path: event:/PLACEHOLDER_UNCZ/light_spell_hit
+    Path: event:/PLACEHOLDERS/light_spell_hit
   pullupSound:
     Guid:
       Data1: 1585686292
@@ -75,13 +81,15 @@ MonoBehaviour:
       Data3: -1681641856
       Data4: -1589454864
     Path: event:/PLACEHOLDER_UNCZ/fireball_pullup
+  hitWall: {fileID: 0}
   doesThisSpellSetOnFire: 0
-  setOnFire: {fileID: 0}
   handCastingPoint: {fileID: 0}
   explosionSoundEmitter: {fileID: 5481964319514202624}
+  explosionReflectionsSoundEmitter: {fileID: 0}
   iWillBeCritical: 0
   hitSomething: 0
-  _particleSystem: {fileID: 4002873489864714821}
+  _particleSystem:
+  - {fileID: 0}
   _light: {fileID: 8009280589245293343}
   lightSpell: {fileID: 8114817537685967492}
 --- !u!33 &7222242048214855591
@@ -380,7 +388,7 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 5

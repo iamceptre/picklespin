@@ -17,7 +17,7 @@
 //#define FOG_SMOOTH_SCATTERING
 
 // Uncomment to enable Unity directional shadowmap. If commented out, it will use a custom shadow pass.
-#define FOG_UNITY_DIR_SHADOWS
+//#define FOG_UNITY_DIR_SHADOWS
 
 // Uncomment to enable directional light cookie
 //#define FOG_DIR_SHADOWS_COOKIE

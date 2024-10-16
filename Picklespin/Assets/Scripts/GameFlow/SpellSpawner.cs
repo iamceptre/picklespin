@@ -4,8 +4,6 @@ using UnityEngine.Pool;
 
 public class SpellSpawner : MonoBehaviour
 {
-    //private Vector3 hiddenPosition = new Vector3(0, -50, 0);
-    //[SerializeField] private GameObject[] spellsHi;
     public static SpellSpawner instance;
 
     public int howManyToSpawn;
@@ -50,7 +48,6 @@ public class SpellSpawner : MonoBehaviour
         PreInstantiate();
     }
 
-
     private void PreInstantiate()
     {
         var tempList = new SpellPickupable[spawnPoints.Length];
@@ -65,7 +62,6 @@ public class SpellSpawner : MonoBehaviour
             spellsLoPool.Release(tempList[i]);
         }
     }
-
 
     public void SpawnSpellsLo(int howManyToSpawn)
     {
@@ -83,32 +79,29 @@ public class SpellSpawner : MonoBehaviour
         ClampSpawnCount();
     }
 
-
-
-
     private void SpawnLo()
     {
-        //Randomize();
+        Randomize();
         SpellPickupable spawned = spellsLoPool.Get();
-        //Debug.Log(spawned.transform.position);
-        //spawned.transform.position = spawnPoints[rrrandom].position;
-        //Debug.Log(spawnPoints[rrrandom].position + " Should be the same as " + spawned.transform.position);
         spawned.SetOccupiedWaypoint(rrrandom, this, 0);
     }
-
-
-
 
     private void Randomize()
     {
         int maxRange = spawnPoints.Length;
         int minRange = 0;
 
+        if (avaliableSpawnPointsCount <= 0)
+        {
+            Debug.LogWarning("No available spawn points.");
+            return;
+        }
 
-        while (isSpawnPointTaken[rrrandom])
+        do
         {
             rrrandom = Random.Range(minRange, maxRange);
         }
+        while (isSpawnPointTaken[rrrandom]);
     }
 
     public void SetSpawnCount(int spawnCount)
@@ -127,7 +120,6 @@ public class SpellSpawner : MonoBehaviour
     {
         SpellPickupable itemInstance = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)]);
         itemInstance.SetPool(spellsLoPool);
-        //itemInstance.transform.position = hiddenPosition;
         return itemInstance;
     }
 
@@ -136,12 +128,17 @@ public class SpellSpawner : MonoBehaviour
         int maxRange = spawnPoints.Length;
         int minRange = 0;
 
-        rrrandom = Random.Range(minRange, maxRange);
+        if (avaliableSpawnPointsCount <= 0)
+        {
+            Debug.LogWarning("No available spawn points.");
+            return;
+        }
 
-        while (isSpawnPointTaken[rrrandom])
+        do
         {
             rrrandom = Random.Range(minRange, maxRange);
         }
+        while (isSpawnPointTaken[rrrandom]);
 
         pooledItem.gameObject.SetActive(true);
         pooledItem.transform.position = spawnPoints[rrrandom].position;

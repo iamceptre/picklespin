@@ -17,7 +17,7 @@ public const int MAX_POINT_LIGHTS = 6;
 
 public const bool LIGHT_SCATTERING_BLUR_ENABLED = false;
 
-public const bool USE_UNITY_SHADOW_MAP = true;
+public const bool USE_UNITY_SHADOW_MAP = false;
 
 public const bool USE_DIRECTIONAL_LIGHT_COOKIE = false;
 

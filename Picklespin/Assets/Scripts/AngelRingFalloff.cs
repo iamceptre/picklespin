@@ -9,7 +9,7 @@ public class AngelRingFalloff : MonoBehaviour
     [SerializeField] private PlayFmodOnCollision[] _playFmodOnCollision;
     [SerializeField] private Animator animator;
 
-    private WaitForSeconds timeBeforeDisablingCollider = new WaitForSeconds(3);
+    private WaitForSeconds timeBeforeDisablingCollider = new WaitForSeconds(5);
 
 
     public void Falloff()
@@ -21,11 +21,13 @@ public class AngelRingFalloff : MonoBehaviour
         for (int i = 0; i < _collider.Length; i++)
         {
             _rb[i].isKinematic = false;
-            _rb[i].velocity = Vector3.zero;
+            _rb[i].velocity = Vector3.one * 1;
             _collider[i].enabled = true;
             _trail[i].enabled = false;
             _playFmodOnCollision[i].enabled = true;
         }
+
+        _rb[2].rotation = new Quaternion(30, _rb[2].rotation.y, _rb[2].rotation.z, _rb[2].rotation.w).normalized;
 
         StartCoroutine(WaitAndDisableCollider());
     }

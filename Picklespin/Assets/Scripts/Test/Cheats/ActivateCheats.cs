@@ -14,6 +14,8 @@ public class ActivateCheats : MonoBehaviour
 
     [SerializeField] private EventReference cheatmodeActivatedSound;
 
+    [SerializeField] private GameSpeedSlider gameSpeedSlider;
+
     private void Start()
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
@@ -58,6 +60,7 @@ public class ActivateCheats : MonoBehaviour
     {
         RuntimeManager.PlayOneShot(cheatmodeActivatedSound);
         cheats.SetActive(true);
+        gameSpeedSlider.Show();
         Destroy(this);
     }
 }

@@ -57,7 +57,7 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
+    Path: event:/UI/UI_WHISPER
   playSoundOnHover: 0
 --- !u!114 &3145077759115617724
 MonoBehaviour:
@@ -283,7 +283,7 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
+    Path: event:/UI/UI_WHISPER
   playSoundOnHover: 0
 --- !u!114 &8262808296634163390
 MonoBehaviour:
@@ -619,7 +619,7 @@ MonoBehaviour:
       Data2: 1205946042
       Data3: -2122169447
       Data4: 684296141
-    Path: event:/UI/UI_TITLE_SPACEOUT
+    Path: event:/UI/UI_WHISPER
   playSoundOnHover: 0
 --- !u!114 &9127677269758004522
 MonoBehaviour:

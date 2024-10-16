@@ -5,6 +5,9 @@ using FMODUnity;
 public class WhiteEnemyEye : MonoBehaviour
 {
 
+    private const string headshotTag = "Hitbox_Head";
+    private const string bodyTag = "NPC_Hitbox";
+
     [SerializeField] private Renderer _rend;
     [SerializeField] private Light _light;
     private float lightTargetIntensity;
@@ -26,6 +29,7 @@ public class WhiteEnemyEye : MonoBehaviour
     public void On()
     {
         headshotHitbox.enabled = true;
+        headshotHitbox.tag = headshotTag;
         eyeOpenEmitter.Play();
         _rend.enabled = true;
         EyeFlashAnimation.Flash();
@@ -41,7 +45,8 @@ public class WhiteEnemyEye : MonoBehaviour
         _light.DOIntensity(0, 1).OnComplete(() =>
         {
             _light.enabled = false;
-            headshotHitbox.enabled = false;
+            headshotHitbox.tag = bodyTag;
+            //headshotHitbox.enabled = false;
         });
     }
 

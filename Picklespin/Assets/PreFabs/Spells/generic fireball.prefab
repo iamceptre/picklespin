@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f523abede353148a08d0abdb5c7a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  peakLightIntensity: 5
+  peakLightIntensity: 2
   peakLightRange: 60
   lightFadeOutTime: 2
 --- !u!1 &2397279603804326376

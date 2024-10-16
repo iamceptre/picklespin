@@ -104,6 +104,24 @@ public class RoundSystem : MonoBehaviour
         }
     }
 
+
+    private void DebugRound(int index)
+    {
+        speedMultiplier = 1;
+
+        if (roundNumber < RoundEvent.Length)
+        {
+            newRoundText.text = "Round " + (index + 1) + " begins";
+            RoundEvent[index].Invoke();
+        }
+
+        newRoundDisplayText.Animate();
+        roundNumber++;
+        UpdateText();
+        timer = roundDuration;
+        enabled = false;
+    }
+
     private void NextRound()
     {
         speedMultiplier = 1;

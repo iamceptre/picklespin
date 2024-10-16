@@ -2,25 +2,37 @@ using UnityEngine;
 
 public class PerlinFloat : MonoBehaviour
 {
-    public float floatSpeed = 2;
-    public float noiseScale = 0.0f;
-    public float noiseStrength = 1;
+    public float floatSpeed = 2.5f;
+    public float noiseScale = 0.2f;
+    public float noiseStrength = 0.4f;
 
     private Vector3 initialPosition;
+    private Transform cachedTransform;
 
     void Start()
     {
+        if (floatSpeed == 0 || noiseScale == 0 || noiseStrength == 0)
+        {
+            enabled = false;
+            return;
+        }
+
         initialPosition = transform.localPosition;
+        cachedTransform = transform;
     }
 
     void Update()
     {
-        float x = Mathf.PerlinNoise(Time.time * floatSpeed, 0) * 2.0f - 1.0f;
-        float y = Mathf.PerlinNoise(0, Time.time * floatSpeed) * 2.0f - 1.0f;
-        float z = Mathf.PerlinNoise(Time.time * floatSpeed, Time.time * floatSpeed) * 2.0f - 1.0f;
 
-        Vector3 noiseVector = new Vector3(x, y, z) * noiseScale * noiseStrength;
+        float timeFactor = Time.time * floatSpeed;
 
-        transform.localPosition = initialPosition + noiseVector;
+        float noiseValueX = Mathf.PerlinNoise(timeFactor, 0) * 2.0f - 1.0f;
+        float noiseValueY = Mathf.PerlinNoise(0, timeFactor) * 2.0f - 1.0f;
+        float noiseValueZ = Mathf.PerlinNoise(timeFactor, timeFactor) * 2.0f - 1.0f;
+
+        Vector3 noiseVector = new Vector3(noiseValueX, noiseValueY, noiseValueZ) * noiseScale * noiseStrength;
+
+        cachedTransform.localPosition = initialPosition + noiseVector;
     }
+
 }

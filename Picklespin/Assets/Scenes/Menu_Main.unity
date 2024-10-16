@@ -1029,9 +1029,7 @@ MonoBehaviour:
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
-  m_BeforeStackBundles:
-  - assemblyQualifiedName: BeautifyForPPS.Beautify, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+  m_BeforeStackBundles: []
   m_AfterStackBundles: []
 --- !u!114 &192487937
 MonoBehaviour:
@@ -5860,7 +5858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.101960786}
+  m_Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0.2}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6509,7 +6507,7 @@ MonoBehaviour:
       Data2: 1311198811
       Data3: 835947435
       Data4: -2144051828
-    Path: event:/PLACEHOLDER_UNCZ/picklespin_appear
+    Path: event:/EASTER_EGGS/picklespin_appear
   Event: 
   PlayEvent: 11
   StopEvent: 0
@@ -6551,7 +6549,7 @@ MonoBehaviour:
       Data2: 1129883169
       Data3: -553840726
       Data4: 1949446089
-    Path: event:/PLACEHOLDER_UNCZ/picklespin_spin
+    Path: event:/EASTER_EGGS/picklespin_spin
   myTransform: {fileID: 0}
 --- !u!1 &1409237352
 GameObject:
@@ -7305,7 +7303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 22, z: 0, w: 22}
   m_Maskable: 1
@@ -9818,6 +9816,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 196243057}
     m_Modifications:
     - target: {fileID: 233753870653966669, guid: fc6b6b71c04e3814eb0c2ee83a705dca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 233753870653966669, guid: fc6b6b71c04e3814eb0c2ee83a705dca, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -9901,9 +9903,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 938546766521245966, guid: fc6b6b71c04e3814eb0c2ee83a705dca, type: 3}
+      propertyPath: m_Color.a
+      value: 0.07058824
+      objectReference: {fileID: 0}
     - target: {fileID: 1737579948334930209, guid: fc6b6b71c04e3814eb0c2ee83a705dca, type: 3}
       propertyPath: m_Color.a
-      value: 0.050980393
+      value: 0.03137255
       objectReference: {fileID: 0}
     - target: {fileID: 3161519335260640089, guid: fc6b6b71c04e3814eb0c2ee83a705dca, type: 3}
       propertyPath: m_Name
@@ -10063,6 +10069,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: PulsatingOverlays
       objectReference: {fileID: 0}
+    - target: {fileID: 3267326344125799921, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: fadeInOpacity
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4857023693185324828, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: fadeInOpacity
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204273291633098464, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204273291633098464, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204273291633098464, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294806719462310500, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294806719462310500, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294806719462310500, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3962264
+      objectReference: {fileID: 0}
     - target: {fileID: 6000538841571310974, guid: 4040665060c49294cafec1a910ea6285, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10142,6 +10180,22 @@ PrefabInstance:
     - target: {fileID: 6000538841571310974, guid: 4040665060c49294cafec1a910ea6285, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362063570845468258, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: fadeInOpacity
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7567550626651151223, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 7567550626651151223, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 7567550626651151223, guid: 4040665060c49294cafec1a910ea6285, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3962264
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10561,7 +10615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 22, z: 0, w: 22}
   m_Maskable: 1
@@ -11076,7 +11130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 22, z: 0, w: 22}
   m_Maskable: 1
@@ -11144,7 +11198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 16, z: 0, w: 16}
   m_Maskable: 1

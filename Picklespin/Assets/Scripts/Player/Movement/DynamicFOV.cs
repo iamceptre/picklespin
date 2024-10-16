@@ -4,6 +4,7 @@ public class DynamicFOV : MonoBehaviour
 {
     private CharacterControllerVelocity speedometer;
     private Camera mainCam;
+    //[SerializeField] Camera overlayCam; //commed out because the arrow is kinda weird looking with it, need to do it in UI tho
     private float startingFOV;
 
     private float smoothDampVelocity;
@@ -31,7 +32,9 @@ public class DynamicFOV : MonoBehaviour
 
         if (!Mathf.Approximately(mainCam.fieldOfView, desiredFOV))
         {
-            mainCam.fieldOfView = Mathf.SmoothDamp(mainCam.fieldOfView, desiredFOV, ref smoothDampVelocity, smoothness);
+            float finalFov = Mathf.SmoothDamp(mainCam.fieldOfView, desiredFOV, ref smoothDampVelocity, smoothness);
+            mainCam.fieldOfView = finalFov;
+            //overlayCam.fieldOfView = finalFov;
         }
     }
 }

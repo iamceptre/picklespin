@@ -56,6 +56,7 @@ public class Bullet : MonoBehaviour
     [HideInInspector] public bool iWillBeCritical;
     [HideInInspector] public bool hitSomething = false;
     private bool wasLastHitCritical = false;
+    private bool alreadyPlayedExplosionSound = false;
 
     [Header("Cache")]
     private Transform _transform;
@@ -114,6 +115,8 @@ public class Bullet : MonoBehaviour
 
     public void OnShoot()
     {
+        alreadyPlayedExplosionSound = false;
+
         for (int i = 0; i < _particleSystem.Length; i++)
         {
             _particleSystem[i].Clear();
@@ -137,6 +140,8 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        //Debug.Log("bullet hit trigger");
+
         if (!hitSomething)
         {
             if (collider.CompareTag("Hitbox_Head"))
@@ -154,6 +159,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision) //leftovers
     {
+        //Debug.Log("bullet hit collision");
         hitSomething = true;
 
         StopCoroutine(autoKill);
@@ -164,18 +170,18 @@ public class Bullet : MonoBehaviour
             RangeHitDetection(collision);
         }
 
-        Collider collisionCollider = collision.collider;
+
+            Collider collisionCollider = collision.collider;
 
 
-        if (collisionCollider.TryGetComponent(out AiReferences refs))
-        { 
-            HitRegistered(collisionCollider, refs, false);
-        }
-        else // HIT THE WALL 
-        {
-            PlayExplosionSounds();
-        }
-
+            if (collisionCollider.TryGetComponent(out AiReferences refs))
+            {
+                HitRegistered(collisionCollider, refs, false);
+            }
+            else // HIT THE WALL 
+            {
+                    PlayExplosionSounds();
+            }
 
         SpawnExplosion();
         AfterExplosion();
@@ -183,7 +189,7 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void GeneralAfterHit(Collider collider, bool weakPointHit)
+    private void GeneralAfterHit(Collider collider, bool weakPointHit) //WORKING ON TRIGGERS
     {
         StopCoroutine(autoKill);
 
@@ -192,17 +198,17 @@ public class Bullet : MonoBehaviour
             RangeHitDetection(collider);
         }
 
-        Transform grandparentTransform = collider.transform.parent?.parent;
+            Transform grandparentTransform = collider.transform.parent?.parent;
 
-        if (grandparentTransform.TryGetComponent(out AiReferences refs))
-        {
-            HitRegistered(collider, refs, weakPointHit);
-        }
-        else
-        {
-            PlayExplosionSounds();
-        }
-
+            if (grandparentTransform.TryGetComponent(out AiReferences refs))
+            {
+                HitRegistered(collider, refs, weakPointHit);
+            }
+            else
+            {
+                PlayExplosionSounds();
+            }
+        
 
         SpawnExplosion();
         AfterExplosion();
@@ -222,7 +228,12 @@ public class Bullet : MonoBehaviour
             if (refs.damageTakenBig != null)
             {
                 SetCriticalToNo();
-                refs.damageTakenBig.Play(); //ENEMY DAMAGE TAKEN AND EXPLOSION SOUND
+                //Debug.Log("damage taken big should play");
+                if (!alreadyPlayedExplosionSound)
+                {
+                    alreadyPlayedExplosionSound = true;
+                    refs.damageTakenBig.Play(); //ENEMY DAMAGE TAKEN AND EXPLOSION SOUND
+                }
             }
         }
         else
@@ -256,9 +267,8 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void RangeHitDetection(Collision collision)
+    private void RangeHitDetection(Collision collision) //COLLIDER EDITION
     {
-        PlayExplosionSounds();
 
         Collider[] colliders = Physics.OverlapSphere(collision.GetContact(0).point, rangeRadius, detectionLayer);
 
@@ -274,9 +284,8 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void RangeHitDetection(Collider collider)
+    private void RangeHitDetection(Collider collider) //TRIGGER EDITION
     {
-        PlayExplosionSounds();
 
         Collider[] colliders = Physics.OverlapSphere(collider.transform.position, rangeRadius, detectionLayer);
 
@@ -367,17 +376,21 @@ public class Bullet : MonoBehaviour
 
     private void PlayExplosionSounds()
     {
-        explosionSoundEmitter.Play();
-        //Debug.Log(explosionSoundEmitter);
-
-        if (explosionReflectionsSoundEmitter != null)
+        if (!alreadyPlayedExplosionSound)
         {
-            explosionReflectionsSoundEmitter.Play();
-        }
+            alreadyPlayedExplosionSound = true;
+            explosionSoundEmitter.Play();
+            //Debug.Log(explosionSoundEmitter);
 
-        if (hitWall != null)
-        {
-            hitWall.Play();
+            if (explosionReflectionsSoundEmitter != null)
+            {
+                explosionReflectionsSoundEmitter.Play();
+            }
+
+            if (hitWall != null)
+            {
+                hitWall.Play();
+            }
         }
     }
 

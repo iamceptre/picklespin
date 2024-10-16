@@ -89,7 +89,7 @@ public class AngelHeal : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !angel.healed)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !angel.healed && angel != null)
         {
             if (isAimingAtAngel)
             {

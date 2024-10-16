@@ -4797,7 +4797,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.8126906, b: 0, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -9973,7 +9973,7 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1.8000001
+  OverrideMinDistance: 3
   OverrideMaxDistance: 40
 --- !u!1 &6981389779398802056
 GameObject:

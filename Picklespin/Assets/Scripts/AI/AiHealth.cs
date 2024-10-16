@@ -19,6 +19,7 @@ public class AiHealth : MonoBehaviour
 
     private CameraShakeManagerV2 camShakeManager;
 
+
     private void Start()
     {
         damageUiSpawner = DamageUI_Spawner.instance;

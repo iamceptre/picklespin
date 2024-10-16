@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class CameraBob : MonoBehaviour
 {
-
     public static CameraBob instance { private set; get; }
 
     [SerializeField] private CharacterController characterController;

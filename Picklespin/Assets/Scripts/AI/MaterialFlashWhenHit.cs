@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class MaterialFlashWhenHit : MonoBehaviour
 {
     [SerializeField] private Renderer rend;
-    [SerializeField] private float flashDuration = 0.5f;
+    [SerializeField] private float flashDuration = 0.4f;
 
     private int emissionColor = Shader.PropertyToID("_EmissionColor");
 
@@ -14,7 +13,7 @@ public class MaterialFlashWhenHit : MonoBehaviour
 
     private Coroutine currentFlashCoroutine;
 
-    private Color whiteFlashColor = new Color(0.35f, 0.35f, 0.35f);
+    private Color whiteFlashColor = new Color(0.4f, 0.4f, 0.4f);
     private Color RedFlashColor = new Color(0.76f, 0.24f, 0.24f);
 
     private float fadeOutSpeed = 1.5f;

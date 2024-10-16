@@ -1,7 +1,5 @@
 using UnityEngine;
 using FMODUnity;
-using Unity.VisualScripting;
-
 public class PlayFmodOnCollision : MonoBehaviour
 {
     [SerializeField] private StudioEventEmitter fmodEmitter;
@@ -16,6 +14,8 @@ public class PlayFmodOnCollision : MonoBehaviour
 
     private float startTime;
 
+    [SerializeField] private float velocityTreshold = 0.2f;
+
     private void Start()
     {
         startTime = Time.time;
@@ -28,19 +28,20 @@ public class PlayFmodOnCollision : MonoBehaviour
             return;
         }
 
-       // if (collision.gameObject.CompareTag(collisionTag))
-       // {
+        //Debug.Log(collision.relativeVelocity.magnitude);
+
+        if (collision.relativeVelocity.magnitude >= velocityTreshold)
+        {
             float velocityMagnitude = collision.relativeVelocity.magnitude;
 
-               // Debug.Log("Velocity hit = " + velocityMagnitude);
 
-                float volume = Mathf.Lerp(minimumVolume, maxVolume, Mathf.InverseLerp(minimumVolumeVelocity, maxVolumeVelocity, velocityMagnitude));
+            float volume = Mathf.Lerp(minimumVolume, maxVolume, Mathf.InverseLerp(minimumVolumeVelocity, maxVolumeVelocity, velocityMagnitude));
 
-                fmodEmitter.SetParameter("Volume", volume);
+            fmodEmitter.SetParameter("Volume", volume);
 
-                //Debug.Log(volume);
+            //Debug.Log(volume);
 
-                fmodEmitter.Play();
-       // }
+            fmodEmitter.Play();
+        }
     }
 }

@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections;
 using VolumetricFogAndMist;
-using System.Runtime.CompilerServices;
 
 public class FogManager : MonoBehaviour
 {
@@ -53,7 +52,6 @@ public class FogManager : MonoBehaviour
             t += (Time.deltaTime / animationDuration);
             yield return null;
         }
-        RenderSettings.fogColor = fogColors[index];
         yield break;
     }
 
@@ -63,12 +61,11 @@ public class FogManager : MonoBehaviour
 
         while (t <= 1)
         {
-            volumetricFog.alpha = Mathf.Lerp(volumetricFog.alpha, currentFogLevel * 20, t);
-            volumetricFog.skyAlpha = Mathf.Lerp(volumetricFog.skyAlpha, currentFogLevel * 7, t);
+            volumetricFog.alpha = Mathf.Lerp(volumetricFog.alpha, currentFogLevel * 11f, t);
+            volumetricFog.skyAlpha = Mathf.Lerp(volumetricFog.skyAlpha, currentFogLevel * 4f, t);
             t += (Time.deltaTime / animationDuration);
             yield return null;
         }
-        volumetricFog.alpha = currentFogLevel * 20;
         yield break;
     }
 

@@ -9,6 +9,8 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
 
     private HelperSpirit helperSpirit;
 
+    private bool showing;
+
     private void Awake()
     {
         _rend = GetComponent<Renderer>();
@@ -43,6 +45,7 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
         //Debug.Log("hideing arrow");
         _rend.enabled = false;
         enabled = false;
+        showing = false;
     }
 
     public void ShowArrow(Transform _target) {
@@ -59,6 +62,14 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
         //Debug.Log("showing arrow without updating da target");
         enabled = true;
         _rend.enabled = true;
+        showing = true;
+    }
+    public void UnHideArrowWhenUnpausing()
+    {
+        if (showing)
+        {
+            _rend.enabled = true;
+        }
     }
 
 }

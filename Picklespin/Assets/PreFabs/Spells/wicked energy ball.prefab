@@ -5528,7 +5528,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.03
+      scalar: 0.005
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -20032,9 +20032,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &9023279671805228162
 MonoBehaviour:
   m_ObjectHideFlags: 0

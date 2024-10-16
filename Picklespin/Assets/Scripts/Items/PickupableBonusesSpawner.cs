@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PickupableBonusesSpawner : MonoBehaviour
+public class PickupableBonusesSpawner : MonoBehaviour //AKA POTION SPAWNER
 {
     public static PickupableBonusesSpawner instance { get; private set; }
 
@@ -15,9 +15,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
     [HideInInspector] public bool[] isSpawnPointTaken;
     [HideInInspector] public int avaliableSpawnPointsCount;
 
-    private Vector3 initialSpawnPosition = new Vector3 (0, -50, 0);
-
-
+    private Vector3 initialSpawnPosition = new Vector3(0, -50, 0);
     private int rrrandom;
 
     public ObjectPool<PoolSpawnableObject> allPotionsPool;
@@ -49,10 +47,8 @@ public class PickupableBonusesSpawner : MonoBehaviour
         PreInstantiate();
     }
 
-
     private void PreInstantiate()
     {
-                                      //spawnPoints.Length is max object pool count, change it when you do separate pools for every potion
         var tempList = new PoolSpawnableObject[spawnPoints.Length];
 
         for (int i = 0; i < spawnPoints.Length; i++)
@@ -66,24 +62,30 @@ public class PickupableBonusesSpawner : MonoBehaviour
         }
     }
 
-
-
     public void SpawnBonuses(int howManyToSpawn)
     {
-        //SetSpawnCount(howManyToSpawn); //fix this shit crashing the game on the round 3 i think
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnRoutine(howManyToSpawn));
     }
 
-    private IEnumerator SpawnRoutine()
+    private IEnumerator SpawnRoutine(int howManyToSpawn)
     {
+        int potionsSpawned = 0;
+
         for (int i = 0; i < howManyToSpawn; i++)
         {
+            if (avaliableSpawnPointsCount <= 0)
+            {
+                Debug.LogWarning("No available spawn points for remaining potions.");
+                break; // Stop spawning if no spawn points are left
+            }
+
             yield return new WaitForSeconds(i * 0.02f);
             Spawn();
+            potionsSpawned++;
         }
 
-        avaliableSpawnPointsCount -= howManyToSpawn;
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, avaliableSpawnPointsCount);
+        avaliableSpawnPointsCount -= potionsSpawned;
+        howManyToSpawn = Mathf.Clamp(howManyToSpawn - potionsSpawned, 0, avaliableSpawnPointsCount);
     }
 
     private void Spawn()
@@ -100,20 +102,22 @@ public class PickupableBonusesSpawner : MonoBehaviour
         int maxRange = spawnPoints.Length;
         int minRange = 0;
 
-        while (isSpawnPointTaken[rrrandom])
+        if (avaliableSpawnPointsCount <= 0)
+        {
+            Debug.LogWarning("No available spawn points.");
+            return;
+        }
+
+        do
         {
             rrrandom = Random.Range(minRange, maxRange);
         }
+        while (isSpawnPointTaken[rrrandom]);
     }
-
-
-
-
-
 
     private PoolSpawnableObject CreateItem()
     {
-        PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]); //split every potion into separate pools so you can do weighted random
+        PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]);
         itemInstance.SetPool(allPotionsPool);
         itemInstance.transform.position = initialSpawnPosition;
         return itemInstance;
@@ -134,11 +138,9 @@ public class PickupableBonusesSpawner : MonoBehaviour
         Destroy(pooledItem.gameObject);
     }
 
-
-    private void SetSpawnCount(int spawnCount) //use it from event system gui, before spawning
+    private void SetSpawnCount(int spawnCount)
     {
         howManyToSpawn = spawnCount;
         howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, spawnPoints.Length);
     }
-
 }

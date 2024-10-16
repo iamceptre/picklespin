@@ -253,7 +253,7 @@ MonoBehaviour:
       Data2: 1116388958
       Data3: -137804872
       Data4: 4121683
-    Path: event:/MAP/Objects/Doors_AngelRoom_Close
+    Path: event:/MAP/Objects/Doors/AngelRoom_Doors/Doors_AngelRoom_Close
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -453,7 +453,7 @@ MonoBehaviour:
       Data2: 1108007354
       Data3: -517323076
       Data4: -1539471495
-    Path: event:/MAP/Objects/Doors_AngelRoom_Open
+    Path: event:/MAP/Objects/Doors/AngelRoom_Doors/Doors_AngelRoom_Open
   Event: 
   PlayEvent: 0
   StopEvent: 0

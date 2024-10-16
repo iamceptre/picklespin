@@ -61,7 +61,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{8f303e41-9c5e-4d58-920a-eed8a5dccf60}">
 		<property name="maxVoices">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="minimumDistance">
 			<value>9.19999981</value>
@@ -153,7 +153,7 @@
 			<value>pitch</value>
 		</property>
 		<property name="amount">
-			<value>1</value>
+			<value>1.25</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{adfa3deb-63b0-412e-888c-a88476055cf0}">

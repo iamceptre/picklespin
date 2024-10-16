@@ -10,7 +10,7 @@ public class ScreenFlashTint : MonoBehaviour
     [SerializeField] private Color[] _color;
     private Image _image;
 
-    private float animationTime = 0.5f;
+    private float animationTime = 0.25f;
 
     private void Awake()
     {

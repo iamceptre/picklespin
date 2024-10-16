@@ -4862,14 +4862,14 @@ MonoBehaviour:
       Data2: 1215442518
       Data3: 1483587242
       Data4: -658792486
-    Path: event:/PLACEHOLDER_UNCZ/died_from_burn
+    Path: event:/PLACEHOLDERS/died_from_burn
   Event: 
   PlayEvent: 1
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 8.6

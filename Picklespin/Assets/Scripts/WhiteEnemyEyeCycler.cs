@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class WhiteEnemyEyeCycler : MonoBehaviour
 {
+
     private WaitForSeconds onTimeQuick = new WaitForSeconds(3f);
     private WaitForSeconds onTimeLong = new WaitForSeconds(5f);
 
@@ -31,7 +32,6 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
 
     private IEnumerator Start()
     {
-
 
         while (enabled)
         {

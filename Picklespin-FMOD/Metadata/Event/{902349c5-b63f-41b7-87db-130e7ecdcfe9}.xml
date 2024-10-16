@@ -73,10 +73,10 @@
 			<value>4</value>
 		</property>
 		<property name="minimumDistance">
-			<value>0.5</value>
+			<value>4.4000001</value>
 		</property>
 		<property name="maximumDistance">
-			<value>40</value>
+			<value>45</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{a17bb40c-9e21-4f56-ad40-bd8123150a84}" />
@@ -394,7 +394,7 @@
 			<value>0</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.144476026</value>
+			<value>0.104256712</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{3892524c-5fdd-4e83-a1f1-1dc10e2c5711}">

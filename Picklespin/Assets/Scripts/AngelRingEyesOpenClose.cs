@@ -49,7 +49,7 @@ public class AngelRingEyesOpenClose : MonoBehaviour
         for (int i = 0; i < eyeRends.Length; i++)
         {
             eyeRends[i].material = closedEyeMaterial;
-            ringTrails[i].emitting = false;
+            //ringTrails[i].emitting = false;
         }
     }
 

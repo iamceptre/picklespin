@@ -364,7 +364,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.5058824}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.4509804}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5278,7 +5278,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.5058824}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.54901963}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9962,7 +9962,7 @@ Transform:
   m_GameObject: {fileID: 3153635776747381399}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.067, z: 3.372}
+  m_LocalPosition: {x: 0, y: -0.067, z: 4.164}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -15509,7 +15509,7 @@ Transform:
   m_GameObject: {fileID: 8060132385785742649}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.98}
+  m_LocalPosition: {x: 0.141, y: -0, z: 4.401}
   m_LocalScale: {x: 0.24, y: 0.24, z: 0.24}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -15652,7 +15652,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 5
-      minScalar: 2
+      minScalar: 10
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -16233,7 +16233,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.54
+      value: 0.2
       mode: 0
       spread: 0
       speed:
@@ -20466,7 +20466,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.7099956, g: 0.6084906, b: 1, a: 1}
-  m_Intensity: 0.7
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20508,7 +20508,7 @@ Light:
   m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 0.7
+  m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -20562,7 +20562,7 @@ MonoBehaviour:
     pointGameObject: {fileID: 0}
   parentVolume: {fileID: 0}
   showOptionsInManagerWindow: 0
-  intensity: 0.7
+  intensity: 1
   resetEditor: 0
   showLightOnScene: 0
   saveOnOutOfRange: 0
@@ -24375,6 +24375,10 @@ PrefabInstance:
       propertyPath: additionalHealedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 21960444615510838}
+    - target: {fileID: 1265250318416478804, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1645630405786229440, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_Name
       value: Angel
@@ -24383,6 +24387,10 @@ PrefabInstance:
       propertyPath: torch
       value: 
       objectReference: {fileID: 828602372167584711}
+    - target: {fileID: 3685871177365809079, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7441454294599896326, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: deathEvent.m_PersistentCalls.m_Calls.Array.data[6].m_Target
       value: 
@@ -24442,6 +24450,10 @@ PrefabInstance:
     - target: {fileID: 7754690642595653543, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043926049980674515, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
