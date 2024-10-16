@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fe0c4b8984d1c4a8638f1564a6fc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howMuchXpIGive: -400
-  expSourceName: killed the hope
+  howMuchXpIGive: -333
+  expSourceName: Killed the Hope
   wasLastShotAHeadshot: 0
   manaSuckParticles: {fileID: 1055410052012569123}
 --- !u!114 &8430398208077284637
@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   howMuchXpIGive: 333
-  expSourceName: healed an angel
+  expSourceName: Healed an Angel
   wasLastShotAHeadshot: 0
   manaSuckParticles: {fileID: 1055410052012569123}
 --- !u!1 &3685871177365809079
@@ -882,6 +882,7 @@ MonoBehaviour:
   minimumVolumeVelocity: 1
   maxVolume: 0
   maxVolumeVelocity: 5
+  velocityTreshold: 0.2
 --- !u!114 &4845438626838853598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,6 +1092,7 @@ MonoBehaviour:
   minimumVolumeVelocity: 1
   maxVolume: 0
   maxVolumeVelocity: 5
+  velocityTreshold: 0.2
 --- !u!114 &6430933899365479607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6594,6 +6596,8 @@ MonoBehaviour:
   dissolveSpeed: 0.7
   destroyAfterDissolve: 0
   ashPile: {fileID: 0}
+  ashPileRenderer: {fileID: 0}
+  ashPileTransform: {fileID: 0}
 --- !u!114 &3896489033850119827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6813,6 +6817,7 @@ MonoBehaviour:
   minimumVolumeVelocity: 1
   maxVolume: 0
   maxVolumeVelocity: 5
+  velocityTreshold: 0.2
 --- !u!114 &587316444011681452
 MonoBehaviour:
   m_ObjectHideFlags: 0

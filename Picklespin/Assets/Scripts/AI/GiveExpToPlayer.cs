@@ -48,7 +48,7 @@ public class GiveExpToPlayer : MonoBehaviour
         {
             int howMuchIGiveAfterHeadshot = (int)(howMuchStatsIGive * 1.5f);
             int headshotXP = (int)(howMuchXpIGive * 1.5f);
-            playerEXP.GivePlayerExp(headshotXP, expSourceName+", eyeshot!");
+            playerEXP.GivePlayerExp(headshotXP, expSourceName+", Eyeshot!");
             ammo.GiveManaToPlayer(howMuchIGiveAfterHeadshot);
             playerHp.GiveHPToPlayer(howMuchIGiveAfterHeadshot);
             GiveManaSuckParticles(howMuchIGiveAfterHeadshot);

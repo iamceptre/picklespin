@@ -15508,7 +15508,7 @@ MonoBehaviour:
   aiPath: {fileID: 7323594540175906757}
   aiVision: {fileID: 7390506993609888115}
   loosingPlayer: {fileID: 5976180761306544218}
-  attackSpeed: 13
+  attackSpeed: 13.5
   howMuchDamageIdeal: 15
   meleeAttackRange: 4
   attackSoundEmitter: {fileID: 9064666203966580678}
@@ -15933,7 +15933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   howMuchXpIGive: 100
-  expSourceName: exiled evil
+  expSourceName: Exiled Evil
   wasLastShotAHeadshot: 0
   manaSuckParticles: {fileID: 8319586447089134170}
 --- !u!114 &2640075809853599693
@@ -16045,7 +16045,7 @@ MonoBehaviour:
   radius: 2
   height: 7
   canMove: 1
-  maxSpeed: 9
+  maxSpeed: 11
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -16062,9 +16062,9 @@ MonoBehaviour:
     maximumPeriod: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: 10
-  rotationSpeed: 150
-  slowdownDistance: 10
+  maxAcceleration: 12
+  rotationSpeed: 300
+  slowdownDistance: 8
   pickNextWaypointDist: 3
   endReachedDistance: 2.5
   alwaysDrawGizmos: 0

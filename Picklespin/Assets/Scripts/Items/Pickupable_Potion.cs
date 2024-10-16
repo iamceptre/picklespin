@@ -78,10 +78,10 @@ public class Pickupable_Potion : MonoBehaviour
             playerExp.GivePlayerExp(howMuchExpIGive, message);
             Afterpick();
         }
-        else
-        {
-            Debug.Log($"{potionType} full, not picking the potion up");
-        }
+        //else
+        //{
+            //Debug.Log($"{potionType} full, not picking the potion up");
+       // }
     }
 
     private void Afterpick()
