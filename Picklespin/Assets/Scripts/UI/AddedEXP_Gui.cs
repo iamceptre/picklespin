@@ -80,9 +80,8 @@ public class AddedEXP_Gui : MonoBehaviour
         }
 
         sb.Append(amountToShow);
-        sb.Append(" exp<size=15px><br>(");
+        sb.Append(" exp<size=15px><br>");
         sb.Append(expSourceName);
-        sb.Append(")");
         _text.text = sb.ToString();
     }
 

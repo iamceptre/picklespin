@@ -9,7 +9,7 @@ public class AmbianceManager : MonoBehaviour
     [SerializeField] private StudioEventEmitter[] dynamicBgEmitter;
     [SerializeField] private StudioEventEmitter[] staticBgEmitter;
 
-    [SerializeField] private bool playAmbianceSetOnStart = true;
+    //[SerializeField] private bool playAmbianceSetOnStart = true;
     [SerializeField] private int startingAmbiance = 0;
 
     public int cachedIndex = -1;

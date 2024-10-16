@@ -52,6 +52,8 @@ public class RoundSystem : MonoBehaviour
         newRoundDisplayText = NewRoundDisplayText.instance;
         UpdateText();
         StartCoroutine(Timer());
+
+        //DebugRound(4);
     }
 
 

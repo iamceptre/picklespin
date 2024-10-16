@@ -23,6 +23,8 @@ public class Dash : MonoBehaviour
     private TipManager tipManager;
     private const int tipManagerIndex = 7;
 
+    private bool haveEverDashed = false;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -60,6 +62,12 @@ public class Dash : MonoBehaviour
 
     private IEnumerator PerformDash()
     {
+        if (!haveEverDashed)
+        {
+            haveEverDashed = true;
+            tipManager.Hide(tipManagerIndex);
+        }
+
         isDashing = true;
         isWaitingForSecondClick = false;
         playerHP.invincible = true;
