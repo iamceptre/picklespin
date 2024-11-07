@@ -5506,8 +5506,32 @@ PrefabInstance:
       value: Exiled the Cold
       objectReference: {fileID: 0}
     - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: expTextColor.b
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: expTextColor.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: expTextColor.r
+      value: 0.8117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: howMuchXpIGive
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: criticalExpTextColor.b
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: criticalExpTextColor.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714385560574647472, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: criticalExpTextColor.r
+      value: 0.8117647
       objectReference: {fileID: 0}
     - target: {fileID: 7181874480254964230, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: deathEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Target

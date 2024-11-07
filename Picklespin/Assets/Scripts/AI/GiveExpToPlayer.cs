@@ -3,30 +3,34 @@ using UnityEngine;
 public class GiveExpToPlayer : MonoBehaviour
 {
     private PlayerEXP playerEXP;
-    [SerializeField] private int howMuchXpIGive;
-    [SerializeField] private string expSourceName;
-
-    [HideInInspector] public bool wasLastShotAHeadshot;
-
     private Ammo ammo;
     private PlayerHP playerHp;
 
+    [SerializeField] private int howMuchXpIGive;
+    [SerializeField] private string expSourceName;
+    [SerializeField] private Color expTextColor = Color.white;
+    [SerializeField] private Color criticalExpTextColor = Color.black;
     [SerializeField] private ParticleSystem manaSuckParticles;
+
+    [HideInInspector] public bool wasLastShotAHeadshot;
+
     private ParticleMoveTowards particleMoveTowardsScript;
 
-    void Start()
+    private void Start()
     {
-        particleMoveTowardsScript = manaSuckParticles.gameObject.GetComponent<ParticleMoveTowards>();
+        particleMoveTowardsScript = manaSuckParticles.GetComponent<ParticleMoveTowards>();
+        playerEXP = PlayerEXP.instance;
+        ammo = Ammo.instance;
+        playerHp = PlayerHP.instance;
+
+        ConfigureManaSuckParticles();
+    }
+
+    private void ConfigureManaSuckParticles()
+    {
         manaSuckParticles.Pause();
         manaSuckParticles.Clear();
         particleMoveTowardsScript.enabled = false;
-        playerEXP = PlayerEXP.instance;
-        ammo = Ammo.instance;
-        playerHp = PlayerHP.instance;   
-    }
-
-    private void OnEnable()
-    {
         manaSuckParticles.transform.parent = transform;
         manaSuckParticles.transform.localPosition = Vector3.zero;
     }
@@ -34,25 +38,18 @@ public class GiveExpToPlayer : MonoBehaviour
     public void GiveExp()
     {
         int howMuchStatsIGive = (int)(howMuchXpIGive * 0.2f);
+        string colorHex = ColorUtility.ToHtmlStringRGBA(wasLastShotAHeadshot ? criticalExpTextColor : expTextColor);
+        string coloredMessage = $"<color=#{colorHex}>{expSourceName}</color>";
+        string eyeshotMessage = $"<color=#{colorHex}>, Eyeshot!</color>";
 
+        int expAmount = wasLastShotAHeadshot ? (int)(howMuchXpIGive * 1.5f) : howMuchXpIGive;
+        int statAmount = wasLastShotAHeadshot ? (int)(howMuchStatsIGive * 1.5f) : howMuchStatsIGive;
 
-        if (!wasLastShotAHeadshot)
-        {
-            ammo.GiveManaToPlayer(howMuchStatsIGive);
-            playerEXP.GivePlayerExp(howMuchXpIGive, expSourceName);
-            playerHp.GiveHPToPlayer(howMuchStatsIGive);
-            GiveManaSuckParticles(howMuchStatsIGive);
-            return;
-        }
-        else
-        {
-            int howMuchIGiveAfterHeadshot = (int)(howMuchStatsIGive * 1.5f);
-            int headshotXP = (int)(howMuchXpIGive * 1.5f);
-            playerEXP.GivePlayerExp(headshotXP, expSourceName+", Eyeshot!");
-            ammo.GiveManaToPlayer(howMuchIGiveAfterHeadshot);
-            playerHp.GiveHPToPlayer(howMuchIGiveAfterHeadshot);
-            GiveManaSuckParticles(howMuchIGiveAfterHeadshot);
-        }
+        playerEXP.GivePlayerExp(expAmount, wasLastShotAHeadshot ? coloredMessage + eyeshotMessage : coloredMessage);
+        ammo.GiveManaToPlayer(statAmount);
+        playerHp.GiveHPToPlayer(statAmount);
+
+        GiveManaSuckParticles(statAmount);
     }
 
     private void GiveManaSuckParticles(int particleCount)
@@ -63,6 +60,4 @@ public class GiveExpToPlayer : MonoBehaviour
         manaSuckParticles.Play();
         manaSuckParticles.transform.parent = null;
     }
-
-
 }

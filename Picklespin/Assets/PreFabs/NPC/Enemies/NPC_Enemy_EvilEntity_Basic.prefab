@@ -15934,8 +15934,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howMuchXpIGive: 100
   expSourceName: Exiled Evil
-  wasLastShotAHeadshot: 0
+  expTextColor: {r: 0.7607843, g: 0.23529412, b: 0.23529412, a: 1}
+  criticalExpTextColor: {r: 1, g: 0.84313726, b: 0, a: 1}
   manaSuckParticles: {fileID: 8319586447089134170}
+  wasLastShotAHeadshot: 0
 --- !u!114 &2640075809853599693
 MonoBehaviour:
   m_ObjectHideFlags: 0

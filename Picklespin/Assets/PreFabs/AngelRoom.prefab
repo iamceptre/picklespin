@@ -24375,6 +24375,18 @@ PrefabInstance:
       propertyPath: additionalHealedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 21960444615510838}
+    - target: {fileID: 711232562984108551, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: expTextColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 711232562984108551, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: expTextColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 711232562984108551, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: expTextColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1265250318416478804, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -24411,6 +24423,18 @@ PrefabInstance:
       propertyPath: deathEvent.m_PersistentCalls.m_Calls.Array.data[10].m_Target
       value: 
       objectReference: {fileID: 2763008182209400933}
+    - target: {fileID: 7528132081934063672, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: expTextColor.b
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 7528132081934063672, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: expTextColor.g
+      value: 0.654902
+      objectReference: {fileID: 0}
+    - target: {fileID: 7528132081934063672, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: expTextColor.r
+      value: 0.59607846
+      objectReference: {fileID: 0}
     - target: {fileID: 7754690642595653543, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

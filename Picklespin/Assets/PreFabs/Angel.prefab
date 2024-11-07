@@ -47,8 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howMuchXpIGive: -333
   expSourceName: Killed the Hope
-  wasLastShotAHeadshot: 0
+  expTextColor: {r: 0.4745098, g: 0.015686275, b: 0.015686275, a: 1}
+  criticalExpTextColor: {r: 0, g: 0, b: 0, a: 1}
   manaSuckParticles: {fileID: 1055410052012569123}
+  wasLastShotAHeadshot: 0
 --- !u!114 &8430398208077284637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,8 +480,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howMuchXpIGive: 333
   expSourceName: Healed an Angel
-  wasLastShotAHeadshot: 0
+  expTextColor: {r: 1, g: 1, b: 1, a: 1}
+  criticalExpTextColor: {r: 0, g: 0, b: 0, a: 1}
   manaSuckParticles: {fileID: 1055410052012569123}
+  wasLastShotAHeadshot: 0
 --- !u!1 &3685871177365809079
 GameObject:
   m_ObjectHideFlags: 0
