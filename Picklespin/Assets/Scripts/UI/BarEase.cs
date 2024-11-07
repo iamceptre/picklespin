@@ -10,7 +10,6 @@ public class BarEase : MonoBehaviour
     private float myValue;
     [SerializeField] private Image easeFill;
 
-
     private void Awake()
     {
         me = GetComponent<Slider>();
@@ -18,27 +17,16 @@ public class BarEase : MonoBehaviour
 
     private void Start()
     {
-        me.value = sliderToFollow.value;
         myValue = sliderToFollow.value;
+        me.value = myValue;
         easeFill.enabled = true;
     }
 
-    private void Update() //change it so each bar calls a routine that loops until easing is needed and then it disables itself
+    private void Update()
     {
-        if (sliderToFollow.value<sliderToFollow.maxValue) {
-            myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f); //delay it in time
-        }
-
-
-        if (myValue-0.1f <= sliderToFollow.value)
-        {
-            easeFill.enabled = false;
-        }
-        else
-        {
-            easeFill.enabled = true;
-            me.value = myValue;
-        }   
+        myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f);
+        me.value = myValue;
+        easeFill.enabled = Mathf.Abs(myValue - sliderToFollow.value) >= 0.01f;
     }
 
     public void FadeOut()
@@ -50,5 +38,4 @@ public class BarEase : MonoBehaviour
     {
         easeFill.DOFade(1, 0.2f);
     }
-
 }

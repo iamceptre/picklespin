@@ -6,6 +6,8 @@ public class Dash : MonoBehaviour
 {
     private PlayerHP playerHP;
     [SerializeField] private StudioEventEmitter dashEmitter;
+    [SerializeField] private int dashStaminaCost = 10;
+    [SerializeField] private int dashAmmoCost = 20;
     [SerializeField] private float dashDuration = 0.4f;
     [SerializeField] private float dashSpeedMultiplier = 1.2f;
     [SerializeField] [Tooltip("Stun Effect Radius")] private float dashEffectRadius = 25f;
@@ -16,6 +18,10 @@ public class Dash : MonoBehaviour
     private PlayerMovement playerMovement;
     private CameraShakeManagerV2 camShakeManager;
     private ScreenFlashTint screenFlashTint;
+    private StaminaBarDisplay staminaBarDisplay;
+    private Ammo ammo;
+    private AmmoDisplay ammoDisplay;
+
     private bool isDashing = false;
     private WaitForSeconds doubleClickThreshold = new WaitForSeconds(0.17f);
     private bool isWaitingForSecondClick = false;
@@ -36,6 +42,9 @@ public class Dash : MonoBehaviour
         screenFlashTint = ScreenFlashTint.instance;
         playerHP = PlayerHP.instance;
         tipManager = TipManager.instance;
+        staminaBarDisplay = StaminaBarDisplay.instance;
+        ammo = Ammo.instance;
+        ammoDisplay = AmmoDisplay.instance;
     }
 
     private void Update()
@@ -74,6 +83,7 @@ public class Dash : MonoBehaviour
         dashEmitter.Play();
         camShakeManager.ShakeSelected(11);
         screenFlashTint.Flash(5);
+        TakeStats();
 
         Vector3 dashDirection = playerMovement.moveDirection.normalized;
         dashDirection.y = 0;
@@ -95,6 +105,7 @@ public class Dash : MonoBehaviour
         }
 
         playerMovement.speedMultiplier = originalSpeedMultiplier;
+        //playerMovement.GiveStaminaToPlayer(-dashStaminaCost);
         playerHP.invincible = false;
         StartCoroutine(WaitForGrounded());
     }
@@ -126,5 +137,32 @@ public class Dash : MonoBehaviour
     public void ShowDashTip()
     {
         tipManager.ShowAndHide(tipManagerIndex);
+    }
+
+
+    private void TakeStats()
+    {
+
+        if (playerMovement.stamina > dashStaminaCost)
+        {
+            playerMovement.stamina -= dashStaminaCost;
+        }
+        else
+        {
+            playerMovement.stamina = 0;
+        }
+
+
+        if (ammo.ammo > dashAmmoCost)
+        {
+            ammo.ammo -= dashAmmoCost;
+        }
+        else
+        {
+            ammo.ammo = 0;
+        }
+
+        ammoDisplay.Refresh(false);
+        staminaBarDisplay.Refresh(false);
     }
 }
