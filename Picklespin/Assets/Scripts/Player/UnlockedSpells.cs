@@ -8,7 +8,6 @@ public class UnlockedSpells : MonoBehaviour
     public static UnlockedSpells instance { get; private set; }
 
     private Ammo ammo;
-    private AmmoDisplay ammoDisplay;
 
     [SerializeField] private RectTransform[] invSlotRect;
     [SerializeField] private Image[] spellIcon;
@@ -48,7 +47,6 @@ public class UnlockedSpells : MonoBehaviour
     private void Start()
     {
         ammo = Ammo.instance;
-        ammoDisplay = AmmoDisplay.instance;
     }
 
     public void UnlockASpell(int spellID)

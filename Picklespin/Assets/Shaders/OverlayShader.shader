@@ -1,47 +1,31 @@
-Shader "Unlit/OverlayShader"
+Shader "Custom/StandardOverlay"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Color ("Color", Color) = (1,1,1,1)
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+        Tags { "Queue"="Overlay" "RenderType"="Transparent" }
+        LOD 200
 
-        Pass
-{
-    ZTest Always // never fail depth test
-    ZWrite On // render to the depth
-    ColorMask 0 // don't render to color, only depth and/or stencil
-  
-    CGPROGRAM
-    #pragma vertex vert
-    #pragma fragment frag
-  
-    float4 vert(float4 vertex : POSITION) : SV_Position
-    {
-        return UnityObjectToClipPos(vertex);
-    }
-  
-    float frag() : SV_Depth
-    {
-        return 0.0;
-    }
-    ENDCG
-}
+        // Ensures this object is always rendered
+        ZTest Always
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
-
             #include "UnityCG.cginc"
 
-            struct appdata
+            sampler2D _MainTex;
+            float4 _Color;
+
+            struct appdata_t
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
@@ -50,31 +34,24 @@ Shader "Unlit/OverlayShader"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-
-            v2f vert (appdata v)
+            v2f vert(appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                o.uv = v.uv;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag(v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
+                fixed4 col = tex2D(_MainTex, i.uv) * _Color;
                 return col;
             }
             ENDCG
         }
     }
+    FallBack "Diffuse"
 }
