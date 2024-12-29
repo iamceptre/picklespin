@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+[RequireComponent(typeof(Slider))]
 public class BarEase : MonoBehaviour
 {
     public Slider sliderToFollow;
-    [HideInInspector] public Slider me;
-    private float velocity;
-    private float myValue;
     [SerializeField] private Image easeFill;
+    [SerializeField] private float easeDuration = 1f;
+
+    private Slider me;
+    private Tween currentTween;
 
     private void Awake()
     {
@@ -17,25 +19,48 @@ public class BarEase : MonoBehaviour
 
     private void Start()
     {
-        myValue = sliderToFollow.value;
-        me.value = myValue;
-        easeFill.enabled = true;
+        me.value = sliderToFollow.value;
+        if (easeFill) easeFill.enabled = true;
     }
 
     private void Update()
     {
-        myValue = Mathf.SmoothDamp(myValue, sliderToFollow.value, ref velocity, 0.3f);
-        me.value = myValue;
-        easeFill.enabled = Mathf.Abs(myValue - sliderToFollow.value) >= 0.01f;
+        float realValue = sliderToFollow.value;
+        if (Mathf.Approximately(me.value, realValue)) return;
+
+        if (realValue > me.value)
+        {
+            KillTween();
+            me.value = realValue;
+            if (easeFill) easeFill.enabled = false;
+        }
+        else
+        {
+            KillTween();
+            if (easeFill) easeFill.enabled = true;
+            currentTween = me.DOValue(realValue, easeDuration)
+                .SetEase(Ease.OutSine)
+                .OnComplete(() =>
+                {
+                    me.value = realValue;
+                    if (easeFill) easeFill.enabled = false;
+                });
+        }
+    }
+
+    private void KillTween()
+    {
+        if (currentTween != null && currentTween.IsActive()) currentTween.Kill();
+        currentTween = null;
     }
 
     public void FadeOut()
     {
-        easeFill.DOFade(0, 0.5f);
+        if (easeFill) easeFill.DOFade(0f, 0.5f);
     }
 
     public void FadeIn()
     {
-        easeFill.DOFade(1, 0.2f);
+        if (easeFill) easeFill.DOFade(1f, 0.2f);
     }
 }

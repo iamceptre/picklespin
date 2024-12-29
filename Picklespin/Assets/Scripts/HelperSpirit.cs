@@ -45,7 +45,6 @@ public class HelperSpirit : MonoBehaviour
     {
         distanceTreshold = angelDistanceTreshold;
         playerTransform = PublicPlayerTransform.instance;
-        //startingSpeed = _agent.speed;
     }
 
     private IEnumerator Checker()
@@ -67,18 +66,13 @@ public class HelperSpirit : MonoBehaviour
         {
             currentlyGoingToAngel = false;
             currentTarget = playerTransform.PlayerTransform.position;
-            //aIDestinationSetter.target = currentTarget;
-           // _agent.transform.position = currentTarget;
-            //_agent.speed = 999;
             distanceTreshold = playerDistanceTreshold;
             _trail.Clear();
         }
         else
         {
-            //_agent.speed = startingSpeed;
             currentlyGoingToAngel = true;
             currentTarget = _targetAngel;
-           // _agent.SetDestination(currentTarget);
             distanceTreshold = angelDistanceTreshold;
         }
 
@@ -86,7 +80,6 @@ public class HelperSpirit : MonoBehaviour
 
     public void HideSpirit()
     {
-        //_agent.isStopped = true;
         gameObject.SetActive(false);
         StopAllCoroutines();
     }
@@ -94,10 +87,8 @@ public class HelperSpirit : MonoBehaviour
     public void ShowSpirit(Transform _target)
     {
         gameObject.SetActive(true);
-        //_agent.isStopped = false;
         currentTarget = _target.position;
         _targetAngel = currentTarget;
-        //_agent.SetDestination(_targetAngel);
         StartCoroutine(Checker());
     }
 

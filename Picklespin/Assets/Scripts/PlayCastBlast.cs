@@ -46,6 +46,7 @@ public class PlayCastBlast : MonoBehaviour
     {
         if (castingParticles[spellID] != null)
         {
+            castingParticleSizeScript[spellID].castingLight.enabled = false;
             castingParticles[spellID].Stop();
         }
 

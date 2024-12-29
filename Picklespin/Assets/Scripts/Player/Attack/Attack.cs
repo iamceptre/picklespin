@@ -203,6 +203,7 @@ public class Attack : MonoBehaviour
 
     private void ClearCasting()
     {
+        PlayerMovement.instance.SpeedMeBackUp();
         handAnimator.ResetTrigger("Spell_Casting");
         //handAnimator.SetTrigger("Spell_Casting_Stop");
         spellCooldown.myCanvas.enabled = false;

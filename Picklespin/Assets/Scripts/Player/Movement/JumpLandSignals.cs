@@ -97,11 +97,11 @@ public class JumpLandSignals : MonoBehaviour
 
     private void LandCameraMovement(float strenght)
     {
-        strenght = Mathf.Clamp(strenght * 0.07f, 0.2f, 2);
-        //Debug.Log("camera movement strenght " + strenght );
-        cameraMovement.DOLocalMoveY(-0.4f * strenght, 0.1f).SetEase(Ease.OutExpo).OnComplete(() =>
+        strenght = Mathf.Clamp(strenght * 0.1f, 0.1f, 3);
+        //Debug.Log("land bounce strenght: " + strenght);
+        cameraMovement.DOLocalMoveY(-0.4f * strenght, 0.13f).SetEase(Ease.OutSine).OnComplete(() =>
         {
-            cameraMovement.DOLocalMoveY(0, 0.3f * strenght).SetEase(Ease.InOutSine);
+            cameraMovement.DOLocalMoveY(0, 0.2f + (strenght*0.1f)).SetEase(Ease.InOutSine);
         });
 
         camShakeManager.ShakeHand(strenght * 0.1f, 0.2f, 13);

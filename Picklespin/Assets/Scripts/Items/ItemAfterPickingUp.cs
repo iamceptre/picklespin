@@ -37,6 +37,7 @@ public class ItemAfterPickingUp : MonoBehaviour
         }
 
         myLightIntestivity = myLight.intensity;
+        
     }
 
     private void Start()

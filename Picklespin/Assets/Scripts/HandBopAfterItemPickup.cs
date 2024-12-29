@@ -8,7 +8,8 @@ public class HandBopAfterItemPickup : MonoBehaviour
 
     private Transform _transform;
     private float startingYpos;
-    private float bopAmount = 0.1f;
+    private float bopAmount = 0.15f;
+    private float bopTime = 0.12f;
 
     private void Awake()
     {
@@ -30,11 +31,6 @@ public class HandBopAfterItemPickup : MonoBehaviour
     public void Do()
     {
         _transform.DOKill();
-
-        _transform.DOLocalMoveY(startingYpos - bopAmount, 0.1f).SetEase(Ease.OutSine).OnComplete(() =>
-        {
-            _transform.DOLocalMoveY(startingYpos + bopAmount, 0.162f).SetEase(Ease.InOutSine);
-        });
-
+        _transform.DOLocalMoveY(startingYpos - bopAmount, bopTime).SetEase(Ease.OutSine).SetLoops(2, LoopType.Yoyo);
     }
 }
