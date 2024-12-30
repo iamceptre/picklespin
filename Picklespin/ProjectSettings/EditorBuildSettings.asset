@@ -12,4 +12,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Chruch_Arena.unity
     guid: e46004c2dfe536847a58021d1cf1999c
   m_configObjects:
-    com.unity.input.settings: {fileID: 11400000, guid: 1955bd3db89e56d4585ce11ed57f9821, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 52e0e77cf50d8804d981745fa4266fe0, type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 4c91baa133310c44b89cf7cfe2cb86d1, type: 3}

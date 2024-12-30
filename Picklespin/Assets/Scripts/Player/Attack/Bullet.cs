@@ -72,7 +72,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float rocketJumpUpwardsModifier = 1f;
 
     [Header("Decal Settings")]
-    [SerializeField] private GameObject decalPrefab; //not working now, the decal manager handles everything now
+    [SerializeField] private GameObject decalPrefab;
 
     private void Awake()
     {
@@ -216,17 +216,12 @@ public class Bullet : MonoBehaviour
     private void RangeHitDetection(Collision collision)
     {
         Collider[] colliders = Physics.OverlapSphere(collision.GetContact(0).point, rangeRadius, detectionLayer);
-
-        // Keep track of which enemies have been damaged in this AoE
         HashSet<AiReferences> alreadyHit = new HashSet<AiReferences>();
-
         foreach (Collider col in colliders)
         {
             if (col == collision.collider) continue;
-
             if (col.transform.TryGetComponent(out AiReferences areaRefs))
             {
-                // Avoid hitting the same AiReferences multiple times
                 if (areaRefs.setOnFire != null && !alreadyHit.Contains(areaRefs))
                 {
                     alreadyHit.Add(areaRefs);
@@ -239,13 +234,10 @@ public class Bullet : MonoBehaviour
     private void RangeHitDetection(Collider collider)
     {
         Collider[] colliders = Physics.OverlapSphere(collider.transform.position, rangeRadius, detectionLayer);
-
         HashSet<AiReferences> alreadyHit = new HashSet<AiReferences>();
-
         foreach (Collider col in colliders)
         {
             if (col == collider) continue;
-
             if (col.transform.TryGetComponent(out AiReferences areaRefs))
             {
                 if (areaRefs.setOnFire != null && !alreadyHit.Contains(areaRefs))
@@ -332,8 +324,12 @@ public class Bullet : MonoBehaviour
                     var playerMove = cc.GetComponent<PlayerMovement>();
                     if (playerMove)
                     {
+                        //ROCKET JUMP!
                         playerMove.AddExplosionJump(rocketJumpForce * 2, explosionCenter, rangeRadius);
-                        characterControllerFound = true;
+                        var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
+                        var proximityFactor = 1f - distance / rangeRadius;
+                        proximityFactor = Mathf.Clamp01(proximityFactor);
+                        PlayerHP.instance.TakeDamage(Mathf.RoundToInt(rocketJumpForce * proximityFactor));
                     }
                 }
             }
@@ -376,28 +372,15 @@ public class Bullet : MonoBehaviour
 
     private void AttemptSpawnDecal(Collision collision)
     {
-        //if (SpellDecalManager.Instance == null) return;
-
         if (!collision.gameObject.isStatic) return;
-
         var contact = collision.GetContact(0);
-
-        SpellDecalManager.Instance.SpawnDecal(
-            contact.point + contact.normal * 0.01f,
-            Quaternion.LookRotation(contact.normal)
-        );
+        SpellDecalManager.Instance.SpawnDecal(contact.point + contact.normal * 0.01f, Quaternion.LookRotation(contact.normal));
     }
 
     private void AttemptSpawnDecal(Vector3 point, Vector3 normal, GameObject objectHit)
     {
-        //if (SpellDecalManager.Instance == null) return;
-
         if (!objectHit || !objectHit.isStatic) return;
-
-        SpellDecalManager.Instance.SpawnDecal(
-            point + normal * 0.01f,
-            Quaternion.LookRotation(normal)
-        );
+        SpellDecalManager.Instance.SpawnDecal(point + normal * 0.01f, Quaternion.LookRotation(normal));
     }
 
     private void ResetBulletState()

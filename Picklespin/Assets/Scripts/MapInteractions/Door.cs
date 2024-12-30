@@ -1,11 +1,12 @@
 using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 public class Door : MonoBehaviour
 {
-    // CONFIGURABLE PARAMETERS
+    [Header("Configurable Parameters")]
     [SerializeField] private LayerMask layerMask;  // Assign this to only the "Door" layer
     [SerializeField] private Transform _transform;
     [SerializeField] private StudioEventEmitter doorOpenSound;
@@ -17,18 +18,20 @@ public class Door : MonoBehaviour
     private static readonly float animationTime = 0.8f;
     private static readonly float maxDistance = 7f;
 
-    // LOGIC
-    private KeyCode actionKey = KeyCode.E;
+    [Header("Logic")]
     public bool isLocked = false;
     private bool isOpened = false;
     private bool canButtonBuffer = true;
 
-    // CACHED COMPONENTS
+    [Header("Cache")]
     private Transform mainCamera;
     private Animator handAnimator;
     private TipManager tipManager;
     [SerializeField] private Collider myCollider;
     private Vector3 startRot;
+
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference interactAction;
 
     private void Awake()
     {
@@ -44,20 +47,32 @@ public class Door : MonoBehaviour
         enabled = false;
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKey(actionKey)) //button buffer
+        interactAction.action.started += OnInteractStarted;
+        interactAction.action.canceled += OnInteractCanceled;
+        interactAction.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        interactAction.action.started -= OnInteractStarted;
+        interactAction.action.canceled -= OnInteractCanceled;
+        interactAction.action.Disable();
+    }
+
+    private void OnInteractStarted(InputAction.CallbackContext ctx)
+    {
+        if (canButtonBuffer)
         {
-            if (canButtonBuffer)
-            {
-                canButtonBuffer = false;
-                PerformRaycastCheck();
-            }
+            canButtonBuffer = false;
+            PerformRaycastCheck();
         }
-        else
-        {
-            canButtonBuffer = true;
-        }
+    }
+
+    private void OnInteractCanceled(InputAction.CallbackContext ctx)
+    {
+        canButtonBuffer = true;
     }
 
     private void PerformRaycastCheck()
@@ -66,36 +81,23 @@ public class Door : MonoBehaviour
         {
             if (hit.collider == myCollider)
             {
-                HandleDoorInteraction();
+                if (isLocked)
+                {
+                    handAnimator.SetTrigger("Hand_Fail");
+                    doorLockedSound.Play();
+                }
+                else
+                {
+                    ToggleDoor();
+                }
             }
-        }
-    }
-
-    private void HandleDoorInteraction()
-    {
-        if (isLocked)
-        {
-            handAnimator.SetTrigger("Hand_Fail");
-            doorLockedSound.Play();
-        }
-        else
-        {
-            ToggleDoor();
         }
     }
 
     private void ToggleDoor()
     {
         tipManager.Hide(0);
-
-        if (isOpened)
-        {
-            CloseDoor();
-        }
-        else
-        {
-            OpenDoor();
-        }
+        if (isOpened) CloseDoor(); else OpenDoor();
     }
 
     private void OpenDoor()
@@ -125,11 +127,7 @@ public class Door : MonoBehaviour
             enabled = true;
             StopAllCoroutines();
             StartCoroutine(DisableWhenPlayerGoesAway());
-
-            if (!isLocked)
-            {
-                tipManager.Show(0);
-            }
+            if (!isLocked) tipManager.Show(0);
         }
     }
 
@@ -138,7 +136,6 @@ public class Door : MonoBehaviour
         while (enabled)
         {
             yield return refreshRate;
-
             if (Vector3.Distance(mainCamera.position, _transform.position) > maxDistance)
             {
                 tipManager.Hide(0);

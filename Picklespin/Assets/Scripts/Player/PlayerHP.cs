@@ -11,41 +11,28 @@ public class PlayerHP : MonoBehaviour
     public static PlayerHP instance { get; private set; }
     public int hp;
     public int maxHp;
-
     private Death death;
     private HpBarDisplay hpBarDisplay;
-
     [Header("Assets")]
     [SerializeField] private EventReference hurtSound;
     [SerializeField] private Image hurtOverlay;
     [SerializeField] private Sprite[] hurtOverlays;
     [SerializeField] private EventReference hpAqquiredSound;
-
     public bool godMode = false;
     public bool invincible = false;
-
     [HideInInspector] public bool isLowHP = false;
     [SerializeField] private PostProcessVolume ppVolume;
     private ColorGrading ppColorGrading;
     private float desaturateAmount = 20;
     private float contrastAmount = 10;
     private float exposureAmount = 1;
-
     private SnapshotManager snapshotManager;
-
     [SerializeField] private EventReference tinnitusEventReference;
-
 
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
+        if (instance != null && instance != this) Destroy(this);
+        else instance = this;
     }
 
     public void SetGodmode(bool isGodmode)
@@ -63,25 +50,15 @@ public class PlayerHP : MonoBehaviour
         ppVolume.profile.TryGetSettings(out ppColorGrading);
     }
 
-
     private void CheckIfPlayerIsDead()
     {
-        if (hp <= 0)
-        {
-            death.PlayerDeath();
-        }
+        if (hp <= 0) death.PlayerDeath();
     }
 
     private void CheckIfPlayerIsLowHP()
     {
-        if (hp <= maxHp * 0.15f)
-        {
-            ApplyLowHPState();
-        }
-        else
-        {
-            ReturnFromLowHPState();
-        }
+        if (hp <= maxHp * 0.15f) ApplyLowHPState();
+        else ReturnFromLowHPState();
     }
 
     private void ApplyLowHPState()
@@ -95,7 +72,6 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-
     private void ReturnFromLowHPState()
     {
         if (isLowHP)
@@ -106,23 +82,15 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-
     public void TakeDamage(int damage)
     {
-        if (godMode || invincible)
-        {
-            return;
-        }
-
+        if (godMode || invincible) return;
         hp -= damage;
-        //RuntimeManager.PlayOneShot(hurtSound);
         PlayerHurtVisual();
         CheckIfPlayerIsDead();
         CheckIfPlayerIsLowHP();
         hpBarDisplay.Refresh(false);
-
     }
-
 
     private void PlayerHurtVisual()
     {
@@ -132,10 +100,7 @@ public class PlayerHP : MonoBehaviour
         hurtOverlay.DOFade(0, 0);
         hurtOverlay.DOFade(0.6f, 0.1f).OnComplete(() =>
         {
-            hurtOverlay.DOFade(0, 1).OnComplete(() =>
-            {
-                hurtOverlay.enabled = false;
-            });
+            hurtOverlay.DOFade(0, 1).OnComplete(() => { hurtOverlay.enabled = false; });
         });
     }
 
@@ -143,32 +108,25 @@ public class PlayerHP : MonoBehaviour
     {
         if (hp < maxHp)
         {
-
             if (hp + howMuchHPIGive < maxHp)
             {
-                //Debug.Log("raz");
                 hp += howMuchHPIGive;
                 hpBarDisplay.Refresh(true);
-                barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, false); //hp = 0, stamina = 1, mana = 2
+                barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, false);
             }
             else
             {
-                //Debug.Log("dwa");
                 hp = maxHp;
                 barLightsAnimation.PlaySelectedBarAnimation(0, howMuchHPIGive, true);
             }
-
             hpBarDisplay.Refresh(true);
         }
-
-        //RuntimeManager.PlayOneShot(hpAqquiredSound);
         CheckIfPlayerIsLowHP();
     }
 
     private IEnumerator LowHpEffect()
     {
         float timer = 0;
-
         while (timer < 1)
         {
             timer += Time.deltaTime;
@@ -177,13 +135,11 @@ public class PlayerHP : MonoBehaviour
             ppColorGrading.postExposure.value += Time.deltaTime * exposureAmount;
             yield return null;
         }
-        yield break;
     }
 
     private IEnumerator RestoreHpEffect()
     {
         float timer = 0;
-
         while (timer < 1)
         {
             timer += Time.deltaTime;
@@ -192,7 +148,5 @@ public class PlayerHP : MonoBehaviour
             ppColorGrading.postExposure.value -= Time.deltaTime * exposureAmount;
             yield return null;
         }
-        yield break;
     }
-
 }

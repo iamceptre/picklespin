@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HandSwaySystematic : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform body;
-    private MouselookXY_old mouselook;
+    private MouselookXY mouselook;
     private float mouseSensitivtyCached = 3;
 
     [Header("Rotation Sway (Mouse)")]
@@ -25,22 +26,27 @@ public class HandSwaySystematic : MonoBehaviour
     private Vector3 _smoothVelocity;
     private Vector3 _lastCameraPosition;
 
-    private void Start()
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference lookAction;
+
+    void OnEnable() => lookAction.action.Enable();
+    void OnDisable() => lookAction.action.Disable();
+
+    void Start()
     {
         _initialLocalRotation = transform.localRotation;
         _lastCameraPosition = mainCamera.position;
-        mouselook = MouselookXY_old.instance;
+        mouselook = MouselookXY.instance;
         mouseSensitivtyCached = mouselook.sensitivity;
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
         if (Time.deltaTime <= 0)
         {
             _lastCameraPosition = mainCamera.position;
             return;
         }
-
 
         Vector3 currentCameraPos = mainCamera.position;
         Vector3 worldVelocity = (currentCameraPos - _lastCameraPosition) / Time.deltaTime;
@@ -51,11 +57,9 @@ public class HandSwaySystematic : MonoBehaviour
             return;
         }
 
-
         float forwardSpeed = Vector3.Dot(worldVelocity, mainCamera.forward);
         float rightSpeed = Vector3.Dot(worldVelocity, mainCamera.right);
         float upSpeed = Vector3.Dot(worldVelocity, mainCamera.up);
-
 
         float offsetX = -rightSpeed * movementSwayAmount;
         float offsetY = -upSpeed * movementSwayAmount;
@@ -76,12 +80,11 @@ public class HandSwaySystematic : MonoBehaviour
             positionSmoothTime
         );
 
+        Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
+        float mouseX = lookDelta.x * mouseSensitivtyCached;
+        float mouseY = lookDelta.y * mouseSensitivtyCached;
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivtyCached;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivtyCached;
-
-
-        float rotX = -mouseY * rotationSwayAmount;  
+        float rotX = -mouseY * rotationSwayAmount;
         float rotY = mouseX * rotationSwayAmount;
 
         rotX = Mathf.Clamp(rotX, -maxRotationAngle, maxRotationAngle);

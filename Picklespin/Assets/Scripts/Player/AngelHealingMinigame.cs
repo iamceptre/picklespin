@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using FMODUnity;
+using UnityEngine.InputSystem;
 
 public class AngelHealingMinigame : MonoBehaviour
 {
-
     public static AngelHealingMinigame instance;
 
     [SerializeField] private EventReference healBoostSound;
@@ -35,6 +35,23 @@ public class AngelHealingMinigame : MonoBehaviour
 
     [SerializeField] AngelHealBoostLight boostLight;
 
+    // -------------------- NEW INPUT SYSTEM REFERENCES --------------------
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference scrollAction;
+    [SerializeField] private InputActionReference middleClickAction;
+
+    //private void OnEnable()
+    //{
+    //    scrollAction.action.Enable();
+    //    middleClickAction.action.Enable();
+    //}
+
+    //private void OnDisable()
+    //{
+    //    scrollAction.action.Disable();
+    //    middleClickAction.action.Disable();
+    //}
+
     private void Awake()
     {
         sliderStartingColor = sliderFill.color;
@@ -61,15 +78,18 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         turboAreaWidth = Random.Range(5, 9);
         turboAreaRect.sizeDelta = new Vector2(turboAreaWidth * 10, turboAreaRect.sizeDelta.y);
-
         float halfOfWidth = turboAreaWidth * 0.5f;
         float turboAreaRandomizedPosition = Random.Range(7, 35);
+
         turboAreaLeftEdgePosition = turboAreaRandomizedPosition - halfOfWidth;
         turboAreaRightEdgePosition = turboAreaRandomizedPosition + halfOfWidth;
         float desiredTurboAreaPositionX = Mathf.Lerp(-147, 147, turboAreaRandomizedPosition * 0.01f);
         RectTransform myTransform = turboArea.rectTransform;
         myTransform.localPosition = new Vector2(desiredTurboAreaPositionX, 0);
-        scrollTip.rectTransform.localPosition = new Vector2(desiredTurboAreaPositionX, scrollTip.rectTransform.localPosition.y);
+        scrollTip.rectTransform.localPosition = new Vector2(
+            desiredTurboAreaPositionX,
+            scrollTip.rectTransform.localPosition.y
+        );
     }
 
     public void InitializeMinigame()
@@ -109,6 +129,12 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private void Update()
     {
+        // ---------------------------------------------------------------------
+        // GET 1D SCROLL VALUE (INCLUDES MOUSE WHEEL AND GAMEPAD BINDINGS)
+        float scrollValue = scrollAction.action.ReadValue<float>();
+        // DETECT MIDDLE CLICK (OPTIONAL)
+        bool middleClicked = middleClickAction.action.WasPressedThisFrame();
+        // ---------------------------------------------------------------------
 
         if (angelHPslider.value >= turboAreaLeftEdgePosition && angelHPslider.value <= turboAreaRightEdgePosition)
         {
@@ -119,9 +145,9 @@ public class AngelHealingMinigame : MonoBehaviour
             ExitRange();
         }
 
-
-
-        if (Input.mouseScrollDelta.y != 0 || (Input.GetMouseButtonDown(2)))
+        // Instead of 'Input.mouseScrollDelta.y != 0 || Input.GetMouseButtonDown(2)',
+        // we now check scrollValue != 0 OR middleClicked:
+        if (Mathf.Abs(scrollValue) > 0.001f || middleClicked)
         {
             if (inTurboRange)
             {
@@ -134,11 +160,10 @@ public class AngelHealingMinigame : MonoBehaviour
         }
     }
 
-    private void EnterRange() //one impulse, not a continous function
+    private void EnterRange()
     {
         if (!inTurboRange && !missed)
         {
-
             turboArea.DOColor(turboAreaColor, 0.2f);
             scrollTip.DOFade(1, 0.2f);
             scrollTip.color = Color.white;
@@ -160,7 +185,8 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         if (!missed && !tooLate)
         {
-            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 1, 0.4f).SetEase(Ease.OutExpo);
+            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 1, 0.4f)
+                   .SetEase(Ease.OutExpo);
             sliderFill.DOColor(Color.red, 0.4f).OnComplete(RevertSliderColor);
             Reddify();
             RuntimeManager.PlayOneShot(failedSound);
@@ -173,14 +199,11 @@ public class AngelHealingMinigame : MonoBehaviour
         sliderFill.DOColor(sliderStartingColor, 0.4f);
     }
 
-
     private void FadeOut()
     {
         turboArea.DOKill();
         scrollTip.DOKill();
-
         scrollTip.DOFade(0, 0.08f).OnComplete(DisableScript);
-
         turboArea.DOFade(0, 0.1f).OnComplete(() =>
         {
             turboArea.enabled = false;
@@ -204,7 +227,8 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         if (!boosted && !missed && !tooLate)
         {
-            scrollTip.rectTransform.DOLocalMoveY(scrollTipStartYPos - 8, 0.4f).OnComplete(FloatDown);
+            scrollTip.rectTransform.DOLocalMoveY(scrollTipStartYPos - 8, 0.4f)
+                    .OnComplete(FloatDown);
         }
     }
 
@@ -212,7 +236,8 @@ public class AngelHealingMinigame : MonoBehaviour
     {
         if (!boosted && !missed && !tooLate)
         {
-            scrollTip.rectTransform.DOLocalMoveY(scrollTipStartYPos, 0.4f).OnComplete(TipFloat);
+            scrollTip.rectTransform.DOLocalMoveY(scrollTipStartYPos, 0.4f)
+                    .OnComplete(TipFloat);
         }
     }
 
@@ -223,12 +248,13 @@ public class AngelHealingMinigame : MonoBehaviour
             boostLight.LightAnimation();
             FadeOut();
             angelHeal.healSpeedMultiplier = 0;
-            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f).SetEase(Ease.OutSine).OnComplete(() =>
-            {
-                angelHeal.Healed();
-            });
+            DOTween.To(() => aiHealth.hp, x => aiHealth.hp = x, 100, 0.7f)
+                   .SetEase(Ease.OutSine)
+                   .OnComplete(() =>
+                   {
+                       angelHeal.Healed();
+                   });
             RuntimeManager.PlayOneShot(healBoostSound);
-
             boosted = true;
         }
     }

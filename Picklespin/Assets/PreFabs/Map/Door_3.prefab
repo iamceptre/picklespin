@@ -105,6 +105,7 @@ MonoBehaviour:
   doorLockedSound: {fileID: 3013012321252679432}
   isLocked: 0
   myCollider: {fileID: 4081230609593342116}
+  interactAction: {fileID: -8879870439267726852, guid: 4c91baa133310c44b89cf7cfe2cb86d1, type: 3}
 --- !u!1 &439044543119054622
 GameObject:
   m_ObjectHideFlags: 0

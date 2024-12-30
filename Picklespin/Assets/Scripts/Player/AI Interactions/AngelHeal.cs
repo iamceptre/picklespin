@@ -3,54 +3,40 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class AngelHeal : MonoBehaviour
 {
     [SerializeField] private HandShakeWhenCannotHeal handShake;
     private Helper_Arrow helperArrow;
     private ScreenFlashTint screenFlashTint;
-    AngelHealingMinigame minigame;
-    [HideInInspector] public float healSpeedMultiplier = 1; //ITS BOOSTED WHEN IS 0
-
+    private AngelHealingMinigame minigame;
+    [HideInInspector] public float healSpeedMultiplier = 1;
     [SerializeField] private GameObject hand;
-
     private Material handOGMaterial;
     [SerializeField] private Material handHighlightMaterial;
     private SkinnedMeshRenderer handRenderer;
     [SerializeField] private Animator handAnimator;
-
     [SerializeField] private Slider angelHPSlider;
     [SerializeField] private Canvas angelHPCanvas;
-
     [SerializeField] private HealingParticles healingParticlesScript;
-
     [SerializeField] private Transform mainCamera;
-
     [SerializeField] private float range = 5f;
     [SerializeField] private bool isAimingAtAngel = false;
-
     [HideInInspector] public AngelMind angel;
     private AiHealth aiHealth;
-
     [SerializeField] private StudioEventEmitter healingBeamEmitter;
-
-
     [SerializeField] private ManaLightAnimation manaLightAnimation;
-
     [SerializeField] private LayerMask layersForRaycast;
-
-
     private TipManager tipManager;
-
-
     [SerializeField] private CanvasGroup angelHPCanvasGroup;
     [SerializeField] private CanvasGroup minigameCanvasGroup;
     [SerializeField] private float guiFadeTimes = 0.1f;
-
     private IEnumerator healingRoutine;
-
     private bool isHealing = false;
 
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference healAction;
 
     private void Awake()
     {
@@ -68,94 +54,55 @@ public class AngelHeal : MonoBehaviour
         minigame.enabled = false;
     }
 
-    void Update()
+    private void OnEnable()
     {
-        Ray ray = new Ray(mainCamera.position, mainCamera.TransformDirection(Vector3.forward * range));
+        healAction.action.performed += OnHealPerformed;
+        healAction.action.canceled += OnHealCanceled;
+        healAction.action.Enable();
+    }
 
+    private void OnDisable()
+    {
+        healAction.action.performed -= OnHealPerformed;
+        healAction.action.canceled -= OnHealCanceled;
+        healAction.action.Disable();
+    }
+
+    private void Update()
+    {
+        var ray = new Ray(mainCamera.position, mainCamera.forward * range);
         if (Physics.Raycast(ray, out RaycastHit hit, range, layersForRaycast))
         {
             if (hit.collider.CompareTag("Angel"))
             {
                 if (!isAimingAtAngel)
                 {
-                    SetNewAngel(hit);
+                    angel = hit.transform.GetComponent<AngelMind>();
+                    aiHealth = hit.transform.GetComponent<AiHealth>();
+                    minigame.AngelChanged();
                     StartAiming();
                 }
             }
         }
-        else
-        {
-            StopAiming();
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !angel.healed && angel != null)
-        {
-            if (isAimingAtAngel)
-            {
-                StartHealing();
-            }
-            else
-            {
-                handShake.ShakeHand();
-            }
-        }
-
-        if (Input.GetKeyUp(KeyCode.Mouse1) && healSpeedMultiplier == 1)
-        {
-            CancelHealing();
-        }
-
+        else StopAiming();
     }
 
-
-    private void StartHealing()
+    private void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        healingBeamEmitter.Play();
-        if (healingRoutine != null)
-        {
-            StopCoroutine(healingRoutine);
-        }
-
-        healingRoutine = Healing();
-        StartCoroutine(healingRoutine);
+        if (!angel || angel.healed) return;
+        if (isAimingAtAngel) StartHealing(); else handShake.ShakeHand();
     }
 
-    private void SetNewAngel(RaycastHit hit)
+    private void OnHealCanceled(InputAction.CallbackContext ctx)
     {
-        //if (angel != hit.transform.GetComponent<AngelMind>())
-        //{
-            angel = hit.transform.GetComponent<AngelMind>();
-            aiHealth = hit.transform.GetComponent<AiHealth>();
-            minigame.AngelChanged();
-        //}
+        if (healSpeedMultiplier == 1) CancelHealing();
     }
-
-
-    public void CancelHealing()
-    {
-        if (isHealing)
-        {
-            isHealing = false;
-            handAnimator.SetTrigger("Healing_Beam_Stop");
-            helperArrow.ShowArrow();
-            StopCoroutine(healingRoutine);
-            healingParticlesScript.StopEmitting();
-            FadeOutGui();
-            minigame.enabled = false;
-            healingBeamEmitter.Stop();
-            //Debug.Log("CancelHealing");
-        }
-    }
-
 
     private void StartAiming()
     {
         if (!angel.healed)
         {
-            //Debug.Log("StartAiming");
             minigame.aiHealth = aiHealth;
-            //handRenderer.material = handHighlightMaterial;
             tipManager.Show(1);
             isAimingAtAngel = true;
         }
@@ -165,27 +112,36 @@ public class AngelHeal : MonoBehaviour
     {
         if (isAimingAtAngel && healSpeedMultiplier == 1)
         {
-            // Debug.Log("StopAiming");
-
             tipManager.Hide(1);
-
-            if (handRenderer.material != handOGMaterial)
-            {
-                handRenderer.material = handOGMaterial;
-            }
-
+            if (handRenderer.material != handOGMaterial) handRenderer.material = handOGMaterial;
             isAimingAtAngel = false;
-
             CancelHealing();
         }
-
     }
 
+    private void StartHealing()
+    {
+        healingBeamEmitter.Play();
+        if (healingRoutine != null) StopCoroutine(healingRoutine);
+        healingRoutine = Healing();
+        StartCoroutine(healingRoutine);
+    }
 
+    public void CancelHealing()
+    {
+        if (!isHealing) return;
+        isHealing = false;
+        handAnimator.SetTrigger("Healing_Beam_Stop");
+        helperArrow.ShowArrow();
+        StopCoroutine(healingRoutine);
+        healingParticlesScript.StopEmitting();
+        FadeOutGui();
+        minigame.enabled = false;
+        healingBeamEmitter.Stop();
+    }
 
     private IEnumerator Healing()
     {
-        //Debug.Log("Healing");
         isHealing = true;
         handAnimator.SetTrigger("Healing_Beam");
         helperArrow.HideArrow();
@@ -194,31 +150,21 @@ public class AngelHeal : MonoBehaviour
         minigame.InitializeMinigame();
         healingParticlesScript.StartEmitting(angel.transform);
         FadeInGui();
-
         while (aiHealth.hp <= 100)
         {
             aiHealth.hp += Time.deltaTime * 15 * healSpeedMultiplier;
             angelHPSlider.value = aiHealth.hp;
             yield return null;
         }
-
         Healed();
-        yield break;
     }
-
 
     public void Healed()
     {
-        if (angel.healed)
-        {
-            return;
-        }
-
+        if (angel.healed) return;
         aiHealth.hp = 100;
-
         healSpeedMultiplier = 1;
         StopAiming();
-
         healingParticlesScript.StopEmitting();
         healingBeamEmitter.Stop();
         handRenderer.material = handOGMaterial;
@@ -231,17 +177,13 @@ public class AngelHeal : MonoBehaviour
         angel.healed = true;
     }
 
-
     private void FadeOutGui()
     {
         minigameCanvasGroup.DOKill();
         minigameCanvasGroup.DOFade(0, guiFadeTimes);
         angelHPCanvasGroup.DOKill();
         angelHPCanvasGroup.alpha = 1;
-        angelHPCanvasGroup.DOFade(0, guiFadeTimes * 1.618f).OnComplete(() =>
-        {
-            angelHPCanvas.enabled = false;
-        });
+        angelHPCanvasGroup.DOFade(0, guiFadeTimes * 1.618f).OnComplete(() => { angelHPCanvas.enabled = false; });
     }
 
     private void FadeInGui()
@@ -256,5 +198,4 @@ public class AngelHeal : MonoBehaviour
             angelHPCanvasGroup.DOFade(1, guiFadeTimes);
         }
     }
-
 }
