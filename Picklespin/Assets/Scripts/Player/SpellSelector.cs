@@ -1,4 +1,3 @@
-using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +5,7 @@ using UnityEngine.InputSystem;
 public class SpellSelector : MonoBehaviour
 {
     // 0 means spell 1
-    // 1 means spell 2
+    // 1 means spell 2 etc etc
 
     private Attack attack;
     [SerializeField] private EventReference spellLockedSoundEvent;
@@ -47,15 +46,11 @@ public class SpellSelector : MonoBehaviour
 
     private void Update()
     {
-        // Skip scroll/keys if the player is holding attack/heal 
-        // (either mouse or corresponding gamepad trigger/button).
         if (attackAction.action.IsPressed() || healAction.action.IsPressed())
+        {
             return;
-
-        // Also skip if left or right mouse is down (old system).
-        if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Mouse1))
-            return;
-
+        }
+            
         HandleScroll();
         HandleKeys();
     }
@@ -82,37 +77,29 @@ public class SpellSelector : MonoBehaviour
 
     private void HandleKeys()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SetSpell(0);
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) SetSpell(1);
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) SetSpell(2);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) ChooseSpell(0);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) ChooseSpell(1);
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) ChooseSpell(2);
     }
 
-    private void SetSpell(int newIndex)
+    private void ChooseSpell(int newIndex)
     {
-        Debug.Log("selecting spell: " + newIndex);
-        if (index != newIndex)
-        {
-            index = newIndex;
-            ChooseSpell(index);
-        }
-    }
+        index = newIndex;
 
-    private void ChooseSpell(int pressedNumber)
-    {
         if (!Input.GetKey(KeyCode.Mouse0))
         {
-            inventoryBarSelectedSpell.NumberBump(pressedNumber);
+            inventoryBarSelectedSpell.NumberBump(newIndex);
 
-            if (unlockedSpells.spellUnlocked[pressedNumber])
+            if (unlockedSpells.spellUnlocked[newIndex])
             {
-                unlockedSpells.SelectingUnlockedAuraAnimation(pressedNumber);
-                attack.SelectSpell(pressedNumber);
-                inventoryBarSelectedSpell.SelectionChanged(pressedNumber);
+                unlockedSpells.SelectingUnlockedAuraAnimation(newIndex);
+                attack.SelectSpell(newIndex);
+                inventoryBarSelectedSpell.SelectionChanged(newIndex);
             }
             else
             {
                 RuntimeManager.PlayOneShot(spellLockedSoundEvent);
-                unlockedSpells.spellLockedIconAnimation(pressedNumber);
+                unlockedSpells.spellLockedIconAnimation(newIndex);
             }
         }
     }
