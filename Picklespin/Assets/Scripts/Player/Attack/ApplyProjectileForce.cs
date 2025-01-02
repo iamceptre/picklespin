@@ -27,7 +27,7 @@ public class ApplyProjectileForce : MonoBehaviour
             gotRefs = true;
         }
 
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         //Debug.Log("setting rb");
         recoilMultiplier.UpdateRecoil();
@@ -38,7 +38,7 @@ Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil)
 );
 
         Vector3 desiredDirection = cachedCameraMain.cachedTransform.forward + randomDirection;
-        rb.velocity = desiredDirection * bullet.speed;
+        rb.linearVelocity = desiredDirection * bullet.speed;
     }
 
 }

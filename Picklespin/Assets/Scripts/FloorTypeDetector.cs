@@ -8,10 +8,12 @@ public class FloorTypeDetector : MonoBehaviour
     private FootstepSystem footstepSystem;
     private JumpLandSignals jumpLand;
 
+    [Header("Footstep Events")]
     [SerializeField] private StudioEventEmitter concreteEvent;
     [SerializeField] private StudioEventEmitter carpetEvent;
     [SerializeField] private StudioEventEmitter woodEvent;
 
+    [Header("Landing Events")]
     [SerializeField] private StudioEventEmitter concreteLandingEvent;
     [SerializeField] private StudioEventEmitter carpetLandingEvent;
     [SerializeField] private StudioEventEmitter woodLandingEvent;

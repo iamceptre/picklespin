@@ -127,7 +127,7 @@ public class FallingFloor : MonoBehaviour
         rb.isKinematic = false;
         currentlyOccupiedFloor.GetComponent<DisablePhysicsAfterTime>().enabled = true;
 
-        rb.velocity = Vector3.down + ApplyRandomForce();
+        rb.linearVelocity = Vector3.down + ApplyRandomForce();
 
         isFallingFloorSupportingAbridge();
 

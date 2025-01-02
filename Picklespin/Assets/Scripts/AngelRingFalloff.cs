@@ -21,7 +21,7 @@ public class AngelRingFalloff : MonoBehaviour
         for (int i = 0; i < _collider.Length; i++)
         {
             _rb[i].isKinematic = false;
-            _rb[i].velocity = Vector3.one * 1;
+            _rb[i].linearVelocity = Vector3.one * 1;
             _collider[i].enabled = true;
             _trail[i].enabled = false;
             _playFmodOnCollision[i].enabled = true;

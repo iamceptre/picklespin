@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float crouchHeight;
     [SerializeField] private float gravity = 9.81f;
     private float startingGravity;
-    private float stairGravity = 200;
+    private float stairGravity = 4000;
 
     [Header("Stamina & Fatigue")]
     [Range(0, 100)]
@@ -91,8 +91,6 @@ public class PlayerMovement : MonoBehaviour
         startingGravity = gravity;
         movementStateForFMOD = 1;
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
-        footstepSystem.SetNewFootstepSpace(1);
-        SetCameraBobSpeed();
     }
 
     void Update()
@@ -146,7 +144,12 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection = inputDirection;
             moveDirection.y = -gravity * Time.deltaTime;
-            if (jumpAction.action.triggered) Jump();
+
+            if (jumpAction.action.triggered)
+            {
+                Jump();
+            }
+
         }
         else
         {
@@ -188,6 +191,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+        cameraBob.ResetBobbing();
         footstepSystem.SendJumpSignal();
         NormalGravity();
         camShakeManager.ShakeSelected(9);
@@ -267,8 +271,6 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 1;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
-            footstepSystem.SetNewFootstepSpace(1);
-            SetCameraBobSpeed();
             isRunning = false;
         }
     }
@@ -279,8 +281,6 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 2;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 2);
-            footstepSystem.SetNewFootstepSpace(2);
-            SetCameraBobSpeed();
             isRunning = true;
         }
     }
@@ -291,8 +291,6 @@ public class PlayerMovement : MonoBehaviour
         {
             movementStateForFMOD = 0;
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 0);
-            footstepSystem.SetNewFootstepSpace(0);
-            SetCameraBobSpeed();
             isRunning = false;
         }
     }
@@ -333,11 +331,6 @@ public class PlayerMovement : MonoBehaviour
         gravity = stairGravity;
     }
 
-    void SetCameraBobSpeed()
-    {
-        if (cameraBob && cameraBob.bobSpeed != 0)
-            cameraBob.bobSpeed = 2f / footstepSystem.fixedFootstepSpace;
-    }
 
     public void GiveStaminaToPlayer(int howMuchStaminaIGive)
     {

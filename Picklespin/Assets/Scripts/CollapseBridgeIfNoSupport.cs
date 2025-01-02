@@ -37,7 +37,7 @@ public class CollapseBridgeIfNoSupport : MonoBehaviour
             float randomZ = Random.Range(-2, 2);
             Vector3 randomForce = new Vector3(randomX, randomY, randomZ);
             rb.isKinematic = false;
-            rb.velocity = randomForce;
+            rb.linearVelocity = randomForce;
         }
 
         foreach (var physicsFreeze in disablePhysicsAfterTime)

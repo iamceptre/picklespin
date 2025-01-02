@@ -132,6 +132,30 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 1.3
       objectReference: {fileID: 0}
+    - target: {fileID: 9105973929467942855, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+      propertyPath: forward.y
+      value: 1.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105973929467942855, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+      propertyPath: forward.z
+      value: -0.00000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105973929467942855, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+      propertyPath: intensity
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105973929467942855, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+      propertyPath: position.x
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105973929467942855, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+      propertyPath: position.y
+      value: 1.3350002
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105973929467942855, guid: d8c76c12c511f1a49bc62ef49535dac4, type: 3}
+      propertyPath: position.z
+      value: 0.25999987
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

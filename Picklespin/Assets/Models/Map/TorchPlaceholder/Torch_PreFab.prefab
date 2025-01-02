@@ -4786,6 +4786,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -4930,8 +4933,8 @@ MonoBehaviour:
       Data4: -1748236048
     Path: event:/MAP/Objects/Torch_Burning
   Event: 
-  PlayEvent: 1
-  StopEvent: 2
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -4950,10 +4953,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6460316801057044310}
   - component: {fileID: 8446259236141660494}
-  - component: {fileID: 6891636050665673914}
-  - component: {fileID: 3803130914535457831}
   - component: {fileID: 2140128497275035421}
   - component: {fileID: 9105973929467942855}
+  - component: {fileID: 110850057093276935}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -4984,9 +4986,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7799337286964934545}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 2
-  m_Shape: 0
   m_Color: {r: 1, g: 0.7134546, b: 0.082352936, a: 1}
   m_Intensity: 1.1
   m_Range: 10
@@ -5036,37 +5037,12 @@ Light:
   m_BoundingSphereOverride: {x: 1.02e-43, y: 9.4e-44, z: 1.6642e-41, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &6891636050665673914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7799337286964934545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90039baa820ea1a4d931687ec44a3fe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minimumInstensity: 0.5
-  speed: 2.5
---- !u!114 &3803130914535457831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7799337286964934545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13c01dd165d96034185a4227496eaced, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floatSpeed: 2.5
-  noiseScale: 0.2
-  noiseStrength: 0.4
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!122 &2140128497275035421
 Halo:
   m_ObjectHideFlags: 0
@@ -5094,7 +5070,7 @@ MonoBehaviour:
   lightType: 2
   lastLightType: 2
   lightTypeMA: 0
-  calculationMode: 0
+  calculationMode: 1
   tracePointSettingMode: 0
   lightMode: 1
   shadowmaskMode: 0
@@ -5131,6 +5107,28 @@ MonoBehaviour:
   saveOnOutOfRange: 0
   isHDRP: 0
   hdrpAreaSize: {x: 0, y: 0}
+--- !u!114 &110850057093276935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7799337286964934545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478efdaa68a37394584a1e497a2f1333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cachedTransform: {fileID: 0}
+  isCulled: 0
+  initialLocalPosition: {x: 0, y: 0, z: 0}
+  torchLight: {fileID: 0}
+  initialIntensity: 0
+  offsetX: 0
+  offsetY: 0
+  offsetIntensity: 0
+  flickerSpeedMultiplier: 0
+  intensityFlickerSpeedMultiplier: 0
 --- !u!1 &8844188799840188057
 GameObject:
   m_ObjectHideFlags: 0
@@ -5142,7 +5140,6 @@ GameObject:
   - component: {fileID: 4889179302924232208}
   - component: {fileID: 6473732517741880606}
   - component: {fileID: 1219698844525551640}
-  - component: {fileID: 201593809242922449}
   m_Layer: 0
   m_Name: 3D_Model
   m_TagString: Untagged
@@ -5190,6 +5187,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5215,17 +5215,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &201593809242922449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8844188799840188057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14eac0ada197eab4b989d1d7e8ff2e34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  perlinFloat: {fileID: 3803130914535457831}
-  lightFluctuation: {fileID: 6891636050665673914}

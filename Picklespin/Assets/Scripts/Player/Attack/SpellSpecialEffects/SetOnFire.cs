@@ -139,7 +139,7 @@ public class SetOnFire : MonoBehaviour
         }
     }
 
-    public void ShutFireDown() //ugaszenie prze¿ywaj¹c
+    public void ShutFireDown() //ugaszenie przeï¿½ywajï¿½c
     {
         particleEmission.enabled = false;
         imOnFire = false;

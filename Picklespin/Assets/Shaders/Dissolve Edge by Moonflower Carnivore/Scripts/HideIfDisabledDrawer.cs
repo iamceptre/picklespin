@@ -1,4 +1,4 @@
-﻿//https://forum.unity3d.com/threads/sharing-is-caring-hiding-optional-material-parameters.349952/
+//https://forum.unity3d.com/threads/sharing-is-caring-hiding-optional-material-parameters.349952/
 
 #if UNITY_EDITOR
 using UnityEngine;

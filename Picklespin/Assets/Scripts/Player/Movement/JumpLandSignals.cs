@@ -10,7 +10,7 @@ public class JumpLandSignals : MonoBehaviour
     private FloorTypeDetector floorTypeDetector;
 
     [SerializeField] private CharacterController characterController;
-    private FootstepSystem footstepSystem;
+    private CameraBob cameraBob;
     private CameraShakeManagerV2 camShakeManager;
     [SerializeField] private Transform cameraMovement;
     private PlayerMovement playerMovement;
@@ -49,7 +49,7 @@ public class JumpLandSignals : MonoBehaviour
         speedometer = CharacterControllerVelocity.instance;
         playerMovement = PlayerMovement.instance;
         camShakeManager = CameraShakeManagerV2.instance;
-        footstepSystem = FootstepSystem.instance;
+        cameraBob = CameraBob.instance;
     }
 
     private void Update()
@@ -88,7 +88,8 @@ public class JumpLandSignals : MonoBehaviour
             {
                 LandCameraMovement(speedometer.verticalVelocity);
                 isLandingHardDecider();
-                footstepSystem.RefreshFootstepTimer();
+                cameraBob.ResetBobbing();
+                //footstepSystem.RefreshFootstepTimer();
                 hearingRange.RunExtendedHearingRange();
             }
         }
