@@ -6,8 +6,6 @@ public class CameraBob : MonoBehaviour
     public static CameraBob instance { private set; get; }
 
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float baseHeight = 0.5f;
-    //public float bobSpeed = 2; 
     [SerializeField] private Transform hand;
     [SerializeField] private Transform referenceObject;
     public Transform toBob;
@@ -25,7 +23,6 @@ public class CameraBob : MonoBehaviour
 
     [Header("Amplitude Settings")]
     [SerializeField] private float amplitudeY = 0.38f;
-    [SerializeField] private float amplitudeX = 0.15f;
 
     [Header("Footstep Detection Settings")]
     [SerializeField, Range(0f, 1f)] private float footstepThreshold = 0f;
@@ -42,6 +39,9 @@ public class CameraBob : MonoBehaviour
 
     private float previousSineY;
     private float previousSpeed;
+    private float maxSpeedDiffReciprocal;
+
+    private const float TwoPI = Mathf.PI * 2f;
 
     private void Awake()
     {
@@ -61,10 +61,11 @@ public class CameraBob : MonoBehaviour
         originalHandPosition = hand.localPosition;
         speedometer = CharacterControllerVelocity.instance;
 
-        // Initialize previousSineY and previousSpeed
         bobTimer = 0f;
-        previousSineY = Mathf.Sin(bobTimer * Mathf.PI * 2f);
+        previousSineY = Mathf.Sin(bobTimer * TwoPI);
         previousSpeed = speedometer.horizontalVelocity;
+
+        maxSpeedDiffReciprocal = 1f / (maxSpeed - minSpeed);
     }
 
     private void LateUpdate()
@@ -86,7 +87,7 @@ public class CameraBob : MonoBehaviour
 
         if (previousSpeed < minSpeed && speed >= minSpeed)
         {
-            ResetBobbingTimer();
+            bobTimer = 0f;
         }
 
         if (speed < minSpeed)
@@ -96,20 +97,16 @@ public class CameraBob : MonoBehaviour
             return;
         }
 
-        float speedClamped = Mathf.Clamp(speed, minSpeed, maxSpeed);
+        float speedNormalized = (speed - minSpeed) * maxSpeedDiffReciprocal;
 
-        float heightScale = Mathf.Lerp(minHeightScale, maxHeightScale,
-                                       (speedClamped - minSpeed) / (maxSpeed - minSpeed));
-
-        float frequency = Mathf.Lerp(minFrequency, maxFrequency,
-                                      (speedClamped - minSpeed) / (maxSpeed - minSpeed));
+        float heightScale = Mathf.Lerp(minHeightScale, maxHeightScale, speedNormalized);
+        float frequency = Mathf.Lerp(minFrequency, maxFrequency, speedNormalized);
 
         bobTimer += Time.deltaTime * frequency;
 
-        float sineValueY = Mathf.Sin(bobTimer * Mathf.PI * 2f);
-        float sineValueX = Mathf.Sin(bobTimer * Mathf.PI) * amplitudeX * heightScale;
+        float sineValueY = Mathf.Sin(bobTimer * TwoPI);
+        float sineValueX = Mathf.Sin(bobTimer * Mathf.PI) * heightScale;
 
-        // Detect when sineValueY crosses above the threshold from below (mid-cycle)
         if (previousSineY < footstepThreshold && sineValueY >= footstepThreshold)
         {
             OnFootstep?.Invoke();
@@ -118,35 +115,25 @@ public class CameraBob : MonoBehaviour
         previousSineY = sineValueY;
         previousSpeed = speed;
 
-        tempPos.y = sineValueY * baseHeight * amplitudeY * heightScale;
-        tempPos.x = sineValueX * baseHeight;
+        tempPos.y = sineValueY * amplitudeY * heightScale;
+        tempPos.x = sineValueX;
 
-        Quaternion referenceRotation = referenceObject.rotation;
-        Vector3 relativeBobPosition = referenceRotation * tempPos;
+        Vector3 relativeBobPosition = referenceObject.rotation * tempPos;
         Vector3 targetPosition = originalPosition + relativeBobPosition;
 
-        toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, targetPosition,
-                                                ref camVelocity, smoothing);
+        toBob.localPosition = Vector3.SmoothDamp(toBob.localPosition, targetPosition, ref camVelocity, smoothing);
     }
 
     private void UpdateHandBobbing()
     {
-        Vector3 targetHandPos = originalHandPosition + (tempPos * 0.3f);
-        hand.localPosition = Vector3.SmoothDamp(hand.localPosition, targetHandPos,
-                                               ref handVelocity, smoothing);
+        Vector3 targetHandPos = originalHandPosition + (tempPos * 0.38f);
+        hand.localPosition = Vector3.SmoothDamp(hand.localPosition, targetHandPos, ref handVelocity, smoothing);
     }
 
     public void ResetBobbing()
     {
         bobTimer = 0f;
-        toBob.localPosition = Vector3.Lerp(toBob.localPosition, originalPosition,
-                                          Time.deltaTime * smoothing);
-        hand.localPosition = Vector3.Lerp(hand.localPosition, originalHandPosition,
-                                         Time.deltaTime * smoothing);
-    }
-
-    private void ResetBobbingTimer()
-    {
-        bobTimer = 0f;
+        toBob.localPosition = Vector3.Lerp(toBob.localPosition, originalPosition, Time.deltaTime * smoothing);
+        hand.localPosition = Vector3.Lerp(hand.localPosition, originalHandPosition, Time.deltaTime * smoothing);
     }
 }
