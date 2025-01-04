@@ -7,17 +7,15 @@ public class Pickupable_Stamina : MonoBehaviour
     private PlayerMovement playerMovement;
     [SerializeField] private int howMuchStaminaIGive;
     [SerializeField] private EventReference pickupSoundEvent;
-    private StaminaBarDisplay staminaBarDisplay;
 
     private void Start()
     {
         playerMovement = PlayerMovement.instance;
-        staminaBarDisplay = StaminaBarDisplay.instance;
     }
 
     public void GiveStaminaToPlayer()
     {
-        playerMovement.GiveStaminaToPlayer(howMuchStaminaIGive);
+        playerMovement.GiveStaminaToPlayer(howMuchStaminaIGive, false);
         RuntimeManager.PlayOneShot(pickupSoundEvent);
         itemAfterPickingUp.Pickup();
     }

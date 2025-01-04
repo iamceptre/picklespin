@@ -32,7 +32,7 @@ public class Ammo : MonoBehaviour
     }
 
 
-    public void GiveManaToPlayer(int howMuchManaIGive)
+    public void GiveManaToPlayer(int howMuchManaIGive, bool isSilent)
     {
 
         if (ammo < maxAmmo) {
@@ -40,11 +40,13 @@ public class Ammo : MonoBehaviour
             if (ammo + howMuchManaIGive <= maxAmmo)
             {
                 ammo += howMuchManaIGive;
+                if(!isSilent)
                 barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, false); //hp = 0, stamina = 1, mana = 2
             }
             else
             {
                 ammo = maxAmmo;
+                if (!isSilent)
                 barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, true); //hp = 0, stamina = 1, mana = 2
             }
 

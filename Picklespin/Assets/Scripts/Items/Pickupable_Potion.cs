@@ -44,9 +44,9 @@ public class Pickupable_Potion : MonoBehaviour
     {
         ResourceAction resourceAction = potionType switch
         {
-            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, playerHP.GiveHPToPlayer),
-            PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, playerMovement.GiveStaminaToPlayer),
-            PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, ammo.GiveManaToPlayer),
+            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, playerHP.GiveHPToPlayer, isSilent: false),
+            PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, playerMovement.GiveStaminaToPlayer, isSilent: false),
+            PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, ammo.GiveManaToPlayer, isSilent: false),
             _ => null
         };
 
@@ -60,11 +60,11 @@ public class Pickupable_Potion : MonoBehaviour
         }
     }
 
-    private void TryGiveResource(int current, int max, System.Action<int> applyEffect)
+    private void TryGiveResource(int current, int max, System.Action<int, bool> applyEffect, bool isSilent = false)
     {
         if (current < max)
         {
-            applyEffect(howMuchIGive);
+            applyEffect(howMuchIGive, isSilent);
 
             string color = potionType switch
             {

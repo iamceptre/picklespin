@@ -53,7 +53,7 @@ public class UnlockedSpells : MonoBehaviour
     {
         if (spellUnlocked[spellID])
         {
-            ammo.GiveManaToPlayer(50);
+            ammo.GiveManaToPlayer(50, false);
             RuntimeManager.PlayOneShot("event:/ITEMS/POTIONS/POTION_PICKUP_BASE_LAYER");
         }
         else

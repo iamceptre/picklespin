@@ -47,7 +47,7 @@ public class AiHealthUiBar : MonoBehaviour
         StopAllCoroutines();
         bgImage.DOKill();
         fillImage.DOKill();
-        barEase.FadeOut();  
+        barEase.SetEaseFillState(false, 0.15f);  
 
         fillImage.DOFade(0, 0.5f);
 
@@ -75,7 +75,7 @@ public class AiHealthUiBar : MonoBehaviour
             bgImage.enabled = true;
             fillImage.DOFade(1, 0f);
             bgImage.DOFade(1, 0f);
-            barEase.FadeIn();
+            barEase.SetEaseFillState(true, 0.15f);
         }
     }
 

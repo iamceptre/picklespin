@@ -19,7 +19,7 @@ public class Pickupable_Mana : MonoBehaviour
     {
         if (ammo.ammo < ammo.maxAmmo)
         {
-            ammo.GiveManaToPlayer(howMuchManaIGive);
+            ammo.GiveManaToPlayer(howMuchManaIGive, false);
             RuntimeManager.PlayOneShot(pickupSoundEvent);
             itemAfterPickingUp.Pickup();
         }

@@ -33,7 +33,7 @@ public class UnlockSpellCheat : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.M))
             {
-                ammo.GiveManaToPlayer(ammo.maxAmmo - ammo.ammo);
+                ammo.GiveManaToPlayer(ammo.maxAmmo - ammo.ammo, false);
                 cheatActivatedFeedback.Do("full mana");
             }
         }

@@ -126,17 +126,17 @@ public class AngelMind : MonoBehaviour
 
     private void GiveHPToPlayer()
     {
-        playerHP.GiveHPToPlayer(playerHP.maxHp);
+        playerHP.GiveHPToPlayer(playerHP.maxHp, false);
     }
 
     private void GiveStaminaToPlayer()
     {
-        playerMovement.GiveStaminaToPlayer(100);
+        playerMovement.GiveStaminaToPlayer(100, false);
     }
 
     private void GiveManaToPlayer()
     {
-        ammo.GiveManaToPlayer(ammo.maxAmmo);
+        ammo.GiveManaToPlayer(ammo.maxAmmo, false);
     }
 
 

@@ -11,16 +11,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform forwardPointer;
 
     [Header("Movement Speeds")]
-    public float walkSpeed;
-    public float runSpeed;
-    public float crouchSpeed;
-    public float jumpPower;
+    public float walkSpeed = 5;
+    public float runSpeed = 13;
+    public float crouchSpeed = 3;
+    public float jumpPower = 6.5f;
     public float speedMultiplier = 1;
     [SerializeField] float moveSmoothTime = 0.1f;
 
     [Header("Character Sizing & Gravity")]
-    public float defaultHeight;
-    public float crouchHeight;
+    public float defaultHeight = 2;
+    public float crouchHeight = 1.618f;
     [SerializeField] private float gravity = 9.81f;
     private float startingGravity;
     private float stairGravity = 4000;
@@ -332,12 +332,15 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void GiveStaminaToPlayer(int howMuchStaminaIGive)
+    public void GiveStaminaToPlayer(int howMuchStaminaIGive, bool isSilent)
     {
         float target = stamina + howMuchStaminaIGive;
         bool maxed = target >= 100;
         stamina = maxed ? 100 : target;
-        barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, maxed);
+        if (!isSilent)
+        {
+            barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, maxed);
+        }
         staminaBarDisplay.Refresh(false);
     }
 }

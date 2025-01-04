@@ -11,6 +11,8 @@ public class BarEase : MonoBehaviour
 
     private Slider me;
     private Tween currentTween;
+    private Tween fadeTween;
+    private bool easeFillVisible;
 
     private void Awake()
     {
@@ -20,7 +22,7 @@ public class BarEase : MonoBehaviour
     private void Start()
     {
         me.value = sliderToFollow.value;
-        if (easeFill) easeFill.enabled = true;
+        SetEaseFillState(true);
     }
 
     private void Update()
@@ -32,18 +34,18 @@ public class BarEase : MonoBehaviour
         {
             KillTween();
             me.value = realValue;
-            if (easeFill) easeFill.enabled = false;
+            SetEaseFillState(false, 0.2f);
         }
         else
         {
             KillTween();
-            if (easeFill) easeFill.enabled = true;
+            SetEaseFillState(true);
             currentTween = me.DOValue(realValue, easeDuration)
                 .SetEase(Ease.OutSine)
                 .OnComplete(() =>
                 {
                     me.value = realValue;
-                    if (easeFill) easeFill.enabled = false;
+                    SetEaseFillState(false, 0.2f);
                 });
         }
     }
@@ -54,13 +56,19 @@ public class BarEase : MonoBehaviour
         currentTween = null;
     }
 
-    public void FadeOut()
+    public void SetEaseFillState(bool visible, float fadeDuration = 0f)
     {
-        if (easeFill) easeFill.DOFade(0f, 0.5f);
-    }
+        if (easeFillVisible == visible) return;
+        easeFillVisible = visible;
 
-    public void FadeIn()
-    {
-        if (easeFill) easeFill.DOFade(1f, 0.2f);
+        if (fadeTween != null && fadeTween.IsActive()) fadeTween.Kill();
+        easeFill.enabled = true;
+
+        float targetAlpha = visible ? 1f : 0f;
+        fadeTween = easeFill.DOFade(targetAlpha, fadeDuration)
+            .OnComplete(() =>
+            {
+                if (!visible) easeFill.enabled = false;
+            });
     }
 }

@@ -53,8 +53,8 @@ MonoBehaviour:
       Data4: 999196757
     Path: event:/ENEMIES/ENEMY_DAMAGE_TAKEN_EYESHOT
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -4957,6 +4957,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9789,6 +9792,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9866,8 +9872,8 @@ MonoBehaviour:
       Data4: 194637065
     Path: event:/ENEMIES/ENEMIES_SPAWN
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -10234,8 +10240,8 @@ MonoBehaviour:
       Data4: -11748307
     Path: event:/ENEMIES/ENEMY_DAMAGE_TAKEN_SMALL
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -10347,8 +10353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliderToFollow: {fileID: 263190420828383618}
-  me: {fileID: 0}
   easeFill: {fileID: 7612845948131625979}
+  easeDuration: 1
 --- !u!1 &4025381052778078360
 GameObject:
   m_ObjectHideFlags: 0
@@ -10477,8 +10483,8 @@ MonoBehaviour:
       Data4: -1122234702
     Path: event:/ENEMIES/ENEMY_CRITICAL_DAMAGE_TAKEN
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 0
   TriggerOnce: 0
   Preload: 0
@@ -10546,6 +10552,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10622,6 +10631,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -15659,7 +15671,6 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 4096
   m_LayerOverridePriority: -1
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -15804,6 +15815,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
         m_MethodName: Stop
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3172104866769131248}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16208,8 +16231,8 @@ MonoBehaviour:
       Data4: -48160490
     Path: event:/ENEMIES/ENEMY_DAMAGE_TAKEN_BIG
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -21043,6 +21066,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21190,9 +21216,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6477168061340603697}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 2
-  m_Shape: 0
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 2
   m_Range: 1.59
@@ -21242,8 +21267,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &7225600910775972138
 GameObject:
   m_ObjectHideFlags: 0
@@ -21308,6 +21337,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21400,8 +21432,8 @@ MonoBehaviour:
       Data4: 303602384
     Path: event:/ENEMIES/ENEMIES_LOOP_PRESENCE
   Event: 
-  PlayEvent: 11
-  StopEvent: 2
+  EventPlayTrigger: 11
+  EventStopTrigger: 2
   AllowFadeout: 0
   TriggerOnce: 0
   Preload: 0
@@ -21547,8 +21579,8 @@ MonoBehaviour:
       Data4: -1766134874
     Path: event:/ENEMIES/ENEMY_DEATH
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 1
   Preload: 0
@@ -21712,8 +21744,8 @@ MonoBehaviour:
       Data4: -1695840006
     Path: event:/ENEMIES/ENEMY_CLAW_ATTACK
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -21893,7 +21925,7 @@ CapsuleCollider:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 12287
-  m_LayerOverridePriority: -100
+  m_LayerOverridePriority: -64
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -21956,8 +21988,8 @@ MonoBehaviour:
       Data4: 1446955907
     Path: event:/ENEMIES/ENEMY_ASH
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -22030,6 +22062,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22154,6 +22189,10 @@ PrefabInstance:
     - target: {fileID: 7210016589135768163, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
       propertyPath: TriggerOnce
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7210016589135768163, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
+      propertyPath: EventPlayTrigger
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7210016589135768163, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
       propertyPath: EventReference.Path
