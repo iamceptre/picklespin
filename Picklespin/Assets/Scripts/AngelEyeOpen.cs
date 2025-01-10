@@ -18,17 +18,6 @@ public class AngelEyeOpen : MonoBehaviour
         _emitter = GetComponent<StudioEventEmitter>();
     }
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-
-            _emitter.Play();
-
-        }
-    }
-
     public void OpenEye(bool open)
     {
         if (!open)

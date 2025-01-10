@@ -1,168 +1,127 @@
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Dash : MonoBehaviour
 {
-    private PlayerHP playerHP;
-    [SerializeField] private StudioEventEmitter dashEmitter;
-    [SerializeField] private int dashStaminaCost = 10;
-    [SerializeField] private int dashAmmoCost = 20;
-    [SerializeField] private float dashDuration = 0.4f;
-    [SerializeField] private float dashSpeedMultiplier = 1.2f;
-    [SerializeField] [Tooltip("Stun Effect Radius")] private float dashEffectRadius = 25f;
-    [SerializeField] private AnimationCurve dashDecayCurve = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 0));
-    [SerializeField] private KeyCode dashKey = KeyCode.Space;
+    [SerializeField] StudioEventEmitter dashEmitter;
+    [SerializeField] int dashStaminaCost = 10;
+    [SerializeField] int dashAmmoCost = 20;
+    [SerializeField] float dashDuration = 0.4f;
+    [SerializeField] float dashSpeedMultiplier = 1.2f;
+    [SerializeField] float dashEffectRadius = 25f;
+    [SerializeField] AnimationCurve dashDecayCurve = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 0));
+    [SerializeField] InputActionReference dashAction;
+    [SerializeField] InputActionReference moveAction;
 
-    private CharacterController _characterController;
+    static readonly Collider[] overlapResults = new Collider[10];
+
+    private CharacterController characterController;
     private PlayerMovement playerMovement;
     private CameraShakeManagerV2 camShakeManager;
     private ScreenFlashTint screenFlashTint;
     private StaminaBarDisplay staminaBarDisplay;
     private Ammo ammo;
     private AmmoDisplay ammoDisplay;
-
-    private bool isDashing = false;
-    private WaitForSeconds doubleClickThreshold = new WaitForSeconds(0.17f);
-    private bool isWaitingForSecondClick = false;
-
+    private PlayerHP playerHP;
     private TipManager tipManager;
-    private const int tipManagerIndex = 7;
 
-    private bool haveEverDashed = false;
+    bool isDashing;
+    bool isWaitingForSecondClick;
+    bool haveEverDashed;
+    private readonly WaitForSeconds doubleClickThreshold = new WaitForSeconds(0.17f);
 
-    private void Awake()
+    void Awake()
     {
-        _characterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
     }
-    private void Start()
+
+    void Start()
     {
         playerMovement = PlayerMovement.instance;
         camShakeManager = CameraShakeManagerV2.instance;
         screenFlashTint = ScreenFlashTint.instance;
-        playerHP = PlayerHP.instance;
-        tipManager = TipManager.instance;
         staminaBarDisplay = StaminaBarDisplay.instance;
         ammo = Ammo.instance;
         ammoDisplay = AmmoDisplay.instance;
+        playerHP = PlayerHP.instance;
+        tipManager = TipManager.instance;
     }
 
-    private void Update()
+    void Update()
     {
-        if (Input.GetKeyDown(dashKey) && !isDashing && Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Vertical") == 0)
+        if (isDashing) return;
+        Vector2 moveValue = moveAction.action.ReadValue<Vector2>();
+        if (dashAction.action.triggered && moveValue.x != 0 && Mathf.Abs(moveValue.y) < 0.001f)
         {
-            if (isWaitingForSecondClick)
-            {
-                StartCoroutine(PerformDash());
-            }
-            else
-            {
-                StartCoroutine(HandleFirstClick());
-            }
+            if (isWaitingForSecondClick) StartCoroutine(DashRoutine());
+            else StartCoroutine(FirstClick());
         }
     }
 
-    private IEnumerator HandleFirstClick()
+    IEnumerator FirstClick()
     {
         isWaitingForSecondClick = true;
         yield return doubleClickThreshold;
         isWaitingForSecondClick = false;
     }
 
-    private IEnumerator PerformDash()
+    IEnumerator DashRoutine()
     {
         if (!haveEverDashed)
         {
             haveEverDashed = true;
-            tipManager.Hide(tipManagerIndex);
+            tipManager.Hide(7);
         }
-
         isDashing = true;
         isWaitingForSecondClick = false;
         playerHP.invincible = true;
         dashEmitter.Play();
         camShakeManager.ShakeSelected(11);
         screenFlashTint.Flash(5);
-        TakeStats();
-
+        ConsumeStats();
         Vector3 dashDirection = playerMovement.moveDirection.normalized;
         dashDirection.y = 0;
-
-        AffectNearbyAIPaths();
-
-        float originalSpeedMultiplier = playerMovement.speedMultiplier;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < dashDuration)
+        int hitsCount = Physics.OverlapSphereNonAlloc(transform.position, dashEffectRadius, overlapResults);
+        for (int i = 0; i < hitsCount; i++)
         {
-            float decayFactor = dashDecayCurve.Evaluate(elapsedTime / dashDuration);
-            playerMovement.speedMultiplier = Mathf.Lerp(originalSpeedMultiplier, dashSpeedMultiplier, decayFactor);
-
-            playerMovement.characterController.Move(dashDirection * playerMovement.runSpeed * Time.deltaTime);
-
-            elapsedTime += Time.deltaTime;
+            StopAiForAsec stopper = overlapResults[i].GetComponent<StopAiForAsec>();
+            if (stopper) stopper.StopMeForASec();
+        }
+        float originalSpeed = playerMovement.speedMultiplier;
+        float elapsed = 0f;
+        while (elapsed < dashDuration)
+        {
+            float factor = dashDecayCurve.Evaluate(elapsed / dashDuration);
+            playerMovement.speedMultiplier = Mathf.Lerp(originalSpeed, dashSpeedMultiplier, factor);
+            playerMovement.characterController.Move(playerMovement.runSpeed * Time.deltaTime * dashDirection);
+            elapsed += Time.deltaTime;
             yield return null;
         }
-
-        playerMovement.speedMultiplier = originalSpeedMultiplier;
-        //playerMovement.GiveStaminaToPlayer(-dashStaminaCost);
+        playerMovement.speedMultiplier = originalSpeed;
         playerHP.invincible = false;
-        StartCoroutine(WaitForGrounded());
+        StartCoroutine(WaitGrounded());
     }
 
-    private void AffectNearbyAIPaths()
+    IEnumerator WaitGrounded()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, dashEffectRadius);
-        foreach (Collider hitCollider in hitColliders)
-        {
-            StopAiForAsec aiStopper = hitCollider.GetComponent<StopAiForAsec>();
-            if (aiStopper != null)
-            {
-                aiStopper.StopMeForASec();
-            }
-        }
-    }
-
-
-    private IEnumerator WaitForGrounded()
-    {
-        while (!_characterController.isGrounded)
-        {
-            yield return null;
-        }
+        while (!characterController.isGrounded) yield return null;
         isDashing = false;
     }
 
+    void ConsumeStats()
+    {
+        if (playerMovement.stamina > dashStaminaCost) playerMovement.stamina -= dashStaminaCost;
+        else playerMovement.stamina = 0;
+        if (ammo.ammo > dashAmmoCost) ammo.ammo -= dashAmmoCost;
+        else ammo.ammo = 0;
+        ammoDisplay.Refresh(false);
+        staminaBarDisplay.Refresh(false);
+    }
 
     public void ShowDashTip()
     {
-        tipManager.ShowAndHide(tipManagerIndex);
-    }
-
-
-    private void TakeStats()
-    {
-
-        if (playerMovement.stamina > dashStaminaCost)
-        {
-            playerMovement.stamina -= dashStaminaCost;
-        }
-        else
-        {
-            playerMovement.stamina = 0;
-        }
-
-
-        if (ammo.ammo > dashAmmoCost)
-        {
-            ammo.ammo -= dashAmmoCost;
-        }
-        else
-        {
-            ammo.ammo = 0;
-        }
-
-        ammoDisplay.Refresh(false);
-        staminaBarDisplay.Refresh(false);
+        tipManager.ShowAndHide(7);
     }
 }
