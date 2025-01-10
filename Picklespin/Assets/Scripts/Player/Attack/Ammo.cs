@@ -32,27 +32,14 @@ public class Ammo : MonoBehaviour
     }
 
 
-    public void GiveManaToPlayer(int howMuchManaIGive, bool isSilent)
+    public void GiveManaToPlayer(int howMuchManaIGive, bool isSilent = false)
     {
-
-        if (ammo < maxAmmo) {
-
-            if (ammo + howMuchManaIGive <= maxAmmo)
-            {
-                ammo += howMuchManaIGive;
-                if(!isSilent)
-                barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, false); //hp = 0, stamina = 1, mana = 2
-            }
-            else
-            {
-                ammo = maxAmmo;
-                if (!isSilent)
-                barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, true); //hp = 0, stamina = 1, mana = 2
-            }
-
-            ammoDisplay.Refresh(true);
-        }
-
+        if (ammo >= maxAmmo) return;
+        ammo = Mathf.Min(ammo + howMuchManaIGive, maxAmmo);
+        bool gotMaxxed = ammo == maxAmmo;
+        ammoDisplay.Refresh(true);
+        if (isSilent) return;
+        barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, gotMaxxed);
         //RuntimeManager.PlayOneShot(manaAqquiredSound);
     }
 

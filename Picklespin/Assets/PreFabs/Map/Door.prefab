@@ -62,6 +62,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -120,73 +123,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feedb5daff89a104bb7edd6fa46878a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLocked: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  doorOpenSoundEvent:
-    Guid:
-      Data1: -1835022994
-      Data2: 1193558593
-      Data3: -46367315
-      Data4: -1625419879
-    Path: event:/PLACEHOLDER_UNCZ/door_open
-  doorCloseSoundEvent:
-    Guid:
-      Data1: 2074844658
-      Data2: 1207122337
-      Data3: -1680040567
-      Data4: 307002524
-    Path: event:/PLACEHOLDER_UNCZ/door_close
-  DoorLockedEvent:
-    Guid:
-      Data1: -2101537638
-      Data2: 1215020877
-      Data3: -238780997
-      Data4: 73470007
-    Path: event:/PLACEHOLDER_UNCZ/shootFail_test
-  showTooltipEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TipDisplay, Assembly-CSharp
-        m_MethodName: ShowTip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  hideTooltipEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TipDisplay, Assembly-CSharp
-        m_MethodName: HideTip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  _transform: {fileID: 0}
+  doorOpenSound: {fileID: 0}
+  doorCloseSound: {fileID: 0}
+  doorLockedSound: {fileID: 0}
+  isLocked: 0
+  myCollider: {fileID: 0}
+  interactAction: {fileID: 0}
 --- !u!65 &8265834425967233506
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -5,18 +5,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class PlayerBarDisplay : MonoBehaviour
 {
-    [Header("For Mana Bar: ")]
     [SerializeField] private Ammo ammo;
-
-    [Header("For HP Bar: ")]
     [SerializeField] private PlayerHP playerHP;
-
-    [Header("For Stamina Bar: ")]
     [SerializeField] private PlayerMovement playerMovement;
 
     private Slider slider;
-    private float targetValue;
-    private float smoothVelocity;
+    private Coroutine smoothUpdateCoroutine;
+    private const float SmoothAnimationDuration = 0.3f;
 
     private void Awake()
     {
@@ -25,56 +20,53 @@ public class PlayerBarDisplay : MonoBehaviour
 
     private void Start()
     {
-        RefreshBarValue();
+        Refresh(false);
     }
 
-    /// <summary>
-    /// Refresh the bar value, optionally with a smooth animation.
-    /// </summary>
-    /// <param name="smooth">If true, smoothly animate the slider value.</param>
     public void Refresh(bool smooth)
     {
+
+        float targetValue = CalculateTargetValue();
+
         if (smooth)
-            RefreshBarValueSmooth();
+        {
+            StartSmoothUpdate(targetValue);
+        }
         else
-            RefreshBarValue();
-    }
-
-    public void RefreshBarValue()
-    {
-        CalculateTargetValue();
-        slider.value = targetValue;
-    }
-
-    public void RefreshBarValueSmooth()
-    {
-        CalculateTargetValue();
-        StopAllCoroutines();
-        StartCoroutine(SmoothValueUpdate());
-    }
-    private void CalculateTargetValue()
-    {
-        if (ammo != null)
         {
-            targetValue = (float)ammo.ammo / ammo.maxAmmo * slider.maxValue;
-        }
-        else if (playerHP != null)
-        {
-            targetValue = (float)playerHP.hp / playerHP.maxHp * slider.maxValue;
-        }
-        else if (playerMovement != null)
-        {
-            targetValue = Mathf.Clamp(playerMovement.stamina, 0, slider.maxValue);
+            slider.value = targetValue;
         }
     }
 
-    private IEnumerator SmoothValueUpdate()
+    private float CalculateTargetValue()
     {
-        while (Mathf.Abs(slider.value - targetValue) > 0.01f)
+        return ammo != null ? (float)ammo.ammo / ammo.maxAmmo * slider.maxValue :
+               playerHP != null ? (float)playerHP.hp / playerHP.maxHp * slider.maxValue :
+               Mathf.Clamp(playerMovement.stamina, 0, slider.maxValue);
+    }
+
+    private void StartSmoothUpdate(float targetValue)
+    {
+        if (smoothUpdateCoroutine != null)
         {
-            slider.value = Mathf.SmoothDamp(slider.value, targetValue, ref smoothVelocity, 0.3f);
+            StopCoroutine(smoothUpdateCoroutine);
+        }
+
+        smoothUpdateCoroutine = StartCoroutine(SmoothValueUpdate(targetValue));
+    }
+
+    private IEnumerator SmoothValueUpdate(float targetValue)
+    {
+        float startValue = slider.value;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < SmoothAnimationDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            slider.value = Mathf.Lerp(startValue, targetValue, elapsedTime / SmoothAnimationDuration);
             yield return null;
         }
+
         slider.value = targetValue;
     }
 }

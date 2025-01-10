@@ -9,7 +9,6 @@ public class Bullet : MonoBehaviour
 {
     private int originalDamage;
 
-    [Header("Stats")]
     [SerializeField] private int spellID;
     public string spellName;
     [SerializeField] private int damage = 15;
@@ -20,22 +19,18 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float timeBeforeOff = 2f;
     [SerializeField] private bool fadeOutLight = false;
 
-    [Header("Range Damage")]
     [SerializeField] private bool isRanged = false;
     [SerializeField] private float rangeRadius = 5f;
     [SerializeField] private LayerMask detectionLayer;
 
-    [Header("Assets")]
     [SerializeField] private ParticleSystem explosionFX;
     private GameObject _explosionFxGameObject;
     [SerializeField] private EventReference shootSound;
     public EventReference pullupSound;
     [SerializeField] private StudioEventEmitter hitWall;
 
-    [Header("Special Effects")]
     [SerializeField] private bool doesThisSpellSetOnFire = false;
 
-    [Header("References")]
     private AiHealth aiHealth;
     private AiVision aiVision;
     private CameraShakeManagerV2 camShakeManager;
@@ -51,13 +46,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private StudioEventEmitter explosionReflectionsSoundEmitter;
     private ApplyProjectileForce applyProjectileForce;
 
-    [Header("Misc")]
     [HideInInspector] public bool iWillBeCritical;
     [HideInInspector] public bool hitSomething;
     private bool wasLastHitCritical;
     private bool alreadyPlayedExplosionSound;
 
-    [Header("Cache")]
     private Transform _explosionTransform;
     private Renderer _renderer;
     private Rigidbody _rigidbody;
@@ -66,13 +59,13 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Light _light;
     private Color _lightColor;
     public LightSpell lightSpell;
+    private static readonly Collider[] overlapResults = new Collider[32];
+    private static readonly Collider[] rocketJumpResults = new Collider[8];
 
-    [Header("Rocket Jump Settings")]
     [SerializeField] private float rocketJumpForce = 50f;
     [SerializeField] private float rocketJumpUpwardsModifier = 1f;
 
-    [Header("Decal Settings")]
-    [SerializeField] private GameObject decalPrefab;
+    [SerializeField] private LayerMask decalLayerMask;
 
     private void Awake()
     {
@@ -144,7 +137,7 @@ public class Bullet : MonoBehaviour
         var collisionCollider = collision.collider;
         if (collisionCollider.TryGetComponent(out AiReferences refs))
         {
-            HitRegistered(collisionCollider, refs, false);
+            HitRegistered(refs, false);
         }
         else
         {
@@ -160,21 +153,24 @@ public class Bullet : MonoBehaviour
     {
         StopCoroutine(autoKill);
         if (isRanged) RangeHitDetection(collider);
-        var grandparentTransform = collider.transform.parent?.parent;
+        var grandparentTransform = collider.transform.parent != null ? collider.transform.parent.parent : null;
         if (grandparentTransform != null && grandparentTransform.TryGetComponent(out AiReferences refs))
         {
-            HitRegistered(collider, refs, weakPointHit);
+            HitRegistered(refs, weakPointHit);
         }
         else
         {
             PlayExplosionSounds();
-            if (!weakPointHit && decalPrefab) AttemptSpawnDecal(collider.transform.position, Vector3.up, collider.gameObject);
+            //if (!weakPointHit)
+            //{
+            //    AttemptSpawnDecal(collider.transform.position, Vector3.up, collider.gameObject);
+            //}
         }
         SpawnExplosion();
         AfterExplosion();
     }
 
-    private void HitRegistered(Collider collider, AiReferences refs, bool weakPointHit)
+    private void HitRegistered(AiReferences refs, bool weakPointHit)
     {
         _collider.enabled = false;
         aiHealth = refs.Health;
@@ -215,17 +211,18 @@ public class Bullet : MonoBehaviour
 
     private void RangeHitDetection(Collision collision)
     {
-        Collider[] colliders = Physics.OverlapSphere(collision.GetContact(0).point, rangeRadius, detectionLayer);
+        int hitCount = Physics.OverlapSphereNonAlloc(collision.GetContact(0).point, rangeRadius, overlapResults, detectionLayer);
         HashSet<AiReferences> alreadyHit = new HashSet<AiReferences>();
-        foreach (Collider col in colliders)
+        for (int i = 0; i < hitCount; i++)
         {
+            var col = overlapResults[i];
             if (col == collision.collider) continue;
             if (col.transform.TryGetComponent(out AiReferences areaRefs))
             {
                 if (areaRefs.setOnFire != null && !alreadyHit.Contains(areaRefs))
                 {
                     alreadyHit.Add(areaRefs);
-                    HitRegistered(col, areaRefs, false);
+                    HitRegistered(areaRefs, false);
                 }
             }
         }
@@ -233,17 +230,18 @@ public class Bullet : MonoBehaviour
 
     private void RangeHitDetection(Collider collider)
     {
-        Collider[] colliders = Physics.OverlapSphere(collider.transform.position, rangeRadius, detectionLayer);
+        int hitCount = Physics.OverlapSphereNonAlloc(collider.transform.position, rangeRadius, overlapResults, detectionLayer);
         HashSet<AiReferences> alreadyHit = new HashSet<AiReferences>();
-        foreach (Collider col in colliders)
+        for (int i = 0; i < hitCount; i++)
         {
+            var col = overlapResults[i];
             if (col == collider) continue;
             if (col.transform.TryGetComponent(out AiReferences areaRefs))
             {
                 if (areaRefs.setOnFire != null && !alreadyHit.Contains(areaRefs))
                 {
                     alreadyHit.Add(areaRefs);
-                    HitRegistered(col, areaRefs, false);
+                    HitRegistered(areaRefs, false);
                 }
             }
         }
@@ -263,14 +261,17 @@ public class Bullet : MonoBehaviour
 
     private void RandomizeCritical(AiReferences refs)
     {
-        int criticalTreshold = (ammo.ammo < ammo.maxAmmo * 0.2f) ? 5 : 9;
-        if (Random.Range(0, 10) >= criticalTreshold || iWillBeCritical)
+        int criticalThreshold = (ammo.ammo < ammo.maxAmmo * 0.2f) ? 5 : 9;
+        if (Random.Range(0, 10) >= criticalThreshold || iWillBeCritical)
         {
             if (refs.damageTakenCritical) refs.damageTakenCritical.Play();
             damage = (int)(originalDamage * 1.5f);
             wasLastHitCritical = true;
         }
-        else SetCriticalToNo();
+        else
+        {
+            SetCriticalToNo();
+        }
     }
 
     private void SetCriticalToNo()
@@ -306,11 +307,16 @@ public class Bullet : MonoBehaviour
 
     private void ApplyRocketJumpForce(Vector3 explosionCenter)
     {
-        var colliders = Physics.OverlapSphere(explosionCenter, rangeRadius, detectionLayer, QueryTriggerInteraction.Ignore);
+        int hitCount = Physics.OverlapSphereNonAlloc(explosionCenter, rangeRadius, rocketJumpResults, detectionLayer, QueryTriggerInteraction.Ignore);
         bool characterControllerFound = false;
-        foreach (var col in colliders)
+
+        for (int i = 0; i < hitCount; i++)
         {
             if (characterControllerFound) break;
+
+            var col = rocketJumpResults[i];
+            if (col == null) continue;
+
             var rb = col.attachedRigidbody;
             if (rb && !rb.isKinematic)
             {
@@ -324,12 +330,13 @@ public class Bullet : MonoBehaviour
                     var playerMove = cc.GetComponent<PlayerMovement>();
                     if (playerMove)
                     {
-                        //ROCKET JUMP!
                         playerMove.AddExplosionJump(rocketJumpForce * 2, explosionCenter, rangeRadius);
                         var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
                         var proximityFactor = 1f - distance / rangeRadius;
                         proximityFactor = Mathf.Clamp01(proximityFactor);
                         PlayerHP.instance.TakeDamage(Mathf.RoundToInt(rocketJumpForce * proximityFactor));
+
+                        characterControllerFound = true;
                     }
                 }
             }
@@ -370,18 +377,37 @@ public class Bullet : MonoBehaviour
         if (spellID == 1) camShakeManager.ShakeSelected(8);
     }
 
-    private void AttemptSpawnDecal(Collision collision)
+    private void AttemptSpawnDecal(Collision collision) //static objects
     {
         if (!collision.gameObject.isStatic) return;
+
         var contact = collision.GetContact(0);
-        SpellDecalManager.Instance.SpawnDecal(contact.point + contact.normal * 0.01f, Quaternion.LookRotation(contact.normal));
+        var hitObject = collision.collider.gameObject;
+
+        if (((1 << hitObject.layer) & decalLayerMask) == 0) return;
+
+        string hitTag = hitObject.tag;
+
+        if (SpellDecalManager.Instance != null)
+        {
+            SpellDecalManager.Instance.SpawnDecal(contact.point + contact.normal * 0.01f,Quaternion.LookRotation(contact.normal),spellID,hitTag.GetHashCode());
+        }
+        //Debug.Log($"Hit object: {hitObject.name}, Layer: {hitObject.layer}, Tag: {hitObject.tag}");
+
     }
 
-    private void AttemptSpawnDecal(Vector3 point, Vector3 normal, GameObject objectHit)
+    /*
+    private void AttemptSpawnDecal(Vector3 point, Vector3 normal, GameObject objectHit) //dynamic objects
     {
         if (!objectHit || !objectHit.isStatic) return;
-        SpellDecalManager.Instance.SpawnDecal(point + normal * 0.01f, Quaternion.LookRotation(normal));
+
+        if (SpellDecalManager.Instance != null)
+        {
+            string hitTag = objectHit.tag;
+            SpellDecalManager.Instance.SpawnDecal(point + normal * 0.01f,Quaternion.LookRotation(normal),spellID,hitTag.GetHashCode());
+        }
     }
+    */
 
     private void ResetBulletState()
     {

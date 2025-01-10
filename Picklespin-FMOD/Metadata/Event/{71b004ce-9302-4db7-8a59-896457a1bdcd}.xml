@@ -67,7 +67,7 @@
 			<value>1</value>
 		</property>
 		<property name="triggerCooldown">
-			<value>200</value>
+			<value>6000</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{4bd790c8-24f9-4ee5-948a-1347332f43dc}" />

@@ -1,68 +1,118 @@
 using UnityEngine;
+using System;
+using DG.Tweening;
 
 public class SpellDecalDissolve : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Renderer decalRenderer;
+    [SerializeField] private ParticleSystem[] particleSystems;
+    [SerializeField] private Light decalLight;
+
+    [SerializeField] private GameObject particleSpecialEffect;
+
+    [Header("Dissolve Time Multipliers")]
+    [SerializeField] private float woodFadeMultiplier = 4.0f;
+    [SerializeField] private float carpetFadeMultiplier = 2.0f;
+    [SerializeField] private float concreteFadeMultiplier = 1.0f;
+
+    // Precomputed hashes for tags
+    private static readonly int woodTagHash = "Wood".GetHashCode();
+    private static readonly int carpetTagHash = "Carpet".GetHashCode();
+    private static readonly int concreteTagHash = "Concrete".GetHashCode();
 
     private float fadeDelay;
     private float fadeDuration;
+    private Action<SpellDecalDissolve> onFadeComplete;
 
-    private float fadeStartTime;
-    private bool isFading;
-
-    private System.Action<SpellDecalDissolve> onFadeComplete;
-
-    private static MaterialPropertyBlock _mpb;
-
-    private void Awake()
+    public void Initialize(Action<SpellDecalDissolve> fadeCompleteCallback, int hitTagHash)
     {
-        if (_mpb == null)
-            _mpb = new MaterialPropertyBlock();
-    }
-
-    public void Initialize(float delay, float duration, System.Action<SpellDecalDissolve> fadeCompleteCallback)
-    {
-        fadeDelay = delay;
-        fadeDuration = duration;
         onFadeComplete = fadeCompleteCallback;
 
-        SetAlpha(1f);
+       //Debug.Log(hitTagHash);
 
-        fadeStartTime = Time.time + fadeDelay;
-        isFading = false;
-    }
-
-    private void Update()
-    {
-        if (!isFading && Time.time >= fadeStartTime)
+        if (hitTagHash == woodTagHash)
         {
-            isFading = true;
-            fadeStartTime = Time.time;
+            fadeDelay = woodFadeMultiplier;
+            fadeDuration = woodFadeMultiplier;
+        }
+        else if (hitTagHash == carpetTagHash)
+        {
+            fadeDelay = carpetFadeMultiplier;
+            fadeDuration = carpetFadeMultiplier;
+        }
+        else if (hitTagHash == concreteTagHash)
+        {
+            fadeDelay = concreteFadeMultiplier;
+            fadeDuration = concreteFadeMultiplier;
+        }
+        else
+        {
+            fadeDelay = 1;
+            fadeDuration = 1;
         }
 
-        if (isFading)
+        if (particleSpecialEffect) particleSpecialEffect.SetActive(true);
+
+        ResetDecal();
+        AdjustParticleSystemLifetimes();
+        Invoke(nameof(StartFade), fadeDelay);
+    }
+
+    private void AdjustParticleSystemLifetimes()
+    {
+        for (int i = 0; i < particleSystems.Length; i++)
         {
-            float elapsed = Time.time - fadeStartTime;
-            float t = Mathf.Clamp01(elapsed / fadeDuration);
+            var ps = particleSystems[i];
+            var mainModule = ps.main;
+            mainModule.duration = fadeDelay;
+            mainModule.startLifetime = fadeDuration;
+            ps.Play();
+        }
+    }
 
-            float currentAlpha = Mathf.Lerp(1f, 0f, t);
-            SetAlpha(currentAlpha);
+    private void ResetDecal()
+    {
+        if (decalRenderer != null)
+        {
+            Color initialColor = decalRenderer.material.color;
+            initialColor.a = 1f;
+            decalRenderer.material.color = initialColor;
+        }
 
-            if (t >= 1f)
+        for (int i = 0; i < particleSystems.Length; i++)
+        {
+            var ps = particleSystems[i];
+            ps.Stop();
+            ps.Clear();
+        }
+
+        if (decalLight != null)
+        {
+            decalLight.enabled = true;
+            decalLight.intensity = 1f;
+        }
+    }
+
+    private void StartFade()
+    {
+        if (decalRenderer != null)
+        {
+            Color targetColor = new Color(
+                decalRenderer.material.color.r,
+                decalRenderer.material.color.g,
+                decalRenderer.material.color.b,
+                0f
+            );
+            decalRenderer.material.DOColor(targetColor, fadeDuration).OnComplete(() =>
             {
-                isFading = false;
+                if (particleSpecialEffect) particleSpecialEffect.SetActive(false);
                 onFadeComplete?.Invoke(this);
-            }
+            });
         }
-    }
-
-    private void SetAlpha(float alpha)
-    {
-        Color c = spriteRenderer.color;
-        c.a = alpha;
-
-        spriteRenderer.GetPropertyBlock(_mpb);
-        _mpb.SetColor("_Color", c);
-        spriteRenderer.SetPropertyBlock(_mpb);
+        else
+        {
+            if (particleSpecialEffect) particleSpecialEffect.SetActive(false);
+            onFadeComplete?.Invoke(this);
+        }
     }
 }

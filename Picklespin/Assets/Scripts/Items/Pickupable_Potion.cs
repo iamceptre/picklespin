@@ -25,7 +25,6 @@ public class Pickupable_Potion : MonoBehaviour
     private PlayerMovement playerMovement;
     private Ammo ammo;
     private PlayerEXP playerExp;
-    private BarLightsAnimation barLightsAnimation;
     private ScreenFlashTint screenFlashTint;
 
     private delegate void ResourceAction();
@@ -36,7 +35,6 @@ public class Pickupable_Potion : MonoBehaviour
         playerMovement = PlayerMovement.instance;
         ammo = Ammo.instance;
         playerExp = PlayerEXP.instance;
-        barLightsAnimation = BarLightsAnimation.instance;
         screenFlashTint = ScreenFlashTint.instance;
     }
 
@@ -44,9 +42,9 @@ public class Pickupable_Potion : MonoBehaviour
     {
         ResourceAction resourceAction = potionType switch
         {
-            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, playerHP.GiveHPToPlayer, isSilent: false),
-            PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, playerMovement.GiveStaminaToPlayer, isSilent: false),
-            PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, ammo.GiveManaToPlayer, isSilent: false),
+            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, amount => playerHP.GiveHPToPlayer(amount)),
+            PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, amount => playerMovement.GiveStaminaToPlayer(amount)),
+            PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, amount => ammo.GiveManaToPlayer(amount)),
             _ => null
         };
 
@@ -60,11 +58,11 @@ public class Pickupable_Potion : MonoBehaviour
         }
     }
 
-    private void TryGiveResource(int current, int max, System.Action<int, bool> applyEffect, bool isSilent = false)
+    private void TryGiveResource(int current, int max, System.Action<int> applyEffect)
     {
         if (current < max)
         {
-            applyEffect(howMuchIGive, isSilent);
+            applyEffect(howMuchIGive);
 
             string color = potionType switch
             {

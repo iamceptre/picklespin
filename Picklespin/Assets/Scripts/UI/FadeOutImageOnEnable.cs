@@ -36,7 +36,7 @@ public class FadeOutImageOnEnable : MonoBehaviour
             yield break;
         }
 
-        image.DOFade(0, animationTime).SetEase(Ease.OutExpo).OnComplete(() =>
+        image.DOFade(0, animationTime).SetEase(Ease.OutSine).OnComplete(() =>
         {
             gameObject.SetActive(false);
         });
@@ -45,7 +45,7 @@ public class FadeOutImageOnEnable : MonoBehaviour
 
     private void FadeIn()
     {
-        image.DOFade(1, animationTime).SetEase(Ease.OutExpo).OnComplete(() =>
+        image.DOFade(1, animationTime).SetEase(Ease.OutSine).OnComplete(() =>
         {
             fadedIn = true;
         });

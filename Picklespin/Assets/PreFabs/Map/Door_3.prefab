@@ -159,8 +159,8 @@ MonoBehaviour:
       Data4: -290140618
     Path: event:/MAP/Objects/Doors/AngelRoom_Doors/Doors_AngelRoom_Lock
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -256,8 +256,8 @@ MonoBehaviour:
       Data4: 4121683
     Path: event:/MAP/Objects/Doors/AngelRoom_Doors/Doors_AngelRoom_Close
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -378,6 +378,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -456,8 +459,8 @@ MonoBehaviour:
       Data4: -1539471495
     Path: event:/MAP/Objects/Doors/AngelRoom_Doors/Doors_AngelRoom_Open
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0

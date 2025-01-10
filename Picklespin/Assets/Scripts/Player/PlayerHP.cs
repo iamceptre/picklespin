@@ -74,17 +74,14 @@ public class PlayerHP : MonoBehaviour
         hpBarDisplay.Refresh(false);
     }
 
-    public void GiveHPToPlayer(int amount, bool silent)
+    public void GiveHPToPlayer(int amount)
     {
         if (hp >= maxHp) return;
         hp = Mathf.Min(hp + amount, maxHp);
         hpBarDisplay.Refresh(true);
         bool gotMaxxed = hp == maxHp;
-        if (!silent)
-        {
-            barLightsAnimation.PlaySelectedBarAnimation(0, amount, gotMaxxed);
-        }
         CheckLowHPState();
+        barLightsAnimation.PlaySelectedBarAnimation(0, amount, gotMaxxed);
     }
 
     private void PlayerHurtVisual()
@@ -178,7 +175,8 @@ public class PlayerHP : MonoBehaviour
             }
 
             yield return regenInterval;
-            GiveHPToPlayer(regenAmount, true);
+            hp += regenAmount;
+            hpBarDisplay.Refresh(true);
         }
     }
 }

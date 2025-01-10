@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float crouchHeight = 1.618f;
     [SerializeField] private float gravity = 9.81f;
     private float startingGravity;
-    private float stairGravity = 4000;
+    private readonly float stairGravity = 4000;
 
     [Header("Stamina & Fatigue")]
     [Range(0, 100)]
@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Vector3 horizontalVelocity = new Vector3(moveDirection.x, 0, moveDirection.z);
-            Vector3 airControlVelocity = inputDirection * airControl * Time.deltaTime;
+            Vector3 airControlVelocity = airControl * Time.deltaTime * inputDirection;
             horizontalVelocity += airControlVelocity;
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, Vector3.zero, dampeningFactor * Time.deltaTime);
             float maxSpeed = Mathf.Max(walkSpeed, runSpeed);
@@ -332,15 +332,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void GiveStaminaToPlayer(int howMuchStaminaIGive, bool isSilent)
+    public void GiveStaminaToPlayer(int howMuchStaminaIGive, bool isSilent = false)
     {
         float target = stamina + howMuchStaminaIGive;
         bool maxed = target >= 100;
         stamina = maxed ? 100 : target;
-        if (!isSilent)
-        {
-            barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, maxed);
-        }
         staminaBarDisplay.Refresh(false);
+        if (isSilent) return;
+        barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, maxed);
+
     }
 }

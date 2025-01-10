@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2849620955504364103}
   - component: {fileID: 5033493309193062740}
   - component: {fileID: 8766310473476462446}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Church_Wall
   m_TagString: Concrete
   m_Icon: {fileID: 0}
@@ -315,14 +315,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Shape:
     rid: 7863577734233456722
-  m_Size: {x: 23, y: 5, z: 10}
-  m_Rotation: {x: 0, y: 0, z: -0.70710677, w: 0.70710677}
-  m_PivotLocation: 0
-  m_PivotPosition: {x: 0, y: 0, z: 0}
+  m_ShapeRotation: {x: 0, y: 0, z: 0, w: 1}
   m_UnmodifiedMeshVersion: 3074
-  m_ShapeBox:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2.5000005, y: 11.499999, z: 5}
+  m_Size: {x: 23, y: 5, z: 10}
+  m_LocalCenter: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds:
@@ -346,6 +342,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

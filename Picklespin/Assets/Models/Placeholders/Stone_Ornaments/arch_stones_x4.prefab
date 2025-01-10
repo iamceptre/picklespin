@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8772612800507367415}
   - component: {fileID: 7340105494784223007}
   - component: {fileID: 6563100800782310149}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,6 +58,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -92,7 +95,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3101307365813383944}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_x4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +136,7 @@ GameObject:
   - component: {fileID: 3737592272750805602}
   - component: {fileID: 5760834699298882712}
   - component: {fileID: 3802149726682683987}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01.011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,6 +183,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3208,7 +3214,7 @@ GameObject:
   - component: {fileID: 4333654813693312661}
   - component: {fileID: 3289300246942095740}
   - component: {fileID: 4021658105946845575}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01.005 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3255,6 +3261,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3291,7 +3300,7 @@ GameObject:
   - component: {fileID: 578262364728523264}
   - component: {fileID: 9056509424547785824}
   - component: {fileID: 2930957822327876467}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01.005 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3338,6 +3347,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3374,7 +3386,7 @@ GameObject:
   - component: {fileID: 4756410028527845479}
   - component: {fileID: 8182195009735681863}
   - component: {fileID: 5609324450150736442}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01_col_lod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3437,7 +3449,7 @@ GameObject:
   - component: {fileID: 5072415265939947192}
   - component: {fileID: 575719746706865706}
   - component: {fileID: 5805566938687359819}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3484,6 +3496,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3520,7 +3535,7 @@ GameObject:
   - component: {fileID: 163349684461910716}
   - component: {fileID: 7930194131436849217}
   - component: {fileID: 5505520103370328503}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: arch_stones_01.005 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3567,6 +3582,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

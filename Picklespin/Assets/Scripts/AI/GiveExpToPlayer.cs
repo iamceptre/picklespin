@@ -46,8 +46,8 @@ public class GiveExpToPlayer : MonoBehaviour
         int statAmount = wasLastShotAHeadshot ? (int)(howMuchStatsIGive * 1.5f) : howMuchStatsIGive;
 
         playerEXP.GivePlayerExp(expAmount, wasLastShotAHeadshot ? coloredMessage + eyeshotMessage : coloredMessage);
-        ammo.GiveManaToPlayer(statAmount, false);
-        playerHp.GiveHPToPlayer(statAmount, false);
+        ammo.GiveManaToPlayer(statAmount);
+        playerHp.GiveHPToPlayer(statAmount);
 
         GiveManaSuckParticles(statAmount);
     }
