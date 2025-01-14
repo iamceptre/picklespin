@@ -15,7 +15,7 @@ public class KeyHasBeenSpawned : MonoBehaviour
     private TMP_Text myText;
     private RectTransform myRectTransform;
 
-    private WaitForSeconds timeBeforeAnimating= new WaitForSeconds(0.2f);
+    private readonly WaitForSeconds timeBeforeAnimating= new WaitForSeconds(0.2f);
 
     [SerializeField] private EventReference appearSound;
 

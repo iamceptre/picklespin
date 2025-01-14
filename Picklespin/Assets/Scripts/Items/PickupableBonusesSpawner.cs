@@ -2,38 +2,47 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PickupableBonusesSpawner : MonoBehaviour //AKA POTION SPAWNER
+public class PickupableBonusesSpawner : MonoBehaviour
 {
+    [Header("Singleton")]
     public static PickupableBonusesSpawner instance { get; private set; }
 
+    [Header("Spawn Settings")]
     public int howManyToSpawn;
     [HideInInspector] public int startingHowManyToSpawn;
 
+    [Header("Available Bonuses")]
     [SerializeField] private PoolSpawnableObject[] bonuses;
 
+    [Header("Spawn Points")]
     public Transform[] spawnPoints;
     [HideInInspector] public bool[] isSpawnPointTaken;
     [HideInInspector] public int avaliableSpawnPointsCount;
 
-    private Vector3 initialSpawnPosition = new Vector3(0, -50, 0);
-    private int rrrandom;
-
+    [Header("Object Pool")]
     public ObjectPool<PoolSpawnableObject> allPotionsPool;
+
+    [Header("Instantiation")]
+    private readonly Vector3 initialSpawnPosition = new(0, -50, 0);
+
+    private int randomIndex;
+    private Coroutine currentSpawnRoutine;
+
+    private readonly WaitForSeconds scatterTime = new(0.05f);
 
     private void Awake()
     {
         if (instance != null && instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            instance = this;
-        }
+        instance = this;
 
-        if (howManyToSpawn > spawnPoints.Length)
+        if (howManyToSpawn >= spawnPoints.Length)
         {
-            howManyToSpawn = spawnPoints.Length;
+            howManyToSpawn = spawnPoints.Length - 1;
+            if (howManyToSpawn < 0) howManyToSpawn = 0;
         }
 
         startingHowManyToSpawn = howManyToSpawn;
@@ -43,19 +52,25 @@ public class PickupableBonusesSpawner : MonoBehaviour //AKA POTION SPAWNER
 
     private void Start()
     {
-        allPotionsPool = new ObjectPool<PoolSpawnableObject>(CreateItem, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, spawnPoints.Length, spawnPoints.Length * 2);
+        allPotionsPool = new ObjectPool<PoolSpawnableObject>(
+            CreateItem,
+            OnGetFromPool,
+            OnReleaseToPool,
+            OnDestroyPooledObject,
+            false,
+            spawnPoints.Length,
+            spawnPoints.Length * 2
+        );
         PreInstantiate();
     }
 
     private void PreInstantiate()
     {
         var tempList = new PoolSpawnableObject[spawnPoints.Length];
-
         for (int i = 0; i < spawnPoints.Length; i++)
         {
             tempList[i] = allPotionsPool.Get();
         }
-
         for (int i = 0; i < spawnPoints.Length; i++)
         {
             allPotionsPool.Release(tempList[i]);
@@ -64,62 +79,66 @@ public class PickupableBonusesSpawner : MonoBehaviour //AKA POTION SPAWNER
 
     public void SpawnBonuses(int howManyToSpawn)
     {
-        StartCoroutine(SpawnRoutine(howManyToSpawn));
+        if (currentSpawnRoutine != null)
+        {
+            StopCoroutine(currentSpawnRoutine);
+        }
+        if (howManyToSpawn >= spawnPoints.Length)
+        {
+            howManyToSpawn = spawnPoints.Length - 1;
+            if (howManyToSpawn < 0) howManyToSpawn = 0;
+        }
+        currentSpawnRoutine = StartCoroutine(SpawnRoutine(howManyToSpawn));
     }
 
     private IEnumerator SpawnRoutine(int howManyToSpawn)
     {
+        int totalToSpawn = Mathf.Min(howManyToSpawn, avaliableSpawnPointsCount);
         int potionsSpawned = 0;
 
-        for (int i = 0; i < howManyToSpawn; i++)
+        for (int i = 0; i < totalToSpawn; i++)
         {
             if (avaliableSpawnPointsCount <= 0)
             {
-                Debug.LogWarning("No available spawn points for remaining potions.");
-                break; // Stop spawning if no spawn points are left
+                break;
             }
-
-            yield return new WaitForSeconds(i * 0.02f);
+            yield return scatterTime;
             Spawn();
             potionsSpawned++;
         }
 
         avaliableSpawnPointsCount -= potionsSpawned;
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn - potionsSpawned, 0, avaliableSpawnPointsCount);
+        currentSpawnRoutine = null;
     }
 
     private void Spawn()
     {
         Randomize();
         PoolSpawnableObject spawned = allPotionsPool.Get();
-        spawned.transform.position = spawnPoints[rrrandom].position;
-        spawned.SetOccupiedWaypoint(rrrandom, this);
+        spawned.transform.position = spawnPoints[randomIndex].position;
+        spawned.SetOccupiedWaypoint(randomIndex, this);
         spawned.GetComponent<Pickupable_Item>().StartFloating();
     }
 
     private void Randomize()
     {
-        int maxRange = spawnPoints.Length;
-        int minRange = 0;
-
         if (avaliableSpawnPointsCount <= 0)
         {
             Debug.LogWarning("No available spawn points.");
             return;
         }
-
         do
         {
-            rrrandom = Random.Range(minRange, maxRange);
+            randomIndex = Random.Range(0, spawnPoints.Length);
         }
-        while (isSpawnPointTaken[rrrandom]);
+        while (isSpawnPointTaken[randomIndex]);
     }
 
     private PoolSpawnableObject CreateItem()
     {
-        PoolSpawnableObject itemInstance = Instantiate(bonuses[Random.Range(0, bonuses.Length)]);
+        var prefab = bonuses[Random.Range(0, bonuses.Length)];
+        var itemInstance = Instantiate(prefab, initialSpawnPosition, Quaternion.identity);
         itemInstance.SetPool(allPotionsPool);
-        itemInstance.transform.position = initialSpawnPosition;
         return itemInstance;
     }
 
@@ -131,6 +150,7 @@ public class PickupableBonusesSpawner : MonoBehaviour //AKA POTION SPAWNER
     private void OnReleaseToPool(PoolSpawnableObject pooledItem)
     {
         pooledItem.gameObject.SetActive(false);
+        pooledItem.transform.position = initialSpawnPosition;
     }
 
     private void OnDestroyPooledObject(PoolSpawnableObject pooledItem)
@@ -140,7 +160,6 @@ public class PickupableBonusesSpawner : MonoBehaviour //AKA POTION SPAWNER
 
     private void SetSpawnCount(int spawnCount)
     {
-        howManyToSpawn = spawnCount;
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, spawnPoints.Length);
+        howManyToSpawn = Mathf.Clamp(spawnCount, 0, spawnPoints.Length - 1);
     }
 }

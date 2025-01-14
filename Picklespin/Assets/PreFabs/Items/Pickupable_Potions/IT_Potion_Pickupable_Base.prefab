@@ -16,10 +16,10 @@ GameObject:
   - component: {fileID: 188713312793987983}
   - component: {fileID: 4773779664034127539}
   - component: {fileID: -1766851079683881015}
-  - component: {fileID: 6703289627945188620}
   - component: {fileID: 4273161091703289828}
   - component: {fileID: 6199161264812252518}
   - component: {fileID: 6825016255706231674}
+  - component: {fileID: 8814291265372721993}
   m_Layer: 1
   m_Name: IT_Potion_Pickupable_Base
   m_TagString: Untagged
@@ -69,6 +69,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -115,16 +118,16 @@ MonoBehaviour:
       Data4: -1838594517
     Path: event:/ITEMS/POTIONS/POTION_SPAWN
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
-  Preload: 0
+  Preload: 1
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMinDistance: 0.6
+  OverrideMaxDistance: 40
 --- !u!114 &8945677933371336245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +155,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  spawnSoundEmitter: {fileID: 6037732046696453049}
 --- !u!114 &188713312793987983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,19 +214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b43019d86a867c44a3663e3109b4f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6703289627945188620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166941356346100054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa9baa4cb576daa4f8070b6ef4c1be06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _emitter: {fileID: 6037732046696453049}
 --- !u!108 &4273161091703289828
 Light:
   m_ObjectHideFlags: 0
@@ -231,9 +222,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166941356346100054}
   m_Enabled: 0
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 2
-  m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
   m_Range: 3
@@ -283,8 +273,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!54 &6199161264812252518
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -333,6 +327,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15, y: 15, z: 15}
   m_Center: {x: 0.00000047683716, y: 3.9032195, z: -0.0000009536743}
+--- !u!114 &8814291265372721993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166941356346100054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed22a9db1089c14ea1453d71d6b58f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7607938901464775230
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,8 +392,8 @@ MonoBehaviour:
       Data4: 1607727002
     Path: event:/ITEMS/POTIONS/POTION_PICKUP_BASE_LAYER
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
