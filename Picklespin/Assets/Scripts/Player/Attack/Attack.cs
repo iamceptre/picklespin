@@ -8,47 +8,43 @@ using UnityEngine.InputSystem;
 
 public class Attack : MonoBehaviour
 {
-    private Animator handAnimator;
+    Animator handAnimator;
     public static Attack instance { get; private set; }
-    private PlayCastBlast playCastBlast;
-    private SpellProjectileSpawner spellProjectileSpawner;
-    //[SerializeField] private UnityEvent shootEvent;
-    [SerializeField] private UnityEvent changeSelectedSpell;
-    private Ammo ammo;
-    private AmmoDisplay ammoDisplay;
-    [SerializeField] private EventReference shootFailEvent;
-    private EventInstance pullupEventInstance;
-    private EventInstance spellcastInstance;
+    PlayCastBlast playCastBlast;
+    SpellProjectileSpawner spellProjectileSpawner;
+    [SerializeField] UnityEvent changeSelectedSpell;
+    Ammo ammo;
+    AmmoDisplay ammoDisplay;
+    [SerializeField] EventReference shootFailEvent;
+    EventInstance pullupEventInstance;
+    EventInstance spellcastInstance;
     public Bullet[] bulletPrefab;
     public int selectedBulletIndex;
     public float castCooldownTime = 0.1f;
     public bool castCooldownAllow = true;
-    [SerializeField] private UnlockedSpells unlockedSpells;
-    [SerializeField] private SpellCooldown spellCooldown;
-    [SerializeField] private NoManaLightAnimation noManaLightAnimation;
+    [SerializeField] UnlockedSpells unlockedSpells;
+    [SerializeField] SpellCooldown spellCooldown;
+    [SerializeField] NoManaLightAnimation noManaLightAnimation;
     public float castingProgress = 0;
-    private float currentlySelectedCastDuration;
-    [SerializeField] private Slider castingSlider;
-    [SerializeField] private UnityEvent castingCompleted;
-    [SerializeField] private UnityEvent CancelCasting;
+    float currentlySelectedCastDuration;
+    [SerializeField] Slider castingSlider;
+    [SerializeField] UnityEvent castingCompleted;
+    [SerializeField] UnityEvent CancelCasting;
     public Bullet currentBullet;
-    private CameraShakeManagerV2 camShakeManager;
+    CameraShakeManagerV2 camShakeManager;
+    [SerializeField] InputActionReference primaryAction;
+    [SerializeField] InputActionReference secondaryAction;
+    bool isPrimaryPressed;
+    bool isSecondaryPressed;
+    Coroutine castingRoutine;
 
-    [Header("Input Actions")]
-    [SerializeField] private InputActionReference primaryAction;
-    [SerializeField] private InputActionReference secondaryAction;
-
-    private bool isPrimaryPressed;
-    private bool isSecondaryPressed;
-    private Coroutine castingRoutine;
-
-    private void Awake()
+    void Awake()
     {
         currentBullet = bulletPrefab[selectedBulletIndex];
         if (instance != null && instance != this) Destroy(this); else instance = this;
     }
 
-    private void Start()
+    void Start()
     {
         handAnimator = PublicPlayerHandAnimator.instance._animator;
         ammo = Ammo.instance;
@@ -58,7 +54,7 @@ public class Attack : MonoBehaviour
         camShakeManager = CameraShakeManagerV2.instance;
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         primaryAction.action.performed += OnPrimaryPerformed;
         primaryAction.action.canceled += OnPrimaryCanceled;
@@ -68,7 +64,7 @@ public class Attack : MonoBehaviour
         secondaryAction.action.Enable();
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         primaryAction.action.performed -= OnPrimaryPerformed;
         primaryAction.action.canceled -= OnPrimaryCanceled;
@@ -78,7 +74,7 @@ public class Attack : MonoBehaviour
         secondaryAction.action.Disable();
     }
 
-    private void OnPrimaryPerformed(InputAction.CallbackContext ctx)
+    void OnPrimaryPerformed(InputAction.CallbackContext ctx)
     {
         isPrimaryPressed = true;
         if (!castCooldownAllow) return;
@@ -90,27 +86,27 @@ public class Attack : MonoBehaviour
         }
     }
 
-    private void OnPrimaryCanceled(InputAction.CallbackContext ctx)
+    void OnPrimaryCanceled(InputAction.CallbackContext ctx)
     {
         isPrimaryPressed = false;
     }
 
-    private void OnSecondaryPerformed(InputAction.CallbackContext ctx)
+    void OnSecondaryPerformed(InputAction.CallbackContext ctx)
     {
         isSecondaryPressed = true;
     }
 
-    private void OnSecondaryCanceled(InputAction.CallbackContext ctx)
+    void OnSecondaryCanceled(InputAction.CallbackContext ctx)
     {
         isSecondaryPressed = false;
     }
 
-    private void TryShoot()
+    void TryShoot()
     {
         if (ammo.ammo >= currentBullet.magickaCost) SuccesfulShoot(); else ShootFail();
     }
 
-    private void ShootFail()
+    void ShootFail()
     {
         handAnimator.SetTrigger("Hand_Fail");
         noManaLightAnimation.LightAnimation();
@@ -119,13 +115,12 @@ public class Attack : MonoBehaviour
         spellcastInstance.release();
     }
 
-    private void SuccesfulShoot()
+    void SuccesfulShoot()
     {
         handAnimator.SetTrigger("Spell_Shot_Quick");
         if (playCastBlast.castingParticles[selectedBulletIndex] != null) playCastBlast.StopCastingParticles(selectedBulletIndex);
         playCastBlast.Play(selectedBulletIndex);
         castCooldownTime = currentBullet.myCooldown;
-       // shootEvent.Invoke();
         ammo.ammo -= currentBullet.magickaCost;
         ammoDisplay.Refresh(false);
         spellCooldown.StartCooldown(castCooldownTime);
@@ -144,13 +139,13 @@ public class Attack : MonoBehaviour
         pullupEventInstance.start();
     }
 
-    private IEnumerator SpellCasting()
+    IEnumerator SpellCasting()
     {
         if (ammo.ammo >= currentBullet.magickaCost)
         {
             spellCooldown.myCanvas.enabled = true;
             playCastBlast.StartCastingParticles(selectedBulletIndex);
-            PlayerMovement.instance.SlowMeDown();
+            PlayerMovement.Instance.SlowMeDown();
             handAnimator.SetTrigger("Spell_Casting");
             SendShakeSignalCastStart(selectedBulletIndex);
             while (castingProgress < currentlySelectedCastDuration)
@@ -182,9 +177,9 @@ public class Attack : MonoBehaviour
         else ShootFail();
     }
 
-    private void ClearCasting()
+    void ClearCasting()
     {
-        PlayerMovement.instance.SpeedMeBackUp();
+        PlayerMovement.Instance.SpeedMeBackUp();
         handAnimator.ResetTrigger("Spell_Casting");
         spellCooldown.myCanvas.enabled = false;
         castingSlider.value = 0;
@@ -195,7 +190,7 @@ public class Attack : MonoBehaviour
         if (castingRoutine != null) StopCoroutine(castingRoutine);
     }
 
-    private void SendShakeSignalShoot(int index)
+    void SendShakeSignalShoot(int index)
     {
         switch (index)
         {
@@ -207,19 +202,15 @@ public class Attack : MonoBehaviour
                 camShakeManager.ShakeSelected(5);
                 camShakeManager.ShakeHand(0.4f, 0.2f, 15);
                 break;
-            default:
-                break;
         }
     }
 
-    private void SendShakeSignalCastStart(int index)
+    void SendShakeSignalCastStart(int index)
     {
         switch (index)
         {
             case 1:
                 camShakeManager.ShakeSelected(7);
-                break;
-            default:
                 break;
         }
     }

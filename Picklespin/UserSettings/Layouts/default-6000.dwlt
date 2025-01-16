@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -455,7 +455,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: eefaffff20c40000
+      m_ExpandedIDs: eefaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -989,9 +989,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 1.3407967, y: 0.102115214, z: -52.507927}
+    m_Target: {x: 2.7397773, y: 6.1716113, z: 37.400463}
     speed: 2
-    m_Value: {x: 1.8067629, y: 3.204808, z: -42.00301}
+    m_Value: {x: 1.3407967, y: 0.102115214, z: -52.507927}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1037,9 +1037,9 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.114594586, y: -0.20235974, z: 0.023821324, w: 0.9723252}
+    m_Target: {x: -0.0014368785, y: -0.84642655, z: -0.0022746054, w: 0.53256565}
     speed: 2
-    m_Value: {x: 0.07680321, y: 0.5217623, z: -0.047279947, w: 0.84834576}
+    m_Value: {x: -0.11459458, y: 0.20235974, z: -0.023821322, w: -0.97232515}
   m_Size:
     m_Target: 1.3134394
     speed: 2

@@ -24,9 +24,9 @@ public class AttackPlayer : State
 
     private void Start()
     {
-        playerTransform = PublicPlayerTransform.instance;
+        playerTransform = PublicPlayerTransform.Instance;
         playerHP = PlayerHP.instance;
-        hpBarDisplay = HpBarDisplay.instance;
+        hpBarDisplay = HpBarDisplay.Instance;
     }
 
 
@@ -82,11 +82,11 @@ public class AttackPlayer : State
                  attackSoundEmitter.Play();
 
                 if (!playerHP.isLowHP) {
-                    playerHP.TakeDamage(howMuchDamageIdeal);
+                    playerHP.ModifyHP(-howMuchDamageIdeal);
                 }
                 else
                 {
-                    playerHP.TakeDamage((int)(howMuchDamageIdeal * 0.5f));
+                    playerHP.ModifyHP((int)(-howMuchDamageIdeal * 0.5f));
                 }
 
             }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class AngelHealingMinigame : MonoBehaviour
 {
-    public static AngelHealingMinigame instance;
+    public static AngelHealingMinigame Instance;
 
     [SerializeField] private EventReference healBoostSound;
     [SerializeField] private EventReference failedSound;
@@ -58,13 +58,13 @@ public class AngelHealingMinigame : MonoBehaviour
         angelHPslider = GetComponent<Slider>();
         turboAreaColor = turboArea.color;
 
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
         turboAreaRect = turboArea.transform.GetComponent<RectTransform>();
     }

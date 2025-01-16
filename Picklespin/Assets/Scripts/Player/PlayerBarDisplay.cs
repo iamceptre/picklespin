@@ -5,13 +5,15 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class PlayerBarDisplay : MonoBehaviour
 {
+    [Header("Assign only ONE reference for this bar")]
     [SerializeField] private Ammo ammo;
     [SerializeField] private PlayerHP playerHP;
     [SerializeField] private PlayerMovement playerMovement;
+    private const float smoothTime = 0.1f; //mana bar bugs out when this value is set higher pls fix it, make sure only this script interacts with the slider values
 
     private Slider slider;
     private Coroutine smoothUpdateCoroutine;
-    private const float SmoothAnimationDuration = 0.3f;
+    private float velocity;
 
     private void Awake()
     {
@@ -20,17 +22,19 @@ public class PlayerBarDisplay : MonoBehaviour
 
     private void Start()
     {
-        Refresh(false);
+        slider.value = GetCurrentNormalizedValue() * slider.maxValue;
     }
 
     public void Refresh(bool smooth)
     {
-
-        float targetValue = CalculateTargetValue();
+        float targetValue = GetCurrentNormalizedValue() * slider.maxValue;
 
         if (smooth)
         {
-            StartSmoothUpdate(targetValue);
+            if (smoothUpdateCoroutine != null)
+                StopCoroutine(smoothUpdateCoroutine);
+
+            smoothUpdateCoroutine = StartCoroutine(SmoothValueRoutine(targetValue));
         }
         else
         {
@@ -38,32 +42,23 @@ public class PlayerBarDisplay : MonoBehaviour
         }
     }
 
-    private float CalculateTargetValue()
+    private float GetCurrentNormalizedValue()
     {
-        return ammo != null ? (float)ammo.ammo / ammo.maxAmmo * slider.maxValue :
-               playerHP != null ? (float)playerHP.hp / playerHP.maxHp * slider.maxValue :
-               Mathf.Clamp(playerMovement.stamina, 0, slider.maxValue);
+        if (playerHP) return (float)playerHP.hp / playerHP.maxHp;
+        if (ammo) return (float)ammo.ammo / ammo.maxAmmo;
+        if (playerMovement) return Mathf.Clamp01(playerMovement.stamina * 0.01f);
+        return 0f;
     }
 
-    private void StartSmoothUpdate(float targetValue)
+    private IEnumerator SmoothValueRoutine(float targetValue)
     {
-        if (smoothUpdateCoroutine != null)
+        velocity = 0f;
+        float currentValue = slider.value;
+
+        while (!Mathf.Approximately(currentValue, targetValue))
         {
-            StopCoroutine(smoothUpdateCoroutine);
-        }
-
-        smoothUpdateCoroutine = StartCoroutine(SmoothValueUpdate(targetValue));
-    }
-
-    private IEnumerator SmoothValueUpdate(float targetValue)
-    {
-        float startValue = slider.value;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < SmoothAnimationDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            slider.value = Mathf.Lerp(startValue, targetValue, elapsedTime / SmoothAnimationDuration);
+            currentValue = Mathf.SmoothDamp(currentValue, targetValue, ref velocity, smoothTime);
+            slider.value = currentValue;
             yield return null;
         }
 

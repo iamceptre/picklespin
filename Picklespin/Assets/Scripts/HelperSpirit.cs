@@ -44,7 +44,7 @@ public class HelperSpirit : MonoBehaviour
     void Start()
     {
         distanceTreshold = angelDistanceTreshold;
-        playerTransform = PublicPlayerTransform.instance;
+        playerTransform = PublicPlayerTransform.Instance;
     }
 
     private IEnumerator Checker()

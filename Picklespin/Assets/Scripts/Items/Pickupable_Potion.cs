@@ -32,7 +32,7 @@ public class Pickupable_Potion : MonoBehaviour
     private void Start()
     {
         playerHP = PlayerHP.instance;
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
         ammo = Ammo.instance;
         playerExp = PlayerEXP.instance;
         screenFlashTint = ScreenFlashTint.instance;
@@ -42,7 +42,7 @@ public class Pickupable_Potion : MonoBehaviour
     {
         ResourceAction resourceAction = potionType switch
         {
-            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, amount => playerHP.GiveHPToPlayer(amount)),
+            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, amount => playerHP.ModifyHP(amount)),
             PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, amount => playerMovement.GiveStaminaToPlayer(amount)),
             PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, amount => ammo.GiveManaToPlayer(amount)),
             _ => null

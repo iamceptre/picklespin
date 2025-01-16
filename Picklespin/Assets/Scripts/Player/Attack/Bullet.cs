@@ -33,6 +33,7 @@ public class Bullet : MonoBehaviour
 
     private AiHealth aiHealth;
     private AiVision aiVision;
+    private PlayerHP playerHP;
     private CameraShakeManagerV2 camShakeManager;
     private GiveExpToPlayer giveExpToPlayer;
     [HideInInspector] public Transform handCastingPoint;
@@ -84,6 +85,7 @@ public class Bullet : MonoBehaviour
     {
         camShakeManager = CameraShakeManagerV2.instance;
         cachedCameraMain = CachedCameraMain.instance;
+        playerHP = PlayerHP.instance;
         ammo = Ammo.instance;
     }
 
@@ -334,7 +336,7 @@ public class Bullet : MonoBehaviour
                         var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
                         var proximityFactor = 1f - distance / rangeRadius;
                         proximityFactor = Mathf.Clamp01(proximityFactor);
-                        PlayerHP.instance.TakeDamage(Mathf.RoundToInt(rocketJumpForce * proximityFactor));
+                        playerHP.ModifyHP(Mathf.RoundToInt(rocketJumpForce * proximityFactor) * -1);
 
                         characterControllerFound = true;
                     }

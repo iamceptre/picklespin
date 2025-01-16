@@ -39,7 +39,7 @@ public class Dash : MonoBehaviour
 
     void Start()
     {
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
         camShakeManager = CameraShakeManagerV2.instance;
         screenFlashTint = ScreenFlashTint.instance;
         staminaBarDisplay = StaminaBarDisplay.instance;

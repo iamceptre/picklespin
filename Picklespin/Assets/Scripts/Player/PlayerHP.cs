@@ -1,5 +1,5 @@
-using UnityEngine;
 using FMODUnity;
+using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Rendering.PostProcessing;
@@ -10,23 +10,20 @@ public class PlayerHP : MonoBehaviour
     public static PlayerHP instance { get; private set; }
     public int hp;
     public int maxHp;
-    [HideInInspector] public bool isLowHP = false;
-    public bool godMode = false;
-    public bool invincible = false;
-    [Header("Assets")]
-    [SerializeField] private EventReference hurtSound;
+    public bool isLowHP;
+    public bool godMode;
+    public bool invincible;
+    //[SerializeField] private EventReference hurtSound;
     [SerializeField] private Image hurtOverlay;
     [SerializeField] private Sprite[] hurtOverlays;
-    [SerializeField] private EventReference hpAqquiredSound;
+    //[SerializeField] private EventReference hpAqquiredSound;
     [SerializeField] private PostProcessVolume ppVolume;
     [SerializeField] private EventReference tinnitusEventReference;
     [SerializeField] private PulsatingImage hpBarPulsation;
-    [Header("HP Regeneration")]
     [SerializeField, Range(0, 1)] private float regenThresholdPercentage = 0.33f;
-    private float hpRegenTreshold;
+    private float hpRegenThreshold;
     [SerializeField] private int regenAmount = 1;
     [SerializeField] private WaitForSeconds regenInterval = new(0.5f);
-
     private BarLightsAnimation barLightsAnimation;
     private Death death;
     private HpBarDisplay hpBarDisplay;
@@ -45,8 +42,7 @@ public class PlayerHP : MonoBehaviour
             return;
         }
         instance = this;
-
-        hpRegenTreshold = maxHp * regenThresholdPercentage;
+        hpRegenThreshold = maxHp * regenThresholdPercentage;
     }
 
     private void Start()
@@ -54,58 +50,43 @@ public class PlayerHP : MonoBehaviour
         snapshotManager = SnapshotManager.instance;
         death = Death.instance;
         barLightsAnimation = BarLightsAnimation.instance;
-        hpBarDisplay = HpBarDisplay.instance;
-        hurtOverlay.enabled = false;
+        hpBarDisplay = HpBarDisplay.Instance;
+        if (hurtOverlay != null) hurtOverlay.enabled = false;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
     }
 
-    public void SetGodmode(bool isGodmode)
-    {
-        godMode = isGodmode;
-    }
-
-    public void TakeDamage(int damage)
+    public void ModifyHP(int amount)
     {
         if (godMode || invincible) return;
-        hp = Mathf.Max(hp - damage, 0);
-        PlayerHurtVisual();
-        CheckIfPlayerIsDead();
-        CheckLowHPState();
-        hpBarDisplay.Refresh(false);
-    }
-
-    public void GiveHPToPlayer(int amount)
-    {
-        if (hp >= maxHp) return;
-        hp = Mathf.Min(hp + amount, maxHp);
+        hp = Mathf.Clamp(hp + amount, 0, maxHp);
+        if (amount < 0)
+        {
+            if (hurtOverlay != null && hurtOverlays != null && hurtOverlays.Length > 0)
+            {
+                hurtOverlay.enabled = true;
+                hurtOverlay.sprite = hurtOverlays[Random.Range(0, hurtOverlays.Length)];
+                hurtOverlay.DOKill();
+                hurtOverlay.DOFade(0.6f, 0.1f).OnComplete(() =>
+                    hurtOverlay.DOFade(0, 1f).OnComplete(() => hurtOverlay.enabled = false));
+            }
+            if (hp <= 0) death.PlayerDeath();
+        }
         hpBarDisplay.Refresh(true);
         bool gotMaxxed = hp == maxHp;
-        CheckLowHPState();
         barLightsAnimation.PlaySelectedBarAnimation(0, amount, gotMaxxed);
-    }
-
-    private void PlayerHurtVisual()
-    {
-        hurtOverlay.enabled = true;
-        hurtOverlay.sprite = hurtOverlays[Random.Range(0, hurtOverlays.Length)];
-        hurtOverlay.DOKill();
-        hurtOverlay.DOFade(0.6f, 0.1f).OnComplete(() =>
-            hurtOverlay.DOFade(0, 1f).OnComplete(() => hurtOverlay.enabled = false));
-    }
-
-    private void CheckIfPlayerIsDead()
-    {
-        if (hp <= 0) death.PlayerDeath();
+        CheckLowHPState();
     }
 
     private void CheckLowHPState()
     {
-        if (hp < hpRegenTreshold)
+        if (hp < hpRegenThreshold)
         {
             if (!isLowHP)
             {
                 isLowHP = true;
-                StartLowHpEffects();
+                snapshotManager.LowHp.Play();
+                StartCoroutine(LowHpEffect());
+                hpBarPulsation.StartPulsating();
                 regenCoroutine = StartCoroutine(RegenerateHP());
             }
         }
@@ -114,7 +95,9 @@ public class PlayerHP : MonoBehaviour
             if (isLowHP)
             {
                 isLowHP = false;
-                StopLowHpEffects();
+                snapshotManager.LowHp.Stop();
+                StartCoroutine(RestoreHpEffect());
+                hpBarPulsation.StopPulsating();
                 if (regenCoroutine != null)
                 {
                     StopCoroutine(regenCoroutine);
@@ -124,24 +107,10 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-    private void StartLowHpEffects()
-    {
-        RuntimeManager.PlayOneShot(tinnitusEventReference);
-        snapshotManager.LowHp.Play();
-        StartCoroutine(LowHpEffect());
-        hpBarPulsation.StartPulsating();
-    }
-
-    private void StopLowHpEffects()
-    {
-        snapshotManager.LowHp.Stop();
-        StartCoroutine(RestoreHpEffect());
-        hpBarPulsation.StopPulsating();
-    }
-
     private IEnumerator LowHpEffect()
     {
         float timer = 0f;
+        RuntimeManager.PlayOneShot(tinnitusEventReference);
         while (timer < 1f)
         {
             timer += Time.deltaTime;
@@ -169,14 +138,11 @@ public class PlayerHP : MonoBehaviour
     {
         while (isLowHP && hp < maxHp)
         {
-            if (hp >= hpRegenTreshold)
-            {
-                yield break;
-            }
-
+            if (hp >= hpRegenThreshold) yield break;
             yield return regenInterval;
             hp += regenAmount;
             hpBarDisplay.Refresh(true);
+            CheckLowHPState();
         }
     }
 }

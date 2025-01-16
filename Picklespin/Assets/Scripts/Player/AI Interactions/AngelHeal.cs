@@ -47,9 +47,9 @@ public class AngelHeal : MonoBehaviour
     private void Start()
     {
         tipManager = TipManager.instance;
-        helperArrow = Helper_Arrow.instance;
+        helperArrow = Helper_Arrow.Instance;
         tipManager.Hide(1);
-        minigame = AngelHealingMinigame.instance;
+        minigame = AngelHealingMinigame.Instance;
         screenFlashTint = ScreenFlashTint.instance;
         minigame.enabled = false;
     }

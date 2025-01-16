@@ -10,7 +10,7 @@ public class Pickupable_Stamina : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
     }
 
     public void GiveStaminaToPlayer()

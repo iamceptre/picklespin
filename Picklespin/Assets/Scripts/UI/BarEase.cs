@@ -30,6 +30,8 @@ public class BarEase : MonoBehaviour
             easeFill.enabled = true;
             SetEaseFillAlpha(1f);
         }
+
+        me.value = sliderToFollow.value;
     }
 
     private void Update()

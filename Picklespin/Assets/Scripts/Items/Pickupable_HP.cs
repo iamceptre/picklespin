@@ -18,7 +18,7 @@ public class Pickupable_HP : MonoBehaviour
     private void Start()
     {
         playerHP = PlayerHP.instance;
-        hpBarDisplay = HpBarDisplay.instance;
+        hpBarDisplay = HpBarDisplay.Instance;
         barLightsAnimation = BarLightsAnimation.instance;
         screenFlashTint = ScreenFlashTint.instance;
     }
@@ -27,7 +27,7 @@ public class Pickupable_HP : MonoBehaviour
     {
         if (playerHP.hp < playerHP.maxHp)
         {
-            playerHP.GiveHPToPlayer(howMuchHPIGive);
+            playerHP.ModifyHP(howMuchHPIGive);
             itemAfterPickingUp.Pickup();
             RuntimeManager.PlayOneShot(pickupSoundEvent);
             screenFlashTint.Flash(0);

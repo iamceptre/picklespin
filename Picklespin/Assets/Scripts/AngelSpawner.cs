@@ -22,7 +22,7 @@ public class AngelSpawner : MonoBehaviour
             angelMinds[i].SetActive(false);
         }
 
-        helperArrow = Helper_Arrow.instance;
+        helperArrow = Helper_Arrow.Instance;
         SpawnAngel();
     }
 

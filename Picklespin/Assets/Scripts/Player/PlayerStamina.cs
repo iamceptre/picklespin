@@ -10,7 +10,7 @@ public class PlayerStamina : MonoBehaviour
 
     void Start()
     {
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
     }
 
     void Update()

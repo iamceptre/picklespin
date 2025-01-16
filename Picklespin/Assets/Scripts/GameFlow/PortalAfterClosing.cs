@@ -57,7 +57,7 @@ public class PortalAfterClosing : MonoBehaviour
     {
         myCollider.enabled = false;
         crosshair.enabled = false;
-        playerHp.SetGodmode(true);
+        playerHp.godMode = true;
         FadeOutCanvas();
         snapshotManager.PortalClosed.Play();
         TurnOffEmissions();

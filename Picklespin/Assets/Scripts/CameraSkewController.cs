@@ -10,7 +10,7 @@ public class CameraSkewController : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
     }
 
     void Update()

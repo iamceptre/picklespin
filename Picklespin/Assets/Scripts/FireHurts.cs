@@ -19,7 +19,7 @@ public class FireHurts : MonoBehaviour
     private void OnEnable()
     {
         if (!playerHP) playerHP = PlayerHP.instance;
-        if (!playerTransform) playerTransform = PublicPlayerTransform.instance.PlayerTransform;
+        if (!playerTransform) playerTransform = PublicPlayerTransform.Instance.PlayerTransform;
 
         StartHurting();
     }
@@ -52,7 +52,7 @@ public class FireHurts : MonoBehaviour
         {
             if (IsPlayerInFire())
             {
-                playerHP.TakeDamage(damage);
+                playerHP.ModifyHP(-damage);
             }
             yield return waitHalfSecond;
         }

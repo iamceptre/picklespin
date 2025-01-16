@@ -9,21 +9,13 @@ public class Ammo : MonoBehaviour
 
     private BarLightsAnimation barLightsAnimation;
     private AmmoDisplay ammoDisplay;
-
     [SerializeField] private EventReference manaAqquiredSound;
 
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
+        if (instance != null && instance != this) Destroy(this);
+        else instance = this;
     }
-
 
     private void Start()
     {
@@ -31,16 +23,16 @@ public class Ammo : MonoBehaviour
         ammoDisplay = AmmoDisplay.instance;
     }
 
-
     public void GiveManaToPlayer(int howMuchManaIGive, bool isSilent = false)
     {
-        if (ammo >= maxAmmo) return;
-        ammo = Mathf.Min(ammo + howMuchManaIGive, maxAmmo);
+        ammo = Mathf.Clamp(ammo + howMuchManaIGive, 0, maxAmmo);
         bool gotMaxxed = ammo == maxAmmo;
         ammoDisplay.Refresh(true);
-        if (isSilent) return;
-        barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, gotMaxxed);
-        //RuntimeManager.PlayOneShot(manaAqquiredSound);
-    }
 
+        if (!isSilent)
+        {
+            barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, gotMaxxed);
+            //RuntimeManager.PlayOneShot(manaAqquiredSound);
+        }
+    }
 }

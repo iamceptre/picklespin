@@ -25,7 +25,7 @@ public class ParticleMoveTowards : MonoBehaviour
     }
     void Start()
     {
-        publicPlayerTransform = PublicPlayerTransform.instance;
+        publicPlayerTransform = PublicPlayerTransform.Instance;
     }
 
     private void OnEnable()

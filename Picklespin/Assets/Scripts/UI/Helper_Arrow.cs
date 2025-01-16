@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Helper_Arrow : MonoBehaviour //works only with objects that are not moving
 {
-    public static Helper_Arrow instance {  get; private set; }
+    public static Helper_Arrow Instance {  get; private set; }
 
     public Transform target;
     private Renderer _rend;
@@ -15,13 +15,13 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
     {
         _rend = GetComponent<Renderer>();
 
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 

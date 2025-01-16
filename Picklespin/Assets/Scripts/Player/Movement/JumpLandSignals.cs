@@ -47,7 +47,7 @@ public class JumpLandSignals : MonoBehaviour
     {
         floorTypeDetector = FloorTypeDetector.instance;
         speedometer = CharacterControllerVelocity.instance;
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
         camShakeManager = CameraShakeManagerV2.instance;
         cameraBob = CameraBob.instance;
     }

@@ -6,7 +6,7 @@ public class StairGravity : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
     }
 
     private void OnTriggerEnter(Collider other)

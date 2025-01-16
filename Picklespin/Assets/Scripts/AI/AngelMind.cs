@@ -83,11 +83,11 @@ public class AngelMind : MonoBehaviour
 
     private void Start()
     {
-        minigame = AngelHealingMinigame.instance;
-        helperArrow = Helper_Arrow.instance;
+        minigame = AngelHealingMinigame.Instance;
+        helperArrow = Helper_Arrow.Instance;
         playerHP = PlayerHP.instance;
         ammo = Ammo.instance;
-        playerMovement = PlayerMovement.instance;
+        playerMovement = PlayerMovement.Instance;
         playerEXP = PlayerEXP.instance;
         eyesManager.Close();
     }
@@ -115,9 +115,9 @@ public class AngelMind : MonoBehaviour
         angelTorchManager.OffTorch();
 
         GiveHPToPlayer();
-        Invoke("GiveStaminaToPlayer", 0.2f);
-        Invoke("GiveManaToPlayer", 0.4f);
-        giveExpAfterHeal.GiveExp();
+        Invoke(nameof(GiveStaminaToPlayer), 0.2f);
+        Invoke(nameof(GiveManaToPlayer), 0.4f);
+        //giveExpAfterHeal.GiveExp();
         scriptActivationTrigger.size = Vector3.zero;
         minigame.RandomizeTurboAreaPosition();
         additionalHealedEvent.Invoke();
@@ -126,7 +126,7 @@ public class AngelMind : MonoBehaviour
 
     private void GiveHPToPlayer()
     {
-        playerHP.GiveHPToPlayer(playerHP.maxHp);
+        playerHP.ModifyHP(playerHP.maxHp);
     }
 
     private void GiveStaminaToPlayer()

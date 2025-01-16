@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class HpBarDisplay : MonoBehaviour
 {
-    public static HpBarDisplay instance;
+    public static HpBarDisplay Instance;
     [SerializeField] private PlayerBarDisplay playerBarDisplay;
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 

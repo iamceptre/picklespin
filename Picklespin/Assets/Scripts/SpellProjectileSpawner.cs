@@ -17,15 +17,15 @@ public class SpellProjectileSpawner : MonoBehaviour
 
     [Header("Purple")]
     private ObjectPool<Bullet> purpleSpellPool;
-    private int pooledPurpleSpellsCount = 14;
+    private readonly int pooledPurpleSpellsCount = 8;
 
     [Header("Fireball")]
     private ObjectPool<Bullet> fireballSpellPool;
-    private int pooledFireballSpellsCount = 3;
+    private readonly int pooledFireballSpellsCount = 3;
 
     [Header("Light")]
     private ObjectPool<Bullet> lightSpellPool;
-    private int pooledlightSpellsCount = 4;
+    private readonly int pooledlightSpellsCount = 4;
     private Bullet previousLightSpell;
 
     private void Awake()

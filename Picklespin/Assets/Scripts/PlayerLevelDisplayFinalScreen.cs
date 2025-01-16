@@ -13,7 +13,7 @@ public class PlayerLevelDisplayFinalScreen : MonoBehaviour
     private int currentlyShownLevel;
     private float previousSliderValue;
 
-    StringBuilder sb = new StringBuilder();
+    private readonly StringBuilder sb = new();
 
     private void Awake()
     {

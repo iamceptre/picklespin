@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static PlayerMovement instance { get; private set; }
+    public static PlayerMovement Instance { get; private set; }
 
     [Header("Character Controller Setup")]
     public CharacterController characterController;
@@ -75,8 +75,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        if (instance && instance != this) Destroy(this);
-        else instance = this;
+        if (Instance && Instance != this) Destroy(this);
+        else Instance = this;
     }
 
     void Start()
