@@ -9,7 +9,7 @@ public class PlayerBarDisplay : MonoBehaviour
     [SerializeField] private Ammo ammo;
     [SerializeField] private PlayerHP playerHP;
     [SerializeField] private PlayerMovement playerMovement;
-    private const float smoothTime = 0.1f; //mana bar bugs out when this value is set higher pls fix it, make sure only this script interacts with the slider values
+    private const float smoothTime = 0.5f;
 
     private Slider slider;
     private Coroutine smoothUpdateCoroutine;
@@ -31,23 +31,22 @@ public class PlayerBarDisplay : MonoBehaviour
 
         if (smooth)
         {
-            if (smoothUpdateCoroutine != null)
-                StopCoroutine(smoothUpdateCoroutine);
-
+            StopActiveCoroutine();
             smoothUpdateCoroutine = StartCoroutine(SmoothValueRoutine(targetValue));
         }
         else
         {
+            StopActiveCoroutine();
             slider.value = targetValue;
         }
     }
 
     private float GetCurrentNormalizedValue()
     {
-        if (playerHP) return (float)playerHP.hp / playerHP.maxHp;
-        if (ammo) return (float)ammo.ammo / ammo.maxAmmo;
-        if (playerMovement) return Mathf.Clamp01(playerMovement.stamina * 0.01f);
-        return 0f;
+        return playerHP ? (float)playerHP.hp / playerHP.maxHp
+             : ammo ? (float)ammo.ammo / ammo.maxAmmo
+             : playerMovement ? Mathf.Clamp01(playerMovement.stamina * 0.01f)
+             : 0f;
     }
 
     private IEnumerator SmoothValueRoutine(float targetValue)
@@ -63,5 +62,15 @@ public class PlayerBarDisplay : MonoBehaviour
         }
 
         slider.value = targetValue;
+        smoothUpdateCoroutine = null;
+    }
+
+    private void StopActiveCoroutine()
+    {
+        if (smoothUpdateCoroutine != null)
+        {
+            StopCoroutine(smoothUpdateCoroutine);
+            smoothUpdateCoroutine = null;
+        }
     }
 }
