@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bhopTimingThreshold = 0.15f;
     [SerializeField] private float bhopSpeedBonus = 0.4f;
     public bool canBhop = false;
+    private WaitForSeconds bhopTimeBuffer;
 
     [Header("State & Movement")]
     [Range(0, 2)] public int movementStateForFMOD = 1;
@@ -61,8 +63,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CameraShakeManagerV2 camShakeManager;
     [SerializeField] private StaminaBarDisplay staminaBarDisplay;
 
-    private WaitForSeconds jumpBufferWait = new(0.15f);
+    private readonly WaitForSeconds jumpBufferWait = new(0.15f);
     private bool jumpBuffered;
+
+    // Use this to detect when we transition from ground to air and back
+    private bool wasGrounded;  // <-- ADDED
 
     private enum MovementState
     {
@@ -85,6 +90,10 @@ public class PlayerMovement : MonoBehaviour
         currentState = MovementState.Walk;
         movementStateForFMOD = 1;
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
+
+        bhopTimeBuffer = new(bhopTimingThreshold);
+        wasGrounded = characterController.isGrounded;
+        canBhop = false;
     }
 
     void Update()
@@ -93,32 +102,55 @@ public class PlayerMovement : MonoBehaviour
         anyMovementKeysPressed = rawMovement != Vector2.zero;
         float chosenSmoothTime = rawMovement.sqrMagnitude < smoothedMovement.sqrMagnitude ? moveSmoothTime * 1.618f : moveSmoothTime;
         smoothedMovement = Vector2.SmoothDamp(smoothedMovement, rawMovement, ref movementVelocity, chosenSmoothTime);
+
         HandleMovementState();
-        if (!canBhop && !characterController.isGrounded)
-        {
-            canBhop = true;
-            Invoke(nameof(ResetCanBhop), bhopTimingThreshold);
-        }
         if (jumpAction.action.triggered) StartCoroutine(JumpBuffer());
+
         HandleMovement();
+        CheckBhopState();
     }
 
-    void HandleMovementState() //Update: trigger it only before footstep, not on update
+    private void CheckBhopState()
+    {
+        bool isGroundedNow = characterController.isGrounded;
+
+        if (!isGroundedNow && wasGrounded)
+        {
+            canBhop = true;
+        }
+        else if (isGroundedNow && !wasGrounded)
+        {
+            StartCoroutine(ResetBhop());
+        }
+
+        wasGrounded = isGroundedNow;
+    }
+
+
+    private IEnumerator ResetBhop()
+    {
+        yield return bhopTimeBuffer;
+        canBhop = false;
+    }
+
+    void HandleMovementState()
     {
         bool isCrouchHeld = crouchAction.action.IsPressed();
         bool canRunCheck = characterController.isGrounded && stamina > 0 && runAction.action.IsPressed() && anyMovementKeysPressed && !isCrouchHeld;
+
         MovementState newState;
         if (isCrouchHeld) newState = MovementState.Sneak;
         else if (canRunCheck) newState = MovementState.Run;
         else newState = MovementState.Walk;
+
         if (currentState != newState)
         {
             currentState = newState;
             movementStateForFMOD = (int)newState;
-            //Debug.Log("Movement State: " + movementStateForFMOD);
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", movementStateForFMOD);
             isRunning = (newState == MovementState.Run);
         }
+
         switch (currentState)
         {
             case MovementState.Sneak:
@@ -146,9 +178,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 forward = forwardPointer.forward;
         Vector3 right = forwardPointer.right;
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
+
         float inputX = smoothedMovement.y * currentSpeed;
         float inputY = smoothedMovement.x * currentSpeed;
         Vector3 inputDirection = (forward * inputX + right * inputY) * speedMultiplier;
+
         if (characterController.isGrounded)
         {
             moveDirection = inputDirection;
@@ -161,15 +195,23 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Vector3 horizontalVelocity = new Vector3(moveDirection.x, 0, moveDirection.z);
+            Vector3 horizontalVelocity = new(moveDirection.x, 0, moveDirection.z);
             Vector3 airControlVelocity = airControl * Time.deltaTime * inputDirection;
             horizontalVelocity += airControlVelocity;
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, Vector3.zero, dampeningFactor * Time.deltaTime);
+
             float maxSpeed = Mathf.Max(walkSpeed, runSpeed);
-            if (horizontalVelocity.magnitude > maxSpeed) horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+            if (horizontalVelocity.magnitude > maxSpeed)
+                horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+
             moveDirection = new Vector3(horizontalVelocity.x, moveDirection.y - gravity * Time.deltaTime, horizontalVelocity.z);
         }
-        if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0) moveDirection.y = 0;
+
+        if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0)
+        {
+            moveDirection.y = 0;
+        }
+
         float preservedY = moveDirection.y;
         Vector3 adjustedDirection = moveDirection * externalPushForce;
         adjustedDirection.y = preservedY;
@@ -182,12 +224,13 @@ public class PlayerMovement : MonoBehaviour
         footstepSystem.SendJumpSignal();
         NormalGravity();
         camShakeManager.ShakeSelected(9);
+
         if (canBhop) BhopJump();
         else
         {
             float cost = Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100);
             stamina -= cost;
-            jumpPushForward(0.04f);
+            JumpPushForward(0.02f);
             moveDirection.y = jumpPower;
             footstepSystem.StopAllCoroutines();
         }
@@ -196,21 +239,21 @@ public class PlayerMovement : MonoBehaviour
     void BhopJump()
     {
         float cost = Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100) * 0.3f;
-        stamina -= cost * 0.5f;
-        Vector3 horizontalBoost = moveDirection.normalized * bhopSpeedBonus;
-        moveDirection += new Vector3(horizontalBoost.x, 0, horizontalBoost.z);
-        jumpPushForward(0.23f);
+        stamina -= cost * 0.32f;
+        JumpPushForward(bhopSpeedBonus);
         moveDirection.y = jumpPower;
+
         footstepSystem.StopAllCoroutines();
         footstepSystem.SendJumpSignal();
     }
 
-    void jumpPushForward(float force)
+    void JumpPushForward(float force)
     {
         externalPushForce = 1f;
+
         if (anyMovementKeysPressed && stamina > 2f)
         {
-            externalPushForce = force + speedometer.horizontalVelocity * 0.1f;
+            externalPushForce = Mathf.Clamp((force + speedometer.horizontalVelocity * 0.1f), 0, 3);
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
@@ -238,9 +281,11 @@ public class PlayerMovement : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, explosionCenter);
         float forceFactor = Mathf.Clamp01(1 - distance / rangeRadius);
+
         Vector3 pushDir = (transform.position - explosionCenter);
         pushDir.y = 1f;
         pushDir.Normalize();
+
         moveDirection += pushDir * (explosionForce * forceFactor);
         footstepSystem.SendJumpSignal();
         camShakeManager.ShakeSelected(9);
@@ -263,6 +308,7 @@ public class PlayerMovement : MonoBehaviour
     void StaminaDeplete()
     {
         stamina = Mathf.Clamp(stamina - Time.deltaTime * fatigability, 0, 100);
+
         if (stamina <= 0)
         {
             currentState = MovementState.Walk;
@@ -281,11 +327,6 @@ public class PlayerMovement : MonoBehaviour
             stamina = Mathf.Clamp(stamina + Time.deltaTime * rate, 0, 100);
         }
         staminaBarDisplay.Refresh(false);
-    }
-
-    void ResetCanBhop()
-    {
-        canBhop = false;
     }
 
     public void NormalGravity()

@@ -54,9 +54,9 @@ MonoBehaviour:
   fireLight: {fileID: 8183988774681957258}
   diedFromBurnParticle: {fileID: 3466783101535412148}
   effectParticle: {fileID: 4800877894551478953}
+  countdownTimer: 0
   cachedAiHP: {fileID: 0}
   cachedAiHpBar: {fileID: 0}
-  countdownTimer: 0
 --- !u!199 &2559872966959438329
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -75,6 +75,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -4887,12 +4890,12 @@ MonoBehaviour:
       Data4: -372257410
     Path: event:/ENEMIES/ENEMY_BURNING
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  AllowNonRigidbodyDoppler: 0
+  NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 0.5
@@ -4939,9 +4942,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8061835261280084500}
   m_Enabled: 0
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 2
-  m_Shape: 0
   m_Color: {r: 1, g: 0.5851397, b: 0, a: 1}
   m_Intensity: 2
   m_Range: 15
@@ -4949,7 +4951,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: 0
     m_CustomResolution: -1
     m_Strength: 1
@@ -4985,14 +4987,18 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!114 &7013526373688737115
 MonoBehaviour:
   m_ObjectHideFlags: 0

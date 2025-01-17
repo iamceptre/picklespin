@@ -42,7 +42,7 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
         {
             helperSpirit.HideSpirit();
         }
-        //Debug.Log("hideing arrow");
+        //Debug.Log("hiding arrow");
         _rend.enabled = false;
         enabled = false;
         showing = false;

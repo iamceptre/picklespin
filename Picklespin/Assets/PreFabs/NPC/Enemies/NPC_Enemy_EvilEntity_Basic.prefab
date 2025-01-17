@@ -21135,6 +21135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1582373921286001913}
   - component: {fileID: 3817865884643380506}
+  - component: {fileID: 8506893838354737704}
   m_Layer: 8
   m_Name: UI_Manager
   m_TagString: Untagged
@@ -21172,10 +21173,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiHealth: {fileID: 9088957210784467254}
   slider: {fileID: 263190420828383618}
-  fillImage: {fileID: 1261250139828681115}
-  bgImage: {fileID: 2326754966206029414}
-  wholeCanvas: {fileID: 8037110234174250684}
-  barEase: {fileID: 3172104866769131248}
+  canvasFader: {fileID: 8506893838354737704}
+--- !u!114 &8506893838354737704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6381187467471827612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092d0e58be483ca4980f7aa52fa18f71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactible: 0
+  toggleCanvasGameObjectActiveState: 0
+  _canvasGroup: {fileID: 2539354926635691145}
 --- !u!1 &6477168061340603697
 GameObject:
   m_ObjectHideFlags: 0
@@ -21601,6 +21614,7 @@ GameObject:
   - component: {fileID: 2257832572147612331}
   - component: {fileID: 474706113857304724}
   - component: {fileID: 4448690037703009914}
+  - component: {fileID: 2539354926635691145}
   m_Layer: 8
   m_Name: AI_UI
   m_TagString: Untagged
@@ -21635,7 +21649,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8037110234174250684}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -21691,6 +21705,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &2539354926635691145
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037110234174250684}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &8198522583436175717
 GameObject:
   m_ObjectHideFlags: 0
@@ -22240,7 +22266,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8183988774681957258, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 3839
+      value: 32511
+      objectReference: {fileID: 0}
+    - target: {fileID: 8183988774681957258, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
+      propertyPath: m_Shadows.m_NearPlane
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

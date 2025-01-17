@@ -19918,7 +19918,7 @@ MonoBehaviour:
   damage: 5
   magickaCost: 12
   speed: 65
-  myCooldown: 1
+  myCooldown: 0.5
   castDuration: 0
   timeBeforeOff: 4
   fadeOutLight: 0

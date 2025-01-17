@@ -9,27 +9,23 @@ public class SetOnFire : MonoBehaviour
     [Header("Assets")]
     [SerializeField] private StudioEventEmitter emitter;
     [SerializeField] private Light fireLight;
-    [SerializeField] private GameObject diedFromBurnParticle; //both particle and sound
-
-
+    [SerializeField] private GameObject diedFromBurnParticle;
     [SerializeField] private ParticleSystem effectParticle;
+
     private ParticleSystem.EmissionModule particleEmission;
     private ParticleSystem.MainModule particleMain;
 
     [Header("Debug/Don't touch")]
-    private bool imOnFire = false;
-    private bool burned = false;
+    [SerializeField][Range(0, 10)] private float countdownTimer = 0;
+    private bool imOnFire;
+    private bool burned;
     private IEnumerator killer;
+    private WaitForSeconds decreaseHpEverySeconds;
 
     [Header("References")]
     [SerializeField] private AiHealth cachedAiHP;
     [SerializeField] private AiHealthUiBar cachedAiHpBar;
     private DamageUI_Spawner damageUiSpawner;
-
-    [SerializeField][Range(0, 10)] private float countdownTimer = 0;
-
-    private WaitForSeconds decreaseHpEverySeconds;
-
 
     private void Awake()
     {
@@ -37,10 +33,9 @@ public class SetOnFire : MonoBehaviour
         particleMain = effectParticle.main;
     }
 
-
     private void OnEnable()
     {
-        ResetCountdowns();
+        countdownTimer = 0;
 
         decreaseHpEverySeconds = new WaitForSeconds(Random.Range(0.45f, 0.55f));
 
@@ -49,54 +44,70 @@ public class SetOnFire : MonoBehaviour
             damageUiSpawner = DamageUI_Spawner.instance;
         }
 
-        Invoke("FireUp", 0.1f);
+        Invoke(nameof(FireUp), 0.1f);
     }
 
-
-    public void ResetCountdowns()
+    private void Update()
     {
-        countdownTimer = 0;
+        countdownTimer += Time.deltaTime;
+        if (countdownTimer >= 10f)
+        {
+            if (killer != null)
+            {
+                StopCoroutine(killer);
+            }
+            ShutFireDown();
+        }
     }
 
     private void FireUp()
     {
-        if (!imOnFire)
+        if (imOnFire) return;
+
+        imOnFire = true;
+
+        if (killer != null)
         {
-            imOnFire = true;
-            killer = DecreaseHPoverTime();
             StopCoroutine(killer);
-            StartCoroutine(killer);
-
-            particleEmission.enabled = true;
-            effectParticle.Play();
-
-            emitter.Play();
-            fireLight.gameObject.SetActive(true);
-            fireLight.enabled = true;
         }
-    }
+        killer = DecreaseHPoverTime();
+        StartCoroutine(killer);
 
+        particleEmission.enabled = true;
+        effectParticle.Play();
+        emitter.Play();
+        fireLight.gameObject.SetActive(true);
+        fireLight.enabled = true;
+    }
 
     private IEnumerator DecreaseHPoverTime()
     {
         while (true)
         {
             cachedAiHP.hp -= howMuchDamageIdeal;
-            AiHpBarRefresher();
+            RefreshHpBarAndSpawnDamageUI();
 
             if (cachedAiHP.hp <= 0)
             {
-                KillFromFire(); //die from fire
+                KillFromFire();
+                yield break;
             }
 
             yield return decreaseHpEverySeconds;
         }
     }
 
-    public void KillFromFire() //spalenie
+    private void RefreshHpBarAndSpawnDamageUI()
+    {
+        cachedAiHpBar.RefreshBar();
+        damageUiSpawner.Spawn(transform.position + Vector3.up, howMuchDamageIdeal, false);
+    }
+
+    public void KillFromFire()
     {
         if (!burned)
         {
+            burned = true;
             StartCoroutine(WaitAndKill());
         }
     }
@@ -106,49 +117,29 @@ public class SetOnFire : MonoBehaviour
         yield return null;
         yield return null;
         yield return null;
+
         emitter.Stop();
         fireLight.enabled = false;
         fireLight.gameObject.SetActive(false);
-        burned = true;
         particleEmission.enabled = false;
         effectParticle.Stop();
+
         diedFromBurnParticle.SetActive(true);
         cachedAiHP.deathEvent.Invoke();
         enabled = false;
     }
 
-    private void AiHpBarRefresher()
+    public void ShutFireDown()
     {
-        cachedAiHpBar.RefreshBar();
-        damageUiSpawner.Spawn(transform.position + new Vector3(0, 1), howMuchDamageIdeal, false); //maybe a different color
-    }
-
-
-    private void Update()
-    {
-        countdownTimer += Time.deltaTime;
-
-        if (countdownTimer >= 10)
-        {
-            if (killer != null)
-            {
-                StopCoroutine(killer);
-            }
-
-            ShutFireDown();
-        }
-    }
-
-    public void ShutFireDown() //ugaszenie prze�ywaj�c
-    {
-        particleEmission.enabled = false;
         imOnFire = false;
         emitter.Stop();
         fireLight.enabled = false;
         fireLight.gameObject.SetActive(false);
+        particleEmission.enabled = false;
         effectParticle.Stop();
+
         StopAllCoroutines();
+
         enabled = false;
     }
-
 }

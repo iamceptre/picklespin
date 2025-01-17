@@ -10030,7 +10030,7 @@ MonoBehaviour:
   timeBeforeOff: 15
   fadeOutLight: 0
   isRanged: 1
-  rangeRadius: 9
+  rangeRadius: 13
   detectionLayer:
     serializedVersion: 2
     m_Bits: 385

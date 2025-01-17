@@ -11,7 +11,7 @@ public class Dash : MonoBehaviour
     [SerializeField] float dashDuration = 0.4f;
     [SerializeField] float dashSpeedMultiplier = 1.2f;
     [SerializeField] float dashEffectRadius = 25f;
-    [SerializeField] AnimationCurve dashDecayCurve = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 0));
+    [SerializeField] AnimationCurve dashDecayCurve = new(new Keyframe(0, 1), new Keyframe(1, 0));
     [SerializeField] InputActionReference dashAction;
     [SerializeField] InputActionReference moveAction;
 
@@ -30,7 +30,7 @@ public class Dash : MonoBehaviour
     bool isDashing;
     bool isWaitingForSecondClick;
     bool haveEverDashed;
-    private readonly WaitForSeconds doubleClickThreshold = new WaitForSeconds(0.17f);
+    private readonly WaitForSeconds doubleClickThreshold = new(0.17f);
 
     void Awake()
     {
