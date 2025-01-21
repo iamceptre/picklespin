@@ -3,134 +3,118 @@ using UnityEngine;
 
 public class WaypointsForSpawner : State
 {
+    [Header("Waypoints")]
     public Transform[] cachedPoint;
-    [SerializeField] private Transform[] waypoints;
+    [SerializeField] Transform[] waypoints;
+    [SerializeField] int waypointIndex = 0;
 
-    [SerializeField] private AIPath aiPath;
-    [SerializeField] private AIDestinationSetter destinationSetter;
-    [SerializeField] private int waypointIndex;
-    [HideInInspector] public Transform CurrentTarget;
-    [SerializeField] private AiVision aiVision;
-    [SerializeField] private AttackPlayer attackPlayer;
-    private bool canIncrement = true;
-    [SerializeField] private float idleSpeed = 3.5f;
-    private Vector3 startingPos;
+    [Header("References")]
+    [SerializeField] AIPath aiPath;
+    [SerializeField] AIDestinationSetter destinationSetter;
+    [SerializeField] AiVision aiVision;
+    [SerializeField] AttackPlayer attackPlayer;
 
-    private Vector3 previousPosition;
-    private float velocity;
-    private Vector3 velocityVector;
+    [Header("Movement")]
+    readonly float idleSpeed = 5f;
+    readonly float rotationSpeed = 90f;
 
-    private float waitOnWaypointTime = 2;
+    bool canIncrement = true;
+    readonly float waitOnWaypointTime = 2f;
 
+    public Transform CurrentTarget;
 
-    private int rrrandom;
-    private int previousNumber = -1;
-    
-    public override State RunCurrentState() //This shit runs periodically 
-    {
-        if (aiVision.seeingPlayer)
-        {
-            return attackPlayer;
-        }
-        else
-        {
-            RefreshWaypoint();
-            return this;
-        }
-    }
-
-    private void Awake()
+    void Awake()
     {
         waypointIndex = 0;
     }
 
-
-
-    private void Start()
+    void Start()
     {
-        startingPos = transform.position;
         RandomizeWaypoints();
-    }
-
-    private void CalculateVelocity()
-    {
-        velocityVector = transform.position - previousPosition;
-        velocity = velocityVector.magnitude;
-        previousPosition = transform.position;
-    }
-
-
-    private void RefreshWaypoint()
-    {
-
-        if (CurrentTarget != null)
-        {
-
-            if (Vector3.Distance(transform.position, CurrentTarget.position) < 3 && canIncrement)
-            {
-                Invoke("UpdateDestination", waitOnWaypointTime);
-                IncreaseWaypoint();
-            }
-
-            if (Vector3.Distance(transform.position, CurrentTarget.position) > 4 && !canIncrement)
-            {
-                canIncrement = true;
-            }
-        }
-
-    }
-
-
-    public void UpdateDestination()
-    {
-        aiPath.maxSpeed = idleSpeed;
-
-        if (waypoints.Length > 0)
-        {
-            CurrentTarget = waypoints[waypointIndex];
-        }
-        else
-        {
-            CurrentTarget = null;
-
-        }
-        destinationSetter.target = CurrentTarget;
-    }
-
-
-    private void IncreaseWaypoint()
-    {
-        canIncrement = false;
-        waypointIndex++;
-        if (waypointIndex == waypoints.Length)
-        {
-            waypointIndex = 0;
-        }
-    }
-
-    private void RandomizeWaypoints()
-    {
-        waypoints = new Transform[cachedPoint.Length];
-
-        for (int i = 0; i < cachedPoint.Length; i++)
-        {
-            RoundRobin();
-            waypoints[i] = cachedPoint[rrrandom];
-        }
-
-        RefreshWaypoint();
         UpdateDestination();
     }
 
-    private void RoundRobin()
+    public override State RunCurrentState()
     {
-        do
-        {
-            rrrandom = Random.Range(0, cachedPoint.Length);
-        } while (rrrandom == previousNumber);
+        if (aiVision.seeingPlayer)
+            return attackPlayer;
 
-        previousNumber = rrrandom;
+        aiPath.maxSpeed = idleSpeed;
+
+        if (waypoints != null && waypoints.Length > 0)
+        {
+            if (CurrentTarget == null || destinationSetter.target != CurrentTarget)
+                destinationSetter.target = waypoints[waypointIndex];
+        }
+        else
+        {
+            destinationSetter.target = null;
+        }
+
+        RefreshWaypoint();
+        return this;
     }
 
+    void RefreshWaypoint()
+    {
+        if (CurrentTarget == null) return;
+        float distance = Vector3.Distance(transform.position, CurrentTarget.position);
 
+        if (distance < 6f && canIncrement)
+        {
+            Invoke(nameof(UpdateDestination), waitOnWaypointTime);
+            IncrementWaypoint();
+        }
+        if (distance > 6f && !canIncrement) canIncrement = true;
+    }
+
+    void UpdateDestination()
+    {
+        aiPath.maxSpeed = idleSpeed;
+        aiPath.rotationSpeed = rotationSpeed;
+        if (waypoints.Length > 0)
+        {
+            CurrentTarget = waypoints[waypointIndex];
+            destinationSetter.target = CurrentTarget;
+        }
+        else
+        {
+
+            CurrentTarget = null;
+            destinationSetter.target = null;
+        }
+    }
+
+    void IncrementWaypoint()
+    {
+        canIncrement = false;
+        waypointIndex++;
+        if (waypointIndex >= waypoints.Length) waypointIndex = 0;
+    }
+
+    void RandomizeWaypoints()
+    {
+        if (cachedPoint == null || cachedPoint.Length == 0) return;
+        waypoints = new Transform[cachedPoint.Length];
+        int previousNumber = -1;
+        for (int i = 0; i < cachedPoint.Length; i++)
+        {
+            int rand;
+            do { rand = Random.Range(0, cachedPoint.Length); }
+            while (rand == previousNumber);
+
+            previousNumber = rand;
+            waypoints[i] = cachedPoint[rand];
+        }
+    }
+
+    public void ResetWaypointState()
+    {
+        CancelInvoke();
+        waypointIndex = 0;
+        canIncrement = true;
+        CurrentTarget = null;
+        RandomizeWaypoints();
+        UpdateDestination();
+    }
 }

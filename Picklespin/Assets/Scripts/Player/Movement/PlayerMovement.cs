@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private readonly float stairGravity = 4000;
 
     [Header("Stamina & Fatigue")]
-    [Range(0, 100)][HideInInspector] public float stamina = 100;
+    [Range(0, 100)] public float stamina = 100;
     public float fatigability = 32;
 
     [Header("Bhop Settings")]
@@ -38,9 +37,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("State & Movement")]
     [Range(0, 2)] public int movementStateForFMOD = 1;
-    [HideInInspector] public bool isRunning;
-    [HideInInspector] public bool anyMovementKeysPressed;
-    [HideInInspector] public float externalPushForce = 1;
+    public bool isRunning;
+    public bool anyMovementKeysPressed;
+    public float externalPushForce = 1;
     public Vector3 moveDirection = Vector3.zero;
 
     [Header("Air Control")]
@@ -63,20 +62,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CameraShakeManagerV2 camShakeManager;
     [SerializeField] private StaminaBarDisplay staminaBarDisplay;
 
-    private readonly WaitForSeconds jumpBufferWait = new(0.15f);
-    private bool jumpBuffered;
-
-    // Use this to detect when we transition from ground to air and back
-    private bool wasGrounded;  // <-- ADDED
-
-    private enum MovementState
-    {
-        Sneak = 0,
-        Walk = 1,
-        Run = 2
-    }
-
+    private bool wasGrounded;
+    private enum MovementState { Sneak = 0, Walk = 1, Run = 2 }
     private MovementState currentState = MovementState.Walk;
+    private readonly WaitForSeconds jumpBufferWait = new WaitForSeconds(0.15f);
+    private bool jumpBuffered;
 
     void Awake()
     {
@@ -90,8 +80,7 @@ public class PlayerMovement : MonoBehaviour
         currentState = MovementState.Walk;
         movementStateForFMOD = 1;
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", 1);
-
-        bhopTimeBuffer = new(bhopTimingThreshold);
+        bhopTimeBuffer = new WaitForSeconds(bhopTimingThreshold);
         wasGrounded = characterController.isGrounded;
         canBhop = false;
     }
@@ -110,24 +99,15 @@ public class PlayerMovement : MonoBehaviour
         CheckBhopState();
     }
 
-    private void CheckBhopState()
+    void CheckBhopState()
     {
         bool isGroundedNow = characterController.isGrounded;
-
-        if (!isGroundedNow && wasGrounded)
-        {
-            canBhop = true;
-        }
-        else if (isGroundedNow && !wasGrounded)
-        {
-            StartCoroutine(ResetBhop());
-        }
-
+        if (!isGroundedNow && wasGrounded) canBhop = true;
+        else if (isGroundedNow && !wasGrounded) StartCoroutine(ResetBhop());
         wasGrounded = isGroundedNow;
     }
 
-
-    private IEnumerator ResetBhop()
+    IEnumerator ResetBhop()
     {
         yield return bhopTimeBuffer;
         canBhop = false;
@@ -178,7 +158,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 forward = forwardPointer.forward;
         Vector3 right = forwardPointer.right;
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
-
         float inputX = smoothedMovement.y * currentSpeed;
         float inputY = smoothedMovement.x * currentSpeed;
         Vector3 inputDirection = (forward * inputX + right * inputY) * speedMultiplier;
@@ -195,22 +174,17 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Vector3 horizontalVelocity = new(moveDirection.x, 0, moveDirection.z);
-            Vector3 airControlVelocity = airControl * Time.deltaTime * inputDirection;
-            horizontalVelocity += airControlVelocity;
+            Vector3 horizontalVelocity = new Vector3(moveDirection.x, 0, moveDirection.z);
+            horizontalVelocity += airControl * Time.deltaTime * inputDirection;
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, Vector3.zero, dampeningFactor * Time.deltaTime);
-
             float maxSpeed = Mathf.Max(walkSpeed, runSpeed);
             if (horizontalVelocity.magnitude > maxSpeed)
                 horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
-
             moveDirection = new Vector3(horizontalVelocity.x, moveDirection.y - gravity * Time.deltaTime, horizontalVelocity.z);
         }
 
         if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0)
-        {
             moveDirection.y = 0;
-        }
 
         float preservedY = moveDirection.y;
         Vector3 adjustedDirection = moveDirection * externalPushForce;
@@ -239,10 +213,9 @@ public class PlayerMovement : MonoBehaviour
     void BhopJump()
     {
         float cost = Mathf.Clamp((1 + speedometer.horizontalVelocity) * 0.05f * fatigability, 10, 100) * 0.3f;
-        stamina -= cost * 0.32f;
+        stamina -= cost * 0.5f;
         JumpPushForward(bhopSpeedBonus);
         moveDirection.y = jumpPower;
-
         footstepSystem.StopAllCoroutines();
         footstepSystem.SendJumpSignal();
     }
@@ -250,10 +223,9 @@ public class PlayerMovement : MonoBehaviour
     void JumpPushForward(float force)
     {
         externalPushForce = 1f;
-
         if (anyMovementKeysPressed && stamina > 2f)
         {
-            externalPushForce = Mathf.Clamp((force + speedometer.horizontalVelocity * 0.1f), 0, 3);
+            externalPushForce = Mathf.Clamp(force + speedometer.horizontalVelocity * 0.1f, 0, 3);
             StopAllCoroutines();
             StartCoroutine(ExternalPushForceDamp());
         }
@@ -281,11 +253,9 @@ public class PlayerMovement : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, explosionCenter);
         float forceFactor = Mathf.Clamp01(1 - distance / rangeRadius);
-
         Vector3 pushDir = (transform.position - explosionCenter);
         pushDir.y = 1f;
         pushDir.Normalize();
-
         moveDirection += pushDir * (explosionForce * forceFactor);
         footstepSystem.SendJumpSignal();
         camShakeManager.ShakeSelected(9);
@@ -308,7 +278,6 @@ public class PlayerMovement : MonoBehaviour
     void StaminaDeplete()
     {
         stamina = Mathf.Clamp(stamina - Time.deltaTime * fatigability, 0, 100);
-
         if (stamina <= 0)
         {
             currentState = MovementState.Walk;

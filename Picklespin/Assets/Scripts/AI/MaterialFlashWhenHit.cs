@@ -3,20 +3,17 @@ using UnityEngine;
 
 public class MaterialFlashWhenHit : MonoBehaviour
 {
-    [SerializeField] private Renderer rend;
-    [SerializeField] private float flashDuration = 0.4f;
+    [SerializeField] Renderer rend;
+    [SerializeField] float flashDuration = 0.4f;
 
-    private int emissionColor = Shader.PropertyToID("_EmissionColor");
+   readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
+    readonly WaitForSeconds timeBeforeFadingOutFlash = new(0.05f);
+    readonly WaitForSeconds timeBeforeFadingOutHeadshotFlash = new(0.3f);
 
-    private WaitForSeconds timeBeforeFadingOutFlash = new WaitForSeconds(0.05f);
-    private WaitForSeconds timeBeforeFadingOutHeadshotFlash = new WaitForSeconds(0.3f);
-
-    private Coroutine currentFlashCoroutine;
-
-    private Color whiteFlashColor = new Color(0.4f, 0.4f, 0.4f);
-    private Color RedFlashColor = new Color(0.76f, 0.24f, 0.24f);
-
-    private float fadeOutSpeed = 1.5f;
+    Coroutine currentFlashCoroutine;
+    Color whiteFlashColor = new(0.4f, 0.4f, 0.4f);
+    Color redFlashColor = new(0.76f, 0.24f, 0.24f);
+   readonly float fadeOutSpeed = 1.5f;
 
     public void Flash()
     {
@@ -25,37 +22,40 @@ public class MaterialFlashWhenHit : MonoBehaviour
 
     public void FlashHeadshot()
     {
-        StartFlash(RedFlashColor, timeBeforeFadingOutHeadshotFlash);
+        StartFlash(redFlashColor, timeBeforeFadingOutHeadshotFlash);
     }
 
-    private void StartFlash(Color flashColor, WaitForSeconds waitTime)
+    void StartFlash(Color flashColor, WaitForSeconds waitTime)
     {
-
         if (currentFlashCoroutine != null)
-        {
             StopCoroutine(currentFlashCoroutine);
-        }
-
         currentFlashCoroutine = StartCoroutine(FlashRoutine(flashColor, waitTime));
     }
 
-    private IEnumerator FlashRoutine(Color flashColor, WaitForSeconds waitTime)
+    IEnumerator FlashRoutine(Color flashColor, WaitForSeconds waitTime)
     {
         rend.material.SetColor(emissionColor, flashColor);
-
         yield return waitTime;
 
         float flashElapsed = flashDuration;
         while (flashElapsed > 0)
         {
-            float elapsedPercentage = flashElapsed / flashDuration;
-            Color currentEmissionColor = flashColor * elapsedPercentage;
-            rend.material.SetColor(emissionColor, currentEmissionColor);
+            float t = flashElapsed / flashDuration;
+            rend.material.SetColor(emissionColor, flashColor * t);
             flashElapsed -= Time.deltaTime * fadeOutSpeed;
             yield return null;
         }
-
         rend.material.SetColor(emissionColor, Color.black);
         currentFlashCoroutine = null;
+    }
+
+    public void ResetFlashState()
+    {
+        if (currentFlashCoroutine != null)
+        {
+            StopCoroutine(currentFlashCoroutine);
+            currentFlashCoroutine = null;
+        }
+        rend.material.SetColor(emissionColor, Color.black);
     }
 }

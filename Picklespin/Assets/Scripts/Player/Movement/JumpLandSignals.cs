@@ -7,43 +7,34 @@ public class JumpLandSignals : MonoBehaviour
 {
     public static JumpLandSignals instance;
 
-    private FloorTypeDetector floorTypeDetector;
-
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private Transform cameraMovement;
+
+    private FloorTypeDetector floorTypeDetector;
     private CameraBob cameraBob;
     private CameraShakeManagerV2 camShakeManager;
-    [SerializeField] private Transform cameraMovement;
     private PlayerMovement playerMovement;
-    [SerializeField] private HearingRange hearingRange;
-
-    [SerializeField] private bool landed = false;
+    private CharacterControllerVelocity speedometer;
 
     public StudioEventEmitter landSoftEmitter;
     public StudioEventEmitter landHardEmitter;
 
-    private CharacterControllerVelocity speedometer;
-
+    private bool landed;
+    private bool ignoreFirstLanding = true;
+    private bool isFallingLongEnough;
     private float lastLandCameraShakeStrenght;
 
-    private bool ignoreFirstLanding = true;
+    [Range(0, 0.5f)]
+    [SerializeField] private float fallingTimerCooldown;
+    private readonly float fallingTimerTreshold = 0.5f;
 
-    [Range(0, 0.5f)][SerializeField] private float fallingTimerCooldown;
-    private float fallingTimerTreshold = 0.5f;
-    public bool isFallingLongEnough = false;
-
-    private void Awake()
+    void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
+        if (instance && instance != this) Destroy(this);
+        else instance = this;
     }
 
-    private void Start()
+    void Start()
     {
         floorTypeDetector = FloorTypeDetector.instance;
         speedometer = CharacterControllerVelocity.instance;
@@ -52,13 +43,12 @@ public class JumpLandSignals : MonoBehaviour
         cameraBob = CameraBob.instance;
     }
 
-    private void Update()
+    void Update()
     {
         if (characterController.isGrounded)
         {
-            Landed(); //one tick
+            Landed();
         }
-
         else
         {
             if (landed)
@@ -66,16 +56,12 @@ public class JumpLandSignals : MonoBehaviour
                 StopAllCoroutines();
                 StartCoroutine(FallingTimer());
             }
-
             landed = false;
             lastLandCameraShakeStrenght = Mathf.Clamp(speedometer.verticalVelocity * 0.4f, 0, 10);
         }
-
     }
 
-
-
-    private void Landed()
+    void Landed()
     {
         if (!landed)
         {
@@ -87,68 +73,48 @@ public class JumpLandSignals : MonoBehaviour
             if (isFallingLongEnough)
             {
                 LandCameraMovement(speedometer.verticalVelocity);
-                isLandingHardDecider();
+                IsLandingHardDecider();
                 cameraBob.ResetBobbing();
-                //footstepSystem.RefreshFootstepTimer();
-                hearingRange.RunExtendedHearingRange();
+                StartCoroutine(EnableLandingHearingForAllAI());
             }
         }
     }
 
-
-    private void LandCameraMovement(float strenght)
+    void LandCameraMovement(float strength)
     {
-        strenght = Mathf.Clamp(strenght * 0.1f, 0.1f, 3);
-        //Debug.Log("land bounce strenght: " + strenght);
-        cameraMovement.DOLocalMoveY(-0.4f * strenght, 0.13f).SetEase(Ease.OutSine).OnComplete(() =>
+        strength = Mathf.Clamp(strength * 0.1f, 0.1f, 3);
+        cameraMovement.DOLocalMoveY(-0.4f * strength, 0.13f).SetEase(Ease.OutSine).OnComplete(() =>
         {
-            cameraMovement.DOLocalMoveY(0, 0.2f + (strenght*0.1f)).SetEase(Ease.InOutSine);
+            cameraMovement.DOLocalMoveY(0, 0.2f + (strength * 0.1f)).SetEase(Ease.InOutSine);
         });
-
-        camShakeManager.ShakeHand(strenght * 0.1f, 0.2f, 13);
-
+        camShakeManager.ShakeHand(strength * 0.1f, 0.2f, 13);
     }
 
-
-    private IEnumerator FallingTimer()
+    IEnumerator FallingTimer()
     {
         isFallingLongEnough = false;
-
         fallingTimerCooldown = 0;
 
         while (true)
         {
-
             fallingTimerCooldown += Time.deltaTime;
             yield return null;
-
             if (fallingTimerCooldown >= fallingTimerTreshold)
             {
                 isFallingLongEnough = true;
                 yield break;
             }
-
-            if (characterController.isGrounded)
-            {
-                yield break;
-            }
-
+            if (characterController.isGrounded) yield break;
         }
-
-
     }
 
-
-
-
-    private void isLandingHardDecider()
+    void IsLandingHardDecider()
     {
         if (!ignoreFirstLanding)
         {
-
-            if (speedometer.verticalVelocity <= 10) //is landing hard treshold
+            if (speedometer.verticalVelocity <= 10)
             {
-                camShakeManager.ShakeSelected(0); //add organic shake multiplier based on jump velocity
+                camShakeManager.ShakeSelected(0);
                 landSoftEmitter.Play();
             }
             else
@@ -156,7 +122,15 @@ public class JumpLandSignals : MonoBehaviour
                 camShakeManager.ShakeSelected(1);
                 landHardEmitter.Play();
             }
-
         }
+    }
+
+    IEnumerator EnableLandingHearingForAllAI()
+    {
+        foreach (var ai in AiVision.AllAIs)
+        {
+            ai.StartCoroutine(ai.EnableLandingHearing());
+        }
+        yield break;
     }
 }

@@ -109,13 +109,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cachedPoint: []
   waypoints: []
+  waypointIndex: 0
   aiPath: {fileID: 7323594540175906757}
   destinationSetter: {fileID: 100677299577251049}
-  waypointIndex: 0
-  CurrentTarget: {fileID: 0}
   aiVision: {fileID: 7390506993609888115}
   attackPlayer: {fileID: 9126885967048436367}
-  idleSpeed: 3.5
+  CurrentTarget: {fileID: 0}
 --- !u!1 &348551136165742410
 GameObject:
   m_ObjectHideFlags: 0
@@ -15521,6 +15520,7 @@ MonoBehaviour:
   aiVision: {fileID: 7390506993609888115}
   loosingPlayer: {fileID: 5976180761306544218}
   attackSpeed: 13.5
+  rotationSpeed: 300
   howMuchDamageIdeal: 15
   meleeAttackRange: 4
   attackSoundEmitter: {fileID: 9064666203966580678}
@@ -15693,12 +15693,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d987995b518cb9448ac950799a8824c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 45
+  radius: 50
   angle: 168
   playerRef: {fileID: 0}
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 17433
+  landingHearingActive: 0
   seeingPlayer: 0
   playerJustHitMe: 0
-  playerIsVeryClose: 0
   hitMeCooldown: 0
 --- !u!114 &9088957210784467254
 MonoBehaviour:
@@ -15712,6 +15718,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98954fdad0ec45b468b368483a704dcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 100
+  bodyDamageMultiplier: 1
+  eyeDamageMultiplier: 4
   deathEvent:
     m_PersistentCalls:
       m_Calls:
@@ -15835,13 +15844,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  hp: 100
-  bodyDamageMultiplier: 1
-  eyeDamageMultiplier: 4
-  aiHealthUI: {fileID: 3817865884643380506}
   eventOnDamageTaken:
     m_PersistentCalls:
       m_Calls: []
+  aiHealthUI: {fileID: 3817865884643380506}
   myHitboxes:
   - {fileID: 3590205204082857848}
   - {fileID: 2938476453537838281}
@@ -16022,6 +16028,10 @@ MonoBehaviour:
   MaterialFlash: {fileID: 2640075809853599693}
   HeadshotParticle: {fileID: 7393084965939959199}
   setOnFire: {fileID: 2725608640265330799}
+  stateManager: {fileID: 470241992505063077}
+  WaypointsForSpawner: {fileID: 2849707897815361534}
+  AttackPlayer: {fileID: 9126885967048436367}
+  LoosingPlayer: {fileID: 5976180761306544218}
   damageTakenBig: {fileID: 2477817380849591454}
   damageTakenSmall: {fileID: 6511597942865099906}
   damageTakenEyeshot: {fileID: 3664082017059148743}

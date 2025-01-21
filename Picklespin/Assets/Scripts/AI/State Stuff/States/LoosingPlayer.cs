@@ -1,60 +1,40 @@
-using Pathfinding;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class LoosingPlayer : State
 {
-
-    [SerializeField] private AttackPlayer attackPlayer;
-
-    [SerializeField] private WaypointsForSpawner waypointWander;
-
-    private AiVision aiVision;
-    [SerializeField] private StateManager stateManager;
+    [SerializeField] AttackPlayer attackPlayer;
+    [SerializeField] WaypointsForSpawner waypointWander;
+    [SerializeField] StateManager stateManager;
 
     [HideInInspector] public float currentTimedown;
     [HideInInspector] public float loosingTimedown;
-
     [HideInInspector] public bool lostPlayer = true;
 
-
-    private void Awake()
+    void Awake()
     {
-        loosingTimedown = 4f; //this amount of seconds will the ai be searching for player
-        
-
+        loosingTimedown = 4f;
+        currentTimedown = loosingTimedown;
+        lostPlayer = true;
     }
 
     public override State RunCurrentState()
     {
         if (!lostPlayer)
         {
-            if (aiVision.seeingPlayer)
-            {
-                return attackPlayer;
-            }
+            if (currentTimedown > 0) currentTimedown -= stateManager.RefreshEveryVarSeconds;
             else
             {
-                LoosingSight();
-                return this;
+                lostPlayer = true;
+                currentTimedown = loosingTimedown;
             }
+            return this;
         }
-        else
-        {
-            return waypointWander;
-        }
+        return waypointWander;
     }
 
-    void LoosingSight()
+    public void ResetLoosingState()
     {
-        if (currentTimedown > 0)
-        {
-            currentTimedown -= stateManager.RefreshEveryVarSeconds;
-        }
-        else
-        {
-            lostPlayer = true;
-            currentTimedown = loosingTimedown;
-        }
+        currentTimedown = loosingTimedown;
+        lostPlayer = true;
     }
 }

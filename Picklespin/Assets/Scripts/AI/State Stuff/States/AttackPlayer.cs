@@ -1,96 +1,78 @@
 using FMODUnity;
 using Pathfinding;
 using UnityEngine;
+
 public class AttackPlayer : State
 {
-    private PlayerHP playerHP;
-    private HpBarDisplay hpBarDisplay;
-    private PublicPlayerTransform playerTransform;
+    [Header("References")]
+    [SerializeField] AIDestinationSetter destinationSetter;
+    [SerializeField] AIPath aiPath;
+    [SerializeField] AiVision aiVision;
+    [SerializeField] LoosingPlayer loosingPlayer;
 
-    [SerializeField] private AIDestinationSetter destinationSetter;
-    [SerializeField] private AIPath aiPath;
+    PlayerHP playerHP;
+    PublicPlayerTransform playerTransform;
 
-    [SerializeField] private AiVision aiVision;
-    [SerializeField] private LoosingPlayer loosingPlayer;
+    [Header("Attack Settings")]
+    [SerializeField] float attackSpeed = 8f;
+    [SerializeField] float rotationSpeed = 300f;
+    [SerializeField] int howMuchDamageIdeal = 10;
+    [SerializeField] float meleeAttackRange = 4f;
+    [SerializeField] StudioEventEmitter attackSoundEmitter;
 
-    [SerializeField] private float attackSpeed = 8;
-    [SerializeField] private int howMuchDamageIdeal = 10;
-    [SerializeField] private float meleeAttackRange = 4;
-    [SerializeField] private StudioEventEmitter attackSoundEmitter;
-
-    private int attackCounter = 0;
-
+    int attackCounter;
     public bool canAttack = true;
 
-    private void Start()
+    void Start()
     {
         playerTransform = PublicPlayerTransform.Instance;
         playerHP = PlayerHP.instance;
-        hpBarDisplay = HpBarDisplay.Instance;
     }
-
 
     public override State RunCurrentState()
     {
         if (!aiVision.seeingPlayer)
         {
-            //Debug.Log("oddaje dzialanie do Loosing");
             loosingPlayer.currentTimedown = loosingPlayer.loosingTimedown;
             return loosingPlayer;
         }
-        else
-        {
-            RunToPlayer();
-            return this;
-        }
-
+        ChasePlayer();
+        return this;
     }
 
-    void RunToPlayer()
+    void ChasePlayer()
     {
-        StopAllCoroutines();
         aiPath.maxSpeed = attackSpeed;
+        aiPath.rotationSpeed = rotationSpeed;
         loosingPlayer.lostPlayer = false;
-
         if (destinationSetter.target != playerTransform.PlayerTransform)
-        {
             destinationSetter.target = playerTransform.PlayerTransform;
-        }
-
-
-        if (canAttack)
-        {
-            AttackWhenClose();
-        }
+        if (canAttack) AttackWhenClose();
     }
 
-
+    void AttackWhenClose()
+    {
+        float dist = Vector3.Distance(transform.position, playerTransform.PlayerTransform.position);
+        if (dist < meleeAttackRange)
+        {
+            attackCounter++;
+            if (attackCounter % 2 != 0)
+            {
+                attackSoundEmitter.Play();
+                if (!playerHP.isLowHP) playerHP.ModifyHP(-howMuchDamageIdeal);
+                else playerHP.ModifyHP((int)(-howMuchDamageIdeal * 0.5f));
+            }
+        }
+    }
 
     public void SetCanAttack(bool state)
     {
         canAttack = state;
     }
 
-    void AttackWhenClose()
+    public void ResetAttackState()
     {
-        if (Vector3.Distance(transform.position, playerTransform.PlayerTransform.position) < meleeAttackRange)
-        {
-            attackCounter++;
-
-            if (attackCounter % 2 != 0) {
-
-                 attackSoundEmitter.Play();
-
-                if (!playerHP.isLowHP) {
-                    playerHP.ModifyHP(-howMuchDamageIdeal);
-                }
-                else
-                {
-                    playerHP.ModifyHP((int)(-howMuchDamageIdeal * 0.5f));
-                }
-
-            }
-        }
+        attackCounter = 0;
+        canAttack = true;
     }
-
 }

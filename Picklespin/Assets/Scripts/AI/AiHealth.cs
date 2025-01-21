@@ -4,91 +4,76 @@ using UnityEngine.Events;
 
 public class AiHealth : MonoBehaviour
 {
-    public UnityEvent deathEvent;
+    [Header("Health Settings")]
     [Range(0, 100)] public float hp = 100;
-    [SerializeField] private float bodyDamageMultiplier = 1.0f;
-    [SerializeField] private float eyeDamageMultiplier = 4.0f;
-    private DamageUI_Spawner damageUiSpawner;
-    private RoundSystem roundSystem;
-    [SerializeField] private AiHealthUiBar aiHealthUI;
+    [SerializeField] float bodyDamageMultiplier = 1f;
+    [SerializeField] float eyeDamageMultiplier = 4f;
 
-    [SerializeField] private UnityEvent eventOnDamageTaken;
-   // [SerializeField] private UnityEvent eventOnDamageTakenEye;
+    [Header("Events")]
+    public UnityEvent deathEvent;
+    [SerializeField] UnityEvent eventOnDamageTaken;
 
-    [SerializeField] private Collider[] myHitboxes;
+    [Header("References")]
+    [SerializeField] AiHealthUiBar aiHealthUI;
+    [SerializeField] Collider[] myHitboxes;
 
-    private CameraShakeManagerV2 camShakeManager;
+    DamageUI_Spawner damageUiSpawner;
+    RoundSystem roundSystem;
+    CameraShakeManagerV2 camShakeManager;
+    float defaultHP;
 
-
-    private void Start()
+    void Start()
     {
         damageUiSpawner = DamageUI_Spawner.instance;
         camShakeManager = CameraShakeManagerV2.instance;
         roundSystem = RoundSystem.instance;
+        defaultHP = hp;
     }
-
-
 
     public void TakeDamage(int damage, bool eyeshot, bool wasLastHitCritical)
     {
-        if (roundSystem.isCounting)
+        if (!roundSystem.isCounting) return;
+
+        float actualDamage = eyeshot ? damage * eyeDamageMultiplier : damage * bodyDamageMultiplier;
+        if (eyeshot) StartCoroutine(ShakeLater(3));
+        else
         {
-            float actualDamage;
-
-            if (eyeshot)
-            {
-                StartCoroutine(ShakeLater(3));
-                actualDamage = damage * eyeDamageMultiplier;
-            }
-            else
-            {
-                camShakeManager.ShakeSelected(2);
-                actualDamage = damage * bodyDamageMultiplier;
-                eventOnDamageTaken.Invoke();
-            }
-
-            hp -= actualDamage;
-            SpawnDamageNumbers((int)actualDamage, wasLastHitCritical);
-            RefreshUI();
-            CheckIfDead();
+            camShakeManager.ShakeSelected(2);
+            eventOnDamageTaken.Invoke();
         }
+
+        hp -= actualDamage;
+        if (damageUiSpawner) damageUiSpawner.Spawn(transform.position, (int)actualDamage, wasLastHitCritical);
+        RefreshUI();
+        CheckIfDead();
     }
 
-
-
-    public void SpawnDamageNumbers(int damageTaken, bool wasLastHitCritical)
+    void RefreshUI()
     {
-        damageUiSpawner.Spawn(transform.position, damageTaken, wasLastHitCritical);
+        if (aiHealthUI) aiHealthUI.RefreshBar();
     }
 
-
-    private void RefreshUI()
+    void CheckIfDead()
     {
-        if (aiHealthUI != null)
-        {
-            aiHealthUI.RefreshBar();
-        }
-    }
-
-
-    private void CheckIfDead()
-    {
-        if ((int)hp <= 0)
+        if (hp <= 0)
         {
             for (int i = 0; i < myHitboxes.Length; i++)
-            {
                 myHitboxes[i].enabled = false;
-            }
-
             deathEvent.Invoke();
         }
-
     }
 
-    private IEnumerator ShakeLater(int index)
+    IEnumerator ShakeLater(int index)
     {
         yield return new WaitForEndOfFrame();
         camShakeManager.ShakeSelected(index);
     }
 
+    public void ResetHealth()
+    {
+        hp = defaultHP;
+        for (int i = 0; i < myHitboxes.Length; i++)
+            myHitboxes[i].enabled = true;
+        RefreshUI();
+    }
 }

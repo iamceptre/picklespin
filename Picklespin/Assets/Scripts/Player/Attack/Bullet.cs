@@ -208,8 +208,9 @@ public class Bullet : MonoBehaviour
         flashWhenHit.Flash();
         aiHealth.TakeDamage(damage, false, wasLastHitCritical);
         ApplySpecialEffect(refs);
-        HitGetsYouNoticed();
+        if (aiVision) aiVision.HitShowsMePlayer();
     }
+
 
     private void RangeHitDetection(Collision collision)
     {
@@ -251,6 +252,7 @@ public class Bullet : MonoBehaviour
 
     private void Headshot(AiReferences refs)
     {
+        if (aiVision) aiVision.HitShowsMePlayer();
         aiHealth.TakeDamage(damage, true, wasLastHitCritical);
         refs.HeadshotParticle.Play();
         refs.damageTakenEyeshot.Play();
@@ -282,14 +284,7 @@ public class Bullet : MonoBehaviour
         wasLastHitCritical = false;
     }
 
-    private void HitGetsYouNoticed()
-    {
-        if (aiVision)
-        {
-            aiVision.hitMeCooldown = 10;
-            aiVision.playerJustHitMe = true;
-        }
-    }
+
 
     private void SpawnExplosion()
     {
@@ -394,22 +389,9 @@ public class Bullet : MonoBehaviour
         {
             SpellDecalManager.Instance.SpawnDecal(contact.point + contact.normal * 0.01f,Quaternion.LookRotation(contact.normal),spellID,hitTag.GetHashCode());
         }
-        //Debug.Log($"Hit object: {hitObject.name}, Layer: {hitObject.layer}, Tag: {hitObject.tag}");
-
     }
 
-    /*
-    private void AttemptSpawnDecal(Vector3 point, Vector3 normal, GameObject objectHit) //dynamic objects
-    {
-        if (!objectHit || !objectHit.isStatic) return;
 
-        if (SpellDecalManager.Instance != null)
-        {
-            string hitTag = objectHit.tag;
-            SpellDecalManager.Instance.SpawnDecal(point + normal * 0.01f,Quaternion.LookRotation(normal),spellID,hitTag.GetHashCode());
-        }
-    }
-    */
 
     private void ResetBulletState()
     {

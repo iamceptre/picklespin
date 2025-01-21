@@ -1,106 +1,133 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AiVision : MonoBehaviour
 {
-    public float radius;
-    [Range(0, 360)]
-    public float angle;
+    [Header("Vision")]
+    public float radius = 45;
+    [Range(0, 360)] public float angle;
 
     [HideInInspector] public Transform playerRef;
+    private PlayerMovement playerMovement;
 
-    private LayerMask targetMask;
-    private LayerMask obstructionMask;
+    [Header("Layer Masks")]
+    [SerializeField] private LayerMask targetMask;
+    [SerializeField] private LayerMask obstructionMask;
+
+    [Header("Hearing")]
+    public static readonly float walkHearingRange = 9f;
+    public static readonly float runHearingRange = 25f;
+    public static readonly float landHearingRange = 40f;
+
+    public bool landingHearingActive;
+    static readonly WaitForSeconds landingTime = new(1);
 
     public bool seeingPlayer;
-    public bool playerJustHitMe = false;
-   [SerializeField] private bool playerIsVeryClose = false;
-    public float hitMeCooldown = 0;
+    public bool playerJustHitMe;
+    public float hitMeCooldown;
 
-    private void Start()
+    static readonly Collider[] nonAllocResults = new Collider[10];
+    public static List<AiVision> AllAIs { get; } = new List<AiVision>();
+
+    void OnEnable()
+    {
+        AllAIs.Add(this);
+    }
+
+    void OnDisable()
+    {
+        AllAIs.Remove(this);
+    }
+
+    void Start()
     {
         playerRef = CachedCameraMain.instance.cachedTransform;
-        targetMask |= 0x1 << LayerMask.NameToLayer("Player");
-        obstructionMask |= 0x1 << LayerMask.NameToLayer("Default");
+        playerMovement = PlayerMovement.Instance;
     }
 
-    private void Update()
+    void Update()
     {
-        if (hitMeCooldown >= 0)
+        if (hitMeCooldown > 0)
         {
-            PlayerJustHitMeCooldown();
-        }
-    }
-
-
-    public void FieldOfViewCheck()
-    {
-        
-        
-
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
-
-
-        if (!playerJustHitMe && !playerIsVeryClose) //this shit makes the ai ignore everything and see you
-        {
-
-            if (rangeChecks.Length != 0)
+            hitMeCooldown -= Time.deltaTime;
+            if (hitMeCooldown <= 0)
             {
-                Transform target = rangeChecks[0].transform;
-                Vector3 directionToTarget = (target.position - transform.position).normalized;
-
-                isPlayerVeryCloseCheck();
-
-                if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
-                {
-                    float distanceToTarget = Vector3.Distance(transform.position, playerRef.position);
-
-                    if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
-                        seeingPlayer = true;
-                    else
-                        seeingPlayer = false;
-                }
-                else
-                    seeingPlayer = false;
+                hitMeCooldown = 0;
+                playerJustHitMe = false;
             }
-            else if (seeingPlayer)
-                seeingPlayer = false;
         }
-        else
+    }
+
+    public void PerceptionCheck()
+    {
+        FieldOfViewCheck();
+        HearingCheck();
+    }
+
+    void FieldOfViewCheck()
+    {
+        if (playerJustHitMe)
         {
             seeingPlayer = true;
+            return;
         }
-        
 
-        seeingPlayer = true;
+        System.Array.Clear(nonAllocResults, 0, nonAllocResults.Length);
+        int hits = Physics.OverlapSphereNonAlloc(transform.position, radius, nonAllocResults, targetMask);
 
-    }
-
-    public void PlayerJustHitMeCooldown()
-    {
-        hitMeCooldown -= Time.deltaTime;
-
-        if (hitMeCooldown<=0)
+        if (hits > 0)
         {
-            playerJustHitMe = false;
+            Vector3 dir = (playerRef.position - transform.position).normalized;
+            if (Vector3.Angle(transform.forward, dir) < angle * 0.5f)
+            {
+                float dist = Vector3.Distance(transform.position, playerRef.position);
+                seeingPlayer = !Physics.Raycast(transform.position, dir, dist, obstructionMask);
+            }
+            else seeingPlayer = false;
         }
-        
-        seeingPlayer = true;
+        else seeingPlayer = false;
     }
 
-
-   private void isPlayerVeryCloseCheck()
+    void HearingCheck()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, playerRef.position); //change it to Player Sound Radius Trigger with AI Hear Trigger
+        if (playerMovement == null || playerMovement.movementStateForFMOD == 0) return;
+        float distance = Vector3.Distance(transform.position, playerRef.position);
 
-        if (distanceToPlayer <= (radius * 0.5))
-        { 
-            playerIsVeryClose = true;
+        if (landingHearingActive)
+        {
+            if (distance <= landHearingRange) seeingPlayer = true;
+            return;
+        }
+
+        if (playerMovement.movementStateForFMOD == 2)
+        {
+            if (distance <= runHearingRange) seeingPlayer = true;
         }
         else
         {
-            playerIsVeryClose = false;
+            if (distance <= walkHearingRange) seeingPlayer = true;
         }
     }
 
+    public void ResetVisionState()
+    {
+        seeingPlayer = false;
+        playerJustHitMe = false;
+        hitMeCooldown = 0;
+        landingHearingActive = false;
+    }
+
+    public void HitShowsMePlayer()
+    {
+        hitMeCooldown = 6f;
+        playerJustHitMe = true;
+    }
+
+    public IEnumerator EnableLandingHearing()
+    {
+        landingHearingActive = true;
+        yield return landingTime;
+        landingHearingActive = false;
+    }
 }

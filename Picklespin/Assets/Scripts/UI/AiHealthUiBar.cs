@@ -7,10 +7,6 @@ public class AiHealthUiBar : MonoBehaviour
 {
     [SerializeField] private AiHealth aiHealth;
     [SerializeField] private Slider slider;
-    //[SerializeField] private Image fillImage;
-    //[SerializeField] private Image bgImage;
-    //[SerializeField] private GameObject wholeCanvas;
-    //[SerializeField] private BarEase barEase;
     [SerializeField] private CanvasFader canvasFader;
 
     private static readonly WaitForSeconds waitBeforeFadeOutTime = new(5);
@@ -19,10 +15,6 @@ public class AiHealthUiBar : MonoBehaviour
     private void Awake()
     {
         if (!aiHealth) gameObject.TryGetComponent(out aiHealth);
-
-        //fillImage.enabled = false;
-        //bgImage.enabled = false;
-        //wholeCanvas.SetActive(false);
     }
 
     public void RefreshBar()
@@ -43,10 +35,6 @@ public class AiHealthUiBar : MonoBehaviour
             fadeCoroutine = null;
         }
 
-        //bgImage.DOKill();
-        //fillImage.DOKill();
-
-        //barEase.SetEaseFillState(false, 0.15f);
 
         canvasFader.FadeOut();
 
@@ -55,15 +43,6 @@ public class AiHealthUiBar : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //fillImage.DOFade(0, 0.5f);
-        //bgImage.DOFade(0, 0.5f).OnComplete(() =>
-        //{
-        //    fillImage.enabled = false;
-        //    bgImage.enabled = false;
-        //    wholeCanvas.SetActive(false);
-
-
-        //});
     }
 
     private void FadeIn()
@@ -76,18 +55,6 @@ public class AiHealthUiBar : MonoBehaviour
             }
 
             fadeCoroutine = StartCoroutine(WaitAndFadeOut());
-
-            //wholeCanvas.SetActive(true);
-            //fillImage.enabled = true;
-            //bgImage.enabled = true;
-
-            //fillImage.DOKill();
-            //bgImage.DOKill();
-
-            //fillImage.DOFade(1, 0f);
-            //bgImage.DOFade(1, 0f);
-
-            //barEase.SetEaseFillState(true, 0.15f);
             canvasFader.FadeIn();
         }
     }
@@ -95,7 +62,6 @@ public class AiHealthUiBar : MonoBehaviour
     private IEnumerator WaitAndFadeOut()
     {
         yield return waitBeforeFadeOutTime;
-        //FadeOut();
         canvasFader.FadeOut();
     }
 

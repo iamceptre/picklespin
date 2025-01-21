@@ -12,8 +12,7 @@ public class BarEase : MonoBehaviour
     private float targetValue;
     private float easeSpeed;
     private bool isEasing;
-    private bool easeFillVisible;
-    private float fadeSpeed = 2f;
+    //private bool easeFillVisible;
 
     private void Awake()
     {
@@ -24,26 +23,20 @@ public class BarEase : MonoBehaviour
     {
         me.value = sliderToFollow.value;
         targetValue = me.value;
-
-        if (easeFill != null)
-        {
-            easeFill.enabled = true;
-            SetEaseFillAlpha(1f);
-        }
-
-        me.value = sliderToFollow.value;
+        easeFill.enabled = true;
+        //SetEaseFillAlpha(1f);
+         me.value = sliderToFollow.value;
     }
 
     private void Update()
     {
         float currentValue = sliderToFollow.value;
 
-        // Snap to target immediately for increases
         if (currentValue > me.value)
         {
             me.value = currentValue;
             targetValue = currentValue;
-            if (easeFill != null) easeFill.enabled = false;
+            easeFill.enabled = false;
             return;
         }
         if (!Mathf.Approximately(targetValue, currentValue))
@@ -60,7 +53,7 @@ public class BarEase : MonoBehaviour
             {
                 isEasing = false;
                 me.value = targetValue;
-                if (easeFill != null) easeFill.enabled = false;
+                easeFill.enabled = false;
             }
         }
     }
@@ -69,29 +62,20 @@ public class BarEase : MonoBehaviour
     {
         isEasing = true;
         easeSpeed = Mathf.Abs(me.value - targetValue) / easeDuration;
-        if (easeFill != null) easeFill.enabled = true;
+        easeFill.enabled = true;
     }
 
-    public void SetEaseFillState(bool visible, float fadeDuration = 0f)
+    /*
+
+    public void SetEaseFillState(bool visible)
     {
         if (easeFillVisible == visible) return;
-
         easeFillVisible = visible;
-
-        if (fadeDuration > 0f)
-        {
-            fadeSpeed = 1f / fadeDuration;
-        }
-        else
-        {
-            SetEaseFillAlpha(visible ? 1f : 0f);
-        }
+        SetEaseFillAlpha(visible ? 1f : 0f);
     }
 
     private void SetEaseFillAlpha(float alpha)
     {
-        if (easeFill != null)
-        {
             Color color = easeFill.color;
             color.a = alpha;
             easeFill.color = color;
@@ -104,6 +88,6 @@ public class BarEase : MonoBehaviour
             {
                 easeFill.enabled = true;
             }
-        }
     }
+    */
 }

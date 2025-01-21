@@ -2,45 +2,33 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    [Header("AI States")]
+    public State currentState;
+    public AiVision aiVision;
 
-     public State currentState;
-     public AiVision aiVision;
-
+    [Header("Settings")]
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
 
-    private float randomTimeOffset;
-    private float actualRefreshRate;
-
+    float randomTimeOffset;
+    float actualRefreshRate;
 
     public void StartAI()
     {
-        randomTimeOffset = Random.Range(0, 0.05f);
+        randomTimeOffset = Random.Range(0f, 0.05f);
         actualRefreshRate = RefreshEveryVarSeconds + randomTimeOffset;
-        InvokeRepeating("RunStateMachine", randomTimeOffset, actualRefreshRate);
+        InvokeRepeating(nameof(RunStateMachine), randomTimeOffset, actualRefreshRate);
     }
 
-
-
-
-
-
-    private void RunStateMachine()
+    void RunStateMachine()
     {
-        aiVision.FieldOfViewCheck();
-
-        State nextState = currentState?.RunCurrentState();
-
-
-            if (nextState != null)
-            {
-                SwitchToTheNextState(nextState);
-            }
-        
+        aiVision.PerceptionCheck();
+        State next = currentState ? currentState.RunCurrentState() : null;
+        if (next != null) currentState = next;
     }
 
-    private void SwitchToTheNextState(State nextState)
+    public void ResetStateManager()
     {
-        currentState = nextState;    
+        CancelInvoke();
+        currentState = null;
     }
-
 }
