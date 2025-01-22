@@ -12,12 +12,12 @@ public class AiVision : MonoBehaviour
     private PlayerMovement playerMovement;
 
     [Header("Layer Masks")]
-    [SerializeField] private LayerMask obstructionMask;
+    public LayerMask obstructionMask;
 
     [Header("Hearing")]
-    public static readonly float walkHearingRange = 9f;
-    public static readonly float runHearingRange = 25f;
-    public static readonly float landHearingRange = 40f;
+    public static readonly float walkHearingRange = 15f;
+    public static readonly float runHearingRange = 30f;
+    public static readonly float landHearingRange = 45f;
 
     public bool landingHearingActive;
     private static readonly WaitForSeconds landingTime = new(1);
@@ -70,7 +70,10 @@ public class AiVision : MonoBehaviour
             float dist = Vector3.Distance(transform.position, playerRef.position);
             seeingPlayer = !Physics.Raycast(transform.position, dir, dist, obstructionMask);
         }
-        else seeingPlayer = false;
+        else
+        {
+            seeingPlayer = false;
+        }
     }
 
     private void HearingCheck()
@@ -108,5 +111,20 @@ public class AiVision : MonoBehaviour
         landingHearingActive = true;
         yield return landingTime;
         landingHearingActive = false;
+    }
+
+    public static bool IsAnyEnemySeeingPlayer()
+    {
+        foreach (AiVision ai in AllAIs)
+        {
+            if (ai.seeingPlayer) return true;
+        }
+        return false;
+    }
+
+    public static void UpdateDetectionIcon(GameObject detectionIcon)
+    {
+        if (detectionIcon == null) return;
+        detectionIcon.SetActive(IsAnyEnemySeeingPlayer());
     }
 }

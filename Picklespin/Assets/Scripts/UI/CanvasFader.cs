@@ -30,6 +30,7 @@ public class CanvasFader : MonoBehaviour
 
     private void StartFade(float targetAlpha)
     {
+        //Debug.Log("starting fade " + targetAlpha);
         if (_currentFadeRoutine != null) StopCoroutine(_currentFadeRoutine);
         _currentFadeRoutine = StartCoroutine(FadeRoutine(targetAlpha));
     }

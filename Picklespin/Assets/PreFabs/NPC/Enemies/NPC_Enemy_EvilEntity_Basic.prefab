@@ -15696,16 +15696,12 @@ MonoBehaviour:
   radius: 50
   angle: 168
   playerRef: {fileID: 0}
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 128
   obstructionMask:
     serializedVersion: 2
     m_Bits: 17433
   landingHearingActive: 0
   seeingPlayer: 0
   playerJustHitMe: 0
-  hitMeCooldown: 0
 --- !u!114 &9088957210784467254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21512,6 +21508,9 @@ MonoBehaviour:
   attackPlayer: {fileID: 9126885967048436367}
   waypointWander: {fileID: 2849707897815361534}
   stateManager: {fileID: 470241992505063077}
+  aiVision: {fileID: 7390506993609888115}
+  destinationSetter: {fileID: 100677299577251049}
+  aiPath: {fileID: 7323594540175906757}
   currentTimedown: 5
   loosingTimedown: 3
   lostPlayer: 1

@@ -33,18 +33,19 @@ public class AttackPlayer : State
     {
         if (!aiVision.seeingPlayer)
         {
-            loosingPlayer.currentTimedown = loosingPlayer.loosingTimedown;
+            loosingPlayer.StartLoosingState();
             return loosingPlayer;
         }
+
         ChasePlayer();
         return this;
     }
+
 
     void ChasePlayer()
     {
         aiPath.maxSpeed = attackSpeed;
         aiPath.rotationSpeed = rotationSpeed;
-        loosingPlayer.lostPlayer = false;
         if (destinationSetter.target != playerTransform.PlayerTransform)
             destinationSetter.target = playerTransform.PlayerTransform;
         if (canAttack) AttackWhenClose();
