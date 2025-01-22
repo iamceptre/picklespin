@@ -5,14 +5,13 @@ using UnityEngine;
 public class AiVision : MonoBehaviour
 {
     [Header("Vision")]
-    public float radius = 45;
+    public float radius = 45f;
     [Range(0, 360)] public float angle;
 
     [HideInInspector] public Transform playerRef;
     private PlayerMovement playerMovement;
 
     [Header("Layer Masks")]
-    [SerializeField] private LayerMask targetMask;
     [SerializeField] private LayerMask obstructionMask;
 
     [Header("Hearing")]
@@ -21,24 +20,16 @@ public class AiVision : MonoBehaviour
     public static readonly float landHearingRange = 40f;
 
     public bool landingHearingActive;
-    static readonly WaitForSeconds landingTime = new(1);
+    private static readonly WaitForSeconds landingTime = new(1);
 
     public bool seeingPlayer;
     public bool playerJustHitMe;
-    public float hitMeCooldown;
+    private float hitMeCooldown;
 
-    static readonly Collider[] nonAllocResults = new Collider[10];
-    public static List<AiVision> AllAIs { get; } = new List<AiVision>();
+    public static List<AiVision> AllAIs { get; } = new();
 
-    void OnEnable()
-    {
-        AllAIs.Add(this);
-    }
-
-    void OnDisable()
-    {
-        AllAIs.Remove(this);
-    }
+    void OnEnable() => AllAIs.Add(this);
+    void OnDisable() => AllAIs.Remove(this);
 
     void Start()
     {
@@ -61,53 +52,41 @@ public class AiVision : MonoBehaviour
 
     public void PerceptionCheck()
     {
-        FieldOfViewCheck();
-        HearingCheck();
-    }
-
-    void FieldOfViewCheck()
-    {
         if (playerJustHitMe)
         {
             seeingPlayer = true;
             return;
         }
 
-        System.Array.Clear(nonAllocResults, 0, nonAllocResults.Length);
-        int hits = Physics.OverlapSphereNonAlloc(transform.position, radius, nonAllocResults, targetMask);
+        FieldOfViewCheck();
+        HearingCheck();
+    }
 
-        if (hits > 0)
+    private void FieldOfViewCheck()
+    {
+        Vector3 dir = (playerRef.position - transform.position).normalized;
+        if (Vector3.Angle(transform.forward, dir) < angle * 0.5f)
         {
-            Vector3 dir = (playerRef.position - transform.position).normalized;
-            if (Vector3.Angle(transform.forward, dir) < angle * 0.5f)
-            {
-                float dist = Vector3.Distance(transform.position, playerRef.position);
-                seeingPlayer = !Physics.Raycast(transform.position, dir, dist, obstructionMask);
-            }
-            else seeingPlayer = false;
+            float dist = Vector3.Distance(transform.position, playerRef.position);
+            seeingPlayer = !Physics.Raycast(transform.position, dir, dist, obstructionMask);
         }
         else seeingPlayer = false;
     }
 
-    void HearingCheck()
+    private void HearingCheck()
     {
-        if (playerMovement == null || playerMovement.movementStateForFMOD == 0) return;
+        if (playerMovement.movementStateForFMOD == 0) return;
         float distance = Vector3.Distance(transform.position, playerRef.position);
 
         if (landingHearingActive)
         {
-            if (distance <= landHearingRange) seeingPlayer = true;
+            seeingPlayer = distance <= landHearingRange;
             return;
         }
 
-        if (playerMovement.movementStateForFMOD == 2)
-        {
-            if (distance <= runHearingRange) seeingPlayer = true;
-        }
-        else
-        {
-            if (distance <= walkHearingRange) seeingPlayer = true;
-        }
+        seeingPlayer = playerMovement.movementStateForFMOD == 2
+            ? distance <= runHearingRange
+            : distance <= walkHearingRange;
     }
 
     public void ResetVisionState()

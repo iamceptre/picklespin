@@ -6,28 +6,28 @@ public class AiVisionEditor : Editor
 {
     private void OnSceneGUI()
     {
-        AiVision fov = (AiVision)target;
-        Handles.color = Color.white;
-        Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.radius);
+        AiVision aiVision = (AiVision)target;
 
-        Vector3 viewAngle01 = DirectionFromAngle(fov.transform.eulerAngles.y, -fov.angle / 2);
-        Vector3 viewAngle02 = DirectionFromAngle(fov.transform.eulerAngles.y, fov.angle / 2);
+        Handles.color = Color.white;
+        Handles.DrawWireArc(aiVision.transform.position, Vector3.up, Vector3.forward, 360, aiVision.radius);
+
+        Vector3 leftBoundary = DirectionFromAngle(aiVision.transform.eulerAngles.y, -aiVision.angle * 0.5f);
+        Vector3 rightBoundary = DirectionFromAngle(aiVision.transform.eulerAngles.y, aiVision.angle * 0.5f);
 
         Handles.color = Color.yellow;
-        Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngle01 * fov.radius);
-        Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngle02 * fov.radius);
+        Handles.DrawLine(aiVision.transform.position, aiVision.transform.position + leftBoundary * aiVision.radius);
+        Handles.DrawLine(aiVision.transform.position, aiVision.transform.position + rightBoundary * aiVision.radius);
 
-        if (fov.seeingPlayer)
+        if (aiVision.seeingPlayer)
         {
             Handles.color = Color.green;
-            Handles.DrawLine(fov.transform.position, fov.playerRef.transform.position);
+            Handles.DrawLine(aiVision.transform.position, aiVision.playerRef.position);
         }
     }
 
     private Vector3 DirectionFromAngle(float eulerY, float angleInDegrees)
     {
-        angleInDegrees += eulerY;
-
-        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+        float radians = (eulerY + angleInDegrees) * Mathf.Deg2Rad;
+        return new Vector3(Mathf.Sin(radians), 0, Mathf.Cos(radians));
     }
 }
