@@ -331,7 +331,7 @@ public class Bullet : MonoBehaviour
                         var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
                         var proximityFactor = 1f - distance / rangeRadius;
                         proximityFactor = Mathf.Clamp01(proximityFactor);
-                        playerHP.ModifyHP(Mathf.RoundToInt(rocketJumpForce * proximityFactor) * -1);
+                        playerHP.ModifyHP(Mathf.RoundToInt(rocketJumpForce * proximityFactor) * -2);
 
                         characterControllerFound = true;
                     }

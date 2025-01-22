@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8838686384426423827}
   m_Layer: 14
   m_Name: Church_Floor_Tile_5X_Thin
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

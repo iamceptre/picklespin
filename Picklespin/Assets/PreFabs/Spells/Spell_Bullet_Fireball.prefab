@@ -10061,7 +10061,7 @@ MonoBehaviour:
   - {fileID: 7638488778309636166}
   _light: {fileID: 3909137637185279755}
   lightSpell: {fileID: 0}
-  rocketJumpForce: 15
+  rocketJumpForce: 7
   rocketJumpUpwardsModifier: 1
   decalLayerMask:
     serializedVersion: 2
@@ -10146,9 +10146,9 @@ MonoBehaviour:
   fireLight: {fileID: 0}
   diedFromBurnParticle: {fileID: 0}
   effectParticle: {fileID: 0}
+  countdownTimer: 0
   cachedAiHP: {fileID: 0}
   cachedAiHpBar: {fileID: 0}
-  countdownTimer: 0
 --- !u!114 &7387112467910556193
 MonoBehaviour:
   m_ObjectHideFlags: 0

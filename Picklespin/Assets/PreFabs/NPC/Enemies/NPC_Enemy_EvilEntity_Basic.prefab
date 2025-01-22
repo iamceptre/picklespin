@@ -21513,7 +21513,6 @@ MonoBehaviour:
   aiPath: {fileID: 7323594540175906757}
   currentTimedown: 5
   loosingTimedown: 3
-  lostPlayer: 1
 --- !u!1 &7486053887660021059
 GameObject:
   m_ObjectHideFlags: 0
