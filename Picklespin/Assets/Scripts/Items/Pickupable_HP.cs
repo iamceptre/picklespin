@@ -17,7 +17,7 @@ public class Pickupable_HP : MonoBehaviour
 
     private void Start()
     {
-        playerHP = PlayerHP.instance;
+        playerHP = PlayerHP.Instance;
         hpBarDisplay = HpBarDisplay.Instance;
         barLightsAnimation = BarLightsAnimation.instance;
         screenFlashTint = ScreenFlashTint.instance;

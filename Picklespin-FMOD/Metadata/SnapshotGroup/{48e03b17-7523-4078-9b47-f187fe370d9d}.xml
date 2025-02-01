@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="SnapshotGroup" id="{48e03b17-7523-4078-9b47-f187fe370d9d}">
+		<property name="color">
+			<value>Red</value>
+		</property>
+		<property name="name">
+			<value>EventSnapshots</value>
+		</property>
+		<relationship name="items">
+			<destination>{2c263b5f-7881-4123-9171-bed1ac716fce}</destination>
+			<destination>{7057a61c-79d8-4d79-9092-2e68f0fc9904}</destination>
+			<destination>{fda07979-405e-4e05-9042-a93fa6a9917d}</destination>
+			<destination>{395917fd-0738-44f2-9298-1cf1aefc2cba}</destination>
+		</relationship>
+	</object>
+</objects>

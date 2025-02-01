@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Pause : MonoBehaviour
 {
-    private SnapshotManager snapshotManager;
+    private AudioSnapshotManager audioSnapshotManager;
     public static Pause instance { get; private set; }
     private float timescaleBeforePausing;
     private bool isPaused;
@@ -23,7 +23,7 @@ public class Pause : MonoBehaviour
 
     private void Start()
     {
-        snapshotManager = SnapshotManager.instance;
+        audioSnapshotManager = AudioSnapshotManager.Instance;
     }
 
     private void OnEnable()
@@ -45,9 +45,8 @@ public class Pause : MonoBehaviour
 
     public void PauseGame()
     {
-        System.GC.Collect();
         pauseEvent.Invoke();
-        snapshotManager.Pause.Play();
+        audioSnapshotManager.EnableSnapshot("Pause");
         timescaleBeforePausing = Time.timeScale;
         Time.timeScale = 0;
         isPaused = true;
@@ -58,7 +57,7 @@ public class Pause : MonoBehaviour
     {
         System.GC.Collect();
         unpauseEvent.Invoke();
-        snapshotManager.Pause.Stop();
+        audioSnapshotManager.DisableSnapshot("Pause");
         Time.timeScale = timescaleBeforePausing;
         isPaused = false;
         EventSystem.current.SetSelectedGameObject(null);

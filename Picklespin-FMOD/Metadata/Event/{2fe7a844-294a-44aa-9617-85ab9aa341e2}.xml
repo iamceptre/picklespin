@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{2fe7a844-294a-44aa-9617-85ab9aa341e2}">
 		<property name="name">
-			<value>Angelroom_Glitter_Static_BG</value>
+			<value>Angelroom_BG_Glitter</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{569c55e7-21e5-4735-86cf-3a729700274f}</destination>
+			<destination>{8e02fe93-e255-4751-bc21-0784ff6990c3}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{2ab79135-1e6f-48a6-9a46-805ea9489f74}</destination>
@@ -59,7 +59,7 @@
 			<destination>{23278c35-8c84-44ee-b1f1-157759312ef8}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{5ddb48f1-77cc-4c71-88b8-028504473097}</destination>
+			<destination>{e5388dc6-2c42-4987-804c-236cd53f258e}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{7d7236d3-ce1b-4fa9-81a4-34350260bb5c}">
@@ -83,7 +83,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{82463fec-3f5a-4945-af10-3703b7e4e7fe}">
 		<property name="volume">
-			<value>-27.5</value>
+			<value>-28.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{2fdb61dd-6306-4def-8a21-11377a8ce825}</destination>

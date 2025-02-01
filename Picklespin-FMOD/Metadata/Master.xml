@@ -7,9 +7,6 @@
 		<property name="maxInstances">
 			<value>32</value>
 		</property>
-		<property name="instanceStealing">
-			<value>1</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{5c58943d-09a3-4acb-a827-3d9c8a7e3524}</destination>
 		</relationship>

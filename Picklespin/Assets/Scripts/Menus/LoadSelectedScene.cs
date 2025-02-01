@@ -12,7 +12,7 @@ public class LoadSelectedScene : MonoBehaviour
     [SerializeField] private TMP_Text loadingText;
 
     private FMODResetManager fmodResetManager;
-    private SnapshotManager snapshotManager;
+    private AudioSnapshotManager audioSnapshotManager;
 
     [SerializeField] private FadeOutImageOnEnable fadeInVeins;
     [SerializeField] private GameObject fadeInGroup;
@@ -22,7 +22,7 @@ public class LoadSelectedScene : MonoBehaviour
     private void Start()
     {
         fmodResetManager = FMODResetManager.instance;
-        snapshotManager = SnapshotManager.instance;
+        audioSnapshotManager = AudioSnapshotManager.Instance;
     }
 
 
@@ -35,8 +35,8 @@ public class LoadSelectedScene : MonoBehaviour
             if (fmodResetManager != null)
                 fmodResetManager.ResetFMOD(false);
 
-            if (snapshotManager != null)
-                snapshotManager.StopAllSnapshots();
+            if (audioSnapshotManager != null)
+                audioSnapshotManager.Clear();
 
             if (loadingBar == null)
             {

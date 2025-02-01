@@ -45,7 +45,7 @@ public class Dash : MonoBehaviour
         staminaBarDisplay = StaminaBarDisplay.instance;
         ammo = Ammo.instance;
         ammoDisplay = AmmoDisplay.instance;
-        playerHP = PlayerHP.instance;
+        playerHP = PlayerHP.Instance;
         tipManager = TipManager.instance;
     }
 

@@ -18,7 +18,7 @@ public class GiveExpToPlayer : MonoBehaviour
         particleMoveTowardsScript = manaSuckParticles.GetComponent<ParticleMoveTowards>();
         playerEXP = PlayerEXP.instance;
         ammo = Ammo.instance;
-        playerHp = PlayerHP.instance;
+        playerHp = PlayerHP.Instance;
         manaSuckParticles.Pause();
         manaSuckParticles.Clear();
         particleMoveTowardsScript.enabled = false;

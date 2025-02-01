@@ -10,8 +10,6 @@ public class FMODResetManager : MonoBehaviour
     private Bus MasterBus;
     private Bus diageticBus;
 
-    private SnapshotManager snapshotManager;
-
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -26,7 +24,6 @@ public class FMODResetManager : MonoBehaviour
 
     private void Start()
     {
-        snapshotManager = SnapshotManager.instance;
         //MasterBus = RuntimeManager.GetBus("bus:/");
         MasterBus = RuntimeManager.GetBus("bus:/diagetic_ALL");
         diageticBus = RuntimeManager.GetBus("bus:/diagetic_ALL");
@@ -34,8 +31,7 @@ public class FMODResetManager : MonoBehaviour
     public void ResetFMOD(bool immediate)
     {
         //Debug.Log("reset fmod");
-        if(snapshotManager != null)
-        snapshotManager.StopAllSnapshots();
+        AudioSnapshotManager.Instance.Clear();
 
         if (immediate)
         {

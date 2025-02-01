@@ -67,23 +67,23 @@ Material:
     - _Density: 0.26
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EdgeFade: 0.12
+    - _EdgeFade: 0.2
     - _FractalLayers: 6
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _MorphIntensity: 1
+    - _MorphIntensity: 0.5
     - _OcclusionStrength: 1
     - _Parallax: 0
-    - _Scale: 12
+    - _Scale: 20
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Speed: 0.161
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WindSpeed: 0.012
+    - _WindSpeed: 0.004
     - _ZWrite: 1
     m_Colors:
     - _CloudColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 0.36078432}

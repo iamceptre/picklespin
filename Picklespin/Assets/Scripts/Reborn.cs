@@ -7,21 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class Reborn : MonoBehaviour
 {
-    private PortalAfterClosing portalAfterClosing;
     private TMP_Text myText;
     private RectTransform myRectTransform;
 
     private Tween myTween;
 
-    private float howMuchToSpaceout = 4;
+    private readonly float howMuchToSpaceout = 4;
 
-    private float animationTime = 1f;
+    private readonly float animationTime = 1f;
 
     [SerializeField] private EventReference rebornEvent;
 
-    [SerializeField] [Tooltip("if -1, it restarts the current scene")] private int sceneindex = -1;
+    [SerializeField][Tooltip("if -1, it restarts the current scene")] private int sceneindex = -1;
 
-    private SnapshotManager snapshotManager;
+    private AudioSnapshotManager audioSnapshotManager;
 
     [SerializeField] private UnityEvent OnClickEvent;
 
@@ -32,12 +31,12 @@ public class Reborn : MonoBehaviour
         myText = GetComponent<TMP_Text>();
         myRectTransform = myText.rectTransform;
     }
-    void Start()
+
+    private void Start()
     {
-        snapshotManager = SnapshotManager.instance;
-        portalAfterClosing = PortalAfterClosing.instance;
+        audioSnapshotManager = AudioSnapshotManager.Instance;
         myTween = DOTween.To(() => myText.characterSpacing, x => myText.characterSpacing = x, howMuchToSpaceout, animationTime).SetLoops(-1, LoopType.Yoyo);
-        myTween.SetUpdate(UpdateType.Normal, true);
+        _ = myTween.SetUpdate(UpdateType.Normal, true);
         System.GC.Collect();
     }
 
@@ -49,26 +48,26 @@ public class Reborn : MonoBehaviour
             OnClickEvent.Invoke();
             myTween.Kill();
             myTween = myRectTransform.DOScale(1.618f, 2).SetEase(Ease.OutExpo);
-            myTween.SetUpdate(UpdateType.Normal, true);
-            Color transparentMe = new Color(myText.color.r, myText.color.g, myText.color.b, 0);
+            _ = myTween.SetUpdate(UpdateType.Normal, true);
+            Color transparentMe = new(myText.color.r, myText.color.g, myText.color.b, 0);
             RuntimeManager.PlayOneShot(rebornEvent);
 
             myTween = myText.DOColor(transparentMe, 2).SetEase(Ease.OutExpo).OnComplete(() =>
             {
                 clickable = true;
                 Time.timeScale = 1;
-                DOTween.KillAll();
+                _ = DOTween.KillAll();
                 FMODResetManager.instance.ResetFMOD(false);
                 SetScene();
             });
-            myTween.SetUpdate(UpdateType.Normal, true);
+            _ = myTween.SetUpdate(UpdateType.Normal, true);
         }
     }
 
 
     private void SetScene()
     {
-        snapshotManager.StopAllSnapshots();
+        audioSnapshotManager.Clear();
 
         if (sceneindex == -1)
         {

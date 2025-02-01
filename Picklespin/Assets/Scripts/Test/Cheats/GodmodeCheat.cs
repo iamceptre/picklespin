@@ -12,7 +12,7 @@ public class GodmodeCheat : MonoBehaviour
     private void Start()
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
-        playerHp = PlayerHP.instance;
+        playerHp = PlayerHP.Instance;
     }
 
     void Update()

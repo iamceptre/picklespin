@@ -5,7 +5,6 @@ public class Death : MonoBehaviour
 {
     public static Death instance;
     public GameObject deathScreen;
-    public EventReference deathEvent;
 
     private void Awake()
     {
@@ -22,7 +21,7 @@ public class Death : MonoBehaviour
 
     public void PlayerDeath()
     {
-        RuntimeManager.PlayOneShot(deathEvent);
+        AudioSnapshotManager.Instance.EnableSnapshot("Deathscreen");
         deathScreen.SetActive(true);
         Time.timeScale = 0;
     }

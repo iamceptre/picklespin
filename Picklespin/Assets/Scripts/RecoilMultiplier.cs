@@ -7,8 +7,9 @@ public class RecoilMultiplier : MonoBehaviour
 
     public float currentRecoil;
 
-     private float jumpingRecoil = 1.5f;
-     private float sprintingRecoil = 0.2f;
+     private readonly float jumpingRecoil = 1.5f;
+     private readonly float sprintingRecoil = 0.2f;
+    private float oldVert, oldHor;
 
     private void Start()
     {
@@ -16,10 +17,19 @@ public class RecoilMultiplier : MonoBehaviour
     }
 
 
-    public void UpdateRecoil()
+    private void Update()
     {
-        currentRecoil = ((speedometer.verticalVelocity * jumpingRecoil) + (speedometer.horizontalVelocity * sprintingRecoil)) * 0.01f;
+        float newVert = speedometer.verticalVelocity;
+        float newHor = speedometer.horizontalVelocity;
+
+        if (!Mathf.Approximately(oldVert, newVert) || !Mathf.Approximately(oldHor, newHor))
+        {
+            oldVert = newVert;
+            oldHor = newHor;
+            currentRecoil = ((newVert * jumpingRecoil) + (newHor * sprintingRecoil*2)) * 0.01f;
+        }
     }
+
 
 
     private void Awake()

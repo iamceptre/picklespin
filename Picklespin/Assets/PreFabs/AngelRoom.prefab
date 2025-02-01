@@ -5005,7 +5005,7 @@ MonoBehaviour:
       Data2: 1152002378
       Data3: -1417341034
       Data4: -499014758
-    Path: event:/MAP/Ambience/Static/Angelroom_Glitter_Static_BG
+    Path: event:/MAP/Ambience/Angelroom_BG_Glitter
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -20362,7 +20362,7 @@ GameObject:
   - component: {fileID: 6592339139295782114}
   - component: {fileID: 7974874748485786145}
   - component: {fileID: 140786708488101419}
-  - component: {fileID: 8733724586965883496}
+  - component: {fileID: 3621196649313276783}
   m_Layer: 0
   m_Name: AngelRoomSoundscape_Activata
   m_TagString: Untagged
@@ -20433,7 +20433,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8733724586965883496
+--- !u!114 &3621196649313276783
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20442,12 +20442,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8479423180238349010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63e351d0d4cd6e144b65d694caf96778, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f30eeb41295ff640a5bd62916ab642d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  churchReverbMainHall: 0
-  corridorReverb: 0
-  angelRoomReverb: 1
+  sceneName: Angel_Room
+  isExclusive: 1
 --- !u!1 &8496357332205810362
 GameObject:
   m_ObjectHideFlags: 0

@@ -85,7 +85,7 @@ public class AngelMind : MonoBehaviour
     {
         minigame = AngelHealingMinigame.Instance;
         helperArrow = Helper_Arrow.Instance;
-        playerHP = PlayerHP.instance;
+        playerHP = PlayerHP.Instance;
         ammo = Ammo.instance;
         playerMovement = PlayerMovement.Instance;
         playerEXP = PlayerEXP.instance;

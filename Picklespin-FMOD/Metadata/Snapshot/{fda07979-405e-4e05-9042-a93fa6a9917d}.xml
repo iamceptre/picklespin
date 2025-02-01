@@ -24,6 +24,9 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{73a1cc36-c659-4c4a-92c1-f4d3be91cd20}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{9c228cc2-478a-4d16-816a-fdbc0715e32d}</destination>
 		</relationship>

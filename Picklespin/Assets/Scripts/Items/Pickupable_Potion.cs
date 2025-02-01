@@ -31,7 +31,7 @@ public class Pickupable_Potion : MonoBehaviour
 
     private void Start()
     {
-        playerHP = PlayerHP.instance;
+        playerHP = PlayerHP.Instance;
         playerMovement = PlayerMovement.Instance;
         ammo = Ammo.instance;
         playerExp = PlayerEXP.instance;

@@ -85,7 +85,7 @@ public class Bullet : MonoBehaviour
     {
         camShakeManager = CameraShakeManagerV2.instance;
         cachedCameraMain = CachedCameraMain.instance;
-        playerHP = PlayerHP.instance;
+        playerHP = PlayerHP.Instance;
         ammo = Ammo.instance;
     }
 

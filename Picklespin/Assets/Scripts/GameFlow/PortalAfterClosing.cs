@@ -22,7 +22,7 @@ public class PortalAfterClosing : MonoBehaviour
     private Pause pause;
     [SerializeField] private Canvas PortalClosedScreen;
 
-    private SnapshotManager snapshotManager;
+    private AudioSnapshotManager audioSnapshotManager;
 
     [SerializeField] private CanvasGroup[] canvasToFadeout;
     [SerializeField] private Image screenTint;
@@ -46,9 +46,9 @@ public class PortalAfterClosing : MonoBehaviour
 
     private void Start()
     {
-        snapshotManager = SnapshotManager.instance;
+        audioSnapshotManager = AudioSnapshotManager.Instance;
         pause = Pause.instance;
-        playerHp = PlayerHP.instance;
+        playerHp = PlayerHP.Instance;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
     }
 
@@ -59,7 +59,7 @@ public class PortalAfterClosing : MonoBehaviour
         crosshair.enabled = false;
         playerHp.godMode = true;
         FadeOutCanvas();
-        snapshotManager.PortalClosed.Play();
+        audioSnapshotManager.EnableSnapshot("Portal_Closed");
         TurnOffEmissions();
         StartCoroutine(ActivateFailScreen());
         StartCoroutine(SlowDownTimeAnDesaturate());
@@ -128,6 +128,7 @@ public class PortalAfterClosing : MonoBehaviour
     private IEnumerator ActivateFailScreen()
     {
         yield return new WaitForSeconds(1);
+        //audioSnapshotManager.DisableSnapshot("Portal_Closed");
         PortalClosedScreen.enabled = true;
         PortalClosedScreen.gameObject.SetActive(true); 
         myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>

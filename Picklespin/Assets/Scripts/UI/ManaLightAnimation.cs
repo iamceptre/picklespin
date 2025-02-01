@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Text;
+using System.Runtime.CompilerServices;
 
 public class ManaLightAnimation : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class ManaLightAnimation : MonoBehaviour
     private readonly WaitForSeconds waitBeforeFadingPlusPlus = new(2);
     private readonly StringBuilder sb = new();
     private Color originalColor;
+
+    private Color negativeGlowColor = new(0, 0, 0, 0.38f);
 
     private void Awake()
     {
@@ -39,10 +42,10 @@ public class ManaLightAnimation : MonoBehaviour
         float fadeOutDuration = 1.37f;
         if (howMuchWasGiven < 0)
         {
-            manaLight.color = Color.black;
-            scaleDuration *= 0.5f;
-            fadeInDuration *= 0.5f;
-            fadeOutDuration *= 0.5f;
+            manaLight.color = negativeGlowColor;
+            scaleDuration *= 0.38f;
+            fadeInDuration *= 0.38f;
+            fadeOutDuration *= 0.38f;
         }
         else
         {

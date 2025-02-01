@@ -30,7 +30,7 @@ public class ApplyProjectileForce : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         //Debug.Log("setting rb");
-        recoilMultiplier.UpdateRecoil();
+        //recoilMultiplier.UpdateRecoil();
         Vector3 randomDirection = new Vector3(
 Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
 Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),

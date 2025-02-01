@@ -26,7 +26,7 @@ public class AttackPlayer : State
     void Start()
     {
         playerTransform = PublicPlayerTransform.Instance;
-        playerHP = PlayerHP.instance;
+        playerHP = PlayerHP.Instance;
     }
 
     public override State RunCurrentState()

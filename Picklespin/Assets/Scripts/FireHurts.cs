@@ -18,7 +18,7 @@ public class FireHurts : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!playerHP) playerHP = PlayerHP.instance;
+        if (!playerHP) playerHP = PlayerHP.Instance;
         if (!playerTransform) playerTransform = PublicPlayerTransform.Instance.PlayerTransform;
 
         StartHurting();

@@ -7,36 +7,41 @@ using UnityEngine.InputSystem;
 
 public class AngelHeal : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private HandShakeWhenCannotHeal handShake;
-    private Helper_Arrow helperArrow;
-    private ScreenFlashTint screenFlashTint;
-    private AngelHealingMinigame minigame;
-    [HideInInspector] public float healSpeedMultiplier = 1;
     [SerializeField] private GameObject hand;
-    private Material handOGMaterial;
     [SerializeField] private Material handHighlightMaterial;
-    private SkinnedMeshRenderer handRenderer;
     [SerializeField] private Animator handAnimator;
     [SerializeField] private Slider angelHPSlider;
     [SerializeField] private Canvas angelHPCanvas;
     [SerializeField] private HealingParticles healingParticlesScript;
     [SerializeField] private Transform mainCamera;
-    [SerializeField] private float range = 5f;
-    [SerializeField] private bool isAimingAtAngel = false;
-    [HideInInspector] public AngelMind angel;
-    private AiHealth aiHealth;
     [SerializeField] private StudioEventEmitter healingBeamEmitter;
     [SerializeField] private ManaLightAnimation manaLightAnimation;
     [SerializeField] private LayerMask layersForRaycast;
-    private TipManager tipManager;
     [SerializeField] private CanvasGroup angelHPCanvasGroup;
     [SerializeField] private CanvasGroup minigameCanvasGroup;
-    [SerializeField] private float guiFadeTimes = 0.1f;
-    private IEnumerator healingRoutine;
-    private bool isHealing = false;
 
-    [Header("Input Actions")]
+    [Header("Parameters")]
+    [SerializeField] private float range = 5f;
+    [SerializeField] private float guiFadeTimes = 0.1f;
+    public float healSpeedMultiplier = 1;
+
+    [Header("Input")]
     [SerializeField] private InputActionReference healAction;
+
+    private Helper_Arrow helperArrow;
+    private ScreenFlashTint screenFlashTint;
+    private AngelHealingMinigame minigame;
+    private Material handOGMaterial;
+    private SkinnedMeshRenderer handRenderer;
+    private TipManager tipManager;
+    private CrosshairManager crosshair;
+    private IEnumerator healingRoutine;
+    private AiHealth aiHealth;
+    public AngelMind angel;
+    private bool isAimingAtAngel;
+    private bool isHealing;
 
     private void Awake()
     {
@@ -46,6 +51,7 @@ public class AngelHeal : MonoBehaviour
 
     private void Start()
     {
+        crosshair = CrosshairManager.Instance;
         tipManager = TipManager.instance;
         helperArrow = Helper_Arrow.Instance;
         tipManager.Hide(1);
@@ -104,6 +110,7 @@ public class AngelHeal : MonoBehaviour
         {
             minigame.aiHealth = aiHealth;
             tipManager.Show(1);
+            crosshair.ShowCrosshair();
             isAimingAtAngel = true;
         }
     }
@@ -113,6 +120,7 @@ public class AngelHeal : MonoBehaviour
         if (isAimingAtAngel && healSpeedMultiplier == 1)
         {
             tipManager.Hide(1);
+            crosshair.HideCrosshair();
             if (handRenderer.material != handOGMaterial) handRenderer.material = handOGMaterial;
             isAimingAtAngel = false;
             CancelHealing();

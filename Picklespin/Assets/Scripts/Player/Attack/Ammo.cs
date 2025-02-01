@@ -1,4 +1,3 @@
-using FMODUnity;
 using UnityEngine;
 
 public class Ammo : MonoBehaviour
@@ -9,7 +8,7 @@ public class Ammo : MonoBehaviour
 
     private BarLightsAnimation barLightsAnimation;
     private AmmoDisplay ammoDisplay;
-    [SerializeField] private EventReference manaAqquiredSound;
+    //[SerializeField] private EventReference manaAqquiredSound;
 
     private void Awake()
     {
