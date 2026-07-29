@@ -15,6 +15,8 @@ First-person arena spell-caster. Unity 6 (6000.0.x), URP, FMOD, A* Pathfinding +
 | [09 — Effects & Visuals](09-effects-visuals.md) | Dissolve, torch flicker, camera shake, screen tint |
 | [10 — Conventions & Gotchas](10-conventions.md) | φ-math rules, singleton pattern, serialization traps |
 
+Design backlog (not documentation): [Gameplay Ideas](gameplay-ideas.md).
+
 ## Project layout
 
 - `Picklespin/` — the Unity project. Open this folder in Unity Hub.

@@ -86,6 +86,12 @@ public class LoadSelectedScene : MonoBehaviour
         }
 
         clickable = true;
+
+        // loading-screen UI (pulsing icons, flickers) can spawn fresh tweens any time
+        // during the async load, well after the KillAll at the top of this coroutine;
+        // kill again right before handing off, or DOTween logs "Tween startup failed"
+        // for targets destroyed when Menu_Main unloads
+        DG.Tweening.DOTween.KillAll();
         operation.allowSceneActivation = true;
     }
 

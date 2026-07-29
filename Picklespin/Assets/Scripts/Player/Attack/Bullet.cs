@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour
     [SerializeField] private int spellID;
     public string spellName;
     [SerializeField] private int damage = 15;
+    [SerializeField, Tooltip("scale damage by player speed (×0.25 standing – ×2 at bhop speeds); off = flat damage")]
+    private bool useSpeedDamageMultiplier = true;
     public int magickaCost = 30;
     public int speed = 60;
     public float myCooldown;
@@ -256,6 +258,7 @@ public class Bullet : MonoBehaviour
     // faster player = harder hits: ×0.25 standing, up to ×2 at bhop/rocket-jump speeds
     private int SpeedScaledDamage()
     {
+        if (!useSpeedDamageMultiplier) return damage;
         float multiplier = PlayerMovement.Instance ? PlayerMovement.Instance.SpeedDamageMultiplier : 1f;
         return Mathf.Max(1, Mathf.RoundToInt(damage * multiplier));
     }

@@ -260,7 +260,7 @@ public class PlayerMovement : MonoBehaviour
         MeasuredVelocity = characterController.velocity;
         HorizontalSpeed = Mathf.Sqrt(MeasuredVelocity.x * MeasuredVelocity.x + MeasuredVelocity.z * MeasuredVelocity.z);
         SpeedDamageMultiplier = Mathf.Lerp(minDamageMultiplier, maxDamageMultiplier,
-            Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed, HorizontalSpeed));
+            Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed*1.5f, HorizontalSpeed));
 
         if (grounded && onWalkableGround) SnapToGround();
     }

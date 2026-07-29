@@ -41,6 +41,7 @@ public class CameraBob : MonoBehaviour
     private float previousSineY;
     private float previousSpeed;
     private float maxSpeedDiffReciprocal;
+    private float strength = 1f;
 
     private const float TwoPI = Mathf.PI * 2f;
 
@@ -68,6 +69,20 @@ public class CameraBob : MonoBehaviour
         previousSpeed = speedometer.horizontalVelocity;
 
         maxSpeedDiffReciprocal = 1f / (maxSpeed - minSpeed);
+
+        // "CameraBobStrenght" (sic) is the literal key baked into the options scene's
+        // slider (PlayerPrefsSliderManager.settingName) — keep the spelling in sync with it
+        if (PlayerPrefs.HasKey("CameraBobStrenght"))
+        {
+            SetStrength(PlayerPrefs.GetFloat("CameraBobStrenght") * 0.01f);
+        }
+    }
+
+    // 0 = no bob, 1 = full; footstep events keep firing regardless so the
+    // FootstepSystem stays in sync even with bob visuals off
+    public void SetStrength(float normalized)
+    {
+        strength = Mathf.Clamp01(normalized);
     }
 
     private void LateUpdate()
@@ -119,8 +134,8 @@ public class CameraBob : MonoBehaviour
         previousSineY = sineValueY;
         previousSpeed = speed;
 
-        tempPos.y = sineValueY * amplitudeY * heightScale;
-        tempPos.x = sineValueX;
+        tempPos.y = sineValueY * amplitudeY * heightScale * strength;
+        tempPos.x = sineValueX * strength;
 
         Vector3 relativeBobPosition = referenceObject.rotation * tempPos;
         Vector3 targetPosition = originalPosition + relativeBobPosition;

@@ -9,6 +9,9 @@ public class CameraShakeManagerV2 : MonoBehaviour
     [SerializeField] private CameraShake[] cameraShakes;
     [SerializeField] private Transform handTransform;
 
+    private Vector3[] baseShakeAmounts;
+    private float strength = 1f;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -21,8 +24,40 @@ public class CameraShakeManagerV2 : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        baseShakeAmounts = new Vector3[cameraShakes.Length];
+        for (int i = 0; i < cameraShakes.Length; i++)
+        {
+            if (cameraShakes[i] != null)
+            {
+                baseShakeAmounts[i] = cameraShakes[i].shakeAmount;
+            }
+        }
+
+        // "ScreenShakeStrenght" (sic) matches the options scene slider's settingName key
+        if (PlayerPrefs.HasKey("ScreenShakeStrenght"))
+        {
+            SetStrength(PlayerPrefs.GetFloat("ScreenShakeStrenght") * 0.01f);
+        }
+    }
+
+    // 0 = no shakes at all, 1 = authored strength
+    public void SetStrength(float normalized)
+    {
+        strength = Mathf.Clamp01(normalized);
+        for (int i = 0; i < cameraShakes.Length; i++)
+        {
+            if (cameraShakes[i] != null)
+            {
+                cameraShakes[i].shakeAmount = baseShakeAmounts[i] * strength;
+            }
+        }
+    }
+
     public void ShakeSelected(int index)
     {
+        if (strength <= 0) return;
         StopAll();
         cameraShakes[index].Shake();
 
@@ -30,7 +65,8 @@ public class CameraShakeManagerV2 : MonoBehaviour
 
     public void ShakeHand(float strenght, float duration, int vibrato)
     {
-        handTransform.DOShakePosition(duration, strenght, vibrato, 90, false, true, ShakeRandomnessMode.Harmonic);
+        if (strength <= 0) return;
+        handTransform.DOShakePosition(duration, strenght * strength, vibrato, 90, false, true, ShakeRandomnessMode.Harmonic);
     }
 
     private void StopAll()
