@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -158,8 +158,4 @@ public class PickupableBonusesSpawner : MonoBehaviour
         Destroy(pooledItem.gameObject);
     }
 
-    private void SetSpawnCount(int spawnCount)
-    {
-        howManyToSpawn = Mathf.Clamp(spawnCount, 0, spawnPoints.Length - 1);
-    }
 }

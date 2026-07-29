@@ -1,9 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using FMODUnity;
 public class PlayFmodOnCollision : MonoBehaviour
 {
     [SerializeField] private StudioEventEmitter fmodEmitter;
-   // [SerializeField] private string collisionTag = "Concrete";
     [SerializeField] private float startDelay = 0.15f;
 
     [SerializeField] private float minimumVolume = -9.0f;
@@ -28,18 +27,13 @@ public class PlayFmodOnCollision : MonoBehaviour
             return;
         }
 
-        //Debug.Log(collision.relativeVelocity.magnitude);
-
         if (collision.relativeVelocity.magnitude >= velocityTreshold)
         {
             float velocityMagnitude = collision.relativeVelocity.magnitude;
 
-
             float volume = Mathf.Lerp(minimumVolume, maxVolume, Mathf.InverseLerp(minimumVolumeVelocity, maxVolumeVelocity, velocityMagnitude));
 
             fmodEmitter.SetParameter("Volume", volume);
-
-            //Debug.Log(volume);
 
             fmodEmitter.Play();
         }

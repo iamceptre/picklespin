@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnAnAngelCheat : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     [SerializeField] private AngelSpawner angelSpawner;
 
     private CheatActivatedFeedback cheatFeedback;
@@ -23,4 +24,5 @@ public class SpawnAnAngelCheat : MonoBehaviour
             }
         }
     }
+#endif
 }

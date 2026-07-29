@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using FMODUnity;
@@ -39,18 +39,6 @@ public class AngelHealingMinigame : MonoBehaviour
     [Header("Input Actions")]
     [SerializeField] private InputActionReference scrollAction;
     [SerializeField] private InputActionReference middleClickAction;
-
-    //private void OnEnable()
-    //{
-    //    scrollAction.action.Enable();
-    //    middleClickAction.action.Enable();
-    //}
-
-    //private void OnDisable()
-    //{
-    //    scrollAction.action.Disable();
-    //    middleClickAction.action.Disable();
-    //}
 
     private void Awake()
     {

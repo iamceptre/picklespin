@@ -1,10 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using FMODUnity;
 
 public class ActivateCheats : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
-    private const string targetWord = "oioi";
+    private const string targetWord = "kupa";
     private string inputString = "";
     private int targetIndex = 0;
 
@@ -63,4 +64,5 @@ public class ActivateCheats : MonoBehaviour
         gameSpeedSlider.Show();
         Destroy(this);
     }
+#endif
 }

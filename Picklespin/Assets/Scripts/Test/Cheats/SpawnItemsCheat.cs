@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnItemsCheat : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
     private CheatActivatedFeedback cheatActivatedFeedback;
     private SpellSpawner spellSpawner;
@@ -34,4 +35,5 @@ public class SpawnItemsCheat : MonoBehaviour
         }
 
     }
+#endif
 }

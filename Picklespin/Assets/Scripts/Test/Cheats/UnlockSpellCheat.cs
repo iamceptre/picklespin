@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UnlockSpellCheat : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
     [SerializeField] private UnlockedSpells unlockedSpells;
     [SerializeField] private Ammo ammo;
@@ -39,4 +40,5 @@ public class UnlockSpellCheat : MonoBehaviour
         }
 
     }
+#endif
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
@@ -12,7 +12,6 @@ public class BarEase : MonoBehaviour
     private float targetValue;
     private float easeSpeed;
     private bool isEasing;
-    //private bool easeFillVisible;
 
     private void Awake()
     {
@@ -24,7 +23,6 @@ public class BarEase : MonoBehaviour
         me.value = sliderToFollow.value;
         targetValue = me.value;
         easeFill.enabled = true;
-        //SetEaseFillAlpha(1f);
          me.value = sliderToFollow.value;
     }
 

@@ -1,4 +1,4 @@
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
@@ -6,7 +6,6 @@ using DG.Tweening;
 
 public class FallingFloor : MonoBehaviour
 {
-    //private Rigidbody rb;
     [SerializeField] private EventReference fallingFloorEvent;
     private EventInstance fallingFloorEventInstance;
 
@@ -105,7 +104,6 @@ public class FallingFloor : MonoBehaviour
         }
     }
 
-
     private void AlmostFallingIncidations()
     {
         ParticleSystem almostFaliingParticle = currentlyOccupiedFloor.GetComponentInChildren<ParticleSystem>();
@@ -116,8 +114,6 @@ public class FallingFloor : MonoBehaviour
         almostFaliingParticle.Play();
         floorShakeTween = currentlyOccupiedFloor.transform.DOShakeRotation(timeBeforeFloorFalls * 0.5f, 1, 40, 90, false);
     }
-
-
 
     private void Fall()
     {
@@ -144,8 +140,6 @@ public class FallingFloor : MonoBehaviour
         fallingFloorEventInstance.start();
     }
 
-
-
     private Vector3 ApplyRandomForce()
     {
         Vector3 randomForce = new Vector3(
@@ -156,6 +150,5 @@ public class FallingFloor : MonoBehaviour
 
         return randomForce;
     }
-
 
 }

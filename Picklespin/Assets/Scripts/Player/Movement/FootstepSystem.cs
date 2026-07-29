@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using FMODUnity;
 
 public class FootstepSystem : MonoBehaviour
@@ -14,7 +14,6 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private StudioEventEmitter jumpEventEmitter;
 
     private int footstepCount = 0;
-    //public enum MovementState { Sneak = 0, Walk = 1, Run = 2 }
 
     private void Awake()
     {
@@ -53,7 +52,7 @@ public class FootstepSystem : MonoBehaviour
 
     private void PlayFootstepSound()
     {
-        if (controller.isGrounded && playerMovement.anyMovementKeysPressed)
+        if (playerMovement.IsGroundedStable && playerMovement.anyMovementKeysPressed)
         {
             footstepEmitter.Play();
 

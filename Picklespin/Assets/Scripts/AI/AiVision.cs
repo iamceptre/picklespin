@@ -24,7 +24,7 @@ public class AiVision : MonoBehaviour
 
     public bool seeingPlayer;
     public bool playerJustHitMe;
-    private float hitMeCooldown;
+    private float hitMeUntilTime;
 
     public static List<AiVision> AllAIs { get; } = new();
 
@@ -37,25 +37,16 @@ public class AiVision : MonoBehaviour
         playerMovement = PlayerMovement.Instance;
     }
 
-    void Update()
-    {
-        if (hitMeCooldown > 0)
-        {
-            hitMeCooldown -= Time.deltaTime;
-            if (hitMeCooldown <= 0)
-            {
-                hitMeCooldown = 0;
-                playerJustHitMe = false;
-            }
-        }
-    }
-
     public void PerceptionCheck()
     {
         if (playerJustHitMe)
         {
-            seeingPlayer = true;
-            return;
+            if (Time.time < hitMeUntilTime)
+            {
+                seeingPlayer = true;
+                return;
+            }
+            playerJustHitMe = false;
         }
 
         FieldOfViewCheck();
@@ -64,10 +55,11 @@ public class AiVision : MonoBehaviour
 
     private void FieldOfViewCheck()
     {
-        Vector3 dir = (playerRef.position - transform.position).normalized;
+        Vector3 toPlayer = playerRef.position - transform.position;
+        float dist = toPlayer.magnitude;
+        Vector3 dir = toPlayer / dist;
         if (Vector3.Angle(transform.forward, dir) < angle * 0.5f)
         {
-            float dist = Vector3.Distance(transform.position, playerRef.position);
             seeingPlayer = !Physics.Raycast(transform.position, dir, dist, obstructionMask);
         }
         else
@@ -96,13 +88,13 @@ public class AiVision : MonoBehaviour
     {
         seeingPlayer = false;
         playerJustHitMe = false;
-        hitMeCooldown = 0;
+        hitMeUntilTime = 0;
         landingHearingActive = false;
     }
 
     public void HitShowsMePlayer()
     {
-        hitMeCooldown = 6f;
+        hitMeUntilTime = Time.time + 6f;
         playerJustHitMe = true;
     }
 

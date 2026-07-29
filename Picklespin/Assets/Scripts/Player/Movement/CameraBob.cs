@@ -36,6 +36,7 @@ public class CameraBob : MonoBehaviour
     private Vector3 camVelocity;
     private float bobTimer;
     private CharacterControllerVelocity speedometer;
+    private PlayerMovement playerMovement;
 
     private float previousSineY;
     private float previousSpeed;
@@ -60,6 +61,7 @@ public class CameraBob : MonoBehaviour
         originalPosition = toBob.localPosition;
         originalHandPosition = hand.localPosition;
         speedometer = CharacterControllerVelocity.instance;
+        playerMovement = PlayerMovement.Instance;
 
         bobTimer = 0f;
         previousSineY = Mathf.Sin(bobTimer * TwoPI);
@@ -70,7 +72,9 @@ public class CameraBob : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (characterController.isGrounded)
+        // stable grounded state instead of raw isGrounded: the raw flag flickers on
+        // slopes/stairs, which froze the bob and silenced footsteps
+        if (playerMovement.IsGroundedStable)
         {
             UpdateBobbing();
             UpdateHandBobbing();

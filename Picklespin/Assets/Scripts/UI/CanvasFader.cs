@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class CanvasFader : MonoBehaviour
@@ -30,7 +30,6 @@ public class CanvasFader : MonoBehaviour
 
     private void StartFade(float targetAlpha)
     {
-        //Debug.Log("starting fade " + targetAlpha);
         if (_currentFadeRoutine != null) StopCoroutine(_currentFadeRoutine);
         _currentFadeRoutine = StartCoroutine(FadeRoutine(targetAlpha));
     }
@@ -80,7 +79,5 @@ public class CanvasFader : MonoBehaviour
     }
 
     private float EaseInOutSine(float x) => -0.5f * (Mathf.Cos(Mathf.PI * x) - 1f);
-
-
 
 }

@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GorillaCheat : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     private const string targetWord = "gorilla"; 
     private string inputString = ""; 
     private int targetIndex = 0;
@@ -55,5 +56,6 @@ public class GorillaCheat : MonoBehaviour
        gorilla.SetActive(true);
        enabled = false;
     }
+#endif
 }
 

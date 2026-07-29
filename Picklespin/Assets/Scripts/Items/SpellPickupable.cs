@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Pool;
 using FMODUnity;
@@ -35,8 +35,6 @@ public class SpellPickupable : MonoBehaviour
 
     private ScreenFlashTint screenFlashTint;
 
-
-
     private void Awake()
     {
         myLight = gameObject.GetComponentInChildren<Light>();
@@ -68,7 +66,6 @@ public class SpellPickupable : MonoBehaviour
     private void OnEnable()
     {
         myCollider.enabled = true;
-        //rend.enabled = true;
 
         if (particle != null)
         {
@@ -115,8 +112,6 @@ public class SpellPickupable : MonoBehaviour
         }
     }
 
-
-
     private void FadeOut()
     {
         myCollider.enabled = false;
@@ -127,7 +122,6 @@ public class SpellPickupable : MonoBehaviour
         }
         LightRangeTweener();
     }
-
 
     private void LightRangeTweener()
     {
@@ -150,7 +144,6 @@ public class SpellPickupable : MonoBehaviour
         spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = true;
         spellClass = spellClassID;
     }
-
 
     public void SetPool(ObjectPool<SpellPickupable> pool)
     {

@@ -9,6 +9,9 @@ public class StateManager : MonoBehaviour
     [HideInInspector] public float RefreshEveryVarSeconds = 0.2f;
     float randomTimeOffset;
     float actualRefreshRate;
+    State initialState;
+
+    void Awake() => initialState = currentState;
 
     void OnEnable() => AllManagers.Add(this);
     void OnDisable() => AllManagers.Remove(this);
@@ -30,7 +33,7 @@ public class StateManager : MonoBehaviour
     public void ResetStateManager()
     {
         CancelInvoke();
-        currentState = null;
+        currentState = initialState; // restore the prefab's starting state for pooled reuse
     }
 
     public static bool IsAnyAIInAttackOrLoosing()

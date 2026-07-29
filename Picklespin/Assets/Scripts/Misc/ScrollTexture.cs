@@ -6,13 +6,15 @@ public class ScrollTexture : MonoBehaviour
     [SerializeField] private float scrollSpeedX = 0.3f;
     [SerializeField] private bool randomUVoffsetAtEnable = false;
 
-    private Renderer rend;
+    private Material materialInstance;
     private Vector2 offset;
     private bool isVisible;
 
+    private static readonly int mainTexID = Shader.PropertyToID("_MainTex");
+
     private void Awake()
     {
-        rend = GetComponent<Renderer>() ?? GetComponent<SkinnedMeshRenderer>();
+        materialInstance = GetComponent<Renderer>().material;
 
         if (randomUVoffsetAtEnable)
         {
@@ -34,7 +36,7 @@ public class ScrollTexture : MonoBehaviour
         offset.x += scrollSpeedX * Time.deltaTime;
         offset.y += scrollSpeedY * Time.deltaTime;
 
-        rend.material.SetTextureOffset("_MainTex", offset);
+        materialInstance.SetTextureOffset(mainTexID, offset);
     }
 
     private void OnBecameVisible()

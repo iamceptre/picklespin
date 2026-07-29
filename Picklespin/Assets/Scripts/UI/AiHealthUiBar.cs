@@ -1,6 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 using System.Collections;
 
 public class AiHealthUiBar : MonoBehaviour
@@ -11,10 +10,18 @@ public class AiHealthUiBar : MonoBehaviour
 
     private static readonly WaitForSeconds waitBeforeFadeOutTime = new(5);
     private Coroutine fadeCoroutine;
+    private Transform originalParent;
+    private Vector3 originalLocalPosition;
+    private Quaternion originalLocalRotation;
+    private Vector3 originalLocalScale;
 
     private void Awake()
     {
         if (!aiHealth) gameObject.TryGetComponent(out aiHealth);
+        originalParent = transform.parent;
+        originalLocalPosition = transform.localPosition;
+        originalLocalRotation = transform.localRotation;
+        originalLocalScale = transform.localScale;
     }
 
     public void RefreshBar()
@@ -35,18 +42,30 @@ public class AiHealthUiBar : MonoBehaviour
             fadeCoroutine = null;
         }
 
-
         canvasFader.FadeOut();
+        // stays alive (faded out, detached) so the pooled enemy can reclaim it via ResetBar
+    }
 
-        if (slider.value <= 0)
+    // re-attaches the bar to its enemy for pooled reuse
+    public void ResetBar()
+    {
+        if (fadeCoroutine != null)
         {
-            Destroy(gameObject);
+            StopCoroutine(fadeCoroutine);
+            fadeCoroutine = null;
         }
-
+        transform.SetParent(originalParent, false);
+        transform.localPosition = originalLocalPosition;
+        transform.localRotation = originalLocalRotation;
+        transform.localScale = originalLocalScale; // Detach() rewrites localScale to keep world size
     }
 
     private void FadeIn()
     {
+        // pooled resets refresh the bar while the enemy is still inactive — no
+        // coroutine can run then, and no fade is wanted anyway
+        if (!gameObject.activeInHierarchy) return;
+
         if (slider.value > 0)
         {
             if (fadeCoroutine != null)

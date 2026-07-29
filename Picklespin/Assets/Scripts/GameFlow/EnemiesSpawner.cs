@@ -1,48 +1,106 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
+// Spawns enemy waves from per-prefab pools, staggered in time and scattered on a
+// golden spiral so wave members can never clump. Wired from RoundSystem's events.
+// Dead enemies come back through TryDespawn (called by Dissolver) instead of Destroy.
 public class EnemiesSpawner : MonoBehaviour
 {
-    //public int howManyToSpawn;
+    public static EnemiesSpawner instance;
 
     [SerializeField] private GameObject evilEntity;
     [SerializeField] private GameObject evilEntityWhite;
     [SerializeField] private Transform[] spawnPoints;
-
     [SerializeField] private Transform[] waypointsToPass;
 
+    private static readonly WaitForSeconds spawnStagger = new(0.2f);
+    private int spawnIndex;
+
+    private ObjectPool<GameObject> easyPool;
+    private ObjectPool<GameObject> whitePool;
+    private readonly Dictionary<GameObject, ObjectPool<GameObject>> instanceToPool = new();
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        instance = this;
+        easyPool = CreatePool(evilEntity);
+        whitePool = CreatePool(evilEntityWhite);
+    }
+
+    private ObjectPool<GameObject> CreatePool(GameObject prefab)
+    {
+        ObjectPool<GameObject> pool = null;
+        pool = new ObjectPool<GameObject>(
+            createFunc: () =>
+            {
+                GameObject enemy = Instantiate(prefab);
+                enemy.SetActive(false);
+                instanceToPool.Add(enemy, pool);
+                return enemy;
+            },
+            actionOnGet: null,      // activation happens in Spawn, after positioning
+            actionOnRelease: enemy => enemy.SetActive(false),
+            actionOnDestroy: enemy =>
+            {
+                instanceToPool.Remove(enemy);
+                Destroy(enemy);
+            },
+            collectionCheck: false, defaultCapacity: 8, maxSize: 32);
+        return pool;
+    }
 
     public void SpawnEnemiesEasy(int howManyToSpawn)
     {
-        for (int i = 0; i < howManyToSpawn; i++)
-        {
-            Invoke("InstantiateEnemy", i * 0.2f);
-        }
+        StartCoroutine(SpawnWave(easyPool, howManyToSpawn));
     }
 
     public void SpawnEnemiesWhite(int howManyToSpawn)
     {
-        for (int i = 0; i < howManyToSpawn; i++)
+        StartCoroutine(SpawnWave(whitePool, howManyToSpawn));
+    }
+
+    private IEnumerator SpawnWave(ObjectPool<GameObject> pool, int count)
+    {
+        for (int i = 0; i < count; i++)
         {
-            Invoke("InstantiateEnemyWhite", i * 0.2f);
+            Spawn(pool);
+            yield return spawnStagger;
         }
     }
 
-    private void InstantiateEnemy()
+    private void Spawn(ObjectPool<GameObject> pool)
     {
-        int randPoint = Random.Range(0, spawnPoints.Length);
-        Vector3 randomOffset = Random.insideUnitSphere * 0.5f; 
-        Vector3 spawnPosition = spawnPoints[randPoint].position + randomOffset;
-        var spawnedOne =  Instantiate(evilEntity, spawnPosition, Quaternion.identity);
-        spawnedOne.gameObject.GetComponentInChildren<WaypointsForSpawner>().cachedPoint = waypointsToPass;
+        // golden-angle scatter + low-discrepancy point selection: even spread, no clumping
+        Vector2 offset = PhiMath.GoldenSpiralPoint(spawnIndex % 8, 8, 0.5f);
+        Transform point = spawnPoints[(int)(PhiMath.GoldenSequence(spawnIndex) * spawnPoints.Length)];
+        spawnIndex++;
+
+        GameObject enemy = pool.Get();
+        Vector3 spawnPosition = point.position + new Vector3(offset.x, 0, offset.y);
+        enemy.transform.position = spawnPosition;
+        enemy.GetComponentInChildren<WaypointsForSpawner>(true).cachedPoint = waypointsToPass;
+        enemy.GetComponentInChildren<AiReferences>(true)?.ResetAll();
+        enemy.SetActive(true); // position and state are ready before OnEnable fires
+
+        // sync A*'s internal simulation to the new spot (it remembers the death position otherwise)
+        if (enemy.TryGetComponent(out Pathfinding.IAstarAI astarAI)) astarAI.Teleport(spawnPosition);
     }
 
-    private void InstantiateEnemyWhite() //DO IT FUCKING CLEANER, THIS IS FUCKIGN FAKACKING BULLHIST 
+    // Dissolver calls this when a pooled enemy finishes dissolving
+    public static bool TryDespawn(GameObject enemy)
     {
-        int randPoint = Random.Range(0, spawnPoints.Length);
-        Vector3 randomOffset = Random.insideUnitSphere * 0.5f;
-        Vector3 spawnPosition = spawnPoints[randPoint].position + randomOffset;
-        var spawnedOne = Instantiate(evilEntityWhite, spawnPosition, Quaternion.identity);
-        spawnedOne.gameObject.GetComponentInChildren<WaypointsForSpawner>().cachedPoint = waypointsToPass;
+        if (instance == null || !instance.instanceToPool.TryGetValue(enemy, out ObjectPool<GameObject> pool))
+        {
+            return false;
+        }
+        pool.Release(enemy);
+        return true;
     }
-
 }

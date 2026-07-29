@@ -1,4 +1,4 @@
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +56,6 @@ public class AudioSnapshotManager : MonoBehaviour
 
     public void EnableSnapshot(string key)
     {
-        // Debug.Log($"Enabling snapshot: {key}");
 
         if (!snapshotDictionary.TryGetValue(key, out SnapshotData data))
         {
@@ -90,7 +89,6 @@ public class AudioSnapshotManager : MonoBehaviour
 
     public void DisableSnapshot(string key)
     {
-        // Debug.Log($"Disabling snapshot: {key}");
         if (activeSnapshots.TryGetValue(key, out EventInstance instance))
         {
             instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -108,7 +106,6 @@ public class AudioSnapshotManager : MonoBehaviour
 
     public void SwitchExclusiveSnapshot(string key)
     {
-        // Debug.Log($"Switching to exclusive snapshot: {key}");
         if (!snapshotDictionary.TryGetValue(key, out SnapshotData data) || !data.isExclusive)
         {
             Debug.LogWarning($"Exclusive snapshot '{key}' not found or not marked exclusive!");

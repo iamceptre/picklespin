@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public class UnityEventCheat : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     [SerializeField] private string cheatName = "my name";
 
     [SerializeField] private KeyCode cheatKey = KeyCode.X;
@@ -29,4 +30,5 @@ public class UnityEventCheat : MonoBehaviour
         }
 
     }
+#endif
 }

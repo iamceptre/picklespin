@@ -1,10 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Text;
-using System.Runtime.CompilerServices;
 
 public class ManaLightAnimation : MonoBehaviour
 {

@@ -19,8 +19,6 @@ public class SpellSpawner : MonoBehaviour
 
     private int rrrandom;
 
-    private NewRoundDisplayText newRoundDisplayText;
-
     private void Awake()
     {
         if (instance != null && instance != this)

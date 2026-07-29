@@ -43,4 +43,15 @@ public class GiveExpToPlayer : MonoBehaviour
         manaSuckParticles.Play();
         manaSuckParticles.transform.parent = null;
     }
+
+    // GiveExp detaches the particles on death; pooled reuse reclaims them
+    public void ResetExpParticles()
+    {
+        if (particleMoveTowardsScript == null) return; // first spawn: Start will set up
+        particleMoveTowardsScript.enabled = false;
+        manaSuckParticles.Pause();
+        manaSuckParticles.Clear();
+        manaSuckParticles.transform.parent = transform;
+        manaSuckParticles.transform.localPosition = Vector3.zero;
+    }
 }

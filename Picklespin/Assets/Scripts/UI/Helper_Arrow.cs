@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Helper_Arrow : MonoBehaviour //works only with objects that are not moving
 {
@@ -42,7 +42,6 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
         {
             helperSpirit.HideSpirit();
         }
-        //Debug.Log("hiding arrow");
         _rend.enabled = false;
         enabled = false;
         showing = false;
@@ -59,7 +58,6 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
 
     public void ShowArrow()
     {
-        //Debug.Log("showing arrow without updating da target");
         enabled = true;
         _rend.enabled = true;
         showing = true;

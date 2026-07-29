@@ -22,15 +22,16 @@ public class InventoryBarSelectedSpell : MonoBehaviour
         invNumberStartPos = invNumbersRect[0].localPosition.y;
     }
 
+    static readonly Color dimmedIconColor = new(0.35f, 0.35f, 0.35f);
+
     public void SelectionChanged(int spellID)
     {
         for (int i = 0; i < invSlot.Length; i++)
         {
-            invSlot[i].color = Color.gray;
-            invSlotSpellIcon[i].color = new Color(0.35f, 0.35f, 0.35f);
+            bool selected = i == spellID;
+            invSlot[i].color = selected ? Color.white : Color.gray;
+            invSlotSpellIcon[i].color = selected ? Color.white : dimmedIconColor;
         }
-        invSlot[spellID].color = Color.white;
-        invSlotSpellIcon[spellID].color = Color.white;
     }
 
     public void NumberBump(int spellID)

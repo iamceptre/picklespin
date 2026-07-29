@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameSpeedSlider : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
     private Slider me;
     private CanvasGroup _canvasGroup;
@@ -26,4 +27,5 @@ public class GameSpeedSlider : MonoBehaviour
         _canvasGroup.blocksRaycasts = true;
     }
 
+#endif
 }

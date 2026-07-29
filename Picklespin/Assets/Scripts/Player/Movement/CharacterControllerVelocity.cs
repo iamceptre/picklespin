@@ -25,7 +25,10 @@ public class CharacterControllerVelocity : MonoBehaviour
 
     void Update()
     {
-        Vector3 velocity = characterController.velocity;
+        // PlayerMovement samples velocity before its ground-snap Move; reading
+        // characterController.velocity directly would see only the vertical snap
+        PlayerMovement playerMovement = PlayerMovement.Instance;
+        Vector3 velocity = playerMovement != null ? playerMovement.MeasuredVelocity : characterController.velocity;
         horizontalVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
         verticalVelocity = Mathf.Abs(velocity.y);
     }

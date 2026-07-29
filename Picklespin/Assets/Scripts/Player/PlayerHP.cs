@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
@@ -30,8 +30,6 @@ public class PlayerHP : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private EventReference tinnitusEventReference;
-    //[SerializeField] private EventReference hurtSound;
-    //[SerializeField] private EventReference hpAqquiredSound];
     private AudioSnapshotManager audioSnapshotManager;
 
     [Header("Health Regeneration")]

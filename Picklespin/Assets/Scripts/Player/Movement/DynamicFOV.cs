@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DynamicFOV : MonoBehaviour
 {
@@ -34,7 +34,6 @@ public class DynamicFOV : MonoBehaviour
         {
             float finalFov = Mathf.SmoothDamp(mainCam.fieldOfView, desiredFOV, ref smoothDampVelocity, smoothness);
             mainCam.fieldOfView = finalFov;
-            //overlayCam.fieldOfView = finalFov;
         }
     }
 }

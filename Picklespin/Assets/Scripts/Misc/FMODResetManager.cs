@@ -1,4 +1,4 @@
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
@@ -24,13 +24,11 @@ public class FMODResetManager : MonoBehaviour
 
     private void Start()
     {
-        //MasterBus = RuntimeManager.GetBus("bus:/");
         MasterBus = RuntimeManager.GetBus("bus:/diagetic_ALL");
         diageticBus = RuntimeManager.GetBus("bus:/diagetic_ALL");
     }
     public void ResetFMOD(bool immediate)
     {
-        //Debug.Log("reset fmod");
         AudioSnapshotManager.Instance.Clear();
 
         if (immediate)

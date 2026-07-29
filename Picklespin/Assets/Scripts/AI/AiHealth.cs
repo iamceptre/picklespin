@@ -22,12 +22,17 @@ public class AiHealth : MonoBehaviour
     CameraShakeManagerV2 camShakeManager;
     float defaultHP;
 
+    void Awake()
+    {
+        // captured in Awake: pooled spawners may call ResetHealth before Start has run
+        defaultHP = hp;
+    }
+
     void Start()
     {
         damageUiSpawner = DamageUI_Spawner.instance;
         camShakeManager = CameraShakeManagerV2.instance;
         roundSystem = RoundSystem.instance;
-        defaultHP = hp;
     }
 
     public void TakeDamage(int damage, bool eyeshot, bool wasLastHitCritical)

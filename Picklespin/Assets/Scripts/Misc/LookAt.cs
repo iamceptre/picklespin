@@ -1,15 +1,16 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LookAt : MonoBehaviour
 {
 
-    [SerializeField] private Transform whatToLookAt;
+    [SerializeField]
+    [Tooltip("if null, it looks at player camera")]
+    private Transform whatToLookAt;
 
     private void Start()
     {
         if (whatToLookAt == null)
         {
-            //whatToLookAt = GameObject.FindGameObjectWithTag("MainCamera").transform;
             whatToLookAt = CachedCameraMain.instance.cachedTransform;
         }
     }

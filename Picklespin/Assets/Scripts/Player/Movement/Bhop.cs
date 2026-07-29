@@ -14,7 +14,7 @@ public class Bhop : MonoBehaviour
         if (!canBhop && !controller.isGrounded)
         {
             canBhop = true;
-            Invoke("ResetCanBhop", timeWindowToBhop);
+            Invoke(nameof(ResetCanBhop), timeWindowToBhop);
         }
     }
 

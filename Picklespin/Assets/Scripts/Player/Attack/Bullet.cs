@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using FMODUnity;
 using UnityEngine.Pool;
 using System.Collections;
@@ -163,10 +163,6 @@ public class Bullet : MonoBehaviour
         else
         {
             PlayExplosionSounds();
-            //if (!weakPointHit)
-            //{
-            //    AttemptSpawnDecal(collider.transform.position, Vector3.up, collider.gameObject);
-            //}
         }
         SpawnExplosion();
         AfterExplosion();
@@ -206,11 +202,10 @@ public class Bullet : MonoBehaviour
         }
         giveExpToPlayer.wasLastShotAHeadshot = false;
         flashWhenHit.Flash();
-        aiHealth.TakeDamage(damage, false, wasLastHitCritical);
+        aiHealth.TakeDamage(SpeedScaledDamage(), false, wasLastHitCritical);
         ApplySpecialEffect(refs);
         if (aiVision) aiVision.HitShowsMePlayer();
     }
-
 
     private void RangeHitDetection(Collision collision)
     {
@@ -253,9 +248,16 @@ public class Bullet : MonoBehaviour
     private void Headshot(AiReferences refs)
     {
         if (aiVision) aiVision.HitShowsMePlayer();
-        aiHealth.TakeDamage(damage, true, wasLastHitCritical);
+        aiHealth.TakeDamage(SpeedScaledDamage(), true, wasLastHitCritical);
         refs.HeadshotParticle.Play();
         refs.damageTakenEyeshot.Play();
+    }
+
+    // faster player = harder hits: ×0.25 standing, up to ×2 at bhop/rocket-jump speeds
+    private int SpeedScaledDamage()
+    {
+        float multiplier = PlayerMovement.Instance ? PlayerMovement.Instance.SpeedDamageMultiplier : 1f;
+        return Mathf.Max(1, Mathf.RoundToInt(damage * multiplier));
     }
 
     private void ApplySpecialEffect(AiReferences aiRefs)
@@ -269,7 +271,7 @@ public class Bullet : MonoBehaviour
         if (Random.Range(0, 10) >= criticalThreshold || iWillBeCritical)
         {
             if (refs.damageTakenCritical) refs.damageTakenCritical.Play();
-            damage = (int)(originalDamage * 1.5f);
+            damage = (int)(originalDamage * PhiMath.PHI); // crits hit φ× harder
             wasLastHitCritical = true;
         }
         else
@@ -283,8 +285,6 @@ public class Bullet : MonoBehaviour
         damage = originalDamage;
         wasLastHitCritical = false;
     }
-
-
 
     private void SpawnExplosion()
     {
@@ -327,7 +327,7 @@ public class Bullet : MonoBehaviour
                     var playerMove = cc.GetComponent<PlayerMovement>();
                     if (playerMove)
                     {
-                        playerMove.AddExplosionJump(rocketJumpForce * 2, explosionCenter, rangeRadius);
+                        playerMove.AddExplosionJump(rocketJumpForce * PhiMath.PHI2, explosionCenter, rangeRadius);
                         var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
                         var proximityFactor = 1f - distance / rangeRadius;
                         proximityFactor = Mathf.Clamp01(proximityFactor);
@@ -390,8 +390,6 @@ public class Bullet : MonoBehaviour
             SpellDecalManager.Instance.SpawnDecal(contact.point + contact.normal * 0.01f,Quaternion.LookRotation(contact.normal),spellID,hitTag.GetHashCode());
         }
     }
-
-
 
     private void ResetBulletState()
     {

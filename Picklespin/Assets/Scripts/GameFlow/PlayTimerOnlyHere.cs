@@ -1,5 +1,4 @@
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayTimerOnlyHere : MonoBehaviour
 {
@@ -17,6 +16,5 @@ public class PlayTimerOnlyHere : MonoBehaviour
             roundSystem.isCounting = true;
         }
     }
-
 
 }

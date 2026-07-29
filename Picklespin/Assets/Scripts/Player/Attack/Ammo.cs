@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ammo : MonoBehaviour
 {
@@ -8,7 +8,6 @@ public class Ammo : MonoBehaviour
 
     private BarLightsAnimation barLightsAnimation;
     private AmmoDisplay ammoDisplay;
-    //[SerializeField] private EventReference manaAqquiredSound;
 
     private void Awake()
     {
@@ -31,7 +30,6 @@ public class Ammo : MonoBehaviour
         if (!isSilent)
         {
             barLightsAnimation.PlaySelectedBarAnimation(2, howMuchManaIGive, gotMaxxed);
-            //RuntimeManager.PlayOneShot(manaAqquiredSound);
         }
     }
 }

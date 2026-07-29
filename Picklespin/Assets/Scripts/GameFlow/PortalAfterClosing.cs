@@ -1,10 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Rendering.PostProcessing;
-using FMODUnity;
 using UnityEngine.UI;
-using FMOD.Studio;
 
 public class PortalAfterClosing : MonoBehaviour
 {
@@ -51,7 +49,6 @@ public class PortalAfterClosing : MonoBehaviour
         playerHp = PlayerHP.Instance;
         ppVolume.profile.TryGetSettings(out ppColorGrading);
     }
-
 
     public void PortalClosed()
     {
@@ -114,7 +111,6 @@ public class PortalAfterClosing : MonoBehaviour
         }
     }
 
-
     private void BlackOutScreen()
     {
         Tween myTween = screenTint.DOColor(Color.black, 2).OnComplete(() =>
@@ -124,11 +120,9 @@ public class PortalAfterClosing : MonoBehaviour
         myTween.SetUpdate(UpdateType.Normal, true);
     }
 
-
     private IEnumerator ActivateFailScreen()
     {
         yield return new WaitForSeconds(1);
-        //audioSnapshotManager.DisableSnapshot("Portal_Closed");
         PortalClosedScreen.enabled = true;
         PortalClosedScreen.gameObject.SetActive(true); 
         myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>

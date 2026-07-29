@@ -13,7 +13,6 @@ public class JumpLandSignals : MonoBehaviour
     private FloorTypeDetector floorTypeDetector;
     private CameraBob cameraBob;
     private CameraShakeManagerV2 camShakeManager;
-    private PlayerMovement playerMovement;
     private CharacterControllerVelocity speedometer;
 
     public StudioEventEmitter landSoftEmitter;
@@ -38,7 +37,6 @@ public class JumpLandSignals : MonoBehaviour
     {
         floorTypeDetector = FloorTypeDetector.instance;
         speedometer = CharacterControllerVelocity.instance;
-        playerMovement = PlayerMovement.Instance;
         camShakeManager = CameraShakeManagerV2.instance;
         cameraBob = CameraBob.instance;
     }
@@ -67,7 +65,6 @@ public class JumpLandSignals : MonoBehaviour
         {
             landed = true;
             ignoreFirstLanding = false;
-            playerMovement.externalPushForce = 1;
             floorTypeDetector.Check();
 
             if (isFallingLongEnough)

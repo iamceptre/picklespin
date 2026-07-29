@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using FMODUnity;
@@ -10,12 +10,6 @@ public class Pickupable_Item : MonoBehaviour
 
     [SerializeField] private UnityEvent pickupEvent;
     [SerializeField] private StudioEventEmitter spawnSoundEmitter;
-
-    //private void Start()
-    //{
-    //    StartFloating();
-    //}
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -36,6 +30,5 @@ public class Pickupable_Item : MonoBehaviour
     {
         transform.Rotate(Vector3.up, Time.deltaTime * 30 , Space.Self);
     }
-
 
 }

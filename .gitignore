@@ -17,6 +17,11 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
+[Uu]serSettings/
+[Rr]ecordings/
+ProfilerCaptures/
+SerializedBuildInfo/
+.utmp/
 
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
@@ -29,6 +34,9 @@
 
 # Visual Studio cache directory
 .vs/
+
+# JetBrains Rider cache/settings directory
+.idea/
 
 # Gradle cache directory
 .gradle/
@@ -72,8 +80,8 @@ crashlytics-build.properties
 ![Pp]icklespin/[Aa]ssets/Plugins/FMOD/**/*.dll
 
 # Don't ignore images and gizmos used by FMOD in the Unity Editor
-![Pp]icklespin/[Aa}ssets/Gizmos/FMOD/*
-![Pp]icklespin/[Aa}ssets/Editor Default Resources/FMOD/*
+![Pp]icklespin/[Aa]ssets/Gizmos/FMOD/*
+![Pp]icklespin/[Aa]ssets/Editor Default Resources/FMOD/*
 
 # Ignore the Cache-file since it is updated locally either way
 [Pp]icklespin/[Aa]ssets/**/FMODStudioCache.asset
@@ -157,7 +165,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-Picklespin/UserSettings/Layouts/default-2022.dwlt
-Picklespin/UserSettings/Layouts/CurrentMaximizeLayout.dwlt
-Picklespin/UserSettings/Layouts/default-2022.dwlt
-Picklespin/UserSettings/Layouts/default-2022.dwlt

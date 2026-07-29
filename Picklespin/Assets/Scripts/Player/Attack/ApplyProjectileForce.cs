@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ApplyProjectileForce : MonoBehaviour
 {
@@ -16,12 +16,10 @@ public class ApplyProjectileForce : MonoBehaviour
         bullet = GetComponent<Bullet>();
     }
 
-
     public void Set()
     {
         if (!gotRefs)
         {
-            //Debug.Log("getting refs");
             recoilMultiplier = RecoilMultiplier.instance;
             cachedCameraMain = CachedCameraMain.instance;
             gotRefs = true;
@@ -29,8 +27,6 @@ public class ApplyProjectileForce : MonoBehaviour
 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        //Debug.Log("setting rb");
-        //recoilMultiplier.UpdateRecoil();
         Vector3 randomDirection = new Vector3(
 Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),
 Random.Range(-recoilMultiplier.currentRecoil, recoilMultiplier.currentRecoil),

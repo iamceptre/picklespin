@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GodmodeCheat : MonoBehaviour
 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     private const string targetWord = "god";
     private string inputString = "";
     private int targetIndex = 0;
@@ -55,5 +56,6 @@ public class GodmodeCheat : MonoBehaviour
         playerHp.godMode = true;
         enabled = false;
     }
+#endif
 }
 
