@@ -42,7 +42,7 @@ public class Reborn : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && clickable)
+        if (InputCompat.GetKeyDown(KeyCode.Return) && clickable)
         {
             clickable = false;
             OnClickEvent.Invoke();

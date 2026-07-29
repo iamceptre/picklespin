@@ -20,9 +20,9 @@ public class UnityEventCheat : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKey(KeyCode.UpArrow))
+        if(InputCompat.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(cheatKey))
+            if (InputCompat.GetKeyDown(cheatKey))
             {
                 _event.Invoke();
                 cheatActivatedFeedback.Do(cheatName);

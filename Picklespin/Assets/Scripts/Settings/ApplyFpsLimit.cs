@@ -13,7 +13,7 @@ public class ApplyFpsLimit : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (InputCompat.GetKeyDown(KeyCode.F))
         {
             fpsLimit.SetFramerate();
         }

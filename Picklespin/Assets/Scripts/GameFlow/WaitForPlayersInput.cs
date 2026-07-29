@@ -14,13 +14,13 @@ public class WaitForPlayersInput : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0)
+        if (InputCompat.GetAxisRaw("Vertical") != 0 || InputCompat.GetAxisRaw("Horizontal") != 0)
         {
             afterPlayerInputEvent.Invoke();
             enabled = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (InputCompat.GetKeyDown(KeyCode.T))
         {
             cheatActivatedFeedback.Do("rounds disabled");
             enabled = false;

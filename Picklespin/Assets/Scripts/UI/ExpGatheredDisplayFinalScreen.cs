@@ -35,7 +35,7 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
     void Start()
     {
         Attack.instance.enabled = false;
-        MouselookXY_old.instance.enabled = false;
+        MouselookXY.instance.enabled = false;
 
        Tween slowdown = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.2f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
@@ -57,7 +57,7 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
     void Update()
     {
 
-        if (Input.anyKeyDown)
+        if (InputCompat.AnyKeyDown)
         {
             myTween.Kill();
             FinishedAnimating();

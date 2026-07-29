@@ -27,7 +27,7 @@ All game code lives in `Assets/Scripts/`, organized by category: `AI/` (with `AI
 
 **Player** (`Scripts/Player/`): CharacterController-based FPS movement in `Movement/` (`PlayerMovement`, `Bhop`, `Dash`, `DynamicFOV`, `CameraBob`, `FootstepSystem`). Combat in `Attack/`: `Attack` (singleton) implements hold-to-cast with a casting-progress slider, spells are `Bullet` prefabs indexed by `selectedBulletIndex`, mana is `Ammo`. Progression: `PlayerHP`, `PlayerStamina`, `PlayerEXP`, `UnlockedSpells`, `SpellSelector`. A separate "angel" healing mechanic lives in `AngelMind`/`AngelHeal`/`AngelHealingMinigame`.
 
-**Input**: the new Input System via `InputActionReference` fields; subscribe to `.action.performed/.canceled` in `OnEnable` and unsubscribe in `OnDisable`.
+**Input**: the new Input System via `InputActionReference` fields; subscribe to `.action.performed/.canceled` in `OnEnable` and unsubscribe in `OnDisable`. Active Input Handling is "Input System Package" only — never call legacy `UnityEngine.Input`; for one-off KeyCode-style polling (cheats, debug keys) use the `InputCompat` static bridge (`Scripts/Misc/InputCompat.cs`).
 
 **Audio**: all sound goes through FMOD (`StudioEventEmitter`, `EventReference`) — do not use Unity `AudioSource` for new sounds. Changing audio content requires editing the FMOD Studio project and rebuilding banks.
 

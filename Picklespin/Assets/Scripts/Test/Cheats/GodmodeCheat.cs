@@ -18,9 +18,9 @@ public class GodmodeCheat : MonoBehaviour
 
     void Update()
     {
-        if (Input.anyKeyDown && targetIndex < targetWord.Length)
+        if (InputCompat.AnyKeyDown && targetIndex < targetWord.Length)
         {
-            char inputChar = Input.inputString.Length > 0 ? Input.inputString[0] : '\0';
+            char inputChar = InputCompat.TypedCharThisFrame;
 
             if (char.IsLetter(inputChar) || inputChar == ' ')
             {

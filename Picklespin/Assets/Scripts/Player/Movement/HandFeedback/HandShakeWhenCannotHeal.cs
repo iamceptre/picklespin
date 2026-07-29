@@ -12,7 +12,7 @@ public class HandShakeWhenCannotHeal : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (InputCompat.GetKeyDown(KeyCode.Mouse1))
         {
             if (!angelHeal.enabled)
             {

@@ -24,7 +24,7 @@ public class Nik : MonoBehaviour
         {
             yield return hidetime;
 
-            if (Input.GetKey(nikKey))
+            if (InputCompat.GetKey(nikKey))
             {
                 _emitter.Play();
                 _renderer.enabled = true;

@@ -17,22 +17,22 @@ public class UnlockSpellCheat : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKey(KeyCode.UpArrow))
+        if(InputCompat.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (InputCompat.GetKeyDown(KeyCode.Alpha3))
             {
                 unlockedSpells.UnlockASpell(2);
                 cheatActivatedFeedback.Do("unlock light spell");
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (InputCompat.GetKeyDown(KeyCode.Alpha2))
             {
                 unlockedSpells.UnlockASpell(1);
                 cheatActivatedFeedback.Do("unlock fireball");
             }
 
 
-            if (Input.GetKeyDown(KeyCode.M))
+            if (InputCompat.GetKeyDown(KeyCode.M))
             {
                 ammo.GiveManaToPlayer(ammo.maxAmmo - ammo.ammo, false);
                 cheatActivatedFeedback.Do("full mana");

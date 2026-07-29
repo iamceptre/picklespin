@@ -15,7 +15,7 @@ public class DebugTestCameraShake : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_key))
+        if (InputCompat.GetKeyDown(_key))
         {
             _camShake.Shake();
         }

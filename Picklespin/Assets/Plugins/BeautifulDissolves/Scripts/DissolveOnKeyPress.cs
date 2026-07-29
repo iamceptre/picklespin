@@ -11,6 +11,7 @@ namespace BeautifulDissolves {
 
 		void Update ()
 		{
+#if ENABLE_LEGACY_INPUT_MANAGER
 			if (Input.GetKeyDown(key)) {
 				if (isToggle) {
 					if (!toggle) {
@@ -24,6 +25,7 @@ namespace BeautifulDissolves {
 					TriggerDissolve();
 				}
 			}
+#endif
 		}
 	}
 }

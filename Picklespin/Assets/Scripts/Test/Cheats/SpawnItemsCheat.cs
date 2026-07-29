@@ -18,15 +18,15 @@ public class SpawnItemsCheat : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (InputCompat.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(KeyCode.L))
+            if (InputCompat.GetKeyDown(KeyCode.L))
             {
                 spellSpawner.SpawnSpellsLo(1);
                 cheatActivatedFeedback.Do("spawn low spells");
             }
 
-            if (Input.GetKeyDown(KeyCode.B))
+            if (InputCompat.GetKeyDown(KeyCode.B))
             {
                 pickupableBonusesSpawner.SpawnBonuses(8);
                 cheatActivatedFeedback.Do("spawn bonuses");

@@ -15,9 +15,9 @@ public class SpawnAnAngelCheat : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (InputCompat.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (InputCompat.GetKeyDown(KeyCode.A))
             {
                 cheatFeedback.Do("forced angel spawn");
                 angelSpawner.SpawnAngel();
