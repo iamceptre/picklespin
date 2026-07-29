@@ -1,28 +1,29 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
-public class UIHoverCheck : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UIHoverCheck : MonoBehaviour
 {
-    [SerializeField] private GraphicRaycaster raycaster;
-    private EventSystem eventSystem;
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private Canvas canvas;
 
     [SerializeField] private UnityEvent hoverEvent;
     [SerializeField] private UnityEvent unhoverEvent;
 
-    private bool hovering = false;
     private bool hovered = false;
     private bool externalHover = false;
 
     private void Awake()
     {
-        if (TryGetComponent(out GraphicRaycaster rc))
+        if (!rectTransform)
         {
-            raycaster = rc;
+            rectTransform = GetComponent<RectTransform>();
         }
-
-        eventSystem = EventSystem.current;
+        if (!canvas)
+        {
+            canvas = GetComponentInParent<Canvas>()?.rootCanvas;
+        }
     }
 
     public void SetExternalHover(bool state)
@@ -32,33 +33,32 @@ public class UIHoverCheck : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private void Update()
     {
-        if (hovering || externalHover)
-        {
-            if (!hovered)
-            {
-                hovered = true;
-                hoverEvent.Invoke();
-            }
+        bool hovering = externalHover || IsPointerOverRect();
 
+        if (hovering && !hovered)
+        {
+            hovered = true;
+            hoverEvent.Invoke();
         }
-        else
+        else if (!hovering && hovered)
         {
-            if (hovered)
-            {
-                hovered = false;
-                unhoverEvent.Invoke();
-            }
-
+            hovered = false;
+            unhoverEvent.Invoke();
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    // Polled every frame instead of relying on OnPointerEnter/OnPointerExit,
+    // which can lose their pairing (stuck-visible tap controls) when the
+    // pointer crosses several UI elements in a single fast movement.
+    private bool IsPointerOverRect()
     {
-        hovering = true;
-    }
+        if (Mouse.current == null)
+        {
+            return false;
+        }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        hovering = false;
+        Vector2 pointerPos = Mouse.current.position.ReadValue();
+        Camera eventCamera = canvas && canvas.renderMode != RenderMode.ScreenSpaceOverlay ? canvas.worldCamera : null;
+        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, pointerPos, eventCamera);
     }
 }

@@ -58,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     private float minDamageMultiplier = 0.25f;
     [SerializeField, Tooltip("damage multiplier at max speed (bhop chains, rocket jumps)")]
     private float maxDamageMultiplier = 2.5f;
+    [SerializeField, Tooltip("speed at which maxDamageMultiplier is reached, as a multiple of MaxHorizontalSpeed (real speed is hard-clamped to MaxHorizontalSpeed, so keep this at 1 for the peak to be reachable)")]
+    private float damageMultiplierSpeedCapScale = 1f;
 
     [Header("Bhop Settings")]
     [SerializeField, Tooltip("grace period after landing where a jump keeps momentum; holding jump auto-hops; 1/φ³ ≈ 0.236s")]
@@ -259,8 +261,13 @@ public class PlayerMovement : MonoBehaviour
         // last Move call, and the vertical-only snap would zero the reported speed
         MeasuredVelocity = characterController.velocity;
         HorizontalSpeed = Mathf.Sqrt(MeasuredVelocity.x * MeasuredVelocity.x + MeasuredVelocity.z * MeasuredVelocity.z);
+
+        // characterController.velocity is read off the CharacterController's own collision-resolved
+        // displacement and gets noisy at high speed (transient spikes, stale reads at rest); moveDirection
+        // is our own simulated velocity — already clamped every airborne frame — so it's the stable source
+        float damageSpeed = new Vector2(moveDirection.x, moveDirection.z).magnitude;
         SpeedDamageMultiplier = Mathf.Lerp(minDamageMultiplier, maxDamageMultiplier,
-            Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed*1.5f, HorizontalSpeed));
+            Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed * damageMultiplierSpeedCapScale, damageSpeed));
 
         if (grounded && onWalkableGround) SnapToGround();
     }

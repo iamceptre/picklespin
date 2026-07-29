@@ -330,7 +330,7 @@ public class Bullet : MonoBehaviour
                     var playerMove = cc.GetComponent<PlayerMovement>();
                     if (playerMove)
                     {
-                        playerMove.AddExplosionJump(rocketJumpForce * PhiMath.PHI2, explosionCenter, rangeRadius);
+                        playerMove.AddExplosionJump(rocketJumpForce * 2f, explosionCenter, rangeRadius);
                         var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
                         var proximityFactor = 1f - distance / rangeRadius;
                         proximityFactor = Mathf.Clamp01(proximityFactor);

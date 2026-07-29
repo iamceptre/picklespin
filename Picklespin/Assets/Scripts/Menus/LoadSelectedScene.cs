@@ -99,6 +99,6 @@ public class LoadSelectedScene : MonoBehaviour
     {
         float progress = Mathf.Clamp01(operation.progress / .9f);
         loadingBar.value = progress;
-        loadingText.text = 100 * ((int)progress) + "%";
+        loadingText.text = (int)(100 * progress) + "%";
     }
 }

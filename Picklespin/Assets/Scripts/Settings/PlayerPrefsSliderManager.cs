@@ -1,13 +1,10 @@
-﻿using FMODUnity;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerPrefsSliderManager : MonoBehaviour
 {
     private Slider _slider;
     [SerializeField] private string settingName = "setMyName";
-
-    [SerializeField] StudioEventEmitter sliderEmitterToFixSoundOnStart;
 
     private void Awake()
     {
@@ -32,7 +29,7 @@ public class PlayerPrefsSliderManager : MonoBehaviour
     {
         if (settingName != null && _slider != null)
         {
-            _slider.value = PlayerPrefs.GetFloat(settingName, _slider.value);
+            _slider.SetValueWithoutNotify(PlayerPrefs.GetFloat(settingName, _slider.value));
         }
         //do rest of the loading in coresponding scripts like MouseLook, VolumeSettingLoader etc
     }

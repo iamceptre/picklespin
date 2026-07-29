@@ -15,6 +15,8 @@ public class FadeInCanvasGroup : MonoBehaviour
     public void FadeIn()
     {
         myTween.Kill();
+        myCanvasGroup.blocksRaycasts = true;
+        myCanvasGroup.interactable = true;
         myTween = myCanvasGroup.DOFade(1, animationTime);
         myTween.SetUpdate(UpdateType.Normal, true);
     }
@@ -24,6 +26,11 @@ public class FadeInCanvasGroup : MonoBehaviour
         myTween.Kill();
         myTween = myCanvasGroup.DOFade(0, animationTime * 1.6f);
         myTween.SetUpdate(UpdateType.Normal, true);
+        myTween.OnComplete(() =>
+        {
+            myCanvasGroup.blocksRaycasts = false;
+            myCanvasGroup.interactable = false;
+        });
     }
 
 }
