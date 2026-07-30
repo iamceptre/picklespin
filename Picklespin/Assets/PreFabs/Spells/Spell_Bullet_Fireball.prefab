@@ -10030,7 +10030,7 @@ MonoBehaviour:
   spellName: Fireball
   damage: 25
   useSpeedDamageMultiplier: 0
-  magickaCost: 50
+  magickaCost: 60
   speed: 25
   myCooldown: 2
   castDuration: 1
@@ -10148,14 +10148,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce318fb99ca6bf48b015a2035e77313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howMuchDamageIdeal: 2
+  damagePerTick: 2
+  burnDuration: 11.09017
+  tickInterval: 0.618034
   emitter: {fileID: 0}
   fireLight: {fileID: 0}
   diedFromBurnParticle: {fileID: 0}
   effectParticle: {fileID: 0}
-  countdownTimer: 0
   cachedAiHP: {fileID: 0}
-  cachedAiHpBar: {fileID: 0}
 --- !u!114 &7387112467910556193
 MonoBehaviour:
   m_ObjectHideFlags: 0

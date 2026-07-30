@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,14 +14,18 @@ public class WinGate : MonoBehaviour
     [SerializeField] private UnityEvent hideTooltipEvent;
 
     [SerializeField] private StudioEventEmitter portalEnterOneshot;
-    [Tooltip("PORTAL_LOOP — plays on enable and has no stop trigger, so escaping has to stop it")]
-    [SerializeField] private StudioEventEmitter portalLoopEmitter;
+   
+    //[SerializeField] private StudioEventEmitter portalLoopEmitter;
+
+    [SerializeField] private EventReference snapshotEvent;
+    private EventInstance snapshotInstance;
 
 
     private void Start()
     {
         win = Win.instance;
         inventory = InventoryItemsBank.instance;
+        snapshotInstance = RuntimeManager.CreateInstance(snapshotEvent);
     }
 
 
@@ -31,7 +36,8 @@ public class WinGate : MonoBehaviour
             if (inventory.WinGateKey)
             {
                 portalEnterOneshot.Play();
-                if (portalLoopEmitter) portalLoopEmitter.Stop(); // AllowFadeout lets it tail off
+                //if (portalLoopEmitter) portalLoopEmitter.Stop();
+                snapshotInstance.start();
                 win.WinFunction();
             }
             else
@@ -48,6 +54,10 @@ public class WinGate : MonoBehaviour
         {
             hideTooltipEvent.Invoke();
         }
+    }
+    void OnDestroy()
+    {
+        snapshotInstance.release();
     }
 
 }
