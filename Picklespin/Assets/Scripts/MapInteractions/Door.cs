@@ -16,20 +16,23 @@ public class Door : MonoBehaviour
 
     private static readonly WaitForSeconds refreshRate = new(0.04f);
     private static readonly Vector3 rotationVector = new(0, 0, 90);
-    private static readonly float animationTime = PhiMath.PHI * 0.5f; // ≈ 0.809s
-    private static readonly float maxDistance = PhiMath.PHI4;         // ≈ 6.85m
-    [SerializeField, Tooltip("interact works without looking directly at the door within this distance")]
-    private float fallbackInteractDistance = PhiMath.PHI3; // ≈ 4.24m
+    private const float animationTime = 0.8f;              // door swing
+    private const float maxDistance = 7f;                  // furthest you can interact at all
+    private const float fallbackDistance = 4f;             // within this, aim is ignored entirely
+    private const float aimRadius = 0.25f;                 // how far off the crosshair may be
 
     private static readonly List<Door> doorsInRange = new();
+    private static readonly RaycastHit[] aimHits = new RaycastHit[8];
 
     [Header("Logic")]
     public bool isLocked;
     private bool isOpened;
     private bool canButtonBuffer = true;
     private bool playerInRange;
+    private bool initialized;
 
     [Header("References")]
+    [Tooltip("the solid (non-trigger) collider — auto-found if left empty")]
     [SerializeField] private Collider myCollider;
     [SerializeField] private InputActionReference interactAction;
 
@@ -43,19 +46,41 @@ public class Door : MonoBehaviour
     {
         if (!_transform) _transform = transform;
         startRot = _transform.localEulerAngles;
+
+        // Door.prefab and Door_2.prefab ship with this unassigned, which made
+        // every aim test miss and the proximity fallback throw. A door has a
+        // solid collider and a trigger volume; the solid one is the target.
+        if (!myCollider)
+        {
+            foreach (Collider c in GetComponentsInChildren<Collider>(true))
+            {
+                if (c.isTrigger) continue;
+                myCollider = c;
+                break;
+            }
+        }
     }
 
-    private void Start()
+    // The component starts disabled, so Start() would not run until the trigger
+    // enabled it — and then it ran *after* OnTriggerEnter in the same frame and
+    // switched the door straight back off. Initialisation is explicit instead.
+    private void EnsureInitialized()
     {
+        if (initialized) return;
+        initialized = true;
+
         crosshair = CrosshairManager.Instance;
         handAnimator = PublicPlayerHandAnimator.instance._animator;
         mainCamera = CachedCameraMain.instance.cachedTransform;
         tipManager = TipManager.instance;
-        enabled = false;
     }
 
     private void OnEnable()
     {
+        // a press that ended while this door was out of range never delivered its
+        // "canceled", which used to latch the buffer shut for good
+        canButtonBuffer = true;
+
         interactAction.action.started += OnInteractStarted;
         interactAction.action.canceled += OnInteractCanceled;
         interactAction.action.Enable();
@@ -65,7 +90,8 @@ public class Door : MonoBehaviour
     {
         interactAction.action.started -= OnInteractStarted;
         interactAction.action.canceled -= OnInteractCanceled;
-        interactAction.action.Disable();
+        // deliberately not Disable()d: the action asset is shared by every door,
+        // so one door going out of range used to kill interaction for all of them
     }
 
     private void OnInteractStarted(InputAction.CallbackContext ctx)
@@ -73,21 +99,69 @@ public class Door : MonoBehaviour
         if (!canButtonBuffer) return;
         canButtonBuffer = false;
 
-        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        if (ResolveTarget() == this) Interact();
+    }
+
+    private void OnInteractCanceled(InputAction.CallbackContext ctx)
+    {
+        canButtonBuffer = true;
+    }
+
+    // The single place that decides which door a press belongs to, so every door
+    // in range reaches the same answer and the crosshair can never disagree with
+    // what pressing the key actually does.
+    private static Door ResolveTarget()
+    {
+        Door aimed = null, nearest = null;
+        float bestAimDistance = float.MaxValue, bestNearDistance = float.MaxValue;
+
+        foreach (Door door in doorsInRange)
         {
-            if (hit.collider == myCollider)
+            if (!door.myCollider || !door.mainCamera) continue;
+
+            if (door.IsUnderCrosshair(out float aimDistance) && aimDistance < bestAimDistance)
             {
-                Interact();
-                return;
+                bestAimDistance = aimDistance;
+                aimed = door;
             }
-            foreach (Door door in doorsInRange)
+
+            float distance = door.DistanceToPlayer();
+            if (distance <= fallbackDistance && distance < bestNearDistance)
             {
-                if (door.myCollider == hit.collider) return; // that door's own handler responds
+                bestNearDistance = distance;
+                nearest = door;
             }
         }
 
-        // fallback: nothing door-like under the crosshair, closest in-range door interacts
-        if (GetClosestFallbackDoor() == this) Interact();
+        // what you are looking at wins; otherwise the closest door in reach does,
+        // with no facing requirement at all
+        return aimed ? aimed : nearest;
+    }
+
+    private float DistanceToPlayer()
+    {
+        Vector3 camPos = mainCamera.position;
+        // ClosestPoint returns the query point itself when it is inside the
+        // collider, which yields 0 — exactly the "standing right at it" case
+        return Vector3.Distance(myCollider.ClosestPoint(camPos), camPos);
+    }
+
+    private bool IsUnderCrosshair(out float distance)
+    {
+        distance = float.MaxValue;
+
+        // SphereCast, not Raycast: a zero-width ray demanded near pixel-perfect
+        // aim, which is most of why doors felt unresponsive
+        int count = Physics.SphereCastNonAlloc(mainCamera.position, aimRadius, mainCamera.forward,
+            aimHits, maxDistance, layerMask, QueryTriggerInteraction.Ignore);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (aimHits[i].collider != myCollider) continue;
+            distance = aimHits[i].distance;
+            return true;
+        }
+        return false;
     }
 
     private void Interact()
@@ -95,7 +169,7 @@ public class Door : MonoBehaviour
         if (isLocked)
         {
             handAnimator.SetTrigger("Hand_Fail");
-            doorLockedSound.Play();
+            if (doorLockedSound) doorLockedSound.Play();
         }
         else
         {
@@ -104,58 +178,22 @@ public class Door : MonoBehaviour
         }
     }
 
-    private bool IsFallbackEligible()
-    {
-        Vector3 toDoor = myCollider.ClosestPoint(mainCamera.position) - mainCamera.position;
-        if (toDoor.sqrMagnitude > fallbackInteractDistance * fallbackInteractDistance) return false;
-        return Vector3.Dot(mainCamera.forward, toDoor.normalized) > 0f; // door is in front of the player
-    }
-
-    private static Door GetClosestFallbackDoor()
-    {
-        Door closest = null;
-        float bestSqrDistance = float.MaxValue;
-        foreach (Door door in doorsInRange)
-        {
-            if (!door.IsFallbackEligible()) continue;
-            float sqrDistance = (door.myCollider.ClosestPoint(door.mainCamera.position) - door.mainCamera.position).sqrMagnitude;
-            if (sqrDistance < bestSqrDistance)
-            {
-                bestSqrDistance = sqrDistance;
-                closest = door;
-            }
-        }
-        return closest;
-    }
-
-    private void OnInteractCanceled(InputAction.CallbackContext ctx)
-    {
-        canButtonBuffer = true;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-            if (!doorsInRange.Contains(this)) doorsInRange.Add(this);
-            enabled = true;
-            if (!isLocked) tipManager.Show(0);
-            StopAllCoroutines();
-            StartCoroutine(CheckDoorRangeAndSight());
-        }
+        if (!other.CompareTag("Player")) return;
+
+        EnsureInitialized();
+        playerInRange = true;
+        if (!doorsInRange.Contains(this)) doorsInRange.Add(this);
+        enabled = true;
+        if (!isLocked) tipManager.Show(0);
+        StopAllCoroutines();
+        StartCoroutine(CheckDoorRangeAndSight());
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            doorsInRange.Remove(this);
-            tipManager.Hide(0);
-            crosshair.HideCrosshair();
-            enabled = false;
-        }
+        if (other.CompareTag("Player")) LeaveRange();
     }
 
     private void OnDestroy()
@@ -163,48 +201,58 @@ public class Door : MonoBehaviour
         doorsInRange.Remove(this);
     }
 
+    private void LeaveRange()
+    {
+        playerInRange = false;
+        doorsInRange.Remove(this);
+        if (tipManager) tipManager.Hide(0);
+        if (crosshair) crosshair.HideCrosshair();
+        enabled = false;
+    }
+
     private IEnumerator CheckDoorRangeAndSight()
     {
-        bool wasLookingAtDoor = false;
+        bool wasTargeted = false;
         while (playerInRange)
         {
             yield return refreshRate;
-            if (Vector3.Distance(mainCamera.position, _transform.position) > maxDistance)
+
+            if (DistanceToPlayer() > maxDistance)
             {
-                playerInRange = false;
-                doorsInRange.Remove(this);
-                tipManager.Hide(0);
-                crosshair.HideCrosshair();
-                enabled = false;
+                LeaveRange();
                 yield break;
             }
-            bool isLookingAtDoor =
-                (Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore)
-                && hit.collider == myCollider)
-                || GetClosestFallbackDoor() == this;
-            if (isLookingAtDoor && !wasLookingAtDoor) crosshair.ShowCrosshair();
-            else if (!isLookingAtDoor && wasLookingAtDoor) crosshair.HideCrosshair();
-            wasLookingAtDoor = isLookingAtDoor;
+
+            bool isTargeted = ResolveTarget() == this;
+            if (isTargeted && !wasTargeted) crosshair.ShowCrosshair();
+            else if (!isTargeted && wasTargeted) crosshair.HideCrosshair();
+            wasTargeted = isTargeted;
         }
     }
 
+    // State first, then feedback. These used to touch the sound emitters before
+    // setting isOpened — and Door.prefab ships with all three unassigned, so the
+    // NullReferenceException left isOpened stuck at false and that door could be
+    // opened but never closed.
     private void OpenDoor()
     {
+        isOpened = true;
         _transform.DOKill();
         _transform.DOLocalRotate(startRot + rotationVector, animationTime, RotateMode.Fast);
-        doorCloseSound.Stop();
-        doorOpenSound.Play();
-        isOpened = true;
         handAnimator.SetTrigger("Door_Open");
+
+        if (doorCloseSound) doorCloseSound.Stop();
+        if (doorOpenSound) doorOpenSound.Play();
     }
 
     private void CloseDoor()
     {
+        isOpened = false;
         _transform.DOKill();
         _transform.DOLocalRotate(startRot, animationTime, RotateMode.Fast);
-        doorOpenSound.Stop();
-        doorCloseSound.Play();
-        isOpened = false;
         handAnimator.SetTrigger("Door_Close");
+
+        if (doorOpenSound) doorOpenSound.Stop();
+        if (doorCloseSound) doorCloseSound.Play();
     }
 }

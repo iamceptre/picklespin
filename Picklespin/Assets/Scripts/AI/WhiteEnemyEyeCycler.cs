@@ -44,6 +44,9 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
                 yield return offTimeQuick;
             }
 
+            // a corpse must not re-open its weak point while it dissolves
+            if (aiHp && !aiHp.IsAlive) yield break;
+
             if (OnScreen)
             {
                 eye.On();
@@ -64,10 +67,7 @@ public class WhiteEnemyEyeCycler : MonoBehaviour
 
     public void ShowTipWhenMissedTheThing()
     {
-        if (aiHp.hp == 100)
-        {
-            tip.Show();
-        }
+        if (aiHp && aiHp.hp >= 100) tip.Show(); // never damaged yet
     }
 
     private int Random01()

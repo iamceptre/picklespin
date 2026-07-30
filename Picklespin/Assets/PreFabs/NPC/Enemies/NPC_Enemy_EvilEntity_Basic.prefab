@@ -4940,7 +4940,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &8698615544161944886
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4959,6 +4959,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4981,9 +4983,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -5015,7 +5019,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &464306939522889301
 GameObject:
   m_ObjectHideFlags: 0
@@ -9775,7 +9778,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &2197587249600294484
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9794,6 +9797,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9815,9 +9820,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9849,7 +9856,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!114 &130226223662744800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10353,7 +10359,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sliderToFollow: {fileID: 263190420828383618}
   easeFill: {fileID: 7612845948131625979}
-  easeDuration: 1
+  easeDelay: 0.5
+  easeDuration: 0.5
 --- !u!1 &4025381052778078360
 GameObject:
   m_ObjectHideFlags: 0
@@ -10554,6 +10561,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10575,9 +10584,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4094635978261359411
 GameObject:
@@ -10614,7 +10625,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &5577148334929506947
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10633,6 +10644,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10654,9 +10667,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 1
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -10688,7 +10703,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &7393084965939959199
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -15646,7 +15660,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 5179267843130176379}
   - {fileID: 4696411816746988995}
   - {fileID: 5705132776607002516}
   - {fileID: 2909215849085508077}
@@ -15715,8 +15728,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
-  bodyDamageMultiplier: 1
-  eyeDamageMultiplier: 4
+  bodyDamageMultiplier: 1.2
+  eyeDamageMultiplier: 3.4
   deathEvent:
     m_PersistentCalls:
       m_Calls:
@@ -15922,7 +15935,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  aiHealthUiBar: {fileID: 3817865884643380506}
+  refs: {fileID: 0}
 --- !u!114 &1342977768311708897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16022,12 +16035,15 @@ MonoBehaviour:
   HpUiBar: {fileID: 3817865884643380506}
   GiveExp: {fileID: 6714385560574647472}
   MaterialFlash: {fileID: 2640075809853599693}
-  HeadshotParticle: {fileID: 7393084965939959199}
   setOnFire: {fileID: 2725608640265330799}
   stateManager: {fileID: 470241992505063077}
   WaypointsForSpawner: {fileID: 2849707897815361534}
   AttackPlayer: {fileID: 9126885967048436367}
   LoosingPlayer: {fileID: 5976180761306544218}
+  Dissolver: {fileID: 1342977768311708897}
+  aiPath: {fileID: 7323594540175906757}
+  HpBarEase: {fileID: 3172104866769131248}
+  HeadshotParticle: {fileID: 7393084965939959199}
   damageTakenBig: {fileID: 2477817380849591454}
   damageTakenSmall: {fileID: 6511597942865099906}
   damageTakenEyeshot: {fileID: 3664082017059148743}
@@ -16076,7 +16092,7 @@ MonoBehaviour:
   radius: 2
   height: 7
   canMove: 1
-  maxSpeed: 11
+  maxSpeed: 16
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -16184,6 +16200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiPath: {fileID: 7323594540175906757}
+  stunParticle: {fileID: 3682317592650031572}
+  stopDuration: 3
 --- !u!1 &5704715387363407611
 GameObject:
   m_ObjectHideFlags: 0
@@ -16310,12 +16328,12 @@ GameObject:
   - component: {fileID: 3682317592650031572}
   - component: {fileID: 8652223866761789649}
   m_Layer: 1
-  m_Name: Smoke
+  m_Name: StunParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5179267843130176379
 Transform:
   m_ObjectHideFlags: 0
@@ -16324,12 +16342,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6327226123042767337}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.14, z: -0.348}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: -0.696}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 685529607316862035}
+  m_Father: {fileID: 2909215849085508077}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &3682317592650031572
 ParticleSystem:
@@ -16339,16 +16357,16 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6327226123042767337}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 3
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  emitterVelocityMode: 1
-  looping: 1
+  emitterVelocityMode: 0
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -16902,14 +16920,14 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 32
+    maxNumParticles: 8
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -17668,7 +17686,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     mode: 0
-    timeMode: 2
+    timeMode: 1
     fps: 60
     frameOverTime:
       serializedVersion: 2
@@ -17776,7 +17794,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    speedRange: {x: 0, y: 1}
+    speedRange: {x: 1, y: 1}
     tilesX: 5
     tilesY: 5
     animationType: 0
@@ -21056,7 +21074,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &8652223866761789649
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -21075,6 +21093,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21096,9 +21116,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -21130,7 +21152,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &6381187467471827612
 GameObject:
   m_ObjectHideFlags: 0
@@ -21235,14 +21256,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6477168061340603697}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 2
   m_Range: 1.59
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -21324,6 +21345,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 5179267843130176379}
   - {fileID: 798707805096241342}
   - {fileID: 3698917503605042989}
   - {fileID: 8856198520146543511}
@@ -21359,6 +21381,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21380,9 +21404,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &3881196621365615866
 MonoBehaviour:
@@ -21511,8 +21537,9 @@ MonoBehaviour:
   aiVision: {fileID: 7390506993609888115}
   destinationSetter: {fileID: 100677299577251049}
   aiPath: {fileID: 7323594540175906757}
-  currentTimedown: 5
-  loosingTimedown: 3
+  loosingTimedown: 4
+  searchSpeed: 6
+  searchRotationSpeed: 150
 --- !u!1 &7486053887660021059
 GameObject:
   m_ObjectHideFlags: 0
@@ -22099,6 +22126,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22120,9 +22149,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2924850138420874726
 MeshFilter:
@@ -22164,6 +22195,14 @@ PrefabInstance:
       propertyPath: cachedAiHP
       value: 
       objectReference: {fileID: 9088957210784467254}
+    - target: {fileID: 3029109139153336408, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
+      propertyPath: burnDuration
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3029109139153336408, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
+      propertyPath: tickInterval
+      value: 0.618
+      objectReference: {fileID: 0}
     - target: {fileID: 3029109139153336408, guid: 8a8c1d71ada54dd42a9a11f282b2596a, type: 3}
       propertyPath: cachedAiHpBar
       value: 

@@ -12,16 +12,15 @@ public class LoosingPlayer : State
     [SerializeField] AIDestinationSetter destinationSetter;
     [SerializeField] AIPath aiPath;
 
-    [HideInInspector] public float currentTimedown;
-    [HideInInspector] public float loosingTimedown = 4f;
+    [Header("Search")]
+    [SerializeField, Tooltip("how long the enemy keeps hunting the spot it last saw the player at")]
+    float loosingTimedown = 4f;
+    [SerializeField] float searchSpeed = 6f;
+    [SerializeField] float searchRotationSpeed = 150f;
 
+    float currentTimedown;
 
-
-    private void Awake()
-    {
-        loosingTimedown = 4f;
-        currentTimedown = loosingTimedown;
-    }
+    void Awake() => currentTimedown = loosingTimedown;
 
     public override State RunCurrentState()
     {
@@ -51,8 +50,8 @@ public class LoosingPlayer : State
             destinationSetter.target = aiVision.playerRef;
         }
 
-        aiPath.maxSpeed = 6f;
-        aiPath.rotationSpeed = 150f;
+        aiPath.maxSpeed = searchSpeed;
+        aiPath.rotationSpeed = searchRotationSpeed;
 
         return this;
     }
@@ -67,20 +66,5 @@ public class LoosingPlayer : State
         currentTimedown = loosingTimedown;
     }
 
-    private bool ReallyReacquiredPlayer()
-    {
-        if (aiVision.playerJustHitMe) return true;
-
-        Vector3 dir = (aiVision.playerRef.position - transform.position).normalized;
-        float fovAngle = Vector3.Angle(transform.forward, dir);
-        if (fovAngle < aiVision.angle * 0.5f)
-        {
-            float dist = Vector3.Distance(transform.position, aiVision.playerRef.position);
-            bool blocked = Physics.Raycast(transform.position, dir, dist, aiVision.obstructionMask);
-            if (!blocked) return true;
-        }
-
-
-        return false;
-    }
+    private bool ReallyReacquiredPlayer() => aiVision.playerJustHitMe || aiVision.CanSeePlayer();
 }

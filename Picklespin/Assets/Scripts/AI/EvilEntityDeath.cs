@@ -2,22 +2,31 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 
+// The one place an enemy dies. Everything it touches is optional — an enemy
+// without a Dissolver, an HP bar or a SetOnFire just skips that part.
 public class EvilEntityDeath : MonoBehaviour
 {
     [SerializeField] private UnityEvent deathEvent;
-    [SerializeField] private AiHealthUiBar aiHealthUiBar;
-
-    private Dissolver dissolver;
+    [Tooltip("all auto-found on this object or its children if left empty")]
+    [SerializeField] private AiReferences refs;
 
     private CameraShakeManagerV2 camShakeManager;
     private ScreenFlashTint screenFlashTint;
 
+    // Die() is reachable from Inspector-wired events as well as AiHealth, and
+    // nothing downstream is idempotent: a second StartDissolve() would capture
+    // the dissolve material as the enemy's "alive" material and the pooled
+    // enemy would respawn wearing it.
+    private bool died;
+
     private void Awake()
     {
-        if (aiHealthUiBar == null)
-        {
-            aiHealthUiBar = gameObject.GetComponent<AiHealthUiBar>();
-        }
+        if (!refs) refs = GetComponentInChildren<AiReferences>(true);
+    }
+
+    private void OnEnable()
+    {
+        died = false; // pooled reuse
     }
 
     private void Start()
@@ -29,29 +38,32 @@ public class EvilEntityDeath : MonoBehaviour
 
     public void Die()
     {
-        CheckAndDisableFire();
+        if (died) return;
+        died = true;
 
-        if (aiHealthUiBar != null) {
-            aiHealthUiBar.Detach();
-            aiHealthUiBar.FadeOut();
+        if (refs)
+        {
+            // first frame of death: the corpse must stop blocking the player
+            refs.DisableAllColliders();
+
+            // stop the corpse thinking, seeing and burning before it dissolves
+            if (refs.stateManager) refs.stateManager.StopAI();
+            if (refs.Vision) refs.Vision.ResetVisionState();
+            if (refs.setOnFire) refs.setOnFire.Extinguish();
+
+            if (refs.HpUiBar)
+            {
+                refs.HpUiBar.Detach();
+                refs.HpUiBar.FadeOut();
+            }
+
+            if (refs.Dissolver) refs.Dissolver.StartDissolve();
         }
 
-        screenFlashTint.Flash(6);
+        if (screenFlashTint) screenFlashTint.Flash(6);
         StartCoroutine(ShakeLater());
-        dissolver = gameObject.GetComponent<Dissolver>();
-        dissolver.StartDissolve();
 
         deathEvent.Invoke(); //additional death behaviour
-
-    }
-
-
-    private void CheckAndDisableFire()
-    {
-        if (gameObject.TryGetComponent<SetOnFire>(out SetOnFire setOnFireScirpt))
-        {
-            setOnFireScirpt.KillFromFire(); //die during being on fire
-        }
     }
 
 
@@ -59,8 +71,6 @@ public class EvilEntityDeath : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
-        camShakeManager.ShakeSelected(6);
+        if (camShakeManager) camShakeManager.ShakeSelected(6);
     }
-
-
 }

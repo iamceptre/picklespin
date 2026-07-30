@@ -85,8 +85,16 @@ public class EnemiesSpawner : MonoBehaviour
         GameObject enemy = pool.Get();
         Vector3 spawnPosition = point.position + new Vector3(offset.x, 0, offset.y);
         enemy.transform.position = spawnPosition;
-        enemy.GetComponentInChildren<WaypointsForSpawner>(true).cachedPoint = waypointsToPass;
-        enemy.GetComponentInChildren<AiReferences>(true)?.ResetAll();
+
+        // every part of an enemy is optional, so nothing here may assume one exists.
+        // The waypoints have to land before ResetAll, which re-shuffles from them.
+        AiReferences refs = enemy.GetComponentInChildren<AiReferences>(true);
+        if (refs)
+        {
+            if (refs.WaypointsForSpawner) refs.WaypointsForSpawner.cachedPoint = waypointsToPass;
+            refs.ResetAll();
+        }
+
         enemy.SetActive(true); // position and state are ready before OnEnable fires
 
         // sync A*'s internal simulation to the new spot (it remembers the death position otherwise)

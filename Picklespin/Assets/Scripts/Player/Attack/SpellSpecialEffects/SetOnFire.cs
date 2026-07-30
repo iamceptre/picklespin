@@ -1,10 +1,27 @@
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
+// Damage-over-time burn applied by fire spells. Lives on a child of the enemy
+// ("LastingSpellEffects/SetOnFire"), driven through Ignite() / Extinguish().
+//
+// The component's enabled flag *is* the burning flag: OnEnable lights the fire,
+// OnDisable puts it out. Every way a burn can be interrupted therefore cleans
+// itself up for free — the enemy dying to another spell, the round ending, or a
+// pooled enemy being deactivated mid-burn.
+//
+// It never invokes deathEvent itself. Lethal ticks go through AiHealth so the
+// death chain runs exactly once, from one place, with the hitboxes disabled.
 public class SetOnFire : MonoBehaviour
 {
-    [SerializeField] private int howMuchDamageIdeal = 10;
+    [Header("Burn")]
+    [FormerlySerializedAs("howMuchDamageIdeal")]
+    [SerializeField] private int damagePerTick = 5;
+    [SerializeField, Tooltip("φ⁵ seconds — how long one ignition lasts before burning out")]
+    private float burnDuration = PhiMath.PHI5;
+    [SerializeField, Tooltip("1/φ seconds between damage ticks")]
+    private float tickInterval = PhiMath.INV_PHI;
 
     [Header("Assets")]
     [SerializeField] private StudioEventEmitter emitter;
@@ -12,134 +29,180 @@ public class SetOnFire : MonoBehaviour
     [SerializeField] private GameObject diedFromBurnParticle;
     [SerializeField] private ParticleSystem effectParticle;
 
-    private ParticleSystem.EmissionModule particleEmission;
-    private ParticleSystem.MainModule particleMain;
-
-    [Header("Debug/Don't touch")]
-    [SerializeField][Range(0, 10)] private float countdownTimer = 0;
-    private bool imOnFire;
-    private bool burned;
-    private IEnumerator killer;
-    private WaitForSeconds decreaseHpEverySeconds;
-
     [Header("References")]
-    [SerializeField] private AiHealth cachedAiHP;
-    [SerializeField] private AiHealthUiBar cachedAiHpBar;
-    private DamageUI_Spawner damageUiSpawner;
+    [Tooltip("auto-found on a parent if left empty")]
+    [SerializeField] private AiHealth cachedAiHP; // refreshes the HP bar and the damage numbers itself
+
+    private ParticleSystem.EmissionModule particleEmission;
+    private ParticleSystem burnDeathParticle;
+    private StudioEventEmitter burnDeathEmitter;
+    private Coroutine burnRoutine;
+    private WaitForSeconds tickWait;
+    private float burnEndsAt;
+
+    // golden-sequence phase offset per ignition: a crowd lit by one blast never
+    // ticks (and never spawns its damage numbers) on the same frame
+    private static int igniteCount;
+
+    public bool IsBurning => enabled;
+
+    // latched by Extinguish() so the death event can still tell a burnt corpse
+    // from a plain one after the fire has already been put out
+    public bool WasBurningAtDeath { get; private set; }
 
     private void Awake()
     {
-        particleEmission = effectParticle.emission;
-        particleMain = effectParticle.main;
+        // dropping this component onto any enemy is all it should take
+        if (!cachedAiHP) cachedAiHP = GetComponentInParent<AiHealth>(true);
+        if (effectParticle) particleEmission = effectParticle.emission;
+
+        if (diedFromBurnParticle)
+        {
+            burnDeathParticle = diedFromBurnParticle.GetComponentInChildren<ParticleSystem>(true);
+            burnDeathEmitter = diedFromBurnParticle.GetComponentInChildren<StudioEventEmitter>(true);
+
+            // the prefab plays this off ObjectStart, which only ever fires once —
+            // a pooled enemy would burn to death in silence every time after the
+            // first. ShowBurnDeath drives it explicitly instead.
+            if (burnDeathEmitter) burnDeathEmitter.EventPlayTrigger = EmitterGameEvent.None;
+        }
     }
 
     private void OnEnable()
     {
-        countdownTimer = 0;
-
-        decreaseHpEverySeconds = new WaitForSeconds(Random.Range(0.45f, 0.55f));
-
-        if (damageUiSpawner == null)
+        if (cachedAiHP == null)
         {
-            damageUiSpawner = DamageUI_Spawner.instance;
+            Debug.LogWarning($"{name}: SetOnFire has no AiHealth reference, cannot burn", this);
+            enabled = false;
+            return;
         }
 
-        Invoke(nameof(FireUp), 0.1f);
-    }
-
-    private void Update()
-    {
-        countdownTimer += Time.deltaTime;
-        if (countdownTimer >= 10f)
+        // never light up something that is already dying — the low-HP edge case
+        // where the killing blow lands on the same frame as the ignition
+        if (!cachedAiHP.IsAlive)
         {
-            if (killer != null)
-            {
-                StopCoroutine(killer);
-            }
-            ShutFireDown();
+            enabled = false;
+            return;
         }
+
+        burnEndsAt = Time.time + burnDuration;
+        ShowFire(true);
+        burnRoutine = StartCoroutine(BurnRoutine());
     }
 
-    private void FireUp()
+    private void OnDisable()
     {
-        if (imOnFire) return;
-
-        imOnFire = true;
-
-        if (killer != null)
+        if (burnRoutine != null)
         {
-            StopCoroutine(killer);
+            StopCoroutine(burnRoutine);
+            burnRoutine = null;
         }
-        killer = DecreaseHPoverTime();
-        StartCoroutine(killer);
-
-        particleEmission.enabled = true;
-        effectParticle.Play();
-        emitter.Play();
-        fireLight.gameObject.SetActive(true);
-        fireLight.enabled = true;
+        ShowFire(false);
     }
 
-    private IEnumerator DecreaseHPoverTime()
+    // the entry point spells should use. Re-igniting something that is already
+    // burning refreshes the burn instead of silently doing nothing (setting
+    // enabled = true on an enabled component never re-runs OnEnable)
+    public void Ignite()
     {
-        while (true)
+        if (cachedAiHP != null && !cachedAiHP.IsAlive) return;
+
+        if (enabled)
         {
-            cachedAiHP.hp -= howMuchDamageIdeal;
-            RefreshHpBarAndSpawnDamageUI();
-
-            if (cachedAiHP.hp <= 0)
-            {
-                KillFromFire();
-                yield break;
-            }
-
-            yield return decreaseHpEverySeconds;
+            burnEndsAt = Time.time + burnDuration;
+            return;
         }
+
+        enabled = true;
     }
 
-    private void RefreshHpBarAndSpawnDamageUI()
+    // put the fire out without killing anything. The death chain calls this
+    // before dissolving the body, so it latches whether the enemy was still
+    // alight — WasBurningAtDeath is what the rest of the death event reads.
+    public void Extinguish()
     {
-        cachedAiHpBar.RefreshBar();
-        damageUiSpawner.Spawn(transform.position + Vector3.up, howMuchDamageIdeal, false);
+        WasBurningAtDeath = enabled;
+        enabled = false; // OnDisable does the cleanup
     }
 
-    public void KillFromFire()
+    // pooled reuse: wipe every trace of the previous burn before the enemy is
+    // respawned. Called from AiReferences.ResetAll while the enemy is inactive,
+    // so OnDisable has already run — this only clears what it leaves behind.
+    public void ResetFireState()
     {
-        if (!burned)
+        enabled = false;
+        burnRoutine = null;
+        burnEndsAt = 0;
+        WasBurningAtDeath = false;
+        if (effectParticle) effectParticle.Clear(true);
+        if (burnDeathParticle) burnDeathParticle.Clear(true);
+        if (diedFromBurnParticle) diedFromBurnParticle.SetActive(false);
+    }
+
+    private IEnumerator BurnRoutine()
+    {
+        // one wait object reused for the whole burn and every later ignition;
+        // the stagger is folded into the first tick rather than being its own
+        // throwaway WaitForSeconds
+        tickWait ??= new WaitForSeconds(tickInterval);
+        float firstTickAt = Time.time + PhiMath.GoldenSequence(igniteCount++) * tickInterval;
+        while (Time.time < firstTickAt) yield return null;
+
+        while (Time.time < burnEndsAt)
         {
-            burned = true;
-            StartCoroutine(WaitAndKill());
+            yield return tickWait;
+
+            // dead, or the round ended: stop chewing HP but let the burn expire
+            if (!cachedAiHP.IsAlive) break;
+            if (!cachedAiHP.CanTakeDamage) continue;
+
+            // the burn-death visuals have to go up *before* the damage lands —
+            // the death chain calls Extinguish(), which kills this coroutine
+            if (cachedAiHP.WouldDieFrom(damagePerTick)) ShowBurnDeath();
+
+            cachedAiHP.TakeBurnDamage(damagePerTick);
+            if (!cachedAiHP.IsAlive) break;
         }
+
+        burnRoutine = null;
+        enabled = false;
     }
 
-    private IEnumerator WaitAndKill()
+    private void ShowBurnDeath()
     {
-        yield return null;
-        yield return null;
-        yield return null;
+        ShowFire(false);
+        if (!diedFromBurnParticle) return;
 
-        emitter.Stop();
-        fireLight.enabled = false;
-        fireLight.gameObject.SetActive(false);
-        particleEmission.enabled = false;
-        effectParticle.Stop();
-
+        // playOnAwake is off on this prefab, so activating the object is not
+        // enough — the burst has to be fired by hand, every death
         diedFromBurnParticle.SetActive(true);
-        cachedAiHP.deathEvent.Invoke();
-        enabled = false;
+        if (burnDeathParticle)
+        {
+            burnDeathParticle.Clear(true);
+            burnDeathParticle.Play(true);
+        }
+        if (burnDeathEmitter) burnDeathEmitter.Play();
     }
 
-    public void ShutFireDown()
+    private void ShowFire(bool on)
     {
-        imOnFire = false;
-        emitter.Stop();
-        fireLight.enabled = false;
-        fireLight.gameObject.SetActive(false);
-        particleEmission.enabled = false;
-        effectParticle.Stop();
+        if (effectParticle)
+        {
+            particleEmission.enabled = on;
+            if (on) effectParticle.Play();
+            else effectParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting); // let the last flames fade
+        }
 
-        StopAllCoroutines();
+        if (fireLight)
+        {
+            fireLight.gameObject.SetActive(on);
+            fireLight.enabled = on;
+        }
 
-        enabled = false;
+        if (emitter)
+        {
+            if (on) emitter.Play();
+            else emitter.Stop();
+        }
     }
 }

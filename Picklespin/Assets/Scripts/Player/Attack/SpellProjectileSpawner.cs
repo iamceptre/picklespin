@@ -1,137 +1,85 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Pool;
 
+// One pool per spell, indexed by spell ID so bulletPrefab, PoolSize and the
+// pools all line up. Adding a spell is a prefab in the array plus a size here —
+// it used to be a create function, a pre-instantiate function and a switch case
+// each, all copies of one another.
 public class SpellProjectileSpawner : MonoBehaviour
 {
     public static SpellProjectileSpawner instance;
 
-    private RecoilMultiplier recoilMultiplier;
-    private CachedCameraMain cachedCameraMain;
-    private Transform spellCastPoint;
-
     [SerializeField] private Bullet[] bulletPrefab;
 
-    [Header("Pooling")]
+    // per spell ID: purple, fireball, light
+    private static readonly int[] PoolSize = { 8, 3, 4 };
 
-    [Header("Purple")]
-    private ObjectPool<Bullet> purpleSpellPool;
-    private readonly int pooledPurpleSpellsCount = 8;
+    // the light spell keeps a single instance alive and retires it itself
+    // (OffPreviousLights), so it must not be warmed up by activating spares
+    private const int LightSpellID = 2;
 
-    [Header("Fireball")]
-    private ObjectPool<Bullet> fireballSpellPool;
-    private readonly int pooledFireballSpellsCount = 3;
-
-    [Header("Light")]
-    private ObjectPool<Bullet> lightSpellPool;
-    private readonly int pooledlightSpellsCount = 4;
+    private CachedCameraMain cachedCameraMain;
+    private Transform spellCastPoint;
+    private ObjectPool<Bullet>[] pools;
     private Bullet previousLightSpell;
 
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-
+        if (instance != null && instance != this) Destroy(this);
+        else instance = this;
     }
-    void Start()
+
+    private void Start()
     {
         cachedCameraMain = CachedCameraMain.instance;
-        recoilMultiplier = RecoilMultiplier.instance;
         spellCastPoint = cachedCameraMain.cachedTransform;
 
-        purpleSpellPool = new ObjectPool<Bullet>(CreatePurple, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledPurpleSpellsCount, pooledPurpleSpellsCount * 2);
-        fireballSpellPool = new ObjectPool<Bullet>(CreateFireball, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledFireballSpellsCount, pooledFireballSpellsCount * 2);
-        lightSpellPool = new ObjectPool<Bullet>(CreateLight, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, pooledlightSpellsCount, pooledlightSpellsCount * 2);
-        PreInstantiate();
-    }
-
-    private void PreInstantiate()
-    {
-        PreInstantiatePurple();
-        PreInstantiateFireball();
+        pools = new ObjectPool<Bullet>[bulletPrefab.Length];
+        for (int i = 0; i < bulletPrefab.Length; i++) pools[i] = CreatePool(i);
+        for (int i = 0; i < bulletPrefab.Length; i++) PreInstantiate(i);
     }
 
     public void SpawnSpell(int spellID) //Actually spawns the projectile in the world
     {
-        switch (spellID)
+        if (pools == null || spellID < 0 || spellID >= pools.Length)
         {
-            case 0:
-                Bullet purpleSpawned = purpleSpellPool.Get();
-                purpleSpawned.OnShoot();
-                break;
-
-            case 1:
-                Bullet fireballSpawned = fireballSpellPool.Get();
-                fireballSpawned.OnShoot();
-                break;
-
-            case 2:
-                Bullet lightSpawned = lightSpellPool.Get();
-                OffPreviousLights(lightSpawned);
-                lightSpawned.OnShoot();
-                break;
-
-            default:
-                Debug.Log("spell spawner not set");
-                break;
+            Debug.LogWarning($"spell spawner has no pool for spell {spellID}", this);
+            return;
         }
 
+        Bullet spawned = pools[spellID].Get();
+        if (spellID == LightSpellID) RetirePreviousLight(spawned);
+        spawned.OnShoot();
     }
 
-    private void PreInstantiatePurple()
+    private ObjectPool<Bullet> CreatePool(int spellID)
     {
-        var tempList = new Bullet[pooledPurpleSpellsCount];
-
-        for (int i = 0; i < pooledPurpleSpellsCount; i++)
-        {
-            tempList[i] = purpleSpellPool.Get();
-        }
-
-        for (int i = 0; i < pooledPurpleSpellsCount; i++)
-        {
-            purpleSpellPool.Release(tempList[i]);
-        }
+        int capacity = CapacityFor(spellID);
+        ObjectPool<Bullet> pool = null;
+        pool = new ObjectPool<Bullet>(
+            createFunc: () =>
+            {
+                Bullet spell = Instantiate(bulletPrefab[spellID]);
+                spell.SetPool(pool); // assigned after construction, read only when the pool runs it
+                return spell;
+            },
+            OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject,
+            collectionCheck: false, defaultCapacity: capacity, maxSize: capacity * 2);
+        return pool;
     }
 
-    private void PreInstantiateFireball()
+    // fills the pool up front so the first cast of a spell never pays for an Instantiate
+    private void PreInstantiate(int spellID)
     {
-        var tempList = new Bullet[pooledFireballSpellsCount];
+        if (spellID == LightSpellID) return;
 
-        for (int i = 0; i < pooledFireballSpellsCount; i++)
-        {
-            tempList[i] = fireballSpellPool.Get();
-        }
-
-        for (int i = 0; i < pooledFireballSpellsCount; i++)
-        {
-            fireballSpellPool.Release(tempList[i]);
-        }
+        int capacity = CapacityFor(spellID);
+        var warmed = new Bullet[capacity];
+        for (int i = 0; i < capacity; i++) warmed[i] = pools[spellID].Get();
+        for (int i = 0; i < capacity; i++) pools[spellID].Release(warmed[i]);
     }
 
-    private Bullet CreatePurple()
-    {
-        Bullet purpleSpellInstance = Instantiate(bulletPrefab[0]);
-        purpleSpellInstance.SetPool(purpleSpellPool);
-        return purpleSpellInstance;
-    }
-
-    private Bullet CreateFireball()
-    {
-        Bullet fireballInstance = Instantiate(bulletPrefab[1]);
-        fireballInstance.SetPool(fireballSpellPool);
-        return fireballInstance;
-    }
-    private Bullet CreateLight()
-    {
-        Bullet lightInstance = Instantiate(bulletPrefab[2]);
-        lightInstance.SetPool(lightSpellPool);
-        return lightInstance;
-    }
+    private int CapacityFor(int spellID) => spellID < PoolSize.Length ? PoolSize[spellID] : 4;
 
     private void OnGetFromPool(Bullet pooledItem)
     {
@@ -150,14 +98,10 @@ public class SpellProjectileSpawner : MonoBehaviour
         Destroy(pooledItem.gameObject);
     }
 
-    private void OffPreviousLights(Bullet previousOne)
+    // only one light spell burns at a time: casting a new one retires the last
+    private void RetirePreviousLight(Bullet newest)
     {
-        if (previousLightSpell != null)
-        {
-            previousLightSpell.ReturnToPool();
-        }
-
-        previousLightSpell = previousOne;
+        if (previousLightSpell != null) previousLightSpell.ReturnToPool();
+        previousLightSpell = newest;
     }
-
 }

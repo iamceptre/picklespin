@@ -13,6 +13,8 @@ public class WinGate : MonoBehaviour
     [SerializeField] private UnityEvent hideTooltipEvent;
 
     [SerializeField] private StudioEventEmitter portalEnterOneshot;
+    [Tooltip("PORTAL_LOOP — plays on enable and has no stop trigger, so escaping has to stop it")]
+    [SerializeField] private StudioEventEmitter portalLoopEmitter;
 
 
     private void Start()
@@ -29,6 +31,7 @@ public class WinGate : MonoBehaviour
             if (inventory.WinGateKey)
             {
                 portalEnterOneshot.Play();
+                if (portalLoopEmitter) portalLoopEmitter.Stop(); // AllowFadeout lets it tail off
                 win.WinFunction();
             }
             else

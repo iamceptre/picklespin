@@ -28,17 +28,41 @@ public class AiVision : MonoBehaviour
 
     public static List<AiVision> AllAIs { get; } = new();
 
+    // angle is public and tweakable, so recompute only when it actually changes
+    private float cachedAngle = -1f;
+    private float cachedCosHalfAngle;
+    private float CosHalfAngle
+    {
+        get
+        {
+            if (!Mathf.Approximately(cachedAngle, angle))
+            {
+                cachedAngle = angle;
+                cachedCosHalfAngle = Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad);
+            }
+            return cachedCosHalfAngle;
+        }
+    }
+
     void OnEnable() => AllAIs.Add(this);
     void OnDisable() => AllAIs.Remove(this);
 
-    void Start()
+    void Start() => ResolvePlayerRefs();
+
+    void ResolvePlayerRefs()
     {
-        playerRef = CachedCameraMain.instance.cachedTransform;
-        playerMovement = PlayerMovement.Instance;
+        if (!playerRef && CachedCameraMain.instance) playerRef = CachedCameraMain.instance.cachedTransform;
+        if (!playerMovement) playerMovement = PlayerMovement.Instance;
     }
 
     public void PerceptionCheck()
     {
+        if (!playerRef)
+        {
+            ResolvePlayerRefs(); // the FSM can tick before Start on a scene-placed enemy
+            if (!playerRef) return;
+        }
+
         if (playerJustHitMe)
         {
             if (Time.time < hitMeUntilTime)
@@ -49,37 +73,44 @@ public class AiVision : MonoBehaviour
             playerJustHitMe = false;
         }
 
-        FieldOfViewCheck();
-        HearingCheck();
-    }
-
-    private void FieldOfViewCheck()
-    {
         Vector3 toPlayer = playerRef.position - transform.position;
-        float dist = toPlayer.magnitude;
-        Vector3 dir = toPlayer / dist;
-        if (Vector3.Angle(transform.forward, dir) < angle * 0.5f)
-        {
-            seeingPlayer = !Physics.Raycast(transform.position, dir, dist, obstructionMask);
-        }
-        else
-        {
-            seeingPlayer = false;
-        }
+        float distance = toPlayer.magnitude;
+
+        // sight OR hearing. Hearing used to overwrite the sight result, so an
+        // enemy staring straight at a sprinting player lost them the instant
+        // they stepped out of earshot.
+        seeingPlayer = CanSeePlayer(toPlayer, distance) || CanHearPlayer(distance);
     }
 
-    private void HearingCheck()
+    // The single definition of "this enemy has line of sight on the player".
+    // LoosingPlayer used to carry its own copy of the cone-plus-raycast test,
+    // which had already drifted (it ignored radius entirely).
+    public bool CanSeePlayer()
     {
-        if (playerMovement.movementStateForFMOD == 0) return;
-        float distance = Vector3.Distance(transform.position, playerRef.position);
+        if (!playerRef) return false;
+        Vector3 toPlayer = playerRef.position - transform.position;
+        return CanSeePlayer(toPlayer, toPlayer.magnitude);
+    }
 
-        if (landingHearingActive)
-        {
-            seeingPlayer = distance <= landHearingRange;
-            return;
-        }
+    private bool CanSeePlayer(Vector3 toPlayer, float distance)
+    {
+        if (distance > radius || distance <= Mathf.Epsilon) return false;
 
-        seeingPlayer = playerMovement.movementStateForFMOD == 2
+        Vector3 dir = toPlayer / distance;
+        // dot against the cached half-angle cosine: same test as Vector3.Angle
+        // without the acos, and this runs per enemy per perception tick
+        if (Vector3.Dot(transform.forward, dir) < CosHalfAngle) return false;
+
+        return !Physics.Raycast(transform.position, dir, distance, obstructionMask);
+    }
+
+    private bool CanHearPlayer(float distance)
+    {
+        if (!playerMovement || playerMovement.movementStateForFMOD == 0) return false;
+
+        if (landingHearingActive) return distance <= landHearingRange;
+
+        return playerMovement.movementStateForFMOD == 2
             ? distance <= runHearingRange
             : distance <= walkHearingRange;
     }

@@ -17,7 +17,7 @@ public class AiHealthUiBar : MonoBehaviour
 
     private void Awake()
     {
-        if (!aiHealth) gameObject.TryGetComponent(out aiHealth);
+        if (!aiHealth) aiHealth = GetComponentInParent<AiHealth>(true); // the bar hangs off a child
         originalParent = transform.parent;
         originalLocalPosition = transform.localPosition;
         originalLocalRotation = transform.localRotation;
@@ -26,7 +26,9 @@ public class AiHealthUiBar : MonoBehaviour
 
     public void RefreshBar()
     {
-        if (aiHealth.hp != slider.value)
+        if (!aiHealth) return;
+
+        if (!Mathf.Approximately(aiHealth.hp, slider.value))
         {
             slider.value = aiHealth.hp;
         }

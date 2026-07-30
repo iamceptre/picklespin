@@ -33,13 +33,9 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private bool doesThisSpellSetOnFire = false;
 
-    private AiHealth aiHealth;
-    private AiVision aiVision;
     private PlayerHP playerHP;
     private CameraShakeManagerV2 camShakeManager;
-    private GiveExpToPlayer giveExpToPlayer;
     [HideInInspector] public Transform handCastingPoint;
-    private MaterialFlashWhenHit flashWhenHit;
     private CachedCameraMain cachedCameraMain;
     private Ammo ammo;
     private ObjectPool<Bullet> _pool;
@@ -51,6 +47,7 @@ public class Bullet : MonoBehaviour
 
     [HideInInspector] public bool iWillBeCritical;
     [HideInInspector] public bool hitSomething;
+    private bool released;
     private bool wasLastHitCritical;
     private bool alreadyPlayedExplosionSound;
 
@@ -64,6 +61,7 @@ public class Bullet : MonoBehaviour
     public LightSpell lightSpell;
     private static readonly Collider[] overlapResults = new Collider[32];
     private static readonly Collider[] rocketJumpResults = new Collider[8];
+    private static readonly HashSet<AiReferences> areaHitBuffer = new();
 
     [SerializeField] private float rocketJumpForce = 50f;
     [SerializeField] private float rocketJumpUpwardsModifier = 1f;
@@ -137,7 +135,7 @@ public class Bullet : MonoBehaviour
         if (hitSomething) return;
         hitSomething = true;
         StopCoroutine(autoKill);
-        if (isRanged) RangeHitDetection(collision);
+        if (isRanged) RangeHitDetection(collision.collider, collision.GetContact(0).point);
         var collisionCollider = collision.collider;
         if (collisionCollider.TryGetComponent(out AiReferences refs))
         {
@@ -156,7 +154,7 @@ public class Bullet : MonoBehaviour
     private void GeneralAfterHit(Collider collider, bool weakPointHit)
     {
         StopCoroutine(autoKill);
-        if (isRanged) RangeHitDetection(collider);
+        if (isRanged) RangeHitDetection(collider, collider.transform.position);
         var grandparentTransform = collider.transform.parent != null ? collider.transform.parent.parent : null;
         if (grandparentTransform != null && grandparentTransform.TryGetComponent(out AiReferences refs))
         {
@@ -170,13 +168,13 @@ public class Bullet : MonoBehaviour
         AfterExplosion();
     }
 
+    // Every part of an enemy is optional (see AiReferences), so nothing in the
+    // damage path may assume one exists.
     private void HitRegistered(AiReferences refs, bool weakPointHit)
     {
         _collider.enabled = false;
-        aiHealth = refs.Health;
-        aiVision = refs.Vision;
-        giveExpToPlayer = refs.GiveExp;
-        flashWhenHit = refs.MaterialFlash;
+        if (!refs.Health) return;
+
         if (castDuration != 0)
         {
             if (refs.damageTakenBig && !alreadyPlayedExplosionSound)
@@ -194,65 +192,50 @@ public class Bullet : MonoBehaviour
                 refs.damageTakenSmall.Play();
             }
         }
-        flashWhenHit.StopAllCoroutines();
-        if (weakPointHit)
+
+        // read before the hit lands: the death chain fires inside TakeDamage and
+        // GiveExp reads this flag to decide the headshot bonus
+        if (refs.GiveExp) refs.GiveExp.wasLastShotAHeadshot = weakPointHit;
+
+        if (refs.MaterialFlash)
         {
-            Headshot(refs);
-            giveExpToPlayer.wasLastShotAHeadshot = true;
-            flashWhenHit.FlashHeadshot();
-            return;
+            if (weakPointHit) refs.MaterialFlash.FlashHeadshot();
+            else refs.MaterialFlash.Flash();
         }
-        giveExpToPlayer.wasLastShotAHeadshot = false;
-        flashWhenHit.Flash();
-        aiHealth.TakeDamage(SpeedScaledDamage(), false, wasLastHitCritical);
+
+        if (refs.Vision) refs.Vision.HitShowsMePlayer();
+
+        if (weakPointHit) Headshot(refs);
+        else refs.Health.TakeDamage(SpeedScaledDamage(), false, wasLastHitCritical);
+
         ApplySpecialEffect(refs);
-        if (aiVision) aiVision.HitShowsMePlayer();
     }
 
-    private void RangeHitDetection(Collision collision)
+    // Splash damage around the impact. The direct hit is excluded (it is handled
+    // by the caller) and each enemy is only registered once no matter how many
+    // of its colliders the sphere catches.
+    private void RangeHitDetection(Collider directHit, Vector3 center)
     {
-        int hitCount = Physics.OverlapSphereNonAlloc(collision.GetContact(0).point, rangeRadius, overlapResults, detectionLayer);
-        HashSet<AiReferences> alreadyHit = new HashSet<AiReferences>();
+        int hitCount = Physics.OverlapSphereNonAlloc(center, rangeRadius, overlapResults, detectionLayer);
+        areaHitBuffer.Clear();
+
         for (int i = 0; i < hitCount; i++)
         {
             var col = overlapResults[i];
-            if (col == collision.collider) continue;
-            if (col.transform.TryGetComponent(out AiReferences areaRefs))
-            {
-                if (areaRefs.setOnFire != null && !alreadyHit.Contains(areaRefs))
-                {
-                    alreadyHit.Add(areaRefs);
-                    HitRegistered(areaRefs, false);
-                }
-            }
-        }
-    }
+            if (col == null || col == directHit) continue;
+            if (!col.transform.TryGetComponent(out AiReferences areaRefs)) continue;
+            if (!areaHitBuffer.Add(areaRefs)) continue;
+            if (areaRefs.Health && !areaRefs.Health.IsAlive) continue; // already dissolving
 
-    private void RangeHitDetection(Collider collider)
-    {
-        int hitCount = Physics.OverlapSphereNonAlloc(collider.transform.position, rangeRadius, overlapResults, detectionLayer);
-        HashSet<AiReferences> alreadyHit = new HashSet<AiReferences>();
-        for (int i = 0; i < hitCount; i++)
-        {
-            var col = overlapResults[i];
-            if (col == collider) continue;
-            if (col.transform.TryGetComponent(out AiReferences areaRefs))
-            {
-                if (areaRefs.setOnFire != null && !alreadyHit.Contains(areaRefs))
-                {
-                    alreadyHit.Add(areaRefs);
-                    HitRegistered(areaRefs, false);
-                }
-            }
+            HitRegistered(areaRefs, false);
         }
     }
 
     private void Headshot(AiReferences refs)
     {
-        if (aiVision) aiVision.HitShowsMePlayer();
-        aiHealth.TakeDamage(SpeedScaledDamage(), true, wasLastHitCritical);
-        refs.HeadshotParticle.Play();
-        refs.damageTakenEyeshot.Play();
+        refs.Health.TakeDamage(SpeedScaledDamage(), true, wasLastHitCritical);
+        if (refs.HeadshotParticle) refs.HeadshotParticle.Play();
+        if (refs.damageTakenEyeshot) refs.damageTakenEyeshot.Play();
     }
 
     // faster player = harder hits: ×0.25 standing, up to ×2 at bhop/rocket-jump speeds
@@ -263,9 +246,16 @@ public class Bullet : MonoBehaviour
         return Mathf.Max(1, Mathf.RoundToInt(damage * multiplier));
     }
 
+    // Runs after the impact damage. A hit that already killed must not light the
+    // corpse on fire — low-HP enemies get finished off by the fireball instead of
+    // burning, and the burn must never restart a death chain that is underway.
     private void ApplySpecialEffect(AiReferences aiRefs)
     {
-        if (aiHealth.hp > 0 && doesThisSpellSetOnFire && aiRefs.setOnFire) aiRefs.setOnFire.enabled = true;
+        // no SetOnFire on this enemy means it simply cannot be lit
+        if (!doesThisSpellSetOnFire || !aiRefs.setOnFire) return;
+        if (!aiRefs.Health || !aiRefs.Health.IsAlive || aiRefs.Health.hp <= 0) return;
+
+        aiRefs.setOnFire.Ignite();
     }
 
     private void RandomizeCritical(AiReferences refs)
@@ -291,8 +281,13 @@ public class Bullet : MonoBehaviour
 
     private void SpawnExplosion()
     {
-        _explosionFxGameObject.SetActive(true);
+        // position first, then force a fresh enable. SpellHitExplosionAnimation
+        // drives its flash — and this bullet's trip back to the pool — from
+        // OnEnable, and SetActive(true) on an already-active object does not
+        // re-run it: the bullet would be stranded with its light still on.
         _explosionTransform.position = Vector3.Lerp(transform.position, cachedCameraMain.cachedTransform.position, 0.1f);
+        if (_explosionFxGameObject.activeSelf) _explosionFxGameObject.SetActive(false);
+        _explosionFxGameObject.SetActive(true);
         SendShakeSignal();
     }
 
@@ -361,9 +356,16 @@ public class Bullet : MonoBehaviour
         });
     }
 
+    // Several things can decide a bullet is finished — the auto-kill timer, the
+    // explosion light finishing its fade, the light spell being superseded. The
+    // pool is built with collectionCheck off, so a double release would silently
+    // put the same bullet in twice and two shots would then share one object.
     public void ReturnToPool()
     {
-        StopCoroutine(autoKill);
+        if (released) return;
+        released = true;
+
+        if (autoKill != null) StopCoroutine(autoKill);
         _pool.Release(this);
     }
 
@@ -402,5 +404,6 @@ public class Bullet : MonoBehaviour
         _rigidbody.isKinematic = false;
         _light.enabled = true;
         hitSomething = false;
+        released = false;
     }
 }

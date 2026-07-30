@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Picklespin is a first-person arena spell-caster game built in **Unity 6000.0.32f1** with **URP 17**. The repo root contains two projects:
+Picklespin is a first-person arena spell-caster game built in **Unity 6000.3.20f1** on the **Built-in Render Pipeline** (forward). The repo root contains two projects:
 
 - `Picklespin/` — the Unity project (open this folder in Unity Editor)
 - `Picklespin-FMOD/` — the FMOD Studio audio project (`Picklespin.fspro`); built banks land in `Picklespin/Assets/FMODBanks/`
@@ -14,6 +14,8 @@ There are no CLI build scripts, tests, or linters — building and playing happe
 ## Architecture
 
 All game code lives in `Assets/Scripts/`, organized by category: `AI/` (with `AI/Angel/` for the angel NPCs and `AI/State Stuff/` for the FSM), `Player/` (`Movement/`, `Attack/`), `GameFlow/`, `Items/`, `UI/`, `Audio/`, `Camera/`, `Environment/` (torches, fog, ambiance), `VFX/` (dissolves, particles), `Settings/` (options/PlayerPrefs), `Menus/`, `MapInteractions/`, `Misc/`, `SpecificSpells/`, `Test/`. Keep new scripts in the matching category folder — no loose scripts at the top level. Third-party code is in `Assets/Plugins/`: A* Pathfinding Project (enemy navigation), FMOD, DOTween (Demigiant), BeautifulDissolves, VolumetricFog, Camera Shake, Magic Light Probes.
+
+**Rendering: Built-in RP, not URP.** No SRP asset is assigned (`m_CustomRenderPipeline: {fileID: 0}` in both `GraphicsSettings` and `QualitySettings`) and the project contains no `UniversalRenderPipelineAsset`. The URP package (17.3.0) *is* in `manifest.json` but is entirely unused — treat its presence as a trap, not as evidence. Write shaders Built-in style: `CGPROGRAM` + `UnityCG.cginc`, no `"RenderPipeline"="UniversalPipeline"` SubShader tag, no `Packages/com.unity.render-pipelines.*` includes, and Built-in fallbacks (`Legacy Shaders/...`). A URP-tagged SubShader is silently skipped here — the shader compiles with no errors and the material just renders magenta, which is very slow to diagnose. Custom shaders live in `Assets/Shaders/`; `Trail.shader` and `GhostTrail.shader` are the reference examples. Post-processing is Post Processing Stack v2 (`UnityEngine.Rendering.PostProcessing`), not URP Volumes.
 
 **φ-based tuning.** Gameplay constants derive from the golden ratio via `Assets/Scripts/Misc/PhiMath.cs` (φ powers for feel constants, golden-angle Vogel spiral for spawn scattering, `GoldenSequence` for low-discrepancy "random" picks). When adding or changing tuning numbers, prefer the nearest φ expression (`PhiMath.PHI2`, `1/PhiMath.PHI4`, …) over arbitrary magic values, and prefer golden-sequence sampling over `Random` for repeated picks. Player movement (`PlayerMovement.cs`) is Quake-style velocity physics fully tuned in φ.
 

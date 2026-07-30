@@ -16,13 +16,11 @@ public class PlayAshSoloSoundWhenNotLit : MonoBehaviour
 
     public void Play()
     {
-        if (_emitter != null)
-        {
-            if (!_setOnFire.enabled)
-            {
-                _emitter.Play();
-            }
-        }
+        if (_emitter == null) return;
+        // a body that died alight already has the fire's own ash sound
+        if (_setOnFire != null && (_setOnFire.IsBurning || _setOnFire.WasBurningAtDeath)) return;
+
+        _emitter.Play();
     }
 
 }

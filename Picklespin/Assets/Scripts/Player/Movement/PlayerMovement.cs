@@ -52,6 +52,17 @@ public class PlayerMovement : MonoBehaviour
     [Header("Stamina & Fatigue")]
     [Range(0, 100)] public float stamina = 100;
     public float fatigability = 32;
+    [SerializeField, Tooltip("stamina you must recover after emptying the bar before sprinting and full-power jumps come back")]
+    private float staminaRecoveryThreshold = 20f;
+
+    // One exhausted state drives everything that gets worse when you are winded:
+    // no sprinting, half-power jumps, and the exhausted sound. It is a latch,
+    // entered by emptying the bar and only released once stamina is back up to
+    // staminaRecoveryThreshold. Reading the bar directly would flicker — sprint
+    // drains faster than walking recovers, so at the cutoff the state would flip
+    // in and out of Run a frame at a time (which is how sprinting on an empty
+    // bar used to work at all).
+    public bool IsExhausted { get; private set; }
 
     [Header("Speed Damage")]
     [SerializeField, Tooltip("damage multiplier when standing or slow-walking")]
@@ -316,6 +327,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+        // the same exhausted state that blocks sprinting
+        bool weakLegs = IsExhausted;
+
         cameraBob.ResetBobbing();
         footstepSystem.SendJumpSignal();
         NormalGravity();
@@ -335,7 +349,7 @@ public class PlayerMovement : MonoBehaviour
         float cost = Mathf.Clamp((1 + HorizontalSpeed) * 0.05f * fatigability, 10, 100) * staminaCostScale;
         stamina = Mathf.Max(stamina - cost, 0);
 
-        moveDirection.y = jumpPower;
+        moveDirection.y = weakLegs ? jumpPower * 0.5f : jumpPower;
     }
 
     // ---------- movement state / crouch / sprint ----------
@@ -343,7 +357,11 @@ public class PlayerMovement : MonoBehaviour
     void HandleMovementState()
     {
         bool crouchHeld = crouchAction.action.IsPressed();
-        bool running = isGroundedStable && stamina > 0 && runAction.action.IsPressed() && anyMovementKeysPressed && !crouchHeld;
+
+        if (stamina <= 0f) IsExhausted = true;
+        else if (stamina >= staminaRecoveryThreshold) IsExhausted = false;
+
+        bool running = isGroundedStable && !IsExhausted && runAction.action.IsPressed() && anyMovementKeysPressed && !crouchHeld;
 
         MovementState newState = crouchHeld ? MovementState.Sneak : running ? MovementState.Run : MovementState.Walk;
         if (newState != currentState)

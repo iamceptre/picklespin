@@ -15,17 +15,23 @@ public class PlayerStamina : MonoBehaviour
 
     void Update()
     {
-        if (playerMovement.stamina == 0 && canPlayExhaustedSound)
-        {
-            canPlayExhaustedSound = false;
-            ExhaustedPlayer(); 
-        }
+        // PlayerMovement owns the exhausted state (bar emptied, until it has
+        // recovered) — this used to keep its own copy of the rule with its own
+        // hardcoded threshold, so the sound could drift out of step with it
+        if (!playerMovement) return;
 
-        if (playerMovement.stamina > 20 && !canPlayExhaustedSound)
+        if (playerMovement.IsExhausted)
+        {
+            if (canPlayExhaustedSound)
+            {
+                canPlayExhaustedSound = false;
+                ExhaustedPlayer();
+            }
+        }
+        else
         {
             canPlayExhaustedSound = true;
         }
-        
     }
 
 
