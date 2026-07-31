@@ -40,11 +40,14 @@ public class Pickupable_Potion : MonoBehaviour
 
     public void PickupPotion()
     {
+        // room is asked of the pool the resource actually lives in, never of the field
+        // it used to live in: a class can keep its health or its breath in the magicka
+        // bar, and the raw hp/stamina fields then sit full forever and eat the potion.
         ResourceAction resourceAction = potionType switch
         {
-            PotionType.HP => () => TryGiveResource(playerHP.hp, playerHP.maxHp, amount => playerHP.ModifyHP(amount)),
-            PotionType.Stamina => () => TryGiveResource((int)playerMovement.stamina, 100, amount => playerMovement.GiveStaminaToPlayer(amount)),
-            PotionType.Mana => () => TryGiveResource(ammo.ammo, ammo.maxAmmo, amount => ammo.GiveManaToPlayer(amount)),
+            PotionType.HP => () => TryGiveResource(playerHP.HealthFraction < 1f, amount => playerHP.ModifyHP(amount)),
+            PotionType.Stamina => () => TryGiveResource(!playerMovement.StaminaFull, amount => playerMovement.GiveStaminaToPlayer(amount)),
+            PotionType.Mana => () => TryGiveResource(ammo.ammo < ammo.maxAmmo, amount => ammo.GiveManaToPlayer(amount)),
             _ => null
         };
 
@@ -58,9 +61,9 @@ public class Pickupable_Potion : MonoBehaviour
         }
     }
 
-    private void TryGiveResource(int current, int max, System.Action<int> applyEffect)
+    private void TryGiveResource(bool hasRoom, System.Action<int> applyEffect)
     {
-        if (current < max)
+        if (hasRoom)
         {
             applyEffect(howMuchIGive);
 

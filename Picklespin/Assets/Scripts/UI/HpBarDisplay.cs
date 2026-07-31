@@ -17,8 +17,13 @@ public class HpBarDisplay : MonoBehaviour
         }
     }
 
-  public void Refresh(bool smooth) { 
+  public void Refresh(bool smooth) {
         playerBarDisplay.Refresh(smooth);
+    }
+
+    public void SetContinuousValue(float value, float maxValue)
+    {
+        playerBarDisplay.SetContinuousValue(value, maxValue);
     }
 
 

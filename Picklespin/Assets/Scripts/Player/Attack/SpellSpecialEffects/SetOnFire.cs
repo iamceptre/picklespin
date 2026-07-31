@@ -3,25 +3,17 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-// Damage-over-time burn applied by fire spells. Lives on a child of the enemy
-// ("LastingSpellEffects/SetOnFire"), driven through Ignite() / Extinguish().
-//
-// The component's enabled flag *is* the burning flag: OnEnable lights the fire,
-// OnDisable puts it out. Every way a burn can be interrupted therefore cleans
-// itself up for free — the enemy dying to another spell, the round ending, or a
-// pooled enemy being deactivated mid-burn.
-//
-// It never invokes deathEvent itself. Lethal ticks go through AiHealth so the
-// death chain runs exactly once, from one place, with the hitboxes disabled.
+// The enabled flag *is* the burning flag: OnEnable lights the fire, OnDisable puts
+// it out, so every way a burn can be interrupted cleans itself up for free.
 public class SetOnFire : MonoBehaviour
 {
     [Header("Burn")]
     [FormerlySerializedAs("howMuchDamageIdeal")]
     [SerializeField] private int damagePerTick = 5;
-    [SerializeField, Tooltip("φ⁵ seconds — how long one ignition lasts before burning out")]
-    private float burnDuration = PhiMath.PHI5;
-    [SerializeField, Tooltip("1/φ seconds between damage ticks")]
-    private float tickInterval = PhiMath.INV_PHI;
+    [SerializeField, Tooltip("seconds — how long one ignition lasts before burning out")]
+    private float burnDuration = 11f;
+    [SerializeField, Tooltip("seconds between damage ticks")]
+    private float tickInterval = 0.6f;
 
     [Header("Assets")]
     [SerializeField] private StudioEventEmitter emitter;
@@ -31,7 +23,7 @@ public class SetOnFire : MonoBehaviour
 
     [Header("References")]
     [Tooltip("auto-found on a parent if left empty")]
-    [SerializeField] private AiHealth cachedAiHP; // refreshes the HP bar and the damage numbers itself
+    [SerializeField] private AiHealth cachedAiHP;
 
     private ParticleSystem.EmissionModule particleEmission;
     private ParticleSystem burnDeathParticle;
@@ -40,19 +32,16 @@ public class SetOnFire : MonoBehaviour
     private WaitForSeconds tickWait;
     private float burnEndsAt;
 
-    // golden-sequence phase offset per ignition: a crowd lit by one blast never
-    // ticks (and never spawns its damage numbers) on the same frame
+    // phase offset per ignition: a crowd lit by one blast never ticks on one frame
     private static int igniteCount;
 
     public bool IsBurning => enabled;
 
-    // latched by Extinguish() so the death event can still tell a burnt corpse
-    // from a plain one after the fire has already been put out
+    // latched by Extinguish(), which the death chain calls before reading it
     public bool WasBurningAtDeath { get; private set; }
 
     private void Awake()
     {
-        // dropping this component onto any enemy is all it should take
         if (!cachedAiHP) cachedAiHP = GetComponentInParent<AiHealth>(true);
         if (effectParticle) particleEmission = effectParticle.emission;
 
@@ -61,9 +50,8 @@ public class SetOnFire : MonoBehaviour
             burnDeathParticle = diedFromBurnParticle.GetComponentInChildren<ParticleSystem>(true);
             burnDeathEmitter = diedFromBurnParticle.GetComponentInChildren<StudioEventEmitter>(true);
 
-            // the prefab plays this off ObjectStart, which only ever fires once —
-            // a pooled enemy would burn to death in silence every time after the
-            // first. ShowBurnDeath drives it explicitly instead.
+            // ObjectStart fires once per object, so a pooled enemy would burn to death
+            // in silence after the first; ShowBurnDeath plays it explicitly instead
             if (burnDeathEmitter) burnDeathEmitter.EventPlayTrigger = EmitterGameEvent.None;
         }
     }
@@ -77,8 +65,6 @@ public class SetOnFire : MonoBehaviour
             return;
         }
 
-        // never light up something that is already dying — the low-HP edge case
-        // where the killing blow lands on the same frame as the ignition
         if (!cachedAiHP.IsAlive)
         {
             enabled = false;
@@ -100,9 +86,8 @@ public class SetOnFire : MonoBehaviour
         ShowFire(false);
     }
 
-    // the entry point spells should use. Re-igniting something that is already
-    // burning refreshes the burn instead of silently doing nothing (setting
-    // enabled = true on an enabled component never re-runs OnEnable)
+    // enabled = true on an already-enabled component never re-runs OnEnable, so a
+    // re-ignition has to refresh the burn by hand
     public void Ignite()
     {
         if (cachedAiHP != null && !cachedAiHP.IsAlive) return;
@@ -116,18 +101,12 @@ public class SetOnFire : MonoBehaviour
         enabled = true;
     }
 
-    // put the fire out without killing anything. The death chain calls this
-    // before dissolving the body, so it latches whether the enemy was still
-    // alight — WasBurningAtDeath is what the rest of the death event reads.
     public void Extinguish()
     {
         WasBurningAtDeath = enabled;
-        enabled = false; // OnDisable does the cleanup
+        enabled = false;
     }
 
-    // pooled reuse: wipe every trace of the previous burn before the enemy is
-    // respawned. Called from AiReferences.ResetAll while the enemy is inactive,
-    // so OnDisable has already run — this only clears what it leaves behind.
     public void ResetFireState()
     {
         enabled = false;
@@ -141,9 +120,6 @@ public class SetOnFire : MonoBehaviour
 
     private IEnumerator BurnRoutine()
     {
-        // one wait object reused for the whole burn and every later ignition;
-        // the stagger is folded into the first tick rather than being its own
-        // throwaway WaitForSeconds
         tickWait ??= new WaitForSeconds(tickInterval);
         float firstTickAt = Time.time + PhiMath.GoldenSequence(igniteCount++) * tickInterval;
         while (Time.time < firstTickAt) yield return null;
@@ -152,12 +128,11 @@ public class SetOnFire : MonoBehaviour
         {
             yield return tickWait;
 
-            // dead, or the round ended: stop chewing HP but let the burn expire
             if (!cachedAiHP.IsAlive) break;
             if (!cachedAiHP.CanTakeDamage) continue;
 
-            // the burn-death visuals have to go up *before* the damage lands —
-            // the death chain calls Extinguish(), which kills this coroutine
+            // before the damage lands: the death chain calls Extinguish(), which
+            // kills this coroutine
             if (cachedAiHP.WouldDieFrom(damagePerTick)) ShowBurnDeath();
 
             cachedAiHP.TakeBurnDamage(damagePerTick);
@@ -173,8 +148,7 @@ public class SetOnFire : MonoBehaviour
         ShowFire(false);
         if (!diedFromBurnParticle) return;
 
-        // playOnAwake is off on this prefab, so activating the object is not
-        // enough — the burst has to be fired by hand, every death
+        // playOnAwake is off on the prefab: activating the object is not enough
         diedFromBurnParticle.SetActive(true);
         if (burnDeathParticle)
         {
@@ -190,7 +164,7 @@ public class SetOnFire : MonoBehaviour
         {
             particleEmission.enabled = on;
             if (on) effectParticle.Play();
-            else effectParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting); // let the last flames fade
+            else effectParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
 
         if (fireLight)

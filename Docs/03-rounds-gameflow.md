@@ -4,7 +4,7 @@
 
 ## RoundSystem
 
-Singleton on a HUD object (needs a `CanvasGroup` — the timer UI dims to 1/φ² alpha while paused). An `Update()`-driven countdown:
+Singleton on a HUD object (needs a `CanvasGroup` — the timer UI dims to 0.4 alpha while paused). An `Update()`-driven countdown:
 
 - `timer` counts down from `roundDuration` at `Time.deltaTime · speedMultiplier`, driving the `roundTimerGUI` slider.
 - At zero → `AdvanceRound()`: fires `RoundEvent[CurrentRound]` (or `LastRoundEvent` when past the array), shows the "Round N begins" banner (`NewRoundDisplayText.Animate()`), increments `CurrentRound`, resets the timer and `speedMultiplier` to 1.
@@ -14,6 +14,9 @@ Singleton on a HUD object (needs a `CanvasGroup` — the timer UI dims to 1/φ²
 | API | Effect | Used by |
 |---|---|---|
 | `isCounting = false/true` | Pause/resume the countdown (UI dims). Damage to enemies is also blocked while paused (`AiHealth` checks it). | `PauseTimerOnEnter` / `PlayTimerOnlyHere` trigger zones (e.g. safe rooms) |
+
+**Pausing and resuming are one-way each, by design.** `PauseTimerOnEnter` only ever stops the clock; `PlayTimerOnlyHere` (on the church/arena volume) is the only thing that starts it again. So an angel room — whose `Angel.prefab` carries a `TimerPauseTrigger` — stays paused for the *whole* visit, healing and wish menu included, until the player walks back out into the arena. `PauseTimerOnEnter` used to also resume in `OnDisable`, which restarted the round the instant healing tore the angel's triggers down, with the player still standing in the room.
+
 | `speedMultiplier` | Countdown speed | `EnemyCounter` fast-forwards when arena is cleared |
 | `enabled = false` | Stops rounds entirely | `WinGateKeyItem` after the key is picked up |
 | `CurrentRound` | Read-only round index | anything |
@@ -37,7 +40,7 @@ Escalation = bigger ints in later entries. No code changes are ever needed to re
 ## Enemy counting & cleared-arena fast-forward
 
 - Every enemy prefab carries `EnemyCounter_PerUnitComponent`: registers with `EnemyCounter` on enable, deregisters via the death event (`deCountMe`) or on disable (pooled release). Counting is idempotent — double-fires are impossible.
-- `EnemyCounter.Deregister()` checks for zero: when the arena is cleared, `RoundSystem.speedMultiplier = clearedArenaTimerSpeed` (φ·3 by default, Inspector-tunable) so the next round arrives quickly. `AdvanceRound` resets it to 1.
+- `EnemyCounter.Deregister()` checks for zero: when the arena is cleared, `RoundSystem.speedMultiplier = clearedArenaTimerSpeed` (5 by default, Inspector-tunable) so the next round arrives quickly. `AdvanceRound` resets it to 1.
 
 ## Win condition chain
 

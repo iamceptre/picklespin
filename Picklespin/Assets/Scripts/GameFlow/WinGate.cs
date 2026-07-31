@@ -14,18 +14,19 @@ public class WinGate : MonoBehaviour
     [SerializeField] private UnityEvent hideTooltipEvent;
 
     [SerializeField] private StudioEventEmitter portalEnterOneshot;
-   
-    //[SerializeField] private StudioEventEmitter portalLoopEmitter;
 
     [SerializeField] private EventReference snapshotEvent;
-    private EventInstance snapshotInstance;
+    private EventInstance afterPortalEnterSnapshot;
+
+    private PlayerHP playerHP;
 
 
     private void Start()
     {
         win = Win.instance;
         inventory = InventoryItemsBank.instance;
-        snapshotInstance = RuntimeManager.CreateInstance(snapshotEvent);
+        afterPortalEnterSnapshot = RuntimeManager.CreateInstance(snapshotEvent);
+        playerHP = PlayerHP.Instance;
     }
 
 
@@ -35,9 +36,10 @@ public class WinGate : MonoBehaviour
         {
             if (inventory.WinGateKey)
             {
+                playerHP.godMode = true;
+                StateManager.AllLosePlayer();
                 portalEnterOneshot.Play();
-                //if (portalLoopEmitter) portalLoopEmitter.Stop();
-                snapshotInstance.start();
+                afterPortalEnterSnapshot.start();
                 win.WinFunction();
             }
             else
@@ -57,7 +59,7 @@ public class WinGate : MonoBehaviour
     }
     void OnDestroy()
     {
-        snapshotInstance.release();
+        afterPortalEnterSnapshot.release();
     }
 
 }

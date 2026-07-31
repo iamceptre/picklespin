@@ -27,7 +27,7 @@ public class RoundSystem : MonoBehaviour
 
     public int CurrentRound { get; private set; }
 
-    private const float DimmedOpacity = PhiMath.INV_PHI2;
+    private const float DimmedOpacity = 0.4f;
 
     private CanvasGroup timerCanvasGroup;
     private NewRoundDisplayText newRoundDisplayText;

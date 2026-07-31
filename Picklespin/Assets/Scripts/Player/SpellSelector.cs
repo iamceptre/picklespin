@@ -29,6 +29,7 @@ public class SpellSelector : MonoBehaviour
 
     void Update()
     {
+        if (PlayerClasses.LockedSpellIndex >= 0) return; // Umbral has nothing to switch to
         if (attackAction.action.IsPressed() || healAction.action.IsPressed()) return;
         HandleScroll();
         HandleDigitKeys();

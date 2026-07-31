@@ -20,7 +20,7 @@ public class RecoilMultiplier : MonoBehaviour
     private float jumpingRecoil = 2.058f;
     [SerializeField, Tooltip("horizontal (sprint) recoil strength")]
     private float sprintingRecoil = 0.2f;
-    private float oldVert, oldHor;
+    private float oldVert, oldHor, oldScale = -1f;
 
     private void Awake()
     {
@@ -44,20 +44,24 @@ public class RecoilMultiplier : MonoBehaviour
         float newVert = speedometer.verticalVelocity;
         float newHor = speedometer.horizontalVelocity;
 
-        if (Mathf.Approximately(oldVert, newVert) && Mathf.Approximately(oldHor, newHor)) return;
+        // the scale changes mid-run, so it joins the early-out below or a standing
+        // player would keep the stale recoil
+        float scale = WishUpgrades.RecoilScale * PlayerClasses.RecoilScale;
+
+        if (Mathf.Approximately(oldVert, newVert) && Mathf.Approximately(oldHor, newHor)
+            && Mathf.Approximately(oldScale, scale)) return;
         oldVert = newVert;
         oldHor = newHor;
+        oldScale = scale;
 
-        // dead zone around the jump apex, then a smoothstep ramp: shots fired near
-        // the top of the arc (where Y speed flips sign) are fully accurate, and
-        // recoil eases in past the window instead of growing linearly
+        // dead zone around the jump apex, then a smoothstep ramp: shots at the top
+        // of the arc are fully accurate
         float t = Mathf.InverseLerp(apexWindow, fullRecoilSpeed, newVert);
         float apexCurve = t * t * (3f - 2f * t);
 
         float horizontalTerm = newHor * sprintingRecoil * 2f;
 
-        // airborne apex intensifier: right where Y speed crosses zero, horizontal
-        // recoil melts away too — quadratic falloff concentrates the reward at the peak
+        // at the apex the horizontal recoil melts away too
         PlayerMovement movement = PlayerMovement.Instance;
         if (movement != null && !movement.IsGroundedStable)
         {
@@ -65,6 +69,6 @@ public class RecoilMultiplier : MonoBehaviour
             horizontalTerm *= 1f - airborneApexBonus * apexCloseness * apexCloseness;
         }
 
-        currentRecoil = ((apexCurve * fullRecoilSpeed * jumpingRecoil) + horizontalTerm) * 0.01f;
+        currentRecoil = ((apexCurve * fullRecoilSpeed * jumpingRecoil) + horizontalTerm) * 0.01f * scale;
     }
 }

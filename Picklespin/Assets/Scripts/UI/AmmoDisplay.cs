@@ -15,4 +15,9 @@ public class AmmoDisplay : MonoBehaviour
     {
         playerBarDisplay.Refresh(smooth);
     }
+
+    public void SetContinuousValue(float value, float maxValue)
+    {
+        playerBarDisplay.SetContinuousValue(value, maxValue);
+    }
 }

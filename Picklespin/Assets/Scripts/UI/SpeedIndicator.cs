@@ -2,12 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-// HUD readout of the player's horizontal speed and the speed-damage multiplier.
-// Wire any subset of the references: text-only, bar-only, or both.
 public class SpeedIndicator : MonoBehaviour
 {
     [Header("References (any can be left empty)")]
-    [SerializeField] private TMP_Text speedText;
     [SerializeField] private TMP_Text damageMultiplierText;
     [SerializeField] private Slider slider;
 
@@ -22,7 +19,6 @@ public class SpeedIndicator : MonoBehaviour
     private Image sliderFill;
     private float nextRefreshTime;
     private float displayedT;
-    private int lastShownSpeed = -1;
     private float lastShownMultiplier = -1f;
 
     private void Start()
@@ -52,17 +48,6 @@ public class SpeedIndicator : MonoBehaviour
 
         if (Time.unscaledTime < nextRefreshTime) return;
         nextRefreshTime = Time.unscaledTime + refreshInterval;
-
-        if (speedText)
-        {
-            int shownSpeed = Mathf.RoundToInt(movement.HorizontalSpeed);
-            if (shownSpeed != lastShownSpeed)
-            {
-                lastShownSpeed = shownSpeed;
-                speedText.text = shownSpeed.ToString();
-            }
-            speedText.color = color;
-        }
 
         if (damageMultiplierText)
         {

@@ -47,7 +47,7 @@ public class DamageUI_V2 : MonoBehaviour
         if (isCritical)
         {
             myText.color = criticalColor;
-            myText.fontSize = damageUIstartFontSize * PhiMath.PHI;
+            myText.fontSize = damageUIstartFontSize * 1.6f;
         }
         else
         {
@@ -56,7 +56,7 @@ public class DamageUI_V2 : MonoBehaviour
         }
 
         myText_Transform.DOMoveY(whereIshouldGo.y + 2, 1.2f).SetEase(Ease.InSine);
-        myText_Transform.DOScale(new Vector3(-PhiMath.PHI, PhiMath.PHI, PhiMath.PHI), 1.2f).SetEase(Ease.InSine);
+        myText_Transform.DOScale(new Vector3(-1.6f, 1.6f, 1.6f), 1.2f).SetEase(Ease.InSine);
         myText.DOFade(1, 0.2f).SetEase(Ease.InSine).OnComplete(FadeOut);
     }
 

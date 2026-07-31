@@ -13,7 +13,7 @@ public class MaterialFlashWhenHit : MonoBehaviour
     Coroutine currentFlashCoroutine;
     Color whiteFlashColor = new(0.4f, 0.4f, 0.4f);
     Color redFlashColor = new(0.76f, 0.24f, 0.24f);
-   readonly float fadeOutSpeed = PhiMath.PHI;
+   readonly float fadeOutSpeed = 1.6f;
     Material materialInstance;
 
     void Awake()

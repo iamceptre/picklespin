@@ -33,6 +33,7 @@ public class GiveExpToPlayer : MonoBehaviour
         string coloredMessage = "<color=#" + colorHex + ">" + expSourceName + "</color>";
         string eyeshotMessage = "<color=#" + colorHex + ">, Eyeshot!</color>";
         int expAmount = wasLastShotAHeadshot ? (int)(howMuchXpIGive * 1.5f) : howMuchXpIGive;
+        expAmount = Mathf.RoundToInt(expAmount * WishUpgrades.ExpGatherMultiplier); // angel wish
         int statAmount = wasLastShotAHeadshot ? (int)(howMuchStatsIGive * 1.5f) : howMuchStatsIGive;
         playerEXP.GivePlayerExp(expAmount, wasLastShotAHeadshot ? coloredMessage + eyeshotMessage : coloredMessage);
         ammo.GiveManaToPlayer(statAmount);

@@ -5,7 +5,7 @@ public class ActivateCheats : MonoBehaviour
 {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 
-    private const string targetWord = "kupa";
+    private const string targetWord = "poi";
     private string inputString = "";
     private int targetIndex = 0;
 

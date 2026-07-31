@@ -4,11 +4,13 @@
 
 `Assets/Scripts/Misc/PhiMath.cs` is the single source of golden-ratio constants:
 
-- Constants: `PHI` (1.618), `INV_PHI` (0.618), `INV_PHI2` (0.382), `PHI2`–`PHI5`, `GoldenAngleDeg/Rad`.
+- Constants: `PHI` (1.618), `INV_PHI` (0.618), `PHI4` (6.854), `GoldenAngleRad`. Trimmed to what is actually used — don't re-add powers speculatively.
 - `GoldenSpiralPoint(i, n, r)` — Vogel/sunflower disc packing for scatter placement (provably even, no clumps).
-- `GoldenSequence(i)` — low-discrepancy 0..1 sequence for repeated "random" picks (no streaks, no gaps).
+- `GoldenSequence(i)` / `GoldenSequence(i, offset)` — low-discrepancy 0..1 sequence for repeated "random" picks (no streaks, no gaps). The sequence starts at exactly 0 and is fully deterministic, so anything that must differ per run passes a `Random.value` offset picked once at startup (see `EnemiesSpawner`).
 
-**Rules:** new tuning numbers use the nearest φ expression (`PhiMath.PHI2`, `1f / PhiMath.PHI4`, …) instead of arbitrary magic values; repeated random picks prefer `GoldenSequence`; group scatter prefers `GoldenSpiralPoint`. Existing φ anchors: movement physics (all of it), crit = φ×, crouch height 1.618, bhop window 1/φ³, round-UI dim 1/φ², door timings φ/2 & φ⁴, torch flicker frequency ratio φ. Deliberately non-φ: `walkSpeed 5` / `runSpeed 13` (Fibonacci — their ratio ≈ φ²) and `gravity 9.81`.
+**Rules:** φ is a tool, not a house style. Reach for it only where its irrationality does real work — `GoldenSpiralPoint` for group scatter, `GoldenSequence` for repeated picks and phase-staggering, φ-ratio dual sines for non-repeating motion — or where the ratio is genuinely player-facing. **Everything else gets a plain readable number.** Invisible timings, fade durations, AI distances and UI tween scales were deliberately converted from φ powers to round values; don't convert them back.
+
+Remaining φ anchors: movement physics (all of it), `RecoilMultiplier` apex window/full-recoil speed, crit = φ×, crouch height 1.618, bhop window 1/φ³, torch flicker frequency ratio φ, spawn scatter/selection. Deliberately non-φ: `walkSpeed 5` / `runSpeed 13` (Fibonacci — their ratio ≈ φ²) and `gravity 9.81`.
 
 ## Singleton pattern
 

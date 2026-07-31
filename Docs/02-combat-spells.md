@@ -6,9 +6,9 @@
 
 1. **Input** — `Attack` (singleton) subscribes to `primaryAction`/`secondaryAction` (`InputActionReference`) in `OnEnable`/`OnDisable`. Primary = cast selected spell, secondary = heal.
 2. **Casting** — spells with `castDuration > 0` are hold-to-cast: a coroutine fills `castingProgress`/`castingSlider`; releasing early fires `CancelCasting`. Casting calls `PlayerMovement.SlowMeDown()` (half speed, sneak audio state) and `SpeedMeBackUp()` when done.
-3. **Mana** — `Ammo` (`ammo`/`maxAmmo`, "magicka") is spent per `Bullet.magickaCost`. Not enough mana → `NoManaLightAnimation` + hand-shake feedback.
+3. **Mana** — `Ammo` (`ammo`/`maxAmmo`, "magicka") is spent per `Attack.CurrentMagickaCost` — `Bullet.magickaCost` × `WishUpgrades.MagickaCostMultiplier`, floored at 1 and read live so a wish applies to the spell already in hand. Not enough mana → `NoManaLightAnimation` + hand-shake feedback.
 4. **Spawn** — `SpellProjectileSpawner` (singleton) `Get()`s a pooled `Bullet` for the selected index, positions it at the hand casting point, and `Bullet.OnShoot()` plays particles/sound; `ApplyProjectileForce` launches it.
-5. **Cooldown** — per-spell `myCooldown` drives the `SpellCooldown` radial UI.
+5. **Cooldown** — per-spell `myCooldown` drives the `SpellCooldown` radial UI. `SpellCooldown.StartCooldown` scales every cooldown by `WishUpgrades.CooldownMultiplier`, so the wish shortens the dash's turn on the shared bar too.
 
 ## Bullet lifecycle (pooled)
 
@@ -25,7 +25,10 @@
 ```
 Bullet.damage
   × crit (φ if rolled)                       — RandomizeCritical
-  × PlayerMovement.SpeedDamageMultiplier     — 0.25 (standing) → 2.5 (runSpeed·φ), sampled at impact
+  × WishUpgrades.SpellDamageMultiplier(spellName)
+  × PlayerClasses.ProjectileDamageMultiplier — 2 for Bastion, 0.25 for Sanctus, 1 otherwise
+  × Bullet.flightDamageMultiplier            — Blastfool only: 0.2 grounded / 0.7 airborne / 2 mid rocket jump, sampled at OnShoot
+  × PlayerMovement.SpeedDamageMultiplier     — Lightfoot only: 0.25 (standing) → 2.5 (runSpeed·φ), sampled at impact
   → AiHealth.TakeDamage(dmg, eyeshot, crit)
       × bodyDamageMultiplier or eyeDamageMultiplier (per enemy)
       → hp; spawns pooled damage number (DamageUI_Spawner); death via deathEvent
@@ -33,9 +36,20 @@ Bullet.damage
 
 `AiHealth.TakeDamage` ignores damage while `RoundSystem.isCounting` is false.
 
+**Speed-damage is a class perk, not a base rule.** Only Lightfoot turns speed into damage; for every other class — and before the first angel offers a class at all — the multiplier is skipped entirely and `SpeedIndicator` is hidden. `Bullet.useSpeedDamageMultiplier` still opts individual spells *out*, it just no longer opts anything in by itself.
+
+### Class hooks in `Bullet`
+
+- **Bastion** — shots land for ×2 and `PlayerClasses.SpellCooldownMultiplier` (1.5) stretches the wait between them, applied in `Attack.SuccesfulShoot` where the spell's own `myCooldown` is read — the dash's turn on the shared bar is not slowed. `PlayerClasses.PiercingProjectiles` sends the shot *through* enemies: `Pierce` damages each enemy once (`piercedThisFlight`), restores the launch velocity so the collision cannot deflect it, and never explodes. The shot dies on world geometry or on the auto-kill timer.
+- **Umbral** — `aoeRequiresChargedBar` (per prefab) gates `RangeHitDetection` on `PlayerClasses.ChargedBarReady`, i.e. the shared bar above 50%.
+- **Blastfool** — `PlayerClasses.FlightDamageMultiplier` reads `PlayerMovement.IsRocketJumping` / `IsGroundedStable` and gives ×0.2 on foot, ×0.7 airborne, ×2 while still riding their own blast. `Bullet.OnShoot` caches it per shot, so landing before the projectile arrives cannot take the damage back. Their recoil is ×0.1 (`PlayerClasses.RecoilScale`, applied in `RecoilMultiplier`).
+- **Sanctus** — `PlayerClasses.LightSpellConverts` turns the light spell's `HitRegistered` into `ConvertedAlly.Convert` instead of damage; a light spell that hit no enemy calls `ConvertedAlly.CommandAll(impactPoint)` and every ally walks there.
+
 ### Rocket jumping
 
-`Bullet.ApplyRocketJumpForce` overlap-checks the explosion; rigidbodies get `AddExplosionForce`, the player gets `PlayerMovement.AddExplosionJump(rocketJumpForce · φ², …)` plus self-damage proportional to proximity (self-damage is **not** scaled by the φ² push).
+`Bullet.ApplyRocketJumpForce` overlap-checks the explosion; rigidbodies get `AddExplosionForce`, the player gets `PlayerMovement.AddExplosionJump(rocketJumpForce · φ², …)` plus self-damage proportional to proximity (self-damage is **not** scaled by the φ² push, nor by `WishUpgrades.RocketJumpForceMultiplier`). Blastfool multiplies the push ×4 and the self-damage ×2, and `PlayerClasses.RocketJumpMinProximity` makes both apply only within the innermost quarter of the blast radius — a far-off explosion does nothing to them at all.
+
+**Cast VFX is optional per spell.** Every array on `PlayCastBlast` (`castBlasts`, `castingParticles`, `castingParticleSizeScript`, `castingSound`, `castingStartSound`) is indexed by spell ID, but a spell does not have to appear in all of them — a missing or short entry is skipped instead of throwing `IndexOutOfRange` on the first shot. Adding a spell is a prefab plus a pool entry; the cast VFX can come later.
 
 ## Adding a new spell — checklist
 

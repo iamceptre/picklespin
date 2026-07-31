@@ -46,7 +46,7 @@ public class CanvasFader : MonoBehaviour
 
         while (elapsedTime < fadeDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime; // must still fade while the game is frozen
             float t = EaseInOutSine(Mathf.Clamp01(elapsedTime / fadeDuration));
             _canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, t);
             yield return null;

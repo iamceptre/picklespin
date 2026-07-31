@@ -62,6 +62,19 @@ public class Helper_Arrow : MonoBehaviour //works only with objects that are not
         _rend.enabled = true;
         showing = true;
     }
+    // The spirit is a guide, not a companion: once the player is in the room with
+    // the angel it has done its job and goes out, while the arrow keeps pointing.
+    // Walking back out with the angel still unhealed puts it back on the trail.
+    public void HideSpiritOnly()
+    {
+        if (helperSpirit != null) helperSpirit.HideSpirit();
+    }
+
+    public void RestoreSpirit()
+    {
+        if (helperSpirit != null && showing && target != null) helperSpirit.ShowSpirit(target);
+    }
+
     public void UnHideArrowWhenUnpausing()
     {
         if (showing)

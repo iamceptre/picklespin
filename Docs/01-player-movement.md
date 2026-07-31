@@ -39,6 +39,12 @@ Airborne: same `Accelerate` but `wishspeed` is capped at `airSpeedCap` (φ m/s) 
 - If the jump lands within `bhopTimingThreshold` (1/φ³ ≈ 0.236 s) of touchdown **and** movement keys are held, horizontal velocity is multiplied by `1 + bhopSpeedBonus`, clamped to `runSpeed · φ`. Bhop jumps cost 1/φ⁴ of normal jump stamina.
 - `AddExplosionJump(force, center, radius)` — rocket jumps. Called by `Bullet.ApplyRocketJumpForce` with `rocketJumpForce · φ²`.
 
+## Dash
+
+Double-tap the dash key **while any movement key is held** — every direction, not just strafes: the dash follows `moveDirection`, and falls back to `PlayerMovement.FlatWishDirection(input)` when the keys were pressed too recently for there to be any velocity to follow. It costs stamina and magicka, grants `playerHP.invincible` for its duration, and stops nearby AI (`StopAiForAsec` inside `dashEffectRadius`).
+
+**The cooldown is the spell cooldown.** `Dash` blocks on `Attack.CooldownReady` and spends `Attack.BeginCooldown(dashCooldown)` (2 s), i.e. the same `SpellCooldown` bar a shot uses — a dash cannot be chained into a spell or a spell into a dash, and the player reads one bar for both. `SpellCooldown` therefore keeps a single coroutine (a second one would end the lock as soon as the *shorter* of the two expired), and an abandoned cast no longer zeroes a cooldown that is genuinely running.
+
 ## Speed-based damage
 
 `SpeedDamageMultiplier` is computed every frame: lerp from `minDamageMultiplier` (0.25 at/below `walkSpeed`) to `maxDamageMultiplier` (2.5 at `runSpeed · φ`). `Bullet` samples it **at impact**. `HorizontalSpeed` and `MeasuredVelocity` are the public speed readouts — `MeasuredVelocity` is sampled *before* the ground-snap move because `CharacterController.velocity` only reflects the last `Move()` call.
@@ -57,6 +63,10 @@ Airborne: same `Accelerate` but `wishspeed` is capped at `airSpeedCap` (φ m/s) 
 ## Movement states
 
 `HandleMovementState()`: Sneak (crouch held) / Run (sprint + grounded + stamina) / Walk. State changes set capsule height, the FMOD `MovementState` global parameter, and drive stamina drain/recovery. Speeds are **never mutated** — current wish speed is derived from the state (`crouchSpeed`/`runSpeed`/`walkSpeed`).
+
+Every class pays for its breath — there is no unlimited-stamina exemption. `fatigability` sets both ends of tiring (the sprint drain and the price of a jump); Umbral takes `MultiplyFatigability(0.5f)` on the singleton when the class is chosen.
+
+**Umbral's breath is the black bar.** `PlayerClasses.StaminaSharesMagicka` sends every stamina cost — sprint drain, jump, dash — through `PlayerMovement.SpendStamina`, which spends `Ammo.SpendAsStamina` instead of the `stamina` field (its own sub-integer remainder, so a simultaneous angel-heal drain can't swallow it). It never spends past `Ammo.StaminaFloorPoints`, the low-magicka line at 20%: the last fifth is magicka and health, not breath. `IsExhausted` is then `Ammo.AtStaminaFloor` — *at or below* the line, since stopping exactly on it would otherwise buy an endless sprint — so no sprint and half-power jumps, and the magicka bar is already pulsing there (`Ammo.LowMagickaThreshold` drives both). Nothing recovers it by standing still: `StaminaRecovery` is skipped, and the bar comes back only from pickups, wishes and angels.
 
 ## Tuning tips
 

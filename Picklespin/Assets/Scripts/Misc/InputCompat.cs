@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-// Drop-in replacement for the legacy UnityEngine.Input polling API, backed by the
-// Input System package, so Active Input Handling can stay on "Input System Package (New)"
-// without rewriting every KeyCode-based call site (cheats, debug keys, one-off prompts).
+// Legacy UnityEngine.Input polling, backed by the Input System package: lets
+// KeyCode-style call sites (cheats, debug keys) survive "Input System Package (New)".
 public static class InputCompat
 {
     public static bool GetKey(KeyCode keyCode)
@@ -25,7 +24,6 @@ public static class InputCompat
         return control != null && control.wasReleasedThisFrame;
     }
 
-    // like Input.anyKeyDown, mouse buttons included
     public static bool AnyKeyDown
     {
         get

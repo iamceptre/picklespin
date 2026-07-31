@@ -76,15 +76,10 @@ public class AiVision : MonoBehaviour
         Vector3 toPlayer = playerRef.position - transform.position;
         float distance = toPlayer.magnitude;
 
-        // sight OR hearing. Hearing used to overwrite the sight result, so an
-        // enemy staring straight at a sprinting player lost them the instant
-        // they stepped out of earshot.
+        // sight OR hearing: either alone keeps the player acquired
         seeingPlayer = CanSeePlayer(toPlayer, distance) || CanHearPlayer(distance);
     }
 
-    // The single definition of "this enemy has line of sight on the player".
-    // LoosingPlayer used to carry its own copy of the cone-plus-raycast test,
-    // which had already drifted (it ignored radius entirely).
     public bool CanSeePlayer()
     {
         if (!playerRef) return false;
@@ -97,8 +92,7 @@ public class AiVision : MonoBehaviour
         if (distance > radius || distance <= Mathf.Epsilon) return false;
 
         Vector3 dir = toPlayer / distance;
-        // dot against the cached half-angle cosine: same test as Vector3.Angle
-        // without the acos, and this runs per enemy per perception tick
+        // dot against the cached cosine: Vector3.Angle without the acos, per tick
         if (Vector3.Dot(transform.forward, dir) < CosHalfAngle) return false;
 
         return !Physics.Raycast(transform.position, dir, distance, obstructionMask);

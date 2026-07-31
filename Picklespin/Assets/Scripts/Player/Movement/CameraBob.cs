@@ -70,16 +70,14 @@ public class CameraBob : MonoBehaviour
 
         maxSpeedDiffReciprocal = 1f / (maxSpeed - minSpeed);
 
-        // "CameraBobStrenght" (sic) is the literal key baked into the options scene's
-        // slider (PlayerPrefsSliderManager.settingName) — keep the spelling in sync with it
+        // "CameraBobStrenght" (sic) is the literal key on the options scene's slider
         if (PlayerPrefs.HasKey("CameraBobStrenght"))
         {
             SetStrength(PlayerPrefs.GetFloat("CameraBobStrenght") * 0.01f);
         }
     }
 
-    // 0 = no bob, 1 = full; footstep events keep firing regardless so the
-    // FootstepSystem stays in sync even with bob visuals off
+    // footstep events keep firing at 0, so the FootstepSystem stays in sync
     public void SetStrength(float normalized)
     {
         strength = Mathf.Clamp01(normalized);
@@ -87,8 +85,7 @@ public class CameraBob : MonoBehaviour
 
     private void LateUpdate()
     {
-        // stable grounded state instead of raw isGrounded: the raw flag flickers on
-        // slopes/stairs, which froze the bob and silenced footsteps
+        // not raw isGrounded: that flickers on slopes and stairs
         if (playerMovement.IsGroundedStable)
         {
             UpdateBobbing();

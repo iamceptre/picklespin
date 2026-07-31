@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Quake-style velocity physics on a CharacterController:
-// ground friction + wish-direction acceleration, air-strafing, bhop.
-// Tuning constants derive from φ (golden ratio) for a coherent, natural feel.
 public class PlayerMovement : MonoBehaviour
 {
     public const float PHI = PhiMath.PHI;
@@ -44,25 +41,23 @@ public class PlayerMovement : MonoBehaviour
     private float groundSnapDistance = 0.35f;
     [SerializeField, Tooltip("constant velocity pressing the controller into walkable ground")]
     private float groundStickForce = 3f;
-    [SerializeField, Tooltip("stick force used inside StairGravity trigger zones")]
+    [SerializeField, Tooltip("stick force used inside StairGravity trigger zones")] // MIGHT NOT BE USEFUL NOW
     private float stairStickForce = 12f;
     [SerializeField, Tooltip("slide speed on ground steeper than the controller's slope limit")]
     private float steepSlopeSlideSpeed = 5f;
 
     [Header("Stamina & Fatigue")]
-    [Range(0, 100)] public float stamina = 100;
+    public float stamina = 100;
+    [Tooltip("raised permanently by the angel's stamina wish, so nothing may assume 100")]
+    public float maxStamina = 100;
     public float fatigability = 32;
     [SerializeField, Tooltip("stamina you must recover after emptying the bar before sprinting and full-power jumps come back")]
     private float staminaRecoveryThreshold = 20f;
 
-    // One exhausted state drives everything that gets worse when you are winded:
-    // no sprinting, half-power jumps, and the exhausted sound. It is a latch,
-    // entered by emptying the bar and only released once stamina is back up to
-    // staminaRecoveryThreshold. Reading the bar directly would flicker — sprint
-    // drains faster than walking recovers, so at the cutoff the state would flip
-    // in and out of Run a frame at a time (which is how sprinting on an empty
-    // bar used to work at all).
+
     public bool IsExhausted { get; private set; }
+
+    public float NoSprintThreshold => maxStamina > 0f ? staminaRecoveryThreshold / maxStamina : 0f;
 
     [Header("Speed Damage")]
     [SerializeField, Tooltip("damage multiplier when standing or slow-walking")]
@@ -108,8 +103,8 @@ public class PlayerMovement : MonoBehaviour
     private float jumpQueuedUntil = -10f;
     private Vector2 rawInput;
 
-    // read-only state for other systems (bob, footsteps, speedometer, damage, speed GUI)
     public bool IsGroundedStable => isGroundedStable;
+    public bool IsRocketJumping { get; private set; }
     public Vector3 MeasuredVelocity { get; private set; }
     public float HorizontalSpeed { get; private set; }
     public float SpeedDamageMultiplier { get; private set; } = 1f;
@@ -145,8 +140,6 @@ public class PlayerMovement : MonoBehaviour
         HandleMovementState();
         HandleMovement();
     }
-
-    // ---------- ground probing ----------
 
     private bool CastToGround(out RaycastHit hit)
     {
@@ -203,12 +196,11 @@ public class PlayerMovement : MonoBehaviour
         // walking uphill (positive projected y) must NOT count as airborne
         if (airborneByImpulse && touchingGround && moveDirection.y <= 0.01f) airborneByImpulse = false;
         isGroundedStable = touchingGround && !airborneByImpulse;
+        if (isGroundedStable) IsRocketJumping = false;
         onWalkableGround = isGroundedStable && groundAngle <= characterController.slopeLimit + 0.01f;
 
         if (isGroundedStable && !wasStable) landedTime = Time.time;
     }
-
-    // ---------- quake physics core ----------
 
     void HandleMovement()
     {
@@ -220,7 +212,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (onWalkableGround)
         {
-            // velocity lives in the surface plane so slopes are hugged, not stair-stepped
             moveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
             if (wishSpeed > 0.001f)
                 wishDir = Vector3.ProjectOnPlane(wishDir, groundNormal).normalized;
@@ -238,8 +229,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (isGroundedStable)
         {
-            // steeper than the slope limit: slide down — but jumping stays allowed,
-            // so the player can always rescue themselves if geometry blocks the slide
             Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
             moveDirection = slideDirection * steepSlopeSlideSpeed
                           + Vector3.ProjectOnPlane(wishVelocity, groundNormal) * 0.5f;
@@ -252,7 +241,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // quake air control: tiny wish cap + high acceleration = strafe gains
             wishDir.y = 0;
             if (wishDir.sqrMagnitude > 0.0001f) wishDir.Normalize();
             Accelerate(wishDir, Mathf.Min(wishSpeed, airSpeedCap), airAcceleration, dt);
@@ -263,8 +251,6 @@ public class PlayerMovement : MonoBehaviour
         if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0)
             moveDirection.y = 0;
 
-        // grounded is false on the jump frame (airborneByImpulse) so stick/snap can't eat the jump.
-        // the stick presses along the surface normal: keeps contact without slowing tangential movement
         bool grounded = isGroundedStable && !airborneByImpulse;
         characterController.Move((grounded ? moveDirection - groundNormal * groundStickForce : moveDirection) * dt);
 
@@ -315,7 +301,6 @@ public class PlayerMovement : MonoBehaviour
 
     void SnapToGround()
     {
-        // keeps the controller welded to the surface over stair edges and slope crests
         if (characterController.isGrounded) return;
         if (CastToGround(out RaycastHit hit) && Vector3.Angle(hit.normal, Vector3.up) <= characterController.slopeLimit + 0.01f)
         {
@@ -323,11 +308,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ---------- jumping ----------
-
     void Jump()
     {
-        // the same exhausted state that blocks sprinting
         bool weakLegs = IsExhausted;
 
         cameraBob.ResetBobbing();
@@ -339,26 +321,23 @@ public class PlayerMovement : MonoBehaviour
         float staminaCostScale = 1f;
         if (CanBhop && anyMovementKeysPressed)
         {
-            // chained hop: momentum untouched by friction, plus a stacking bonus
             moveDirection.x *= 1f + bhopSpeedBonus;
             moveDirection.z *= 1f + bhopSpeedBonus;
             ClampHorizontalSpeed(MaxHorizontalSpeed);
             staminaCostScale = 1f / PhiMath.PHI4; // ≈ 0.146
         }
 
-        float cost = Mathf.Clamp((1 + HorizontalSpeed) * 0.05f * fatigability, 10, 100) * staminaCostScale;
-        stamina = Mathf.Max(stamina - cost, 0);
+        SpendStamina(Mathf.Clamp((1 + HorizontalSpeed) * 0.05f * fatigability, 10, 100) * staminaCostScale);
 
         moveDirection.y = weakLegs ? jumpPower * 0.5f : jumpPower;
     }
-
-    // ---------- movement state / crouch / sprint ----------
 
     void HandleMovementState()
     {
         bool crouchHeld = crouchAction.action.IsPressed();
 
-        if (stamina <= 0f) IsExhausted = true;
+        if (SharedStamina) IsExhausted = Ammo.instance.AtStaminaFloor;
+        else if (stamina <= 0f) IsExhausted = true;
         else if (stamina >= staminaRecoveryThreshold) IsExhausted = false;
 
         bool running = isGroundedStable && !IsExhausted && runAction.action.IsPressed() && anyMovementKeysPressed && !crouchHeld;
@@ -383,21 +362,43 @@ public class PlayerMovement : MonoBehaviour
 
     void StaminaDeplete()
     {
-        stamina = Mathf.Max(stamina - Time.deltaTime * fatigability, 0);
-        staminaBarDisplay.Refresh(false);
+        SpendStamina(Time.deltaTime * fatigability);
+        if (!SharedStamina) staminaBarDisplay.Refresh(false);
     }
 
     void StaminaRecovery()
     {
+        // the black bar never comes back from standing still, but the fraction of a
+        // point still pending has to be let go or it holds the bar low
+        if (SharedStamina)
+        {
+            Ammo.instance.StopStaminaSpend();
+            return;
+        }
+
         if (isGroundedStable)
         {
             float rate = anyMovementKeysPressed ? 10f : 20f;
-            stamina = Mathf.Min(stamina + Time.deltaTime * rate, 100);
+            stamina = Mathf.Min(stamina + Time.deltaTime * rate, maxStamina);
         }
         staminaBarDisplay.Refresh(false);
     }
 
-    // ---------- external API ----------
+    private bool SharedStamina => PlayerClasses.StaminaSharesMagicka && Ammo.instance;
+
+    public void SpendStamina(float cost)
+    {
+        if (SharedStamina) Ammo.instance.SpendAsStamina(cost);
+        else stamina = Mathf.Max(stamina - cost, 0f);
+    }
+
+    public float StaminaFraction => maxStamina > 0f ? Mathf.Clamp01(stamina / maxStamina) : 0f;
+
+    // whichever pool the breath is actually kept in - a potion asks this before it
+    // spends itself on a bar that is already full
+    public bool StaminaFull => SharedStamina
+        ? Ammo.instance.ammo >= Ammo.instance.maxAmmo
+        : stamina >= maxStamina;
 
     public void AddExplosionJump(float explosionForce, Vector3 explosionCenter, float rangeRadius)
     {
@@ -406,9 +407,20 @@ public class PlayerMovement : MonoBehaviour
         pushDir.y = 1f;
         pushDir.Normalize();
         moveDirection += pushDir * (explosionForce * forceFactor);
-        if (moveDirection.y > 0f) airborneByImpulse = true;
+        if (moveDirection.y > 0f)
+        {
+            airborneByImpulse = true;
+            IsRocketJumping = true;
+        }
         footstepSystem.SendJumpSignal();
         camShakeManager.ShakeSelected(9);
+    }
+
+    public Vector3 FlatWishDirection(Vector2 input)
+    {
+        Vector3 direction = forwardPointer.forward * input.y + forwardPointer.right * input.x;
+        direction.y = 0f;
+        return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector3.zero;
     }
 
     public void SlowMeDown()
@@ -435,10 +447,41 @@ public class PlayerMovement : MonoBehaviour
 
     public void GiveStaminaToPlayer(int howMuchStaminaIGive, bool isSilent = false)
     {
+        // Umbral's breath is the black bar, so that is what a stamina potion fills
+        if (SharedStamina)
+        {
+            Ammo.instance.GiveManaToPlayer(howMuchStaminaIGive, isSilent);
+            return;
+        }
+
         float target = stamina + howMuchStaminaIGive;
-        bool maxed = target >= 100;
-        stamina = maxed ? 100 : target;
+        bool maxed = target >= maxStamina;
+        stamina = maxed ? maxStamina : target;
         staminaBarDisplay.Refresh(false);
         if (!isSilent) barLightsAnimation.PlaySelectedBarAnimation(1, howMuchStaminaIGive, maxed);
+    }
+
+    public void MultiplyMaxSpeed(float factor)
+    {
+        runSpeed *= factor;
+    }
+
+    public void MultiplyJumpPower(float factor)
+    {
+        jumpPower *= factor;
+    }
+
+    public void MultiplyFatigability(float factor)
+    {
+        fatigability *= factor;
+    }
+
+    // the headroom is granted filled, so the bar grows instead of visibly draining
+    public void MultiplyMaxStamina(float factor)
+    {
+        float gained = maxStamina * factor - maxStamina;
+        maxStamina += gained;
+        stamina = Mathf.Min(stamina + gained, maxStamina);
+        staminaBarDisplay.Refresh(true);
     }
 }

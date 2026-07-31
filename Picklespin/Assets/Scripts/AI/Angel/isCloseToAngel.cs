@@ -20,6 +20,8 @@ public class isCloseToAngel : MonoBehaviour
             minigame.boosted = false;
             angelHeal.enabled = true;
             angelHPGUI.enabled = true;
+            // the player is in the room now - the spirit has nothing left to lead them to
+            if (Helper_Arrow.Instance) Helper_Arrow.Instance.HideSpiritOnly();
         }
     }
 
@@ -60,6 +62,8 @@ public class isCloseToAngel : MonoBehaviour
     {
         angelHeal.StopAiming();
         angelHeal.enabled = false;
+        // left the room: if the arrow is still pointing somewhere, the guide comes back
+        if (Helper_Arrow.Instance) Helper_Arrow.Instance.RestoreSpirit();
     }
 
 

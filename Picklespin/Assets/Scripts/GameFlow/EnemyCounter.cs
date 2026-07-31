@@ -6,8 +6,8 @@ public class EnemyCounter : MonoBehaviour
 {
     public static EnemyCounter instance;
 
-    [SerializeField, Tooltip("round-timer speed while the arena is cleared (φ·3)")]
-    private float clearedArenaTimerSpeed = PhiMath.PHI * 3f;
+    [SerializeField, Tooltip("round-timer speed while the arena is cleared")]
+    private float clearedArenaTimerSpeed = 5f;
 
     public int EnemyCount; // kept public for compatibility; use Register/Deregister to modify
 

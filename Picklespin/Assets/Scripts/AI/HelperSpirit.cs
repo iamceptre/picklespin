@@ -17,10 +17,10 @@ public class HelperSpirit : MonoBehaviour
     [SerializeField] private float checkInterval = 0.25f;
 
     [Header("Guiding")]
-    [SerializeField, Tooltip("the spirit only advances while the player is within this range (φ⁵)")]
-    private float followRadius = 11.09f;
-    [SerializeField, Tooltip("if the player gets this much closer to the angel than the spirit, it skips ahead (φ³)")]
-    private float overtakeMargin = 4.236f;
+    [SerializeField, Tooltip("the spirit only advances while the player is within this range")]
+    private float followRadius = 11f;
+    [SerializeField, Tooltip("if the player gets this much closer to the angel than the spirit, it skips ahead")]
+    private float overtakeMargin = 4f;
     [SerializeField, Tooltip("how quickly the spirit's speed eases toward its target (higher = snappier)")]
     private float speedSmoothing = 3f;
 
@@ -65,15 +65,13 @@ public class HelperSpirit : MonoBehaviour
     {
         if (!aiPath || playerTransform == null) return;
 
-        // full speed while the player keeps up, smoothly easing to a halt as they
-        // fall behind (soft band between followRadius/φ and followRadius); the
-        // return-to-player leg always runs at full speed
+        // eases to a halt as the player falls behind; the way back is always full speed
         float targetFactor = 1f;
         if (isGoingToAngel)
         {
             float playerDistance = Vector3.Distance(transform.position, playerTransform.PlayerTransform.position);
             targetFactor = 1f - Mathf.SmoothStep(0f, 1f,
-                Mathf.InverseLerp(followRadius * PhiMath.INV_PHI, followRadius, playerDistance));
+                Mathf.InverseLerp(followRadius * 0.6f, followRadius, playerDistance));
         }
 
         float ease = 1f - Mathf.Exp(-speedSmoothing * Time.deltaTime);
@@ -94,8 +92,6 @@ public class HelperSpirit : MonoBehaviour
         fadeCoroutine = StartCoroutine(HideSpiritRoutine());
     }
 
-    // one dial for every visual element: light, trail and sprite fade together,
-    // and the sprite renderer is fully disabled while invisible
     private void SetEffectsStrength(float strength)
     {
         spiritLight.intensity = startingLightIntensity * strength;
@@ -171,8 +167,7 @@ public class HelperSpirit : MonoBehaviour
                 }
                 else if (isGoingToAngel)
                 {
-                    // the player overtook the spirit on the way to the angel:
-                    // skip ahead so the guide never trails behind
+                    // the player overtook the guide: skip ahead so it never trails
                     float playerToTarget = Vector3.Distance(playerPosition, target.position);
                     if (playerToTarget + overtakeMargin < spiritToTarget)
                     {

@@ -44,7 +44,7 @@ public class AttackPlayer : State
 
     void ChasePlayer()
     {
-        aiPath.maxSpeed = attackSpeed;
+        aiPath.maxSpeed = attackSpeed * WishUpgrades.EnemySpeedMultiplier;
         aiPath.rotationSpeed = rotationSpeed;
         if (destinationSetter.target != playerTransform.PlayerTransform)
             destinationSetter.target = playerTransform.PlayerTransform;

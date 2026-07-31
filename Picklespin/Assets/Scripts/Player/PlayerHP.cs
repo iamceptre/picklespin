@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
@@ -19,7 +19,6 @@ public class PlayerHP : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private Image hurtOverlay;
     [SerializeField] private Sprite[] hurtOverlays;
-    [SerializeField] private PulsatingImage hpBarPulsation;
 
     [Header("Post-Processing")]
     [SerializeField] private PostProcessVolume ppVolume;
@@ -34,15 +33,31 @@ public class PlayerHP : MonoBehaviour
 
     [Header("Health Regeneration")]
     [SerializeField, Range(0, 1)] private float regenThresholdPercentage = 0.33f;
-    private float hpRegenThreshold;
     [SerializeField] private int regenAmount = 1;
     [SerializeField] private WaitForSeconds regenInterval = new(0.5f);
     private Coroutine regenCoroutine;
+    private float drainRemainder;
 
     [Header("References")]
     private BarLightsAnimation barLightsAnimation;
     private Death death;
     private HpBarDisplay hpBarDisplay;
+
+
+    // every check below reads whichever pool the class runs on, and maxHp is not
+    // constant either - so the low-health threshold is a fraction, never an absolute
+    private bool MagickaIsHealth => PlayerClasses.MagickaIsHealth && Ammo.instance;
+
+    // one number for the tinnitus, the desaturation, the regen and the bar's pulse
+    public float LowHealthThreshold => regenThresholdPercentage;
+
+    // what the health bar draws - its own pool, with a continuous drain's pending
+    // fraction included. HealthFraction below is the class-routed one every rule reads.
+    public float DisplayFraction => maxHp > 0 ? Mathf.Clamp01((hp - drainRemainder) / maxHp) : 0f;
+
+    public float HealthFraction => MagickaIsHealth
+        ? (Ammo.instance.maxAmmo > 0 ? (float)Ammo.instance.ammo / Ammo.instance.maxAmmo : 0f)
+        : (maxHp > 0 ? (float)hp / maxHp : 0f);
 
     private void Awake()
     {
@@ -52,7 +67,6 @@ public class PlayerHP : MonoBehaviour
             return;
         }
         Instance = this;
-        hpRegenThreshold = maxHp * regenThresholdPercentage;
     }
 
     private void Start()
@@ -77,6 +91,19 @@ public class PlayerHP : MonoBehaviour
             return;
         }
 
+        if (MagickaIsHealth)
+        {
+            // the magicka bar owns the feedback too, and GiveManaToPlayer pushes the
+            // low-health check back through MagickaChanged
+            Ammo.instance.GiveManaToPlayer(amount);
+            if (amount < 0)
+            {
+                HandleDamageEffects();
+                if (Ammo.instance.ammo <= 0) death.PlayerDeath();
+            }
+            return;
+        }
+
         hp = Mathf.Clamp(hp + amount, 0, maxHp);
 
         if (amount < 0)
@@ -93,6 +120,44 @@ public class PlayerHP : MonoBehaviour
         CheckLowHPState();
     }
 
+    // safe to call every frame: no hurt overlay, floored at minimumHp, and the
+    // fractional part is carried between frames so the bar falls at a constant rate
+    public void DrainHP(float amount, int minimumHp)
+    {
+        if (godMode || invincible || amount <= 0)
+        {
+            return;
+        }
+
+        if (hp <= minimumHp)
+        {
+            if (drainRemainder > 0)
+            {
+                drainRemainder = 0;
+                hpBarDisplay.SetContinuousValue(hp, maxHp);
+            }
+            return;
+        }
+
+        drainRemainder += amount;
+        int wholePoints = Mathf.FloorToInt(drainRemainder);
+
+        if (wholePoints > 0)
+        {
+            drainRemainder -= wholePoints;
+            hp = Mathf.Max(minimumHp, hp - wholePoints);
+            CheckLowHPState();
+        }
+
+        hpBarDisplay.SetContinuousValue(hp - drainRemainder, maxHp);
+    }
+
+    public void StopDraining()
+    {
+        drainRemainder = 0;
+        hpBarDisplay.Refresh(false);
+    }
+
     private void HandleDamageEffects()
     {
         if (hurtOverlay != null && hurtOverlays != null && hurtOverlays.Length > 0)
@@ -107,14 +172,13 @@ public class PlayerHP : MonoBehaviour
 
     private void CheckLowHPState()
     {
-        if (hp < hpRegenThreshold)
+        if (HealthFraction < regenThresholdPercentage)
         {
             if (!isLowHP)
             {
                 isLowHP = true;
                 audioSnapshotManager.EnableSnapshot("LowHP");
                 _ = StartCoroutine(LowHpEffect());
-                hpBarPulsation.StartPulsating();
                 regenCoroutine = StartCoroutine(RegenerateHP());
             }
         }
@@ -125,10 +189,30 @@ public class PlayerHP : MonoBehaviour
                 isLowHP = false;
                 audioSnapshotManager.DisableSnapshot("LowHP");
                 _ = StartCoroutine(RestoreHpEffect());
-                hpBarPulsation.StopPulsating();
                 StopRegenerationCoroutine();
             }
         }
+    }
+
+    // pushed by Ammo: when magicka is the health pool, casting and dashing change it
+    // without ever touching PlayerHP
+    public void RefreshLowHealthState() => CheckLowHPState();
+
+    public void RestoreToFull()
+    {
+        ModifyHP(MagickaIsHealth ? Ammo.instance.maxAmmo : maxHp);
+    }
+
+    // extra headroom is granted filled, so the bar grows instead of reading as empty
+    public void MultiplyMaxHp(float factor)
+    {
+        int newMax = Mathf.Max(1, Mathf.RoundToInt(maxHp * factor));
+        int gained = newMax - maxHp;
+        maxHp = newMax;
+        hp = Mathf.Clamp(gained > 0 ? hp + gained : hp, 0, maxHp);
+
+        if (hpBarDisplay) hpBarDisplay.Refresh(true);
+        CheckLowHPState();
     }
 
     private void StopRegenerationCoroutine()
@@ -169,16 +253,24 @@ public class PlayerHP : MonoBehaviour
 
     private IEnumerator RegenerateHP()
     {
-        while (isLowHP && hp < maxHp)
+        while (isLowHP && HealthFraction < 1f)
         {
-            if (hp >= hpRegenThreshold)
+            if (HealthFraction >= regenThresholdPercentage)
             {
                 yield break;
             }
 
             yield return regenInterval;
-            hp += regenAmount;
-            hpBarDisplay.Refresh(true);
+
+            if (MagickaIsHealth)
+            {
+                Ammo.instance.GiveManaToPlayer(regenAmount, true); // silent: a trickle must not flash the bar every half second
+            }
+            else
+            {
+                hp = Mathf.Min(hp + regenAmount, maxHp);
+                hpBarDisplay.Refresh(true);
+            }
             CheckLowHPState();
         }
     }

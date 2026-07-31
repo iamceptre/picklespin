@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-// Spawns enemy waves from per-prefab pools, staggered in time and scattered on a
-// golden spiral so wave members can never clump. Wired from RoundSystem's events.
-// Dead enemies come back through TryDespawn (called by Dissolver) instead of Destroy.
 public class EnemiesSpawner : MonoBehaviour
 {
     public static EnemiesSpawner instance;
@@ -17,6 +14,7 @@ public class EnemiesSpawner : MonoBehaviour
 
     private static readonly WaitForSeconds spawnStagger = new(0.2f);
     private int spawnIndex;
+    private float spawnPointOffset;
 
     private ObjectPool<GameObject> easyPool;
     private ObjectPool<GameObject> whitePool;
@@ -30,6 +28,7 @@ public class EnemiesSpawner : MonoBehaviour
             return;
         }
         instance = this;
+        spawnPointOffset = Random.value; // once per run, so the wave still spreads evenly
         easyPool = CreatePool(evilEntity);
         whitePool = CreatePool(evilEntityWhite);
     }
@@ -77,17 +76,15 @@ public class EnemiesSpawner : MonoBehaviour
 
     private void Spawn(ObjectPool<GameObject> pool)
     {
-        // golden-angle scatter + low-discrepancy point selection: even spread, no clumping
         Vector2 offset = PhiMath.GoldenSpiralPoint(spawnIndex % 8, 8, 0.5f);
-        Transform point = spawnPoints[(int)(PhiMath.GoldenSequence(spawnIndex) * spawnPoints.Length)];
+        Transform point = spawnPoints[(int)(PhiMath.GoldenSequence(spawnIndex, spawnPointOffset) * spawnPoints.Length)];
         spawnIndex++;
 
         GameObject enemy = pool.Get();
         Vector3 spawnPosition = point.position + new Vector3(offset.x, 0, offset.y);
         enemy.transform.position = spawnPosition;
 
-        // every part of an enemy is optional, so nothing here may assume one exists.
-        // The waypoints have to land before ResetAll, which re-shuffles from them.
+        // the waypoints have to land before ResetAll, which re-shuffles from them
         AiReferences refs = enemy.GetComponentInChildren<AiReferences>(true);
         if (refs)
         {
@@ -101,7 +98,6 @@ public class EnemiesSpawner : MonoBehaviour
         if (enemy.TryGetComponent(out Pathfinding.IAstarAI astarAI)) astarAI.Teleport(spawnPosition);
     }
 
-    // Dissolver calls this when a pooled enemy finishes dissolving
     public static bool TryDespawn(GameObject enemy)
     {
         if (instance == null || !instance.instanceToPool.TryGetValue(enemy, out ObjectPool<GameObject> pool))

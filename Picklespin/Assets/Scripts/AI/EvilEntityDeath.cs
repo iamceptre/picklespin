@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 
-// The one place an enemy dies. Everything it touches is optional — an enemy
-// without a Dissolver, an HP bar or a SetOnFire just skips that part.
 public class EvilEntityDeath : MonoBehaviour
 {
     [SerializeField] private UnityEvent deathEvent;
@@ -13,10 +11,8 @@ public class EvilEntityDeath : MonoBehaviour
     private CameraShakeManagerV2 camShakeManager;
     private ScreenFlashTint screenFlashTint;
 
-    // Die() is reachable from Inspector-wired events as well as AiHealth, and
-    // nothing downstream is idempotent: a second StartDissolve() would capture
-    // the dissolve material as the enemy's "alive" material and the pooled
-    // enemy would respawn wearing it.
+    // Die() is reachable from Inspector events too, and nothing downstream is
+    // idempotent: a second StartDissolve() latches the dissolve material for good
     private bool died;
 
     private void Awake()
@@ -43,10 +39,8 @@ public class EvilEntityDeath : MonoBehaviour
 
         if (refs)
         {
-            // first frame of death: the corpse must stop blocking the player
             refs.DisableAllColliders();
 
-            // stop the corpse thinking, seeing and burning before it dissolves
             if (refs.stateManager) refs.stateManager.StopAI();
             if (refs.Vision) refs.Vision.ResetVisionState();
             if (refs.setOnFire) refs.setOnFire.Extinguish();
@@ -63,7 +57,7 @@ public class EvilEntityDeath : MonoBehaviour
         if (screenFlashTint) screenFlashTint.Flash(6);
         StartCoroutine(ShakeLater());
 
-        deathEvent.Invoke(); //additional death behaviour
+        deathEvent.Invoke();
     }
 
 

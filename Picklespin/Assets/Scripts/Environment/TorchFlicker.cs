@@ -52,9 +52,7 @@ public class TorchFlicker : MonoBehaviour
         torchLight.intensity = initialIntensity;
     }
 
-    // Two sines with frequencies in ratio φ (the most irrational number): the sum is
-    // quasi-periodic — it never repeats, yet stays perfectly smooth. Organic fire from
-    // four sin() calls; no wavetables, no noise textures, no allocations.
+    // two sines with frequencies in ratio φ: the sum never repeats, yet stays smooth
     public void FlickerUpdate(float deltaTime, float baseFlickerSpeed, float flickerAmplitude, float minLightIntensity, float baseIntensitySpeed)
     {
         if (isCulled) return;

@@ -2,7 +2,7 @@
 - Project name: Picklespin
 - Unity version: Unity 6000.3.20f1
 - Active game object:
-  - Name: Controller
+  - Name: Spell_Bullet_Umbral
   - Tag: Untagged
-  - Layer: Player
+  - Layer: Bullet
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

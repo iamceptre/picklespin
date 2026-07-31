@@ -11,9 +11,6 @@ public class AngelMind : MonoBehaviour
     [SerializeField] private Renderer[] additionalElements;
     [SerializeField] private Torch torch;
     [SerializeField] private AngelRingEyesOpenClose eyesManager;
-    private PlayerHP playerHP;
-    private Ammo ammo;
-    private PlayerMovement playerMovement;
     private PlayerEXP playerEXP;
     private AngelTorchManager angelTorchManager;
     [SerializeField] private EventReference angelHealedSoundEvent;
@@ -82,9 +79,6 @@ public class AngelMind : MonoBehaviour
     {
         minigame = AngelHealingMinigame.Instance;
         helperArrow = Helper_Arrow.Instance;
-        playerHP = PlayerHP.Instance;
-        ammo = Ammo.instance;
-        playerMovement = PlayerMovement.Instance;
         playerEXP = PlayerEXP.instance;
         eyesManager.Close();
     }
@@ -110,27 +104,11 @@ public class AngelMind : MonoBehaviour
 
         angelTorchManager.OffTorch();
 
-        GiveHPToPlayer();
-        Invoke(nameof(GiveStaminaToPlayer), 0.2f);
-        Invoke(nameof(GiveManaToPlayer), 0.4f);
+        // the three bars are no longer refilled here — a full restore is one of
+        // the wishes AngelWishMenu offers once the angel asks
         scriptActivationTrigger.size = Vector3.zero;
         minigame.RandomizeTurboAreaPosition();
         additionalHealedEvent.Invoke();
-    }
-
-    private void GiveHPToPlayer()
-    {
-        playerHP.ModifyHP(playerHP.maxHp);
-    }
-
-    private void GiveStaminaToPlayer()
-    {
-        playerMovement.GiveStaminaToPlayer(100);
-    }
-
-    private void GiveManaToPlayer()
-    {
-        ammo.GiveManaToPlayer(ammo.maxAmmo);
     }
 
     public void StopMySound()

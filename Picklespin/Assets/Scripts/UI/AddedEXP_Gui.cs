@@ -44,7 +44,7 @@ public class AddedEXP_Gui : MonoBehaviour
         _text.DOFade(1, 0.4f);
         _textTransform.DOScale(1, 0.05f).OnComplete(() =>
         {
-            _textTransform.DOScale(1.618f, 0.2f).SetEase(Ease.OutExpo).OnComplete(() =>
+            _textTransform.DOScale(1.6f, 0.2f).SetEase(Ease.OutExpo).OnComplete(() =>
             {
                 _textTransform.DOScale(1f, 0.324f);
             });

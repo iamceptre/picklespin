@@ -34,6 +34,15 @@ State flow: `WaypointsForSpawner` patrols randomized waypoints (`cachedPoint` in
 - **Hearing:** driven by the player's `movementStateForFMOD` — sneak (0) is silent; walk ≤ 15 m; run ≤ 30 m; landing after a long fall ≤ 45 m for 1 s (all enemies get `EnableLandingHearing` via `JumpLandSignals`).
 - **Getting hit** reveals the player for 6 s (`HitShowsMePlayer`), timestamp-based.
 
+## Turned enemies (`ConvertedAlly`, Sanctus only)
+
+Sanctus' light spell converts whatever it lands on. `ConvertedAlly` is **added at runtime** by `Bullet` — no prefab knows Sanctus exists, and `AiReferences` therefore cannot auto-find it in `Awake`.
+
+- `Take` stops the FSM (`StateManager.StopAI`), clears `AIDestinationSetter.target` (it would otherwise overwrite the destination every frame from the old waypoint) and takes over `AIPath.destination` on its own `InvokeRepeating` tick, at the same 0.2 s cadence the FSM uses.
+- It hunts the nearest entry in the new `AiReferences.AllEnemies` registry that is alive and not itself converted, and strikes for 25 every second inside 3.5 m. A light spell that hit nobody calls `CommandAll(point)`: every ally walks there first, then picks the hunt back up.
+- Regular enemies still only hunt the player — they do not fight back.
+- **Pooling:** `AiReferences.ResetAll` looks the component up explicitly and calls `Revert()`, so a reused enemy always comes back hostile. Everything `Take` touched is restored by `ResetAll`'s own chain.
+
 ## Death & pooled respawn lifecycle
 
 ```

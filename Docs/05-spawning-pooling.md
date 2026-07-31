@@ -50,8 +50,17 @@ Reuse is where pooling bugs live — everything must behave correctly on the *se
 ## Spawn placement math (φ)
 
 - **Golden-spiral scatter** (`PhiMath.GoldenSpiralPoint(i, n, radius)`): Vogel/sunflower packing — wave members mathematically cannot clump, unlike `Random.insideUnitSphere`.
-- **Golden-sequence selection** (`PhiMath.GoldenSequence(i)`): low-discrepancy 0..1 sequence for picking spawn points — feels random, never streaks the same point.
+- **Golden-sequence selection** (`PhiMath.GoldenSequence(i, offset)`): low-discrepancy 0..1 sequence for picking spawn points — feels random, never streaks the same point. `offset` is a `Random.value` phase shift picked once in `EnemiesSpawner.Awake`; without it the sequence starts at exactly 0, so the first enemy of every run spawned on `spawnPoints[0]`.
 - Potion/spell spawners instead use an **occupancy system**: `isSpawnPointTaken[]` + `avaliableSpawnPointsCount`, re-rolling until a free point is found; items free their point on pickup (`SetOccupiedWaypoint`).
+
+## Mercy drops (`LowResourcePotionDrop`)
+
+A pool that falls under `threshold` (0.1) puts `potionsPerDrop` potions of its own kind on the map. Checked on a coarse `InvokeRepeating`, never per frame, and **after any drop nothing is checked again for `dropCooldown` (4 s)** — one drop at a time, and a pool that is still empty when the cooldown ends simply drops again. Only one pool drops per pass; the rest wait out the cooldown.
+
+- **Out of sight only.** A candidate point must be outside the camera frustum (plus `viewMargin`, so a small turn cannot reveal one) *or* occluded — `Physics.Linecast` from the eye, stopping 0.3 m short so whatever the potion rests on does not read as cover. Because the filter runs per item inside the staggered routine, a point is judged against where the player is looking *at that moment*; if nothing qualifies the routine stops early rather than queueing.
+- **The arena's own spawn points and its own scatter**: `PickupableBonusesSpawner.ScatterSpawn(take, count, pointIsUsable)` is the single placement path — random free point, one item per `scatterTime`, taken flags and `avaliableSpawnPointsCount` kept there. `SpawnBonuses` calls it with `allPotionsPool.Get` and no filter; the mercy drop calls it with its own typed pool and the out-of-sight test. The point is chosen *before* the item is taken from the pool, so a spawn that cannot be placed never strands one outside its pool.
+- **A folded pool drops once.** Umbral spends the black bar for all three resources, so only the magicka drop runs for it; Vesper skips the health drop the same way. `PlayerClasses.MagickaIsHealth` / `StaminaSharesMagicka` decide.
+- One pool per potion type, which is why `PoolSpawnableObject.FreeUpSlot` releases into the `SetPool`-injected pool rather than `PickupableBonusesSpawner.allPotionsPool` — the bonus pool holds a *random* prefab per instance, so a typed potion returned into it would skew the bonus mix.
 
 ## Known non-pooled one-shots (accepted)
 

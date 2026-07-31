@@ -10,8 +10,8 @@ public class FMODResetManager : MonoBehaviour
 
     private Bus diageticBus;
 
-    // ~0.62s (1/φ): long enough to hide the all-emitters-start-at-once onset, short enough to feel instant
-    private static readonly float fadeInDuration = 1f / PhiMath.PHI;
+    // long enough to hide the all-emitters-start-at-once onset, short enough to feel instant
+    private static readonly float fadeInDuration = 0.6f;
 
     private void Awake()
     {
@@ -31,8 +31,7 @@ public class FMODResetManager : MonoBehaviour
         StartCoroutine(FadeInFromSilence());
     }
 
-    // scene just loaded: whatever the previous scene's transition left on the bus
-    // (mute, ducked tails), start from guaranteed silence and ease up to full volume
+    // start from guaranteed silence, whatever the previous scene left on the bus
     private IEnumerator FadeInFromSilence()
     {
         diageticBus.setVolume(0f);
@@ -50,9 +49,8 @@ public class FMODResetManager : MonoBehaviour
 
     public void ResetFMOD(bool immediate)
     {
-        // order matters: silence the bus BEFORE clearing snapshots — releasing the
-        // Deathscreen duck first would pop every still-looping event back to full
-        // volume for its fade-out tail (audible burst on level restart)
+        // silence the bus BEFORE clearing snapshots: releasing the duck first pops
+        // every still-looping event back to full volume for its fade-out tail
         diageticBus.setMute(true);
         diageticBus.stopAllEvents(immediate ? FMOD.Studio.STOP_MODE.IMMEDIATE : FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         AudioSnapshotManager.Instance.Clear();

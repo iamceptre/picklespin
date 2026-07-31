@@ -27,6 +27,11 @@ public class AngelHeal : MonoBehaviour
     [SerializeField] private float guiFadeTimes = 0.1f;
     public float healSpeedMultiplier = 1;
 
+    [Header("Healing Cost")]
+    [SerializeField] private float manaDrainPerSecond = 7f;
+    [SerializeField] private float hpDrainPerSecond = 10f;
+    [SerializeField] private int minimumHpWhileHealing = 10;
+
     [Header("Input")]
     [SerializeField] private InputActionReference healAction;
 
@@ -37,6 +42,8 @@ public class AngelHeal : MonoBehaviour
     private SkinnedMeshRenderer handRenderer;
     private TipManager tipManager;
     private CrosshairManager crosshair;
+    private Ammo ammo;
+    private PlayerHP playerHP;
     private IEnumerator healingRoutine;
     private AiHealth aiHealth;
     public AngelMind angel;
@@ -57,6 +64,8 @@ public class AngelHeal : MonoBehaviour
         tipManager.Hide(1);
         minigame = AngelHealingMinigame.Instance;
         screenFlashTint = ScreenFlashTint.instance;
+        ammo = Ammo.instance;
+        playerHP = PlayerHP.Instance;
         minigame.enabled = false;
     }
 
@@ -130,6 +139,7 @@ public class AngelHeal : MonoBehaviour
     private void StartHealing()
     {
         healingBeamEmitter.Play();
+        StopDrainingPlayer();
         if (healingRoutine != null) StopCoroutine(healingRoutine);
         healingRoutine = Healing();
         StartCoroutine(healingRoutine);
@@ -146,6 +156,7 @@ public class AngelHeal : MonoBehaviour
         FadeOutGui();
         minigame.enabled = false;
         healingBeamEmitter.Stop();
+        StopDrainingPlayer();
     }
 
     private IEnumerator Healing()
@@ -162,9 +173,37 @@ public class AngelHeal : MonoBehaviour
         {
             aiHealth.hp += Time.deltaTime * 15 * healSpeedMultiplier;
             angelHPSlider.value = aiHealth.hp;
+            DrainPlayer(Time.deltaTime);
             yield return null;
         }
         Healed();
+    }
+
+    // mana first, then HP once the player is dry - unless mana *is* the health pool,
+    // where there is no second pool and the drain stops at the same floor
+    private void DrainPlayer(float deltaTime)
+    {
+        float cost = deltaTime * PlayerClasses.AngelHealCostMultiplier;
+
+        if (PlayerClasses.MagickaIsHealth)
+        {
+            if (ammo.ammo > minimumHpWhileHealing) ammo.DrainMana(cost * manaDrainPerSecond);
+            return;
+        }
+
+        if (ammo.ammo > 0)
+        {
+            ammo.DrainMana(cost * manaDrainPerSecond);
+            return;
+        }
+
+        playerHP.DrainHP(cost * hpDrainPerSecond, minimumHpWhileHealing);
+    }
+
+    private void StopDrainingPlayer()
+    {
+        ammo.StopDraining();
+        playerHP.StopDraining();
     }
 
     public void Healed()
@@ -173,6 +212,7 @@ public class AngelHeal : MonoBehaviour
         aiHealth.hp = 100;
         healSpeedMultiplier = 1;
         StopAiming();
+        StopDrainingPlayer();
         healingParticlesScript.StopEmitting();
         healingBeamEmitter.Stop();
         handRenderer.material = handOGMaterial;
@@ -183,6 +223,10 @@ public class AngelHeal : MonoBehaviour
         FadeOutGui();
         screenFlashTint.Flash(5, 4);
         angel.healed = true;
+
+        // the class menu opens the wish menu itself once answered
+        if (PlayerClassMenu.Instance && PlayerClassMenu.Instance.CanOffer) PlayerClassMenu.Instance.AskForClass();
+        else if (AngelWishMenu.Instance) AngelWishMenu.Instance.AskForWish();
     }
 
     private void FadeOutGui()
@@ -191,7 +235,7 @@ public class AngelHeal : MonoBehaviour
         minigameCanvasGroup.DOFade(0, guiFadeTimes);
         angelHPCanvasGroup.DOKill();
         angelHPCanvasGroup.alpha = 1;
-        angelHPCanvasGroup.DOFade(0, guiFadeTimes * 1.618f).OnComplete(() => { angelHPCanvas.enabled = false; });
+        angelHPCanvasGroup.DOFade(0, guiFadeTimes * 1.5f).OnComplete(() => { angelHPCanvas.enabled = false; });
     }
 
     private void FadeInGui()

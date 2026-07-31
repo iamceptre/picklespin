@@ -48,7 +48,7 @@ public class Reborn : MonoBehaviour
             clickable = false;
             OnClickEvent.Invoke();
             myTween.Kill();
-            myTween = myRectTransform.DOScale(1.618f, 2).SetEase(Ease.OutExpo);
+            myTween = myRectTransform.DOScale(1.6f, 2).SetEase(Ease.OutExpo);
             _ = myTween.SetUpdate(UpdateType.Normal, true);
             Color transparentMe = new(myText.color.r, myText.color.g, myText.color.b, 0);
             RuntimeManager.PlayOneShot(rebornEvent);

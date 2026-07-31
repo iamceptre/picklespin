@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -48,7 +48,6 @@ public class AiHealthUiBar : MonoBehaviour
         // stays alive (faded out, detached) so the pooled enemy can reclaim it via ResetBar
     }
 
-    // re-attaches the bar to its enemy for pooled reuse
     public void ResetBar()
     {
         if (fadeCoroutine != null)
@@ -64,8 +63,7 @@ public class AiHealthUiBar : MonoBehaviour
 
     private void FadeIn()
     {
-        // pooled resets refresh the bar while the enemy is still inactive — no
-        // coroutine can run then, and no fade is wanted anyway
+        // pooled resets refresh the bar while the enemy is inactive: no coroutine can run
         if (!gameObject.activeInHierarchy) return;
 
         if (slider.value > 0)

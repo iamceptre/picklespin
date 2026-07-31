@@ -1,20 +1,13 @@
+using System.Collections.Generic;
 using FMODUnity;
 using Pathfinding;
 using UnityEngine;
 
-// The one reference hub per enemy: damage sources and the spawner ask this
-// instead of walking the hierarchy.
-//
-// Every part is optional. Structural components are auto-resolved in Awake, so
-// building a new enemy is a matter of adding or leaving out components — an
-// enemy with no SetOnFire simply cannot be set on fire, one with no Dissolver
-// does not dissolve. Nothing here may assume a part exists.
-//
-// The hand-picked assets (the headshot particle, the four FMOD emitters) stay
-// manual: there are several of each on an enemy and only the Inspector knows
-// which is which.
+// Every part is optional - nothing here may assume one exists.
 public class AiReferences : MonoBehaviour
 {
+    public static List<AiReferences> AllEnemies { get; } = new();
+
     [Header("Auto-found on this object or its children if left empty")]
     public AiHealth Health;
     public AiVision Vision;
@@ -39,16 +32,12 @@ public class AiReferences : MonoBehaviour
     public StudioEventEmitter damageTakenEyeshot;
     public StudioEventEmitter damageTakenCritical;
 
-    // snapshot of every child's initial active state: death events deactivate
-    // arbitrary children (eye, eye light, ...) via the Inspector, and pooled
-    // reuse must restore all of them without knowing which ones
+    // death events deactivate arbitrary children through the Inspector; pooled reuse
+    // restores these snapshots without knowing which ones
     private Transform[] allChildren;
     private bool[] childInitialActive;
 
-    // same idea for colliders: a dying enemy switches every one of them off so
-    // the player can walk through the corpse, and respawning has to put each
-    // back the way the prefab had it (some start disabled, e.g. the white
-    // enemy's eye hitbox)
+    // not all start enabled (the white enemy's eye hitbox), so the prefab state matters
     private Collider[] allColliders;
     private bool[] colliderInitialEnabled;
 
@@ -75,11 +64,8 @@ public class AiReferences : MonoBehaviour
             childInitialActive[i] = allChildren[i].gameObject.activeSelf;
         }
 
-        // FMOD's TriggerOnce means "once per object lifetime", which for a
-        // pooled enemy is once per session — the death scream played on an
-        // enemy's first death and never again on any reuse. The death chain
-        // already guarantees exactly one Play per life (AiHealth.isDead), so
-        // the emitter-level latch is pure breakage here.
+        // FMOD's TriggerOnce is once per *object* lifetime, which for a pooled enemy
+        // means the death scream never plays again after its first death
         var emitters = GetComponentsInChildren<StudioEventEmitter>(true);
         for (int i = 0; i < emitters.Length; i++) emitters[i].TriggerOnce = false;
 
@@ -91,9 +77,10 @@ public class AiReferences : MonoBehaviour
         }
     }
 
-    // Called on the first frame of death: the corpse stops blocking the player
-    // and stops registering hits while it dissolves. CharacterController derives
-    // from Collider, so the thing that actually body-blocks is covered too.
+    private void OnEnable() => AllEnemies.Add(this);
+    private void OnDisable() => AllEnemies.Remove(this);
+
+    // CharacterController derives from Collider, so the body-block goes with them
     public void DisableAllColliders()
     {
         for (int i = 0; i < allColliders.Length; i++)
@@ -102,10 +89,12 @@ public class AiReferences : MonoBehaviour
         }
     }
 
-    // Called by EnemiesSpawner while the enemy is still inactive, so every part
-    // is back at its prefab state before OnEnable runs anywhere.
+    // called while the enemy is still inactive, so OnEnable sees a clean prefab state
     public void ResetAll()
     {
+        // added at runtime by Sanctus' light spell: a reused enemy must come back hostile
+        if (TryGetComponent(out ConvertedAlly ally)) ally.Revert();
+
         for (int i = 0; i < allChildren.Length; i++)
         {
             if (allChildren[i] && allChildren[i].gameObject.activeSelf != childInitialActive[i])
@@ -118,7 +107,6 @@ public class AiReferences : MonoBehaviour
             if (allColliders[i]) allColliders[i].enabled = colliderInitialEnabled[i];
         }
         if (GiveExp) GiveExp.ResetExpParticles();
-        // undo the death event's StopNPCspeed shutdown before anything else
         if (aiPath)
         {
             aiPath.enabled = true;

@@ -50,7 +50,7 @@ public class LoosingPlayer : State
             destinationSetter.target = aiVision.playerRef;
         }
 
-        aiPath.maxSpeed = searchSpeed;
+        aiPath.maxSpeed = searchSpeed * WishUpgrades.EnemySpeedMultiplier;
         aiPath.rotationSpeed = searchRotationSpeed;
 
         return this;

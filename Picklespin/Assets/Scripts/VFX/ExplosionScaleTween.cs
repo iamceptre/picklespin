@@ -2,12 +2,8 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections;
 
-// One-shot expanding flash, replayed by activating the object.
-//
-// It used to Destroy(gameObject) when finished, which works exactly once: the
-// enemy that owns it is pooled, so from its second death onwards there was no
-// death explosion left to play. It deactivates itself instead, and re-arms
-// every value it animates on enable so each replay starts from scratch.
+// One-shot flash, replayed by activating the object. Its owner is pooled, so it
+// deactivates rather than destroys itself and re-arms every animated value on enable.
 public class ExplosionScaleTween : MonoBehaviour
 {
     private Material materialInstance;
@@ -53,7 +49,7 @@ public class ExplosionScaleTween : MonoBehaviour
     {
         while (animationProgress < animationTime)
         {
-            float progressPercentage = animationProgress / animationTime; //1 is done
+            float progressPercentage = animationProgress / animationTime;
             animationProgress += Time.deltaTime;
             materialInstance.SetColor(colorID, new Color(0.5f, 0.5f, 0.5f, 1f - progressPercentage));
             yield return null;

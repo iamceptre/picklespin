@@ -10037,7 +10037,8 @@ MonoBehaviour:
   timeBeforeOff: 15
   fadeOutLight: 0
   isRanged: 1
-  rangeRadius: 13
+  rangeRadius: 16
+  aoeRequiresChargedBar: 0
   detectionLayer:
     serializedVersion: 2
     m_Bits: 385
@@ -10149,8 +10150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePerTick: 2
-  burnDuration: 11.09017
-  tickInterval: 0.618034
+  burnDuration: 11
+  tickInterval: 0.618
   emitter: {fileID: 0}
   fireLight: {fileID: 0}
   diedFromBurnParticle: {fileID: 0}
@@ -10206,7 +10207,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7114823094463480090}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &5392717441911131837
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10214,7 +10215,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7114823094463480090}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10232,7 +10233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 9d7010f7e3ac912468c18d57ad4af746, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10317,8 +10318,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 3.2
-  OverrideMaxDistance: 60
+  OverrideMinDistance: 2
+  OverrideMaxDistance: 40
 --- !u!1 &8802589327829200301
 GameObject:
   m_ObjectHideFlags: 0

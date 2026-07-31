@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using FMODUnity;
@@ -35,7 +35,6 @@ public class AngelHealingMinigame : MonoBehaviour
 
     [SerializeField] AngelHealBoostLight boostLight;
 
-    // -------------------- NEW INPUT SYSTEM REFERENCES --------------------
     [Header("Input Actions")]
     [SerializeField] private InputActionReference scrollAction;
     [SerializeField] private InputActionReference middleClickAction;
@@ -117,12 +116,8 @@ public class AngelHealingMinigame : MonoBehaviour
 
     private void Update()
     {
-        // ---------------------------------------------------------------------
-        // GET 1D SCROLL VALUE (INCLUDES MOUSE WHEEL AND GAMEPAD BINDINGS)
         float scrollValue = scrollAction.action.ReadValue<float>();
-        // DETECT MIDDLE CLICK (OPTIONAL)
         bool middleClicked = middleClickAction.action.WasPressedThisFrame();
-        // ---------------------------------------------------------------------
 
         if (angelHPslider.value >= turboAreaLeftEdgePosition && angelHPslider.value <= turboAreaRightEdgePosition)
         {
@@ -133,8 +128,6 @@ public class AngelHealingMinigame : MonoBehaviour
             ExitRange();
         }
 
-        // Instead of 'Input.mouseScrollDelta.y != 0 || Input.GetMouseButtonDown(2)',
-        // we now check scrollValue != 0 OR middleClicked:
         if (Mathf.Abs(scrollValue) > 0.001f || middleClicked)
         {
             if (inTurboRange)

@@ -26,7 +26,9 @@ public class PoolSpawnableObject : MonoBehaviour
             0,
             pickupableBonusesSpawner.startingHowManyToSpawn
         );
-        pickupableBonusesSpawner.allPotionsPool.Release(this);
+        // whichever pool made it: the spawn points are shared, the pools are not
+        if (_pool != null) _pool.Release(this);
+        else pickupableBonusesSpawner.allPotionsPool.Release(this);
         pickupableBonusesSpawner.avaliableSpawnPointsCount++;
         pickupableBonusesSpawner.avaliableSpawnPointsCount = Mathf.Clamp(
             pickupableBonusesSpawner.avaliableSpawnPointsCount,

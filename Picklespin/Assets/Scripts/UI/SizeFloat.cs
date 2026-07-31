@@ -4,13 +4,15 @@ using DG.Tweening;
 public class SizeFloat : MonoBehaviour
 {
     private Transform myTransform;
+    [SerializeField] private bool startOnAwake = false;
 
     [SerializeField] private float animationTime = 1f;
     [SerializeField] private float howMuchToScaleIn;
 
-    private void Awake()
+    private void Start()
     {
         myTransform = transform;
+        if (startOnAwake) Animate();
     }
 
 

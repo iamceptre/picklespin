@@ -1,16 +1,8 @@
 using UnityEngine;
 
-// One component for the options menu covering FOV, camera motion and screen shake.
-//
-// In-engine setup per option (same pattern as the Volume slider):
-//  1. duplicate an existing settings slider row
-//  2. on the Slider, set PlayerPrefsSliderManager's settingName to the pref key
-//     ("BaseFOV" / "CameraBobStrenght" / "ScreenShakeStrenght") so its position persists
-//  3. point the Slider's OnValueChanged (dynamic float) at the matching method below
-//
-// FOV slider range: degrees (suggested 60–110). Strength sliders: 0–100, like Volume.
-// The receiving systems read the same pref keys on Start, so the menu scene can set
-// them before the arena is ever loaded.
+// Wiring a new option: set the Slider's PlayerPrefsSliderManager.settingName to the
+// pref key, then point its OnValueChanged (dynamic float) at the method here. FOV is
+// in degrees, the strength sliders are 0-100 like Volume.
 public class ComfortSettings : MonoBehaviour
 {
     public void SetBaseFOV(float degrees)
@@ -22,9 +14,7 @@ public class ComfortSettings : MonoBehaviour
         }
     }
 
-    // one "camera motion" comfort dial: scales CameraBob's bob offset, DynamicFOV's
-    // speed-driven FOV punch, and CameraSkewController's movement-direction tilt together,
-    // so reducing it tones down every camera effect caused by moving, in one step
+    // one dial for every camera effect caused by moving: bob, FOV punch and tilt
     public void SetCameraBobStrength(float sliderValue)
     {
         PlayerPrefs.SetFloat("CameraBobStrenght", sliderValue);

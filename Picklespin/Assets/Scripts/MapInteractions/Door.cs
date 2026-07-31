@@ -16,10 +16,10 @@ public class Door : MonoBehaviour
 
     private static readonly WaitForSeconds refreshRate = new(0.04f);
     private static readonly Vector3 rotationVector = new(0, 0, 90);
-    private const float animationTime = 0.8f;              // door swing
-    private const float maxDistance = 7f;                  // furthest you can interact at all
+    private const float animationTime = 0.8f;
+    private const float maxDistance = 7f;
     private const float fallbackDistance = 4f;             // within this, aim is ignored entirely
-    private const float aimRadius = 0.25f;                 // how far off the crosshair may be
+    private const float aimRadius = 0.25f;
 
     private static readonly List<Door> doorsInRange = new();
     private static readonly RaycastHit[] aimHits = new RaycastHit[8];
@@ -47,9 +47,8 @@ public class Door : MonoBehaviour
         if (!_transform) _transform = transform;
         startRot = _transform.localEulerAngles;
 
-        // Door.prefab and Door_2.prefab ship with this unassigned, which made
-        // every aim test miss and the proximity fallback throw. A door has a
-        // solid collider and a trigger volume; the solid one is the target.
+        // the prefabs ship with this unassigned; a door has a solid collider and a
+        // trigger volume, and the solid one is the target
         if (!myCollider)
         {
             foreach (Collider c in GetComponentsInChildren<Collider>(true))
@@ -61,9 +60,8 @@ public class Door : MonoBehaviour
         }
     }
 
-    // The component starts disabled, so Start() would not run until the trigger
-    // enabled it — and then it ran *after* OnTriggerEnter in the same frame and
-    // switched the door straight back off. Initialisation is explicit instead.
+    // the component starts disabled, so Start() would run after the OnTriggerEnter
+    // that enabled it - initialisation is explicit instead
     private void EnsureInitialized()
     {
         if (initialized) return;
@@ -77,8 +75,7 @@ public class Door : MonoBehaviour
 
     private void OnEnable()
     {
-        // a press that ended while this door was out of range never delivered its
-        // "canceled", which used to latch the buffer shut for good
+        // a press that ended out of range never delivers its "canceled"
         canButtonBuffer = true;
 
         interactAction.action.started += OnInteractStarted;
@@ -90,8 +87,7 @@ public class Door : MonoBehaviour
     {
         interactAction.action.started -= OnInteractStarted;
         interactAction.action.canceled -= OnInteractCanceled;
-        // deliberately not Disable()d: the action asset is shared by every door,
-        // so one door going out of range used to kill interaction for all of them
+        // never Disable()d: the action asset is shared by every door
     }
 
     private void OnInteractStarted(InputAction.CallbackContext ctx)
@@ -107,9 +103,6 @@ public class Door : MonoBehaviour
         canButtonBuffer = true;
     }
 
-    // The single place that decides which door a press belongs to, so every door
-    // in range reaches the same answer and the crosshair can never disagree with
-    // what pressing the key actually does.
     private static Door ResolveTarget()
     {
         Door aimed = null, nearest = null;
@@ -133,8 +126,6 @@ public class Door : MonoBehaviour
             }
         }
 
-        // what you are looking at wins; otherwise the closest door in reach does,
-        // with no facing requirement at all
         return aimed ? aimed : nearest;
     }
 
@@ -150,8 +141,7 @@ public class Door : MonoBehaviour
     {
         distance = float.MaxValue;
 
-        // SphereCast, not Raycast: a zero-width ray demanded near pixel-perfect
-        // aim, which is most of why doors felt unresponsive
+        // SphereCast, not Raycast: a zero-width ray demands pixel-perfect aim
         int count = Physics.SphereCastNonAlloc(mainCamera.position, aimRadius, mainCamera.forward,
             aimHits, maxDistance, layerMask, QueryTriggerInteraction.Ignore);
 
@@ -230,10 +220,8 @@ public class Door : MonoBehaviour
         }
     }
 
-    // State first, then feedback. These used to touch the sound emitters before
-    // setting isOpened — and Door.prefab ships with all three unassigned, so the
-    // NullReferenceException left isOpened stuck at false and that door could be
-    // opened but never closed.
+    // state first, then feedback: the emitters ship unassigned on some prefabs, and
+    // a throw before isOpened is set leaves a door that can open but never close
     private void OpenDoor()
     {
         isOpened = true;

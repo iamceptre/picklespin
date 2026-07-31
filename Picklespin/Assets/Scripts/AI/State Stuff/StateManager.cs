@@ -34,9 +34,8 @@ public class StateManager : MonoBehaviour
         InvokeRepeating(nameof(RunStateMachine), randomTimeOffset, actualRefreshRate);
     }
 
-    // Death: stop thinking straight away. The corpse lives on until it has
-    // dissolved, and a ticking corpse keeps steering, keeps swinging at the
-    // player and keeps answering the awareness queries below.
+    // the corpse lives on until it dissolves, and a ticking one keeps steering,
+    // swinging and answering the awareness queries below
     public void StopAI()
     {
         CancelInvoke();
@@ -54,6 +53,23 @@ public class StateManager : MonoBehaviour
     {
         CancelInvoke();
         currentState = initialState; // restore the prefab's starting state for pooled reuse
+    }
+
+    // the win screen freezes time within a fraction of a second, so LoosingPlayer's
+    // countdown would never resolve and the awareness icon would stay lit behind it
+    public static void AllLosePlayer()
+    {
+        foreach (StateManager m in AllManagers)
+        {
+            m.LosePlayer();
+        }
+    }
+
+    public void LosePlayer()
+    {
+        CancelInvoke(); // no perception tick may re-acquire the player afterwards
+        if (aiVision) aiVision.ResetVisionState();
+        if (currentState) currentState = initialState; // a dead enemy (null) stays dead
     }
 
     public static bool IsAnyAIInAttackOrLoosing()

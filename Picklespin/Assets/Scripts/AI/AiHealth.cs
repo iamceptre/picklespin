@@ -23,13 +23,9 @@ public class AiHealth : MonoBehaviour
     float defaultHP;
     bool isDead;
 
-    // the single source of truth for "has the death chain already run".
-    // deathEvent detaches the HP bar, dissolves the body, hands out EXP and
-    // returns the enemy to the pool — none of that survives being run twice.
+    // the single guard on the death chain, none of which survives running twice
     public bool IsAlive => !isDead;
 
-    // damage-over-time effects poll this so they stop ticking on a corpse or
-    // between rounds instead of racing the death chain
     public bool CanTakeDamage => !isDead && roundSystem != null && roundSystem.isCounting;
 
     void Awake()
@@ -63,9 +59,8 @@ public class AiHealth : MonoBehaviour
         CheckIfDead();
     }
 
-    // burn ticks: HP and UI only. No camera shake and no eventOnDamageTaken —
-    // those are impact reactions, and a tick every fraction of a second would
-    // rattle the screen for the whole burn. Returns true if this tick killed.
+    // HP and UI only: the impact reactions would rattle the screen every tick.
+    // Returns true if this tick killed.
     public bool TakeBurnDamage(int damage)
     {
         if (!CanTakeDamage) return false;
@@ -76,8 +71,7 @@ public class AiHealth : MonoBehaviour
         return CheckIfDead();
     }
 
-    // true if the given damage would be lethal right now — lets a damage source
-    // play its own death visuals before the death chain tears the object down
+    // lets a damage source play its death visuals before the chain tears the object down
     public bool WouldDieFrom(int damage) => CanTakeDamage && hp - damage <= 0;
 
     void RefreshUI()

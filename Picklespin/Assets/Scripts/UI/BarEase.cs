@@ -1,16 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// The "shadow" bar that trails behind a real one, showing what was just lost.
-//
-// When the followed value drops, the shadow holds where it was for easeDelay so
-// the lost chunk stays readable, then smoothly catches up. Gains are never eased
-// — the shadow snaps straight up so it can never sit above the real fill.
-//
-// The hold starts when the shadow *falls behind*, not on every change. Bars that
-// drop in steps (mana, enemy HP) and bars that drain continuously (stamina,
-// player HP) both work: a continuous drain would otherwise re-arm the hold every
-// frame and the shadow would never move at all.
+// The shadow bar trailing a real one. The hold starts when it *falls behind*, not
+// on every change - a continuous drain would otherwise re-arm it every frame and
+// the shadow would never move at all.
 [RequireComponent(typeof(Slider))]
 public class BarEase : MonoBehaviour
 {
@@ -32,7 +25,6 @@ public class BarEase : MonoBehaviour
         me = GetComponent<Slider>();
     }
 
-    // one code path for the first spawn and every pooled respawn
     private void Start() => ResetEase();
 
     private void Update()
@@ -41,7 +33,7 @@ public class BarEase : MonoBehaviour
 
         if (currentValue >= me.value)
         {
-            CatchUp(currentValue); // gained, or already level
+            CatchUp(currentValue);
             return;
         }
 
@@ -56,10 +48,8 @@ public class BarEase : MonoBehaviour
 
         if (Time.time < holdUntilTime) return;
 
-        // Constant-rate catch-up, so the slide stays linear instead of crawling
-        // as it closes in. The rate is latched, and only re-armed when the gap
-        // grows past what it can still cover in easeDuration — that keeps a
-        // continuously draining bar trailing at a steady distance.
+        // the rate is latched and only re-armed when the gap outgrows it, which keeps
+        // a continuously draining bar trailing at a steady distance
         float duration = Mathf.Max(easeDuration, 0.0001f);
         float gap = me.value - targetValue;
         if (easeSpeed <= 0f || gap > easeSpeed * duration) easeSpeed = gap / duration;
@@ -78,8 +68,7 @@ public class BarEase : MonoBehaviour
         easeFill.enabled = false;
     }
 
-    // the death event disables this component, so pooled reuse has to switch it
-    // back on and re-sync it to the bar it follows
+    // the death event disables this component, so pooled reuse has to switch it back on
     public void ResetEase()
     {
         enabled = true;

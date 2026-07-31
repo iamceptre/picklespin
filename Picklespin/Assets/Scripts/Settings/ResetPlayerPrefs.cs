@@ -21,10 +21,8 @@ public class ResetPlayerPrefs : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
 
-        // BaseFOV / CameraBobStrenght (sic) / ScreenShakeStrenght (sic) fall back to a
-        // *derived* value (the camera's own serialized FOV, or "no override at all") when
-        // their key is missing, not a fixed default — write the real defaults straight back
-        // so the very next read (slider reload here, or the arena scene) actually resets them
+        // these keys fall back to a *derived* value when missing, not a fixed default,
+        // so the real defaults have to be written back for the next read to reset them
         PlayerPrefs.SetFloat("Volume", DefaultVolume);
         PlayerPrefs.SetFloat("FramerateLimit", DefaultFramerateLimit);
         PlayerPrefs.SetFloat("MouseSensitivity", DefaultSensitivity);
@@ -32,16 +30,15 @@ public class ResetPlayerPrefs : MonoBehaviour
         PlayerPrefs.SetFloat("CameraBobStrenght", DefaultStrength);
         PlayerPrefs.SetFloat("ScreenShakeStrenght", DefaultStrength);
 
-        // snap sliders visually if this button has them wired; setting .value fires
-        // OnValueChanged, which re-applies live through the existing ComfortSettings/VolumeSettingLoader wiring
+        // setting .value fires OnValueChanged, which re-applies live through the
+        // existing slider wiring
         if (volumeSlider) volumeSlider.value = DefaultVolume;
         if (sensitivitySlider) sensitivitySlider.value = DefaultSensitivity;
         if (fovSlider) fovSlider.value = DefaultFov;
         if (cameraBobSlider) cameraBobSlider.value = DefaultStrength;
         if (screenShakeSlider) screenShakeSlider.value = DefaultStrength;
 
-        // the fps slider doesn't apply live through OnValueChanged, so snap it and
-        // reapply the framerate limit directly
+        // the fps slider doesn't apply live, so the limit is reapplied directly
         if (fpsSlider) fpsSlider.value = DefaultFramerateLimit;
         if (FPSLimit.instance)
         {
@@ -49,8 +46,7 @@ public class ResetPlayerPrefs : MonoBehaviour
             FPSLimit.instance.SetFramerate();
         }
 
-        // apply immediately in case these systems are alive in this scene too
-        // (e.g. an in-game pause menu using the same Reset button)
+        // in case these systems are alive in this scene too (an in-game pause menu)
         if (CameraBob.instance) CameraBob.instance.SetStrength(1f);
         if (DynamicFOV.instance)
         {

@@ -4,7 +4,9 @@ using UnityEngine;
 public class EnemyAwarnessUI : MonoBehaviour
 {
     [SerializeField] CanvasFader canvasFader;
-    readonly WaitForSeconds refreshRate = new(0.42f);
+    // realtime: the win screen freezes time the moment the player escapes, and
+    // the icon still has to notice the enemies gave up and fade out
+    readonly WaitForSecondsRealtime refreshRate = new(0.42f);
     bool isVisible, wasVisible;
 
     IEnumerator Start()

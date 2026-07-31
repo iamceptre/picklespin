@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -25,10 +27,10 @@ public class PickupableBonusesSpawner : MonoBehaviour
     [Header("Instantiation")]
     private readonly Vector3 initialSpawnPosition = new(0, -50, 0);
 
-    private int randomIndex;
     private Coroutine currentSpawnRoutine;
 
     private readonly WaitForSeconds scatterTime = new(0.05f);
+    private readonly List<int> freePointBuffer = new();
 
     private void Awake()
     {
@@ -88,55 +90,57 @@ public class PickupableBonusesSpawner : MonoBehaviour
             howManyToSpawn = spawnPoints.Length - 1;
             if (howManyToSpawn < 0) howManyToSpawn = 0;
         }
-        currentSpawnRoutine = StartCoroutine(SpawnRoutine(howManyToSpawn));
+        currentSpawnRoutine = ScatterSpawn(allPotionsPool.Get, howManyToSpawn);
     }
 
-    private IEnumerator SpawnRoutine(int howManyToSpawn)
+    // The one way anything lands on the map: a free point at random, one item per
+    // scatterTime so they arrive one after another instead of all in one frame.
+    // Callers differ only in which pool the item comes from and, optionally, which
+    // points they will accept at all (the mercy drop takes only unseen ones).
+    public Coroutine ScatterSpawn(Func<PoolSpawnableObject> take, int count, Func<Vector3, bool> pointIsUsable = null)
     {
-        int totalToSpawn = Mathf.Min(howManyToSpawn, avaliableSpawnPointsCount);
-        int potionsSpawned = 0;
+        return StartCoroutine(ScatterRoutine(take, count, pointIsUsable));
+    }
 
-        for (int i = 0; i < totalToSpawn; i++)
+    private IEnumerator ScatterRoutine(Func<PoolSpawnableObject> take, int count, Func<Vector3, bool> pointIsUsable)
+    {
+        for (int i = 0; i < count; i++)
         {
-            if (avaliableSpawnPointsCount <= 0)
-            {
-                break;
-            }
             yield return scatterTime;
-            Spawn();
-            potionsSpawned++;
+
+            // the point is chosen before the item is taken, so a spawn that cannot be
+            // placed never strands one outside its pool
+            int index = PickFreePoint(pointIsUsable);
+            if (index < 0) break;
+
+            PoolSpawnableObject item = take();
+            if (!item) break;
+
+            item.transform.position = spawnPoints[index].position;
+            item.SetOccupiedWaypoint(index, this);
+            avaliableSpawnPointsCount = Mathf.Max(0, avaliableSpawnPointsCount - 1);
+            if (item.TryGetComponent(out Pickupable_Item pickupable)) pickupable.StartFloating();
         }
 
-        avaliableSpawnPointsCount -= potionsSpawned;
         currentSpawnRoutine = null;
     }
 
-    private void Spawn()
+    private int PickFreePoint(Func<Vector3, bool> pointIsUsable)
     {
-        Randomize();
-        PoolSpawnableObject spawned = allPotionsPool.Get();
-        spawned.transform.position = spawnPoints[randomIndex].position;
-        spawned.SetOccupiedWaypoint(randomIndex, this);
-        spawned.GetComponent<Pickupable_Item>().StartFloating();
-    }
+        freePointBuffer.Clear();
+        for (int i = 0; i < spawnPoints.Length; i++)
+        {
+            if (isSpawnPointTaken[i] || !spawnPoints[i]) continue;
+            if (pointIsUsable != null && !pointIsUsable(spawnPoints[i].position)) continue;
+            freePointBuffer.Add(i);
+        }
 
-    private void Randomize()
-    {
-        if (avaliableSpawnPointsCount <= 0)
-        {
-            Debug.LogWarning("No available spawn points.");
-            return;
-        }
-        do
-        {
-            randomIndex = Random.Range(0, spawnPoints.Length);
-        }
-        while (isSpawnPointTaken[randomIndex]);
+        return freePointBuffer.Count == 0 ? -1 : freePointBuffer[UnityEngine.Random.Range(0, freePointBuffer.Count)];
     }
 
     private PoolSpawnableObject CreateItem()
     {
-        var prefab = bonuses[Random.Range(0, bonuses.Length)];
+        var prefab = bonuses[UnityEngine.Random.Range(0, bonuses.Length)];
         var itemInstance = Instantiate(prefab, initialSpawnPosition, Quaternion.identity);
         itemInstance.SetPool(allPotionsPool);
         return itemInstance;

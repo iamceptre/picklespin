@@ -39,7 +39,7 @@ public class WaypointsForSpawner : State
         if (aiVision.seeingPlayer)
             return attackPlayer;
 
-        aiPath.maxSpeed = idleSpeed;
+        aiPath.maxSpeed = idleSpeed * WishUpgrades.EnemySpeedMultiplier;
 
         if (waypoints != null && waypoints.Length > 0)
         {
@@ -70,7 +70,7 @@ public class WaypointsForSpawner : State
 
     void UpdateDestination()
     {
-        aiPath.maxSpeed = idleSpeed;
+        aiPath.maxSpeed = idleSpeed * WishUpgrades.EnemySpeedMultiplier;
         aiPath.rotationSpeed = rotationSpeed;
         if (waypoints.Length > 0)
         {
