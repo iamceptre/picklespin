@@ -18,6 +18,16 @@ public class JumpLandSignals : MonoBehaviour
     public StudioEventEmitter landSoftEmitter;
     public StudioEventEmitter landHardEmitter;
 
+    [Header("Camera shake")]
+    [SerializeField] private CameraShakeSettings landSoftShake = new()
+    {
+        rotationAmount = new Vector3(0.27f, 0.07f, 0.07f), numberOfShakes = 2, speed = 35f, decay = 0.7f, uiShakeModifier = 1f
+    };
+    [SerializeField] private CameraShakeSettings landHardShake = new()
+    {
+        rotationAmount = new Vector3(0.4f, 0.1f, 0.3f), numberOfShakes = 5, speed = 60f, decay = 0.6f, uiShakeModifier = 1f
+    };
+
     private bool landed;
     private bool ignoreFirstLanding = true;
     private bool isFallingLongEnough;
@@ -111,12 +121,12 @@ public class JumpLandSignals : MonoBehaviour
         {
             if (speedometer.verticalVelocity <= 10)
             {
-                camShakeManager.ShakeSelected(0);
+                camShakeManager.Shake(landSoftShake);
                 landSoftEmitter.Play();
             }
             else
             {
-                camShakeManager.ShakeSelected(1);
+                camShakeManager.Shake(landHardShake);
                 landHardEmitter.Play();
             }
         }

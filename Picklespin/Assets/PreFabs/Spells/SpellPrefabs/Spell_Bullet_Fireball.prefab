@@ -9978,15 +9978,22 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3730440565517659764}
-  - component: {fileID: 6800567688136975266}
   - component: {fileID: 3294087684524820873}
   - component: {fileID: 3523914218313080419}
+  - component: {fileID: 6800567688136975266}
   - component: {fileID: 1250395660635522415}
-  - component: {fileID: 7520822979644434691}
   - component: {fileID: 7387112467910556193}
   - component: {fileID: 8936586582799554640}
   - component: {fileID: 2478233923998731032}
   - component: {fileID: 5392717441911131837}
+  - component: {fileID: 6610000000000000101}
+  - component: {fileID: 6610000000000000102}
+  - component: {fileID: 6610000000000000103}
+  - component: {fileID: 6610000000000000104}
+  - component: {fileID: 6610000000000000105}
+  - component: {fileID: 6610000000000000106}
+  - component: {fileID: 6610000000000000107}
+  - component: {fileID: 6610000000000000108}
   m_Layer: 0
   m_Name: Spell_Bullet_Fireball
   m_TagString: Untagged
@@ -10014,66 +10021,6 @@ Transform:
   - {fileID: 3135732170723765606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6800567688136975266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114823094463480090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellID: 1
-  spellName: Fireball
-  damage: 25
-  useSpeedDamageMultiplier: 0
-  magickaCost: 60
-  speed: 25
-  myCooldown: 2
-  castDuration: 1
-  timeBeforeOff: 15
-  fadeOutLight: 0
-  isRanged: 1
-  rangeRadius: 16
-  aoeRequiresChargedBar: 0
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 385
-  explosionFX: {fileID: 8713706549792644285}
-  shootSound:
-    Guid:
-      Data1: -1684730785
-      Data2: 1231632278
-      Data3: 605164977
-      Data4: -1324184943
-    Path: event:/SPELLS/FIREBALL/FIREBALL_SHOT
-  pullupSound:
-    Guid:
-      Data1: 2125253775
-      Data2: 1129272436
-      Data3: 887744681
-      Data4: 807212642
-    Path: event:/SPELLS/FIREBALL/FIREBALL_UI_SELECT
-  hitWall: {fileID: 1780142605118750544}
-  doesThisSpellSetOnFire: 1
-  handCastingPoint: {fileID: 0}
-  explosionSoundEmitter: {fileID: 7177393306444495002}
-  explosionReflectionsSoundEmitter: {fileID: 3130796228460902992}
-  iWillBeCritical: 0
-  hitSomething: 0
-  _particleSystem:
-  - {fileID: 657162142028719279}
-  - {fileID: 7638488778309636166}
-  _light: {fileID: 3909137637185279755}
-  lightSpell: {fileID: 0}
-  rocketJumpForce: 7
-  rocketJumpUpwardsModifier: 1
-  decalLayerMask:
-    serializedVersion: 2
-    m_Bits: 17408
 --- !u!135 &3294087684524820873
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10122,6 +10069,39 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &6800567688136975266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spell: 1
+  magickaCost: 60
+  speed: 25
+  myCooldown: 2
+  timeBeforeOff: 15
+  shootSound:
+    Guid:
+      Data1: -1684730785
+      Data2: 1231632278
+      Data3: 605164977
+      Data4: -1324184943
+    Path: event:/SPELLS/FIREBALL/FIREBALL_SHOT
+  pullupSound:
+    Guid:
+      Data1: 2125253775
+      Data2: 1129272436
+      Data3: 887744681
+      Data4: 807212642
+    Path: event:/SPELLS/FIREBALL/FIREBALL_UI_SELECT
+  lightSpell: {fileID: 0}
+  hitSomething: 0
 --- !u!114 &1250395660635522415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10137,26 +10117,6 @@ MonoBehaviour:
   scrollSpeedY: 0.2
   scrollSpeedX: 0.25
   randomUVoffsetAtEnable: 0
---- !u!114 &7520822979644434691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114823094463480090}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ce318fb99ca6bf48b015a2035e77313, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damagePerTick: 2
-  burnDuration: 11
-  tickInterval: 0.618
-  emitter: {fileID: 0}
-  fireLight: {fileID: 0}
-  diedFromBurnParticle: {fileID: 0}
-  effectParticle: {fileID: 0}
-  cachedAiHP: {fileID: 0}
 --- !u!114 &7387112467910556193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10257,6 +10217,164 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6610000000000000101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4d6e8c0b2f4a6d8e0c2a4d6e8c0b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 25
+  useSpeedDamageMultiplier: 0
+  iWillBeCritical: 0
+--- !u!114 &6610000000000000102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b5e7f9d1c3a5b7d9e1c3a5b7d9e1c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 16
+  requiresChargedBar: 0
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 385
+--- !u!114 &6610000000000000103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6f8a0e2d4b6c8e0a2d4b6c8e0a2d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 7
+  upwardsModifier: 1
+  radius: 16
+  affectedLayers:
+    serializedVersion: 2
+    m_Bits: 385
+--- !u!114 &6610000000000000104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d7a9b1f3e5c7d9f1b3e5c7d9f1b3e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionFX: {fileID: 8713706549792644285}
+  flightParticles:
+  - {fileID: 657162142028719279}
+  - {fileID: 7638488778309636166}
+  spellLight: {fileID: 3909137637185279755}
+  fadeOutLight: 0
+  explosionSoundEmitter: {fileID: 7177393306444495002}
+  explosionReflectionsSoundEmitter: {fileID: 3130796228460902992}
+  hitWall: {fileID: 1780142605118750544}
+--- !u!114 &6610000000000000105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8b0c2a4f6d8e0a2c4f6d8e0a2c4f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decalType: 1
+  decalLayerMask:
+    serializedVersion: 2
+    m_Bits: 17408
+--- !u!114 &6610000000000000106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f9c1d3b5a7e9f1c3d5b7a9e1f3c5d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castStart:
+    cameraShake:
+      strength: 1.1
+      rotationAmount: {x: 0.3, y: 0.3, z: 0.4}
+      numberOfShakes: 1
+      speed: 81
+      decay: 0.6
+      uiShakeModifier: 0
+    handStrength: 0.3
+    handDuration: 0.2
+    handVibrato: 10
+  shoot:
+    cameraShake:
+      strength: 1.3
+      rotationAmount: {x: 0.45, y: 0.45, z: 0.65}
+      numberOfShakes: 4
+      speed: 50
+      decay: 0.6
+      uiShakeModifier: 1
+    handStrength: 0.5
+    handDuration: 0.2
+    handVibrato: 15
+  impact:
+    cameraShake:
+      strength: 1.4
+      rotationAmount: {x: 0.5, y: 0.5, z: 0.5}
+      numberOfShakes: 6
+      speed: 65
+      decay: 0.5
+      uiShakeModifier: 0
+    handStrength: 0.1
+    handDuration: 0.25
+    handVibrato: 10
+  impactMaxDistance: 0
+--- !u!114 &6610000000000000107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0d1e2f3a4b5c6d7e8f9a0b1c2d3e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6610000000000000108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a22bbf7f414f908af51540b5cf4940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castDuration: 1
 --- !u!1 &7474173820419759747
 GameObject:
   m_ObjectHideFlags: 0

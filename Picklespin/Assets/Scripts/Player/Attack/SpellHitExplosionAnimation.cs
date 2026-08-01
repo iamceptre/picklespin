@@ -1,9 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
 
-// This owns the bullet's return to the pool, so the tween chain is load-bearing: an
-// interrupted one leaves the light lit and the bullet parked in the level forever.
-// OnEnable re-arms from a known state and OnDisable puts the light out regardless.
 public class SpellHitExplosionAnimation : MonoBehaviour
 {
     private Light myLight;
@@ -33,6 +30,7 @@ public class SpellHitExplosionAnimation : MonoBehaviour
         myLight.DOIntensity(peakLightIntensity, 0.07f)
             .SetEase(Ease.OutExpo)
             .SetTarget(myLight)
+            .SetUpdate(true)
             .OnComplete(FadeOut);
     }
 
@@ -47,16 +45,17 @@ public class SpellHitExplosionAnimation : MonoBehaviour
         myLight.DOIntensity(0, lightFadeOutTime)
             .SetEase(Ease.OutSine)
             .SetTarget(myLight)
+            .SetUpdate(true)
             .OnComplete(() =>
             {
                 myLight.enabled = false;
                 if (bullet) bullet.ReturnToPool();
             });
 
-        // SetTarget so DOKill on the light reaches this tween: it has no target of its own
         DOTween.To(() => myLight.range, x => myLight.range = x, peakLightRange, lightFadeOutTime)
             .SetEase(Ease.OutSine)
-            .SetTarget(myLight);
+            .SetTarget(myLight)
+            .SetUpdate(true);
     }
 
     private void KillTweens()

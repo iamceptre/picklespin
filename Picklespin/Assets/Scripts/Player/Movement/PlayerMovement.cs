@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     private float groundSnapDistance = 0.35f;
     [SerializeField, Tooltip("constant velocity pressing the controller into walkable ground")]
     private float groundStickForce = 3f;
-    [SerializeField, Tooltip("stick force used inside StairGravity trigger zones")] // MIGHT NOT BE USEFUL NOW
+    [SerializeField, Tooltip("stick force used inside StairGravity trigger zones")]
     private float stairStickForce = 12f;
     [SerializeField, Tooltip("slide speed on ground steeper than the controller's slope limit")]
     private float steepSlopeSlideSpeed = 5f;
@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
     public float fatigability = 32;
     [SerializeField, Tooltip("stamina you must recover after emptying the bar before sprinting and full-power jumps come back")]
     private float staminaRecoveryThreshold = 20f;
-
 
     public bool IsExhausted { get; private set; }
 
@@ -89,6 +88,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CameraBob cameraBob;
     [SerializeField] private BarLightsAnimation barLightsAnimation;
     [SerializeField] private CameraShakeManagerV2 camShakeManager;
+    [SerializeField] private CameraShakeSettings jumpShake = new()
+    {
+        rotationAmount = new Vector3(0.2f, 0.03f, 0.03f), numberOfShakes = 2, speed = 35f, decay = 0.8f, uiShakeModifier = 0f
+    };
     [SerializeField] private StaminaBarDisplay staminaBarDisplay;
 
     private enum MovementState { Sneak = 0, Walk = 1, Run = 2 }
@@ -108,6 +111,12 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 MeasuredVelocity { get; private set; }
     public float HorizontalSpeed { get; private set; }
     public float SpeedDamageMultiplier { get; private set; } = 1f;
+
+    public float DamageSpeed { get; private set; }
+
+    private Vector3 externalVelocity;
+
+    public void ReportExternalVelocity(Vector3 velocity) => externalVelocity = velocity;
 
     public float MaxHorizontalSpeed => runSpeed * PHI;
     private bool CanBhop => Time.time - landedTime <= bhopTimingThreshold;
@@ -169,9 +178,6 @@ public class PlayerMovement : MonoBehaviour
             groundNormal = hit.normal;
             groundAngle = Vector3.Angle(groundNormal, Vector3.up);
 
-            // spherecast edge normals can read steeper than the real surface (stair
-            // lips, slope feet) and wedge the player into the slide branch — verify
-            // a steep reading with a pinpoint raycast before trusting it
             if (groundAngle > characterController.slopeLimit &&
                 Physics.Raycast(hit.point + Vector3.up * 0.1f, Vector3.down, out RaycastHit precise, 0.3f, groundLayers, QueryTriggerInteraction.Ignore))
             {
@@ -192,8 +198,6 @@ public class PlayerMovement : MonoBehaviour
             touchingGround = characterController.isGrounded;
         }
 
-        // a jump/explosion keeps us "airborne" until we actually come back down;
-        // walking uphill (positive projected y) must NOT count as airborne
         if (airborneByImpulse && touchingGround && moveDirection.y <= 0.01f) airborneByImpulse = false;
         isGroundedStable = touchingGround && !airborneByImpulse;
         if (isGroundedStable) IsRocketJumping = false;
@@ -219,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
             if (Time.time <= jumpQueuedUntil || jumpAction.action.IsPressed())
             {
                 jumpQueuedUntil = 0f;
-                Jump(); // before friction: a hop on the landing frame keeps all momentum
+                Jump();
             }
             else
             {
@@ -254,17 +258,14 @@ public class PlayerMovement : MonoBehaviour
         bool grounded = isGroundedStable && !airborneByImpulse;
         characterController.Move((grounded ? moveDirection - groundNormal * groundStickForce : moveDirection) * dt);
 
-        // sample BEFORE the snap move: CharacterController.velocity only reflects the
-        // last Move call, and the vertical-only snap would zero the reported speed
         MeasuredVelocity = characterController.velocity;
         HorizontalSpeed = Mathf.Sqrt(MeasuredVelocity.x * MeasuredVelocity.x + MeasuredVelocity.z * MeasuredVelocity.z);
 
-        // characterController.velocity is read off the CharacterController's own collision-resolved
-        // displacement and gets noisy at high speed (transient spikes, stale reads at rest); moveDirection
-        // is our own simulated velocity — already clamped every airborne frame — so it's the stable source
-        float damageSpeed = new Vector2(moveDirection.x, moveDirection.z).magnitude;
+        Vector3 damageVelocity = moveDirection + externalVelocity;
+        externalVelocity = Vector3.zero;
+        DamageSpeed = new Vector2(damageVelocity.x, damageVelocity.z).magnitude;
         SpeedDamageMultiplier = Mathf.Lerp(minDamageMultiplier, maxDamageMultiplier,
-            Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed * damageMultiplierSpeedCapScale, damageSpeed));
+            Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed * damageMultiplierSpeedCapScale, DamageSpeed));
 
         if (grounded && onWalkableGround) SnapToGround();
     }
@@ -315,7 +316,7 @@ public class PlayerMovement : MonoBehaviour
         cameraBob.ResetBobbing();
         footstepSystem.SendJumpSignal();
         NormalGravity();
-        camShakeManager.ShakeSelected(9);
+        camShakeManager.Shake(jumpShake);
         airborneByImpulse = true;
 
         float staminaCostScale = 1f;
@@ -324,7 +325,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.x *= 1f + bhopSpeedBonus;
             moveDirection.z *= 1f + bhopSpeedBonus;
             ClampHorizontalSpeed(MaxHorizontalSpeed);
-            staminaCostScale = 1f / PhiMath.PHI4; // ≈ 0.146
+            staminaCostScale = 1f / PhiMath.PHI4;
         }
 
         SpendStamina(Mathf.Clamp((1 + HorizontalSpeed) * 0.05f * fatigability, 10, 100) * staminaCostScale);
@@ -368,8 +369,7 @@ public class PlayerMovement : MonoBehaviour
 
     void StaminaRecovery()
     {
-        // the black bar never comes back from standing still, but the fraction of a
-        // point still pending has to be let go or it holds the bar low
+
         if (SharedStamina)
         {
             Ammo.instance.StopStaminaSpend();
@@ -394,8 +394,6 @@ public class PlayerMovement : MonoBehaviour
 
     public float StaminaFraction => maxStamina > 0f ? Mathf.Clamp01(stamina / maxStamina) : 0f;
 
-    // whichever pool the breath is actually kept in - a potion asks this before it
-    // spends itself on a bar that is already full
     public bool StaminaFull => SharedStamina
         ? Ammo.instance.ammo >= Ammo.instance.maxAmmo
         : stamina >= maxStamina;
@@ -413,7 +411,7 @@ public class PlayerMovement : MonoBehaviour
             IsRocketJumping = true;
         }
         footstepSystem.SendJumpSignal();
-        camShakeManager.ShakeSelected(9);
+        camShakeManager.Shake(jumpShake);
     }
 
     public Vector3 FlatWishDirection(Vector2 input)
@@ -447,7 +445,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GiveStaminaToPlayer(int howMuchStaminaIGive, bool isSilent = false)
     {
-        // Umbral's breath is the black bar, so that is what a stamina potion fills
+
         if (SharedStamina)
         {
             Ammo.instance.GiveManaToPlayer(howMuchStaminaIGive, isSilent);
@@ -476,7 +474,6 @@ public class PlayerMovement : MonoBehaviour
         fatigability *= factor;
     }
 
-    // the headroom is granted filled, so the bar grows instead of visibly draining
     public void MultiplyMaxStamina(float factor)
     {
         float gained = maxStamina * factor - maxStamina;

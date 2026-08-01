@@ -35,6 +35,16 @@ All game code lives in `Assets/Scripts/`, organized by category: `AI/` (with `AI
 
 **Audio**: all sound goes through FMOD (`StudioEventEmitter`, `EventReference`) — do not use Unity `AudioSource` for new sounds. Changing audio content requires editing the FMOD Studio project and rebuilding banks.
 
+## Code style
+
+**No comments in code. None.** Not above a method, not at the end of a line, not a banner, not a `TODO`, not a summary block. Make the code say it instead: name things precisely, pull a confusing expression into a named local or a named constant, split a method that needs narrating. If you catch yourself about to explain something, that is the signal to rename or restructure it, not to write a sentence.
+
+The one exception is `[Tooltip]` on a serialized field — that is Inspector text for whoever is wiring the prefab, not a comment.
+
+**Resolve it once, at startup — cache everything.** Nothing that runs per frame or per FSM tick may allocate or go looking for something. `GetComponent`/`GetComponentInChildren`, any `Find*`, `Camera.main`, `new` on a list/array/string, LINQ, anything that boxes — all of it belongs in `Awake` (this object's own parts) or `Start` (other singletons, per the ordering rule above), stored in a field. Serialize the reference and let `Awake` fill it only if it's empty, the way `AiReferences` does.
+
+In code that ticks: reuse a preallocated buffer instead of building one (`SpellAreaOfEffect`'s static `overlapResults`), compare `sqrMagnitude` when only the ordering matters, and hold `WaitForSeconds` and `Shader.PropertyToID` in `readonly` fields rather than making them fresh each call. When a reference genuinely cannot exist before runtime — a component added on conversion, a pooled instance's owner — resolve it the first time and never look it up again.
+
 ## Gameplay reference
 
 Controls: LMB shoot, RMB heal, WASD move, C stealth, Shift sprint, Space jump, 1/2/3 select spell (and pick a wish while the angel's wish menu is open). Cheats: ↑+3 unlocks the third spell, ↑+M refills magicka, typing a class name (`vesper`, `lightfoot`, `umbral`, `blastfool`, `bastion`, `sanctus`) takes that class — `PlayerClassCheat` goes through `PlayerClassMenu.Take`, so it grants exactly what the angel would, and it stays enabled so you can keep switching. Cheat/debug scripts (`Test/Cheats/`, `Test/GameSpeedSlider`, `Camera/DebugTestCameraShake`) are wrapped in `#if UNITY_EDITOR || DEVELOPMENT_BUILD` — their class shells stay so scene references survive, but the bodies compile only in Editor and development builds.

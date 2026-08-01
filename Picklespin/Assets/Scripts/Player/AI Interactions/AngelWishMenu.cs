@@ -27,17 +27,14 @@ public class AngelWishMenu : AngelChoiceMenu
 
     private const int WishSlots = 3;
 
-    // Grant resolves its singletons lazily: the catalog is built in Awake, before
-    // the other managers have assigned their instances
     private class Wish
     {
         public WishCategory Category;
         public string Name;
         public string Effect;
         public Action Grant;
-        public Func<bool> IsAvailable; // null = always offerable
-        // which classes may be offered this wish, and how many times per run each of
-        // them may take it. A class with no entry never sees the wish at all.
+        public Func<bool> IsAvailable;
+
         public (PlayerClassId Class, int MaxTakes)[] Limits;
         public int TimesTaken;
     }
@@ -59,12 +56,10 @@ public class AngelWishMenu : AngelChoiceMenu
             return;
         }
 
-        // once per run, and ahead of the wiring check: even an unwired menu has to
-        // leave behind upgrades a scene reload carried over
         WishUpgrades.ResetAll();
 
         base.Awake();
-        if (!IsWired) return; // leave Instance null: AngelHeal then skips the menu entirely
+        if (!IsWired) return;
 
         Instance = this;
         BuildCatalog();
@@ -91,7 +86,6 @@ public class AngelWishMenu : AngelChoiceMenu
         wish.Grant();
     }
 
-    // line 3 is always EXP; lines 1 and 2 come from two different other categories
     protected override bool RollOptions()
     {
         Array.Clear(offered, 0, offered.Length);
@@ -108,13 +102,13 @@ public class AngelWishMenu : AngelChoiceMenu
         {
             int pick = UnityEngine.Random.Range(0, categoryPool.Count);
             WishCategory category = categoryPool[pick];
-            categoryPool.RemoveAt(pick); // one wish per category per menu
+            categoryPool.RemoveAt(pick);
             offered[slot] = PickFrom(category);
         }
 
         offered[WishSlots - 1] = PickFrom(WishCategory.Experience);
 
-        return offered[0] != null || offered[1] != null || offered[2] != null; // nothing left to grant
+        return offered[0] != null || offered[1] != null || offered[2] != null;
     }
 
     private Wish PickFrom(WishCategory category)
@@ -132,7 +126,6 @@ public class AngelWishMenu : AngelChoiceMenu
     private static bool IsOfferable(Wish wish) =>
         wish.TimesTaken < MaxTakesFor(wish) && (wish.IsAvailable == null || wish.IsAvailable());
 
-    // 0 = this class was never tagged for the wish, so it is never offered it
     private static int MaxTakesFor(Wish wish)
     {
         foreach ((PlayerClassId playerClass, int maxTakes) in wish.Limits)
@@ -158,7 +151,7 @@ public class AngelWishMenu : AngelChoiceMenu
 
     private static bool AnyBarNotFull()
     {
-        // HealthFraction, not hp: Vesper and Umbral keep their life in the magicka bar
+
         if (PlayerHP.Instance && PlayerHP.Instance.HealthFraction < 1f) return true;
         if (Ammo.instance && Ammo.instance.ammo < Ammo.instance.maxAmmo) return true;
         return PlayerMovement.Instance && PlayerMovement.Instance.stamina < PlayerMovement.Instance.maxStamina;
@@ -178,9 +171,6 @@ public class AngelWishMenu : AngelChoiceMenu
         });
     }
 
-    // Class tags. `None` is the player who refused a class: it counts as a class in
-    // its own right and is included everywhere except the wishes that only mean
-    // something to one class.
     private static readonly PlayerClassId[] EveryClass =
         { None, Vesper, Lightfoot, Umbral, Blastfool, Bastion, Sanctus };
 
@@ -214,8 +204,6 @@ public class AngelWishMenu : AngelChoiceMenu
             () => { if (PlayerMovement.Instance) PlayerMovement.Instance.MultiplyJumpPower(1.15f); },
             All(2));
 
-        // Umbral has no breath bar to lengthen, and Blastfool spends most of its time
-        // in the air, so it gets the one grudging take
         Add(WishCategory.Resources, "Lengthen my breath", "Max stamina +10%",
             () => { if (PlayerMovement.Instance) PlayerMovement.Instance.MultiplyMaxStamina(1.1f); },
             new[] { (None, 7), (Vesper, 7), (Lightfoot, 7), (Blastfool, 1), (Bastion, 7), (Sanctus, 7) });
@@ -224,7 +212,7 @@ public class AngelWishMenu : AngelChoiceMenu
             AllExcept(5, Lightfoot, Blastfool));
         Add(WishCategory.Resources, "Spare me the labour", "Magicka cost -5%",
             () => WishUpgrades.MultiplyMagickaCost(0.95f),
-            Only(5, None, Lightfoot, Blastfool));
+            Only(5, None, Lightfoot, Blastfool, Vesper, Sanctus));
 
         Add(WishCategory.Dash, "Sharpen my blink", "Dash speed and duration +15%",
             () => { if (PlayerDash) PlayerDash.MultiplyDashPower(1.15f); },
@@ -235,8 +223,6 @@ public class AngelWishMenu : AngelChoiceMenu
             All(2),
             () => PlayerDash);
 
-        // offering a refill at full is a wasted wish, so they drop out when full.
-        // Vesper and Umbral have no health pool of their own to mend.
         Add(WishCategory.Restore, "Make me whole", "Refill health, stamina and magicka",
             () => StartCoroutine(FullRestoreRoutine()),
             AllExcept(Unlimited, Vesper, Umbral),
@@ -249,7 +235,7 @@ public class AngelWishMenu : AngelChoiceMenu
             RefillMagicka,
             Only(Unlimited, None, Vesper),
             MagickaNotFull);
-        // the same pool by its Umbral name: the black bar is magicka
+
         Add(WishCategory.Restore, "Fill the void", "Refill dark energy",
             RefillMagicka,
             Only(Unlimited, Umbral),
@@ -266,13 +252,15 @@ public class AngelWishMenu : AngelChoiceMenu
             All(5));
 
         Add(WishCategory.Damage, "Feed the netherlight", "Netherlight damage +15%",
-            () => WishUpgrades.MultiplySpellDamage("Netherlight", 1.15f),
+            () => WishUpgrades.MultiplySpellDamage(SpellId.Netherlight, 1.15f),
             AllExcept(2, Umbral));
         Add(WishCategory.Damage, "Stoke the flame", "Fireball damage +15%",
-            () => WishUpgrades.MultiplySpellDamage("Fireball", 1.15f),
+            () => WishUpgrades.MultiplySpellDamage(SpellId.Fireball, 1.15f),
             AllExcept(2, Umbral));
+        Add(WishCategory.Damage, "Guide me", "Critical chance +10%",
+            () => WishUpgrades.AddCriticalChance(0.1f),
+            AllExcept(4, Sanctus));
 
-        // Blastfool's whole kit is the rocket jump, so neither is ever offered to it
         Add(WishCategory.RocketJump, "Spare me the blast", "No rocket jump self-damage",
             WishUpgrades.DisableRocketJumpSelfDamage,
             AllExcept(1, Blastfool),

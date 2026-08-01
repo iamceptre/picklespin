@@ -13,13 +13,19 @@ public class Dash : MonoBehaviour
     [SerializeField] float dashDuration = 0.4f;
     [SerializeField] float dashSpeedMultiplier = 1.2f;
     [SerializeField] float dashEffectRadius = 25f;
+    [SerializeField, Tooltip("what the dash shockwave stuns - falls back to the EvilEntity layer when left empty")]
+    LayerMask stunLayers;
     [SerializeField, Tooltip("shared with the spell cooldown bar: a dash blocks casting for this long, and a spell's cooldown blocks the dash")]
     float dashCooldown = 2f;
     [SerializeField] AnimationCurve dashDecayCurve = new(new Keyframe(0, 1), new Keyframe(1, 0));
+    [SerializeField] CameraShakeSettings dashShake = new()
+    {
+        rotationAmount = new Vector3(0.4f, 0.4f, 0.4f), numberOfShakes = 6, speed = 50f, decay = 0.5f, uiShakeModifier = 0f
+    };
     [SerializeField] InputActionReference dashAction;
     [SerializeField] InputActionReference moveAction;
 
-    static readonly Collider[] overlapResults = new Collider[10];
+    static readonly Collider[] overlapResults = new Collider[64];
 
     private CharacterController characterController;
     private PlayerMovement playerMovement;
@@ -37,13 +43,16 @@ public class Dash : MonoBehaviour
     bool haveEverDashed;
     private readonly WaitForSeconds doubleClickThreshold = new(0.17f);
 
-    // any direction on the stick counts; a single WASD key reads ~1, a diagonal ~0.7
     private const float MoveDeadzone = 0.01f;
+
+    private const string EnemyLayer = "EvilEntity";
 
     void Awake()
     {
         if (Instance && Instance != this) Destroy(this);
         else Instance = this;
+
+        if (stunLayers == 0) stunLayers = LayerMask.GetMask(EnemyLayer);
 
         characterController = GetComponent<CharacterController>();
     }
@@ -63,7 +72,7 @@ public class Dash : MonoBehaviour
 
     void Update()
     {
-        // the cooldown bar answers for both: no dashing out of a spell's cooldown
+
         if (isDashing || (attack && !attack.CooldownReady)) return;
         Vector2 moveValue = moveAction.action.ReadValue<Vector2>();
         if (dashAction.action.triggered && moveValue.sqrMagnitude > MoveDeadzone)
@@ -91,21 +100,21 @@ public class Dash : MonoBehaviour
         isWaitingForSecondClick = false;
         playerHP.invincible = true;
         dashEmitter.Play();
-        camShakeManager.ShakeSelected(11);
+        camShakeManager.Shake(dashShake);
         screenFlashTint.Flash(5);
         ConsumeStats();
         if (attack) attack.BeginCooldown(dashCooldown);
 
-        // a key pressed this frame has a direction but no speed behind it yet
         Vector3 dashDirection = playerMovement.moveDirection;
         dashDirection.y = 0;
         if (dashDirection.sqrMagnitude < 0.01f)
             dashDirection = playerMovement.FlatWishDirection(moveAction.action.ReadValue<Vector2>());
         dashDirection.Normalize();
-        int hitsCount = Physics.OverlapSphereNonAlloc(transform.position, dashEffectRadius, overlapResults);
+        int hitsCount = Physics.OverlapSphereNonAlloc(transform.position, dashEffectRadius, overlapResults, stunLayers);
         for (int i = 0; i < hitsCount; i++)
         {
-            StopAiForAsec stopper = overlapResults[i].GetComponent<StopAiForAsec>();
+
+            StopAiForAsec stopper = overlapResults[i].GetComponentInParent<StopAiForAsec>();
             if (stopper) stopper.StopMeForASec();
         }
         float originalSpeed = playerMovement.speedMultiplier;
@@ -115,6 +124,8 @@ public class Dash : MonoBehaviour
             float factor = dashDecayCurve.Evaluate(elapsed / dashDuration);
             playerMovement.speedMultiplier = Mathf.Lerp(originalSpeed, dashSpeedMultiplier, factor);
             playerMovement.characterController.Move(playerMovement.runSpeed * Time.deltaTime * dashDirection);
+
+            playerMovement.ReportExternalVelocity(playerMovement.runSpeed * dashDirection);
             elapsed += Time.deltaTime;
             yield return null;
         }

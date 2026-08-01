@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Wish buffs that would otherwise have to be written into a prefab field, which the
-// Editor would keep between sessions - consumers read them at the point of use.
-// Static, so it survives a scene reload: AngelWishMenu.Awake calls ResetAll.
 public static class WishUpgrades
 {
     public static float CastDurationMultiplier { get; private set; } = 1f;
@@ -15,21 +11,15 @@ public static class WishUpgrades
     public static float EnemySpeedMultiplier { get; private set; } = 1f;
     public static float RocketJumpForceMultiplier { get; private set; } = 1f;
     public static bool RocketJumpSelfDamage { get; private set; } = true;
+    public static float CriticalChanceBonus { get; private set; }
 
-    // keyed by Bullet.spellName ("Netherlight", "Fireball", "light")
-    private static readonly Dictionary<string, float> spellDamage = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly Dictionary<SpellId, float> spellDamage = new();
 
-    public static float SpellDamageMultiplier(string spellName)
-    {
-        if (string.IsNullOrEmpty(spellName)) return 1f;
-        return spellDamage.TryGetValue(spellName, out float multiplier) ? multiplier : 1f;
-    }
+    public static float SpellDamageMultiplier(SpellId spell) =>
+        spellDamage.TryGetValue(spell, out float multiplier) ? multiplier : 1f;
 
-    public static void MultiplySpellDamage(string spellName, float factor)
-    {
-        if (string.IsNullOrEmpty(spellName)) return;
-        spellDamage[spellName] = SpellDamageMultiplier(spellName) * factor;
-    }
+    public static void MultiplySpellDamage(SpellId spell, float factor) =>
+        spellDamage[spell] = SpellDamageMultiplier(spell) * factor;
 
     public static void MultiplyCastDuration(float factor) => CastDurationMultiplier *= factor;
     public static void MultiplyMagickaCost(float factor) => MagickaCostMultiplier *= factor;
@@ -39,6 +29,7 @@ public static class WishUpgrades
     public static void MultiplyEnemySpeed(float factor) => EnemySpeedMultiplier *= factor;
     public static void MultiplyRocketJumpForce(float factor) => RocketJumpForceMultiplier *= factor;
     public static void DisableRocketJumpSelfDamage() => RocketJumpSelfDamage = false;
+    public static void AddCriticalChance(float amount) => CriticalChanceBonus += amount;
 
     public static void ResetAll()
     {
@@ -50,6 +41,7 @@ public static class WishUpgrades
         EnemySpeedMultiplier = 1f;
         RocketJumpForceMultiplier = 1f;
         RocketJumpSelfDamage = true;
+        CriticalChanceBonus = 0f;
         spellDamage.Clear();
     }
 }

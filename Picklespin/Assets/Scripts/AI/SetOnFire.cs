@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-// The enabled flag *is* the burning flag: OnEnable lights the fire, OnDisable puts
-// it out, so every way a burn can be interrupted cleans itself up for free.
 public class SetOnFire : MonoBehaviour
 {
     [Header("Burn")]
@@ -32,12 +30,10 @@ public class SetOnFire : MonoBehaviour
     private WaitForSeconds tickWait;
     private float burnEndsAt;
 
-    // phase offset per ignition: a crowd lit by one blast never ticks on one frame
     private static int igniteCount;
 
     public bool IsBurning => enabled;
 
-    // latched by Extinguish(), which the death chain calls before reading it
     public bool WasBurningAtDeath { get; private set; }
 
     private void Awake()
@@ -50,8 +46,6 @@ public class SetOnFire : MonoBehaviour
             burnDeathParticle = diedFromBurnParticle.GetComponentInChildren<ParticleSystem>(true);
             burnDeathEmitter = diedFromBurnParticle.GetComponentInChildren<StudioEventEmitter>(true);
 
-            // ObjectStart fires once per object, so a pooled enemy would burn to death
-            // in silence after the first; ShowBurnDeath plays it explicitly instead
             if (burnDeathEmitter) burnDeathEmitter.EventPlayTrigger = EmitterGameEvent.None;
         }
     }
@@ -86,8 +80,6 @@ public class SetOnFire : MonoBehaviour
         ShowFire(false);
     }
 
-    // enabled = true on an already-enabled component never re-runs OnEnable, so a
-    // re-ignition has to refresh the burn by hand
     public void Ignite()
     {
         if (cachedAiHP != null && !cachedAiHP.IsAlive) return;
@@ -131,11 +123,9 @@ public class SetOnFire : MonoBehaviour
             if (!cachedAiHP.IsAlive) break;
             if (!cachedAiHP.CanTakeDamage) continue;
 
-            // before the damage lands: the death chain calls Extinguish(), which
-            // kills this coroutine
             if (cachedAiHP.WouldDieFrom(damagePerTick)) ShowBurnDeath();
 
-            cachedAiHP.TakeBurnDamage(damagePerTick);
+            cachedAiHP.TakeQuietDamage(damagePerTick);
             if (!cachedAiHP.IsAlive) break;
         }
 
@@ -148,7 +138,6 @@ public class SetOnFire : MonoBehaviour
         ShowFire(false);
         if (!diedFromBurnParticle) return;
 
-        // playOnAwake is off on the prefab: activating the object is not enough
         diedFromBurnParticle.SetActive(true);
         if (burnDeathParticle)
         {

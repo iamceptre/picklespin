@@ -34,9 +34,9 @@ public class SpeedIndicator : MonoBehaviour
 
     private void Update()
     {
-        float targetT = Mathf.InverseLerp(movement.walkSpeed, movement.MaxHorizontalSpeed, movement.HorizontalSpeed);
 
-        // slider eases every frame; texts refresh on the throttled interval
+        float targetT = Mathf.InverseLerp(movement.walkSpeed, movement.MaxHorizontalSpeed, movement.DamageSpeed);
+
         displayedT = Mathf.Lerp(displayedT, targetT, 1f - Mathf.Exp(-sliderSmoothing * Time.deltaTime));
         Color color = Color.Lerp(slowColor, fastColor, displayedT);
 
@@ -51,7 +51,7 @@ public class SpeedIndicator : MonoBehaviour
 
         if (damageMultiplierText)
         {
-            float multiplier = Mathf.Round(movement.SpeedDamageMultiplier * 20f) * 0.05f; // 0.05 steps
+            float multiplier = Mathf.Round(movement.SpeedDamageMultiplier * 20f) * 0.05f;
             if (!Mathf.Approximately(multiplier, lastShownMultiplier))
             {
                 lastShownMultiplier = multiplier;

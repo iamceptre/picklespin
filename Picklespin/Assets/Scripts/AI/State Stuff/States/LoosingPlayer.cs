@@ -1,5 +1,5 @@
 using UnityEngine;
-using Pathfinding; 
+using Pathfinding;
 
 public class LoosingPlayer : State
 {
@@ -20,10 +20,15 @@ public class LoosingPlayer : State
 
     float currentTimedown;
 
+    public bool HasGrudge => attackPlayer && attackPlayer.HasGrudge;
+
     void Awake() => currentTimedown = loosingTimedown;
 
     public override State RunCurrentState()
     {
+
+        if (attackPlayer.HasGrudge) return attackPlayer;
+
         if (ReallyReacquiredPlayer())
         {
             currentTimedown = loosingTimedown;
@@ -41,16 +46,14 @@ public class LoosingPlayer : State
             return waypointWander;
         }
 
-
         aiVision.seeingPlayer = true;
-
 
         if (destinationSetter.target != aiVision.playerRef)
         {
             destinationSetter.target = aiVision.playerRef;
         }
 
-        aiPath.maxSpeed = searchSpeed * WishUpgrades.EnemySpeedMultiplier;
+        aiPath.maxSpeed = searchSpeed * WishUpgrades.EnemySpeedMultiplier * ConvertedAlly.SpeedMultiplierAt(transform.position);
         aiPath.rotationSpeed = searchRotationSpeed;
 
         return this;

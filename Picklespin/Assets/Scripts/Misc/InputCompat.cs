@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-// Legacy UnityEngine.Input polling, backed by the Input System package: lets
-// KeyCode-style call sites (cheats, debug keys) survive "Input System Package (New)".
 public static class InputCompat
 {
     public static bool GetKey(KeyCode keyCode)
@@ -40,7 +38,6 @@ public static class InputCompat
         }
     }
 
-    // first character typed this frame, '\0' if none — replaces Input.inputString[0]
     public static char TypedCharThisFrame
     {
         get
@@ -65,7 +62,7 @@ public static class InputCompat
         {
             case "Horizontal": return KeyAxis(Key.A, Key.D, Key.LeftArrow, Key.RightArrow);
             case "Vertical": return KeyAxis(Key.S, Key.W, Key.DownArrow, Key.UpArrow);
-            // 0.05 ≈ legacy InputManager sensitivity (0.1) × delta-to-axis ratio; same factor MouselookXY uses
+
             case "Mouse X": return Mouse.current != null ? Mouse.current.delta.ReadValue().x * 0.05f : 0f;
             case "Mouse Y": return Mouse.current != null ? Mouse.current.delta.ReadValue().y * 0.05f : 0f;
             default: return 0f;
@@ -75,6 +72,9 @@ public static class InputCompat
     private static Keyboard subscribedKeyboard;
     private static char typedChar;
     private static int typedFrame = -1;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void HookTextInput() => EnsureTextHook();
 
     private static void EnsureTextHook()
     {
@@ -98,7 +98,7 @@ public static class InputCompat
     {
         if (typedFrame == Time.frameCount)
         {
-            return; // keep the first char of the frame
+            return;
         }
         typedFrame = Time.frameCount;
         typedChar = c;

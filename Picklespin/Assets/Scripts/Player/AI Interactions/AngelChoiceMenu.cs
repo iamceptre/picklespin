@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using FMODUnity;
 using TMPro;
@@ -5,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CLASS SELECTION AND ANGEL WISH INHERITS
+public abstract class AngelChoiceMenu : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField, FormerlySerializedAs("wishCanvas")] private Canvas menuCanvas;
@@ -26,6 +27,8 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
     [SerializeField] private Color highlightColor = new(1f, 0.92f, 0.55f);
     [SerializeField, FormerlySerializedAs("wishGrantedSound"), Tooltip("optional - left empty means no sound")]
     private EventReference chosenSound;
+    [SerializeField, Tooltip("AudioSnapshotManager key held while the menu is up - the short key it is registered under, not the FMOD path; empty means no snapshot")]
+    private string snapshotKey = "AngelChoice";
 
     [Header("Controls locked while choosing (auto-found if left empty)")]
     [SerializeField] private PlayerMovement playerMovement;
@@ -37,10 +40,11 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
     private Color[] lineStartColors;
     private int hoveredSlot = -1;
 
+    private static readonly Dictionary<string, int> snapshotHolders = new();
+    private bool holdsSnapshot;
+
     public bool IsAsking { get; private set; }
 
-    // false when nothing was wired: a menu that can never be answered would strip
-    // the player of movement and attacking for the rest of the run
     protected bool IsWired { get; private set; }
 
     protected string NameSeparator => nameSeparator;
@@ -49,16 +53,12 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
 
     protected abstract int SlotCount { get; }
 
-    /// picks what to offer this time; false = nothing to offer, so the menu stays shut
     protected abstract bool RollOptions();
 
-    /// the text for a slot, without its number. Null or empty hides that line.
     protected abstract string BuildLine(int slot);
 
-    /// grant the choice. Only ever called with a slot whose line was shown.
     protected abstract void OnChosen(int slot);
 
-    /// runs the moment the choice is taken, before the fade-out
     protected virtual void AfterChoice() => LockPlayerControls(false);
 
     protected virtual void OnClosed() { }
@@ -123,8 +123,6 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
         }
     }
 
-    // hit-tested against the lines themselves: no EventSystem, no raycaster and no
-    // per-line component to wire, and the lines need not be raycast targets
     private int SlotUnderPointer(Vector2 screenPoint)
     {
         Camera camera = menuCanvas && menuCanvas.renderMode != RenderMode.ScreenSpaceOverlay
@@ -152,7 +150,6 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
         hoveredSlot = slot;
         if (hoveredSlot < 0 || !optionLines[hoveredSlot]) return;
 
-        // softer than the colour the chosen line takes, so the two never read alike
         optionLines[hoveredSlot].color = Color.Lerp(lineStartColors[hoveredSlot], highlightColor, 0.5f);
     }
 
@@ -181,11 +178,12 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
         hoveredSlot = -1;
         IsAsking = true;
         LockPlayerControls(true);
+        HoldSnapshot();
 
         menuCanvasGroup.DOKill();
         menuCanvasGroup.alpha = 0f;
         if (menuCanvas) menuCanvas.enabled = true;
-        // unscaled: a menu can be up when something else freezes time
+
         menuCanvasGroup.DOFade(1f, fadeInDuration).SetUpdate(true);
     }
 
@@ -194,7 +192,7 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
         if (slot >= optionLines.Length || !optionLines[slot] || !optionLines[slot].enabled) return;
 
         IsAsking = false;
-        Hover(-1); // before the highlight, or the hover colour would be what fades out
+        Hover(-1);
         OnChosen(slot);
         if (!chosenSound.IsNull) RuntimeManager.PlayOneShot(chosenSound);
         AfterChoice();
@@ -227,6 +225,7 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
                        {
                            HideImmediate();
                            OnClosed();
+                           ReleaseSnapshot();
                        });
     }
 
@@ -237,6 +236,35 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
         if (menuCanvas) menuCanvas.enabled = false;
     }
 
+    private void HoldSnapshot()
+    {
+        if (holdsSnapshot || string.IsNullOrEmpty(snapshotKey)) return;
+
+        holdsSnapshot = true;
+        snapshotHolders.TryGetValue(snapshotKey, out int held);
+        snapshotHolders[snapshotKey] = held + 1;
+        if (held == 0 && AudioSnapshotManager.Instance)
+        {
+            AudioSnapshotManager.Instance.EnableSnapshot(snapshotKey);
+        }
+    }
+
+    private void ReleaseSnapshot()
+    {
+        if (!holdsSnapshot) return;
+
+        holdsSnapshot = false;
+        snapshotHolders.TryGetValue(snapshotKey, out int held);
+        held = Mathf.Max(0, held - 1);
+        snapshotHolders[snapshotKey] = held;
+        if (held == 0 && AudioSnapshotManager.Instance)
+        {
+            AudioSnapshotManager.Instance.DisableSnapshot(snapshotKey);
+        }
+    }
+
+    private void OnDestroy() => ReleaseSnapshot();
+
     protected void LockPlayerControls(bool locked)
     {
         if (playerMovement) playerMovement.enabled = !locked;
@@ -245,7 +273,6 @@ public abstract class AngelChoiceMenu : MonoBehaviour //ABSTRACTION THAT BOTH CL
         if (dash) dash.enabled = !locked;
         if (mouselook) mouselook.enabled = !locked;
 
-        // the lines can be clicked, so the pointer comes back for as long as they are up
         Cursor.lockState = locked ? CursorLockMode.Confined : CursorLockMode.Locked;
         Cursor.visible = locked;
     }

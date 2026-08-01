@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// Type a class name to take it: vesper, lightfoot, umbral, blastfool, bastion, sanctus.
 public class PlayerClassCheat : MonoBehaviour
 {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -14,19 +13,23 @@ public class PlayerClassCheat : MonoBehaviour
         ("sanctus", PlayerClassId.Sanctus)
     };
 
-    // one place in each word, so words that start alike ("bastion", "blastfool") are
-    // never chasing the same letter
     private readonly int[] targetIndex = new int[classWords.Length];
 
-    private CheatActivatedFeedback cheatActivatedFeedback;
+    private static PlayerClassCheat host;
 
-    private void Start()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Bootstrap()
     {
-        cheatActivatedFeedback = CheatActivatedFeedback.instance;
+        if (host) return;
+
+        GameObject go = new(nameof(PlayerClassCheat)) { hideFlags = HideFlags.HideInHierarchy };
+        DontDestroyOnLoad(go);
+        host = go.AddComponent<PlayerClassCheat>();
     }
 
     void Update()
     {
+        if (host != this) return;
         if (!InputCompat.AnyKeyDown) return;
 
         char inputChar = char.ToLowerInvariant(InputCompat.TypedCharThisFrame);
@@ -46,7 +49,6 @@ public class PlayerClassCheat : MonoBehaviour
                 return;
             }
 
-            // a wrong letter can still be the start of the same word ("bbastion")
             targetIndex[i] = inputChar == word[0] ? 1 : 0;
         }
     }
@@ -58,15 +60,12 @@ public class PlayerClassCheat : MonoBehaviour
 
     void ActivateCheat(string word, PlayerClassId playerClass)
     {
-        // through the menu, so the one-off stat changes are the angel's own; an unwired
-        // menu still switches every rule PlayerClasses owns, it just grants no stats
         if (!PlayerClassMenu.Instance || !PlayerClassMenu.Instance.Take(playerClass))
         {
             PlayerClasses.Choose(playerClass);
         }
 
-        if (cheatActivatedFeedback) cheatActivatedFeedback.Do(word);
-        // stays enabled, unlike the one-shot cheats: switching classes is the point
+        if (CheatActivatedFeedback.instance) CheatActivatedFeedback.instance.Do(word);
     }
 #endif
 }

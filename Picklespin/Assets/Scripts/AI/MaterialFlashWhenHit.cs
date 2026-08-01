@@ -16,9 +16,18 @@ public class MaterialFlashWhenHit : MonoBehaviour
    readonly float fadeOutSpeed = 1.6f;
     Material materialInstance;
 
+    Color baseEmission = Color.black;
+
     void Awake()
     {
         materialInstance = rend.material;
+    }
+
+    public void SetBaseEmission(Color color)
+    {
+        baseEmission = color;
+
+        if (currentFlashCoroutine == null) materialInstance.SetColor(emissionColor, baseEmission);
     }
 
     public void Flash()
@@ -40,18 +49,18 @@ public class MaterialFlashWhenHit : MonoBehaviour
 
     IEnumerator FlashRoutine(Color flashColor, WaitForSeconds waitTime)
     {
-        materialInstance.SetColor(emissionColor, flashColor);
+        materialInstance.SetColor(emissionColor, baseEmission + flashColor);
         yield return waitTime;
 
         float flashElapsed = flashDuration;
         while (flashElapsed > 0)
         {
             float t = flashElapsed / flashDuration;
-            materialInstance.SetColor(emissionColor, flashColor * t);
+            materialInstance.SetColor(emissionColor, baseEmission + flashColor * t);
             flashElapsed -= Time.deltaTime * fadeOutSpeed;
             yield return null;
         }
-        materialInstance.SetColor(emissionColor, Color.black);
+        materialInstance.SetColor(emissionColor, baseEmission);
         currentFlashCoroutine = null;
     }
 
@@ -62,6 +71,7 @@ public class MaterialFlashWhenHit : MonoBehaviour
             StopCoroutine(currentFlashCoroutine);
             currentFlashCoroutine = null;
         }
+        baseEmission = Color.black;
         materialInstance.SetColor(emissionColor, Color.black);
     }
 }

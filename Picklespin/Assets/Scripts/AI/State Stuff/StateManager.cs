@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Ticks the enemy FSM on a coarse InvokeRepeating instead of per-frame, with a
-// small random per-enemy offset so a wave never re-evaluates on the same frame.
 public class StateManager : MonoBehaviour
 {
     public State currentState;
@@ -23,19 +21,17 @@ public class StateManager : MonoBehaviour
     void OnDisable()
     {
         AllManagers.Remove(this);
-        CancelInvoke(); // a pooled deactivation must never leave a tick scheduled
+        CancelInvoke();
     }
 
     public void StartAI()
     {
-        CancelInvoke(); // idempotent: calling twice must not double the tick rate
+        CancelInvoke();
         float randomTimeOffset = Random.Range(0f, 0.05f);
         actualRefreshRate = RefreshEveryVarSeconds + randomTimeOffset;
         InvokeRepeating(nameof(RunStateMachine), randomTimeOffset, actualRefreshRate);
     }
 
-    // the corpse lives on until it dissolves, and a ticking one keeps steering,
-    // swinging and answering the awareness queries below
     public void StopAI()
     {
         CancelInvoke();
@@ -52,11 +48,9 @@ public class StateManager : MonoBehaviour
     public void ResetStateManager()
     {
         CancelInvoke();
-        currentState = initialState; // restore the prefab's starting state for pooled reuse
+        currentState = initialState;
     }
 
-    // the win screen freezes time within a fraction of a second, so LoosingPlayer's
-    // countdown would never resolve and the awareness icon would stay lit behind it
     public static void AllLosePlayer()
     {
         foreach (StateManager m in AllManagers)
@@ -67,16 +61,20 @@ public class StateManager : MonoBehaviour
 
     public void LosePlayer()
     {
-        CancelInvoke(); // no perception tick may re-acquire the player afterwards
+        CancelInvoke();
         if (aiVision) aiVision.ResetVisionState();
-        if (currentState) currentState = initialState; // a dead enemy (null) stays dead
+        if (currentState) currentState = initialState;
     }
 
     public static bool IsAnyAIInAttackOrLoosing()
     {
         foreach (StateManager m in AllManagers)
         {
-            if (m.currentState is AttackPlayer || m.currentState is LoosingPlayer) return true;
+            switch (m.currentState)
+            {
+                case AttackPlayer attack when !attack.HasGrudge: return true;
+                case LoosingPlayer loosing when !loosing.HasGrudge: return true;
+            }
         }
         return false;
     }

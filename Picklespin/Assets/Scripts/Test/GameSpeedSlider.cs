@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameSpeedSlider : MonoBehaviour
@@ -14,11 +14,12 @@ public class GameSpeedSlider : MonoBehaviour
         _canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    private void Start() => Show();
+
     public void ApplyNewSpeed()
     {
         Time.timeScale = me.value*2;
     }
-
 
     public void Show()
     {

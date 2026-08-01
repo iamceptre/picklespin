@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,7 +59,7 @@ public class PickupableBonusesSpawner : MonoBehaviour
             OnGetFromPool,
             OnReleaseToPool,
             OnDestroyPooledObject,
-            false,
+            true,
             spawnPoints.Length,
             spawnPoints.Length * 2
         );
@@ -93,10 +93,6 @@ public class PickupableBonusesSpawner : MonoBehaviour
         currentSpawnRoutine = ScatterSpawn(allPotionsPool.Get, howManyToSpawn);
     }
 
-    // The one way anything lands on the map: a free point at random, one item per
-    // scatterTime so they arrive one after another instead of all in one frame.
-    // Callers differ only in which pool the item comes from and, optionally, which
-    // points they will accept at all (the mercy drop takes only unseen ones).
     public Coroutine ScatterSpawn(Func<PoolSpawnableObject> take, int count, Func<Vector3, bool> pointIsUsable = null)
     {
         return StartCoroutine(ScatterRoutine(take, count, pointIsUsable));
@@ -108,8 +104,6 @@ public class PickupableBonusesSpawner : MonoBehaviour
         {
             yield return scatterTime;
 
-            // the point is chosen before the item is taken, so a spawn that cannot be
-            // placed never strands one outside its pool
             int index = PickFreePoint(pointIsUsable);
             if (index < 0) break;
 

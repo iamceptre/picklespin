@@ -5,7 +5,7 @@
 			<value>light_spell_hit</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{b82e73af-b42b-4497-ada3-c8d3e5aa4d48}</destination>
@@ -106,7 +106,6 @@
 	<object class="MixerBusEffectChain" id="{8ec09039-8f99-449e-82e9-a4cb2ebf2688}">
 		<relationship name="effects">
 			<destination>{30f0df5b-ee14-46a5-b812-783f763485a2}</destination>
-			<destination>{08bfc168-14d9-4000-ab00-6f37767bddb3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9fe41d49-7ccb-456a-922e-35074215b798}" />
@@ -120,9 +119,4 @@
 	</object>
 	<object class="MixerBusFader" id="{890f2c67-a1e6-4ced-8f99-f1df246b9a16}" />
 	<object class="MixerBusFader" id="{30f0df5b-ee14-46a5-b812-783f763485a2}" />
-	<object class="SpatialiserEffect" id="{08bfc168-14d9-4000-ab00-6f37767bddb3}">
-		<property name="distanceRolloffType">
-			<value>3</value>
-		</property>
-	</object>
 </objects>

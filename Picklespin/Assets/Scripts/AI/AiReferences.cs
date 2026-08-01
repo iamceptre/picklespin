@@ -3,7 +3,6 @@ using FMODUnity;
 using Pathfinding;
 using UnityEngine;
 
-// Every part is optional - nothing here may assume one exists.
 public class AiReferences : MonoBehaviour
 {
     public static List<AiReferences> AllEnemies { get; } = new();
@@ -24,6 +23,17 @@ public class AiReferences : MonoBehaviour
     public AIPath aiPath;
     [Tooltip("disabled by the death event, so pooled reuse has to switch it back on")]
     public BarEase HpBarEase;
+    public EnemyCounter_PerUnitComponent Counter;
+
+    public bool IsAngel { get; private set; }
+
+    [Header("Converted ally look - all optional, an empty one just stays as it is")]
+    [Tooltip("the eye mesh: its material is swapped while Sanctus has this one on your side")]
+    public Renderer EyeRenderer;
+    [Tooltip("what the eye wears as an ally, e.g. EnemyEye_Golden")]
+    public Material AlliedEyeMaterial;
+    [Tooltip("the eye's own light, retinted to match the material")]
+    public Light EyeLight;
 
     [Header("Hand-picked assets")]
     public ParticleSystem HeadshotParticle;
@@ -32,12 +42,9 @@ public class AiReferences : MonoBehaviour
     public StudioEventEmitter damageTakenEyeshot;
     public StudioEventEmitter damageTakenCritical;
 
-    // death events deactivate arbitrary children through the Inspector; pooled reuse
-    // restores these snapshots without knowing which ones
     private Transform[] allChildren;
     private bool[] childInitialActive;
 
-    // not all start enabled (the white enemy's eye hitbox), so the prefab state matters
     private Collider[] allColliders;
     private bool[] colliderInitialEnabled;
 
@@ -56,6 +63,8 @@ public class AiReferences : MonoBehaviour
         if (!Dissolver) TryGetComponent(out Dissolver);
         if (!aiPath) TryGetComponent(out aiPath);
         if (!HpBarEase) HpBarEase = GetComponentInChildren<BarEase>(true);
+        if (!Counter) Counter = GetComponentInChildren<EnemyCounter_PerUnitComponent>(true);
+        IsAngel = GetComponentInChildren<AngelMind>(true);
 
         allChildren = GetComponentsInChildren<Transform>(true);
         childInitialActive = new bool[allChildren.Length];
@@ -64,8 +73,6 @@ public class AiReferences : MonoBehaviour
             childInitialActive[i] = allChildren[i].gameObject.activeSelf;
         }
 
-        // FMOD's TriggerOnce is once per *object* lifetime, which for a pooled enemy
-        // means the death scream never plays again after its first death
         var emitters = GetComponentsInChildren<StudioEventEmitter>(true);
         for (int i = 0; i < emitters.Length; i++) emitters[i].TriggerOnce = false;
 
@@ -80,7 +87,6 @@ public class AiReferences : MonoBehaviour
     private void OnEnable() => AllEnemies.Add(this);
     private void OnDisable() => AllEnemies.Remove(this);
 
-    // CharacterController derives from Collider, so the body-block goes with them
     public void DisableAllColliders()
     {
         for (int i = 0; i < allColliders.Length; i++)
@@ -89,10 +95,9 @@ public class AiReferences : MonoBehaviour
         }
     }
 
-    // called while the enemy is still inactive, so OnEnable sees a clean prefab state
     public void ResetAll()
     {
-        // added at runtime by Sanctus' light spell: a reused enemy must come back hostile
+
         if (TryGetComponent(out ConvertedAlly ally)) ally.Revert();
 
         for (int i = 0; i < allChildren.Length; i++)
@@ -117,7 +122,7 @@ public class AiReferences : MonoBehaviour
         if (HpUiBar) HpUiBar.ResetBar();
         if (Vision) Vision.ResetVisionState();
         if (Health) Health.ResetHealth();
-        if (HpBarEase) HpBarEase.ResetEase(); // after ResetHealth, so it syncs to full HP
+        if (HpBarEase) HpBarEase.ResetEase();
         if (MaterialFlash) MaterialFlash.ResetFlashState();
         if (stateManager) stateManager.ResetStateManager();
         if (WaypointsForSpawner) WaypointsForSpawner.ResetWaypointState();

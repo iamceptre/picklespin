@@ -9887,6 +9887,69 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 4
   OverrideMaxDistance: 80
+--- !u!1 &536045931996409892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4438229547056955059}
+  - component: {fileID: 1971389925646858926}
+  m_Layer: 8
+  m_Name: 'AttackSpatSoundEmitter '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4438229547056955059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536045931996409892}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 55374933173631940}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1971389925646858926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536045931996409892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 872410652
+      Data2: 1090900950
+      Data3: -753462646
+      Data4: 1365521296
+    Path: event:/ENEMIES/ENEMY_CLAW_ATTACK_SPATIALIZED
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 3.6000001
+  OverrideMaxDistance: 100
 --- !u!1 &1015043977020373037
 GameObject:
   m_ObjectHideFlags: 0
@@ -15515,6 +15578,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 299465602500711661}
+  - {fileID: 4438229547056955059}
   m_Father: {fileID: 8913944835526974872}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9126885967048436367
@@ -15538,6 +15602,8 @@ MonoBehaviour:
   howMuchDamageIdeal: 15
   meleeAttackRange: 4
   attackSoundEmitter: {fileID: 9064666203966580678}
+  attackOtherSoundEmitter: {fileID: 1971389925646858926}
+  grudgeDuration: 6
   canAttack: 1
 --- !u!1 &5560399968248190549
 GameObject:
@@ -15856,10 +15922,25 @@ MonoBehaviour:
   eventOnDamageTaken:
     m_PersistentCalls:
       m_Calls: []
+  hitShake:
+    strength: 1
+    rotationAmount: {x: 0.2, y: 0.2, z: 0.2}
+    numberOfShakes: 3
+    speed: 50
+    decay: 0.65
+    uiShakeModifier: 0
+  eyeHitShake:
+    strength: 1
+    rotationAmount: {x: 0.45, y: 0.45, z: 0.55}
+    numberOfShakes: 3
+    speed: 81
+    decay: 0
+    uiShakeModifier: 1
   aiHealthUI: {fileID: 3817865884643380506}
   myHitboxes:
   - {fileID: 3590205204082857848}
   - {fileID: 2938476453537838281}
+  alliedDamageMultiplier: 0.25
 --- !u!114 &7181874480254964230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15936,6 +16017,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   refs: {fileID: 0}
+  deathShake:
+    strength: 1
+    rotationAmount: {x: 2.43, y: 2.43, z: 5}
+    numberOfShakes: 8
+    speed: 65
+    decay: 0.55
+    uiShakeModifier: 1
+  reactionMaxDistance: 40
 --- !u!114 &1342977768311708897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16043,6 +16132,10 @@ MonoBehaviour:
   Dissolver: {fileID: 1342977768311708897}
   aiPath: {fileID: 7323594540175906757}
   HpBarEase: {fileID: 3172104866769131248}
+  Counter: {fileID: 0}
+  EyeRenderer: {fileID: 2530491941561668674}
+  AlliedEyeMaterial: {fileID: 2100000, guid: 0dd778422f517b546aa055d3aed812b8, type: 2}
+  EyeLight: {fileID: 3223835351170058832}
   HeadshotParticle: {fileID: 7393084965939959199}
   damageTakenBig: {fileID: 2477817380849591454}
   damageTakenSmall: {fileID: 6511597942865099906}
@@ -16201,7 +16294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiPath: {fileID: 7323594540175906757}
   stunParticle: {fileID: 3682317592650031572}
-  stopDuration: 3
+  stopDuration: 1.5
 --- !u!1 &5704715387363407611
 GameObject:
   m_ObjectHideFlags: 0
@@ -21201,6 +21294,7 @@ MonoBehaviour:
   aiHealth: {fileID: 9088957210784467254}
   slider: {fileID: 263190420828383618}
   canvasFader: {fileID: 8506893838354737704}
+  alliedFillColor: {r: 1, g: 0.87, b: 0.55, a: 1}
 --- !u!114 &8506893838354737704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21763,7 +21857,7 @@ GameObject:
   - component: {fileID: 299465602500711661}
   - component: {fileID: 9064666203966580678}
   m_Layer: 8
-  m_Name: AttackSoundEmitter
+  m_Name: AttackNonSpatSoundEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

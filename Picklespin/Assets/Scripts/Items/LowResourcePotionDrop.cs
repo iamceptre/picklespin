@@ -1,10 +1,6 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-// Mercy drops. When a pool runs dry, a few potions for it are put out on the map -
-// always at a spawn point the player cannot see just then, so they are come across
-// rather than watched appearing. Spawn points and their taken flags are the arena's
-// own (PickupableBonusesSpawner), so a drop can never land on a bonus.
 public class LowResourcePotionDrop : MonoBehaviour
 {
     private const int Health = 0;
@@ -55,14 +51,12 @@ public class LowResourcePotionDrop : MonoBehaviour
                 potion => potion.gameObject.SetActive(true),
                 potion => { potion.gameObject.SetActive(false); potion.transform.position = buriedPosition; },
                 potion => Destroy(potion.gameObject),
-                false, potionsPerDrop, potionsPerDrop * 2);
+                true, potionsPerDrop, potionsPerDrop * 2);
         }
 
         InvokeRepeating(nameof(CheckPools), checkInterval, checkInterval);
     }
 
-    // A class can fold one pool into another - Umbral spends the black bar for all
-    // three - and one empty bar must not drop three kinds of potion at once.
     private void CheckPools()
     {
         if (!spawner || Time.time < nextCheckTime) return;
@@ -90,8 +84,6 @@ public class LowResourcePotionDrop : MonoBehaviour
         _ => Ammo.instance ? Ammo.instance.Fraction : 1f
     };
 
-    // the arena's own scatter: same free-point pick, same stagger, same occupancy -
-    // only the pool differs, and the points have to be ones nobody is looking at
     private void Drop(int pool)
     {
         if (pools[pool] == null) return;
@@ -108,8 +100,6 @@ public class LowResourcePotionDrop : MonoBehaviour
                          && viewport.y > -viewMargin && viewport.y < 1f + viewMargin;
         if (!inFrustum) return true;
 
-        // in the frustum but behind something still counts as unseen. The ray stops
-        // short of the point, or whatever the potion would rest on reads as cover.
         Vector3 eye = playerCamera.transform.position;
         return Physics.Linecast(eye, Vector3.MoveTowards(point, eye, 0.3f), occluders, QueryTriggerInteraction.Ignore);
     }

@@ -13,9 +13,23 @@ public class AiHealth : MonoBehaviour
     public UnityEvent deathEvent;
     [SerializeField] UnityEvent eventOnDamageTaken;
 
+    [Header("Camera shake")]
+    [SerializeField] CameraShakeSettings hitShake = new()
+    {
+        rotationAmount = new Vector3(0.2f, 0.2f, 0.2f), numberOfShakes = 3, speed = 50f, decay = 0.65f, uiShakeModifier = 0f
+    };
+    [SerializeField] CameraShakeSettings eyeHitShake = new()
+    {
+        rotationAmount = new Vector3(0.45f, 0.45f, 0.55f), numberOfShakes = 3, speed = 81f, decay = 0f, uiShakeModifier = 1f
+    };
+
     [Header("References")]
     [SerializeField] AiHealthUiBar aiHealthUI;
     [SerializeField] Collider[] myHitboxes;
+
+    [Header("Allied")]
+    [SerializeField, Tooltip("what a converted ally takes of every hit - the knob that decides how many it kills before it goes down; see the tuning note in ConvertedAlly")]
+    float alliedDamageMultiplier = 0.5f;
 
     DamageUI_Spawner damageUiSpawner;
     RoundSystem roundSystem;
@@ -23,14 +37,15 @@ public class AiHealth : MonoBehaviour
     float defaultHP;
     bool isDead;
 
-    // the single guard on the death chain, none of which survives running twice
+    bool isAllied;
+
     public bool IsAlive => !isDead;
 
     public bool CanTakeDamage => !isDead && roundSystem != null && roundSystem.isCounting;
 
     void Awake()
     {
-        // captured in Awake: pooled spawners may call ResetHealth before Start has run
+
         defaultHP = hp;
     }
 
@@ -41,15 +56,23 @@ public class AiHealth : MonoBehaviour
         roundSystem = RoundSystem.instance;
     }
 
+    float IncomingMultiplier => isAllied ? alliedDamageMultiplier : 1f;
+
+    public void SetAllied(bool allied)
+    {
+        isAllied = allied;
+        if (aiHealthUI && IsAlive) aiHealthUI.SetAllied(allied);
+    }
+
     public void TakeDamage(int damage, bool eyeshot, bool wasLastHitCritical)
     {
         if (!CanTakeDamage) return;
 
-        float actualDamage = eyeshot ? damage * eyeDamageMultiplier : damage * bodyDamageMultiplier;
-        if (eyeshot) StartCoroutine(ShakeLater(3));
+        float actualDamage = (eyeshot ? damage * eyeDamageMultiplier : damage * bodyDamageMultiplier) * IncomingMultiplier;
+        if (eyeshot) StartCoroutine(ShakeLater(eyeHitShake));
         else
         {
-            camShakeManager.ShakeSelected(2);
+            camShakeManager.Shake(hitShake);
             eventOnDamageTaken.Invoke();
         }
 
@@ -59,20 +82,18 @@ public class AiHealth : MonoBehaviour
         CheckIfDead();
     }
 
-    // HP and UI only: the impact reactions would rattle the screen every tick.
-    // Returns true if this tick killed.
-    public bool TakeBurnDamage(int damage)
+    public bool TakeQuietDamage(int damage)
     {
         if (!CanTakeDamage) return false;
 
-        hp -= damage;
-        if (damageUiSpawner) damageUiSpawner.Spawn(transform.position, damage, false);
+        float actualDamage = damage * IncomingMultiplier;
+        hp -= actualDamage;
+        if (damageUiSpawner) damageUiSpawner.Spawn(transform.position, Mathf.Max(1, (int)actualDamage), false);
         RefreshUI();
         return CheckIfDead();
     }
 
-    // lets a damage source play its death visuals before the chain tears the object down
-    public bool WouldDieFrom(int damage) => CanTakeDamage && hp - damage <= 0;
+    public bool WouldDieFrom(int damage) => CanTakeDamage && hp - damage * IncomingMultiplier <= 0;
 
     void RefreshUI()
     {
@@ -90,15 +111,16 @@ public class AiHealth : MonoBehaviour
         return true;
     }
 
-    IEnumerator ShakeLater(int index)
+    IEnumerator ShakeLater(CameraShakeSettings settings)
     {
         yield return new WaitForEndOfFrame();
-        camShakeManager.ShakeSelected(index);
+        camShakeManager.Shake(settings);
     }
 
     public void ResetHealth()
     {
         isDead = false;
+        isAllied = false;
         hp = defaultHP;
         for (int i = 0; i < myHitboxes.Length; i++)
             myHitboxes[i].enabled = true;

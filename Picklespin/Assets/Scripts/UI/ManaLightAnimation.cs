@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
@@ -7,6 +7,8 @@ using System.Text;
 
 public class ManaLightAnimation : MonoBehaviour
 {
+    [SerializeField, Tooltip("which bar this light sits on - it glows in that bar's colour, set in PlayerClassHud")]
+    private HudResource bar = HudResource.Magicka;
     [SerializeField] private TMP_Text manaPlusPlus;
     private RectTransform manaPlusPlusRect;
     private float manaPlusPlusStartingPos;
@@ -29,11 +31,10 @@ public class ManaLightAnimation : MonoBehaviour
             manaPlusPlusRect = manaPlusPlus.GetComponent<RectTransform>();
             manaPlusPlus.enabled = false;
             manaPlusPlusStartingPos = manaPlusPlusRect.localPosition.y;
-            manaPlusPlusStartColor = manaPlusPlus.color; // fallback when no HUD answers
+            manaPlusPlusStartColor = manaPlusPlus.color;
         }
     }
 
-    // resource: which bar this light sits over, so the number takes that bar's colour
     public void LightAnimation(float howMuchWasGiven, bool maxxed, HudResource resource)
     {
         manaLight.enabled = true;
@@ -51,7 +52,7 @@ public class ManaLightAnimation : MonoBehaviour
         }
         else
         {
-            manaLight.color = originalColor;
+            manaLight.color = GlowColor();
         }
         rectTransform.DOScaleY(3, scaleDuration).SetEase(Ease.OutExpo);
         rectTransform.DOScaleX(1.5f, scaleDuration).SetEase(Ease.OutExpo);
@@ -60,6 +61,15 @@ public class ManaLightAnimation : MonoBehaviour
             FadeOut(fadeOutDuration);
         });
         if (manaPlusPlus != null) ManaPlusPlusAnimation(howMuchWasGiven, maxxed, resource);
+    }
+
+    private Color GlowColor()
+    {
+        if (!PlayerClassHud.Instance) return originalColor;
+
+        Color barColor = PlayerClassHud.Instance.BarLightColor(bar);
+        barColor.a = originalColor.a;
+        return barColor;
     }
 
     private void FadeOut(float duration)
@@ -78,13 +88,12 @@ public class ManaLightAnimation : MonoBehaviour
         manaPlusPlus.text = sb.ToString();
         manaPlusPlus.enabled = true;
 
-        // asked every time, never cached: the class is taken mid-run
         Color textColor = manaPlusPlusStartColor;
         if (PlayerClassHud.Instance && PlayerClassHud.Instance.TryGetResourceColor(resource, out Color barColor))
         {
             textColor = barColor;
         }
-        manaPlusPlus.color = new Color(textColor.r, textColor.g, textColor.b, 0); // the fade below brings the alpha back
+        manaPlusPlus.color = new Color(textColor.r, textColor.g, textColor.b, 0);
         manaPlusPlusRect.localPosition = new Vector2(manaPlusPlusRect.localPosition.x, manaPlusPlusStartingPos);
         manaPlusPlus.DOKill();
         manaPlusPlusRect.DOKill();

@@ -1,32 +1,27 @@
 using UnityEngine;
 
-// Lives on each enemy: registers it with the global counter when it becomes active.
-// Counting is idempotent so pooled reuse, the death event (deCountMe) and pool
-// release (OnDisable) can never double-count.
 public class EnemyCounter_PerUnitComponent : MonoBehaviour
 {
     private bool counted;
 
-    private void OnEnable()
-    {
-        if (counted || EnemyCounter.instance == null) return;
-        counted = true;
-        EnemyCounter.instance.Register();
-    }
+    private void OnEnable() => Register();
 
-    private void Start()
-    {
-        // scene-placed enemies may enable before the counter's Awake
-        if (!counted && EnemyCounter.instance != null)
-        {
-            counted = true;
-            EnemyCounter.instance.Register();
-        }
-    }
+    private void Start() => Register();
 
     public void deCountMe()
     {
         Deregister();
+    }
+
+    public void StopCounting() => Deregister();
+
+    public void CountAgain() => Register();
+
+    private void Register()
+    {
+        if (counted || EnemyCounter.instance == null) return;
+        counted = true;
+        EnemyCounter.instance.Register();
     }
 
     private void OnDisable()

@@ -7,6 +7,8 @@ public class AiHealthUiBar : MonoBehaviour
     [SerializeField] private AiHealth aiHealth;
     [SerializeField] private Slider slider;
     [SerializeField] private CanvasFader canvasFader;
+    [SerializeField, Tooltip("FFDE8C - what the bar turns while this one is fighting for you")]
+    private Color alliedFillColor = new(1f, 0.87f, 0.55f);
 
     private static readonly WaitForSeconds waitBeforeFadeOutTime = new(5);
     private Coroutine fadeCoroutine;
@@ -15,13 +17,24 @@ public class AiHealthUiBar : MonoBehaviour
     private Quaternion originalLocalRotation;
     private Vector3 originalLocalScale;
 
+    private Image fillImage;
+    private Color hostileFillColor;
+
     private void Awake()
     {
-        if (!aiHealth) aiHealth = GetComponentInParent<AiHealth>(true); // the bar hangs off a child
+        if (!aiHealth) aiHealth = GetComponentInParent<AiHealth>(true);
         originalParent = transform.parent;
         originalLocalPosition = transform.localPosition;
         originalLocalRotation = transform.localRotation;
         originalLocalScale = transform.localScale;
+
+        if (slider && slider.fillRect) fillImage = slider.fillRect.GetComponent<Image>();
+        if (fillImage) hostileFillColor = fillImage.color;
+    }
+
+    public void SetAllied(bool allied)
+    {
+        if (fillImage) fillImage.color = allied ? alliedFillColor : hostileFillColor;
     }
 
     public void RefreshBar()
@@ -45,7 +58,7 @@ public class AiHealthUiBar : MonoBehaviour
         }
 
         canvasFader.FadeOut();
-        // stays alive (faded out, detached) so the pooled enemy can reclaim it via ResetBar
+
     }
 
     public void ResetBar()
@@ -58,12 +71,13 @@ public class AiHealthUiBar : MonoBehaviour
         transform.SetParent(originalParent, false);
         transform.localPosition = originalLocalPosition;
         transform.localRotation = originalLocalRotation;
-        transform.localScale = originalLocalScale; // Detach() rewrites localScale to keep world size
+        transform.localScale = originalLocalScale;
+        SetAllied(false);
     }
 
     private void FadeIn()
     {
-        // pooled resets refresh the bar while the enemy is inactive: no coroutine can run
+
         if (!gameObject.activeInHierarchy) return;
 
         if (slider.value > 0)

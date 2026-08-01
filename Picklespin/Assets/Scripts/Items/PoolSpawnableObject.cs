@@ -7,6 +7,10 @@ public class PoolSpawnableObject : MonoBehaviour
     private int myOccupiedWaypointIndex;
     private ObjectPool<PoolSpawnableObject> _pool;
 
+    private bool released;
+
+    private void OnEnable() => released = false;
+
     public void SetOccupiedWaypoint(int myWaypointIndex, PickupableBonusesSpawner spawnerScript)
     {
         if (pickupableBonusesSpawner == null)
@@ -19,6 +23,9 @@ public class PoolSpawnableObject : MonoBehaviour
 
     public void FreeUpSlot()
     {
+        if (released) return;
+        released = true;
+
         pickupableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
         pickupableBonusesSpawner.howManyToSpawn++;
         pickupableBonusesSpawner.howManyToSpawn = Mathf.Clamp(
@@ -26,7 +33,7 @@ public class PoolSpawnableObject : MonoBehaviour
             0,
             pickupableBonusesSpawner.startingHowManyToSpawn
         );
-        // whichever pool made it: the spawn points are shared, the pools are not
+
         if (_pool != null) _pool.Release(this);
         else pickupableBonusesSpawner.allPotionsPool.Release(this);
         pickupableBonusesSpawner.avaliableSpawnPointsCount++;

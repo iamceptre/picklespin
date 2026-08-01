@@ -189,7 +189,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: -1766851079683881015}
-        m_TargetAssemblyTypeName: FreeUpWaypointAfterPickingUp, Assembly-CSharp
+        m_TargetAssemblyTypeName: PoolSpawnableObject, Assembly-CSharp
         m_MethodName: FreeUpSlot
         m_Mode: 1
         m_Arguments:

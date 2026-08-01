@@ -12,7 +12,7 @@ public class SelectedSpellDisplay : MonoBehaviour
     {
         selectedSpellText = GetComponent<TMP_Text>();
         attackScript = Attack.instance;
-        selectedSpellText.text = attackScript.currentBullet.spellName;
+        selectedSpellText.text = attackScript.currentBullet.DisplayName;
         selectedSpellText.color = new Color(255, 255, 255, 0);
         UpdateText();
         selectedSpellText.DOKill();
@@ -26,10 +26,9 @@ public class SelectedSpellDisplay : MonoBehaviour
 
     public void UpdateText()
     {
-        selectedSpellText.text = attackScript.currentBullet.spellName;
+        selectedSpellText.text = attackScript.currentBullet.DisplayName;
         Animate();
     }
-
 
     private void Animate()
     {
@@ -42,6 +41,5 @@ public class SelectedSpellDisplay : MonoBehaviour
     {
         selectedSpellText.DOFade(0, 1.37f).SetEase(Ease.InSine).OnComplete(DisableMe);
     }
-
 
 }

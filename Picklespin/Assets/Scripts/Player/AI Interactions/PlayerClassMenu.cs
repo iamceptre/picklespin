@@ -38,12 +38,10 @@ public class PlayerClassMenu : AngelChoiceMenu
             return;
         }
 
-        // once per run, and ahead of the wiring check: even an unwired menu has to
-        // leave behind a class a scene reload carried over
         PlayerClasses.ResetAll();
 
         base.Awake();
-        if (!IsWired) return; // leave Instance null: AngelHeal then goes straight to the wish
+        if (!IsWired) return;
 
         Instance = this;
         BuildCatalog();
@@ -89,8 +87,6 @@ public class PlayerClassMenu : AngelChoiceMenu
         Take(offered[slot]);
     }
 
-    // the class cheat comes through here, so what it hands out can never drift from
-    // what the angel does. False = no such class in the catalog.
     public bool Take(PlayerClassId id)
     {
         foreach (PlayerClassOption option in catalog)
@@ -106,11 +102,9 @@ public class PlayerClassMenu : AngelChoiceMenu
     {
         if (option == null) return;
 
-        // the stat changes the class carries come with Choose - the menu only names them
         PlayerClasses.Choose(option.Id, option.Id == PlayerClassId.Umbral ? LockUmbralSpell() : -1);
     }
 
-    // controls stay locked through the fade - the wish menu takes them next
     protected override void AfterChoice() { }
 
     protected override void OnClosed()
@@ -118,8 +112,7 @@ public class PlayerClassMenu : AngelChoiceMenu
         if (AngelWishMenu.Instance)
         {
             AngelWishMenu.Instance.AskForWish();
-            // it declines to open with nothing left to grant, and only the menu
-            // that is up may hold the controls
+
             if (AngelWishMenu.Instance.IsAsking) return;
         }
 
@@ -144,7 +137,7 @@ public class PlayerClassMenu : AngelChoiceMenu
             "no flesh to lose - magicka is your life");
 
         Add(PlayerClassId.Lightfoot, "<b>Lightfoot</b>",
-            "speed becomes damage - dash farther, break sooner, your feel weak");
+            "speed becomes damage - dash farther, go faster, you feel weak");
 
         Add(PlayerClassId.Umbral, "<b>Umbral</b>",
             "one black bar, one black spell - you thrive while the dark runs deep");

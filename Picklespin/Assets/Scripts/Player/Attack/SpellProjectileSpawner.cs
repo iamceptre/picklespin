@@ -1,18 +1,14 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-// One pool per spell, indexed by spell ID. The prefab list is deliberately not
-// duplicated here: a second copy that drifted would only surface on the first shot.
 public class SpellProjectileSpawner : MonoBehaviour
 {
     public static SpellProjectileSpawner instance;
 
     private Bullet[] bulletPrefab;
 
-    // a spell past the end gets the default capacity, so a new one needs no entry
     private static readonly int[] PoolSize = { 8, 3, 4 };
 
-    // the light spell keeps one instance alive, so it must not be warmed up
     private const int LightSpellID = 2;
 
     private CachedCameraMain cachedCameraMain;
@@ -31,7 +27,6 @@ public class SpellProjectileSpawner : MonoBehaviour
         cachedCameraMain = CachedCameraMain.instance;
         spellCastPoint = cachedCameraMain.cachedTransform;
 
-        // Attack registers the spells; Start, so its Awake has assigned the instance
         bulletPrefab = Attack.instance ? Attack.instance.bulletPrefab : null;
         if (bulletPrefab == null || bulletPrefab.Length == 0)
         {
@@ -66,6 +61,8 @@ public class SpellProjectileSpawner : MonoBehaviour
             {
                 Bullet spell = Instantiate(bulletPrefab[spellID]);
                 spell.SetPool(pool);
+
+                spell.gameObject.SetActive(false);
                 return spell;
             },
             OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject,
@@ -104,7 +101,13 @@ public class SpellProjectileSpawner : MonoBehaviour
 
     private void RetirePreviousLight(Bullet newest)
     {
-        if (previousLightSpell != null) previousLightSpell.ReturnToPool();
+        if (previousLightSpell != null && previousLightSpell != newest) Retire(previousLightSpell);
         previousLightSpell = newest;
+    }
+
+    private static void Retire(Bullet light)
+    {
+        if (light.lightSpell && light.lightSpell.isActiveAndEnabled) light.lightSpell.FadeOut();
+        else light.ReturnToPool();
     }
 }

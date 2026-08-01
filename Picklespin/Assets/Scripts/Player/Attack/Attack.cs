@@ -26,8 +26,8 @@ public class Attack : MonoBehaviour
     [SerializeField] SpellCooldown spellCooldown;
     [SerializeField] NoManaLightAnimation noManaLightAnimation;
     public float castingProgress = 0;
-    // read live, so a casting-time wish applies to the spell already in hand
-    float CurrentCastDuration => currentBullet ? currentBullet.castDuration * WishUpgrades.CastDurationMultiplier : 0f;
+
+    float CurrentCastDuration => currentCasting ? currentCasting.Duration * WishUpgrades.CastDurationMultiplier : 0f;
     int CurrentMagickaCost => currentBullet
         ? Mathf.Max(1, Mathf.RoundToInt(currentBullet.magickaCost * WishUpgrades.MagickaCostMultiplier))
         : 0;
@@ -35,7 +35,9 @@ public class Attack : MonoBehaviour
     [SerializeField] UnityEvent castingCompleted;
     [SerializeField] UnityEvent CancelCasting;
     public Bullet currentBullet;
-    CameraShakeManagerV2 camShakeManager;
+
+    SpellCameraShake currentShake;
+    SpellCasting currentCasting;
     [SerializeField] InputActionReference primaryAction;
     [SerializeField] InputActionReference secondaryAction;
     bool isPrimaryPressed;
@@ -44,8 +46,15 @@ public class Attack : MonoBehaviour
 
     void Awake()
     {
-        currentBullet = bulletPrefab[selectedBulletIndex];
+        SetCurrentBullet(selectedBulletIndex);
         if (instance != null && instance != this) Destroy(this); else instance = this;
+    }
+
+    void SetCurrentBullet(int index)
+    {
+        currentBullet = bulletPrefab[index];
+        currentShake = currentBullet ? currentBullet.GetComponent<SpellCameraShake>() : null;
+        currentCasting = currentBullet ? currentBullet.GetComponent<SpellCasting>() : null;
     }
 
     void Start()
@@ -55,7 +64,6 @@ public class Attack : MonoBehaviour
         playCastBlast = PlayCastBlast.instance;
         ammoDisplay = AmmoDisplay.instance;
         spellProjectileSpawner = SpellProjectileSpawner.instance;
-        camShakeManager = CameraShakeManagerV2.instance;
     }
 
     void OnEnable()
@@ -105,14 +113,13 @@ public class Attack : MonoBehaviour
         isSecondaryPressed = false;
     }
 
-    // the cooldown bar is shared with the dash: neither chains into the other
     public bool CooldownReady => castCooldownAllow;
 
     public void BeginCooldown(float seconds) => spellCooldown.StartCooldown(seconds);
 
     void TryShoot()
     {
-        // a cast held through a dash waits its turn; nothing has been spent yet
+
         if (!castCooldownAllow) return;
         if (ammo.ammo >= CurrentMagickaCost) SuccesfulShoot(); else ShootFail();
     }
@@ -129,7 +136,7 @@ public class Attack : MonoBehaviour
     void SuccesfulShoot()
     {
         handAnimator.SetTrigger("Spell_Shot_Quick");
-        playCastBlast.StopCastingParticles(selectedBulletIndex); // no-ops for a spell with no casting VFX
+        playCastBlast.StopCastingParticles(selectedBulletIndex);
         playCastBlast.Play(selectedBulletIndex);
         castCooldownTime = currentBullet.myCooldown * PlayerClasses.SpellCooldownMultiplier;
         ammo.ammo -= CurrentMagickaCost;
@@ -137,10 +144,9 @@ public class Attack : MonoBehaviour
         ammo.MagickaChanged();
         spellCooldown.StartCooldown(castCooldownTime);
         spellProjectileSpawner.SpawnSpell(selectedBulletIndex);
-        SendShakeSignalShoot(selectedBulletIndex);
+        SendShakeSignalShoot();
     }
 
-    // false = empty prefab slot, and the caller leaves the inventory alone
     public bool LockToSpell(int spellIndex)
     {
         if (bulletPrefab == null || spellIndex < 0 || spellIndex >= bulletPrefab.Length || !bulletPrefab[spellIndex])
@@ -156,7 +162,7 @@ public class Attack : MonoBehaviour
     public void SelectSpell(int selectedSpell)
     {
         selectedBulletIndex = selectedSpell;
-        currentBullet = bulletPrefab[selectedBulletIndex];
+        SetCurrentBullet(selectedBulletIndex);
         changeSelectedSpell.Invoke();
         pullupEventInstance = RuntimeManager.CreateInstance(currentBullet.pullupSound);
         pullupEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -171,8 +177,8 @@ public class Attack : MonoBehaviour
             playCastBlast.StartCastingParticles(selectedBulletIndex);
             PlayerMovement.Instance.SlowMeDown();
             handAnimator.SetTrigger("Spell_Casting");
-            SendShakeSignalCastStart(selectedBulletIndex);
-            float castDuration = CurrentCastDuration; // fixed for this cast
+            SendShakeSignalCastStart();
+            float castDuration = CurrentCastDuration;
             while (castingProgress < castDuration)
             {
                 if (!isPrimaryPressed || isSecondaryPressed)
@@ -215,28 +221,13 @@ public class Attack : MonoBehaviour
         if (castingRoutine != null) StopCoroutine(castingRoutine);
     }
 
-    void SendShakeSignalShoot(int index)
+    void SendShakeSignalShoot()
     {
-        switch (index)
-        {
-            case 0:
-                camShakeManager.ShakeSelected(4);
-                camShakeManager.ShakeHand(0.3f, 0.2f, 30);
-                break;
-            case 1:
-                camShakeManager.ShakeSelected(5);
-                camShakeManager.ShakeHand(0.4f, 0.2f, 15);
-                break;
-        }
+        if (currentShake) currentShake.PlayShoot();
     }
 
-    void SendShakeSignalCastStart(int index)
+    void SendShakeSignalCastStart()
     {
-        switch (index)
-        {
-            case 1:
-                camShakeManager.ShakeSelected(7);
-                break;
-        }
+        if (currentShake) currentShake.PlayCastStart();
     }
 }

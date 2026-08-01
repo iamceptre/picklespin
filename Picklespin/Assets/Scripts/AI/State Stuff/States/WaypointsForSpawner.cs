@@ -36,10 +36,11 @@ public class WaypointsForSpawner : State
 
     public override State RunCurrentState()
     {
-        if (aiVision.seeingPlayer)
+
+        if (aiVision.seeingPlayer || attackPlayer.HasGrudge)
             return attackPlayer;
 
-        aiPath.maxSpeed = idleSpeed * WishUpgrades.EnemySpeedMultiplier;
+        aiPath.maxSpeed = WanderSpeed;
 
         if (waypoints != null && waypoints.Length > 0)
         {
@@ -68,9 +69,12 @@ public class WaypointsForSpawner : State
         if (distance > 6f && !canIncrement) canIncrement = true;
     }
 
+    float WanderSpeed =>
+        idleSpeed * WishUpgrades.EnemySpeedMultiplier * ConvertedAlly.SpeedMultiplierAt(transform.position);
+
     void UpdateDestination()
     {
-        aiPath.maxSpeed = idleSpeed * WishUpgrades.EnemySpeedMultiplier;
+        aiPath.maxSpeed = WanderSpeed;
         aiPath.rotationSpeed = rotationSpeed;
         if (waypoints.Length > 0)
         {

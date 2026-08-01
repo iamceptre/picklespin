@@ -1,7 +1,7 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-
 
 public class ItemAfterPickingUp : MonoBehaviour
 {
@@ -20,6 +20,11 @@ public class ItemAfterPickingUp : MonoBehaviour
 
     [SerializeField] private bool deactivateAfterPickup = false;
 
+    private const float FadeOutSeconds = 0.5f;
+
+    private bool pickedUp;
+    private Coroutine returnRoutine;
+
     void Awake()
     {
         myCollider = GetComponent<Collider>();
@@ -37,7 +42,7 @@ public class ItemAfterPickingUp : MonoBehaviour
         }
 
         myLightIntestivity = myLight.intensity;
-        
+
     }
 
     private void Start()
@@ -47,6 +52,9 @@ public class ItemAfterPickingUp : MonoBehaviour
 
     public void Pickup()
     {
+        if (pickedUp) return;
+        pickedUp = true;
+
         handBopPickup.Do();
         transform.DOKill();
         myLight.DOKill();
@@ -56,49 +64,56 @@ public class ItemAfterPickingUp : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!myCollider.enabled) {
-            myCollider.enabled = true;
-            FadeIn();
+        pickedUp = false;
+        returnRoutine = null;
+
+        bool wasTaken = !myCollider.enabled;
+        myCollider.enabled = true;
+        rend.enabled = true;
+        if (particle != null) emission.enabled = true;
+
+        if (myLight == null) return;
+
+        myLight.DOKill();
+        myLight.intensity = wasTaken ? 0f : myLightIntestivity;
+        if (wasTaken) FadeIn();
+    }
+
+    private void OnDisable()
+    {
+        transform.DOKill();
+        if (myLight)
+        {
+            myLight.DOKill();
+            myLight.intensity = 0f;
         }
     }
 
     private void FadeIn()
     {
-        rend.enabled = true;
-
-
-        if (particle != null)
-        {
-            emission.enabled = true;
-        }
-
-        if (myLight != null)
-        {
-            myLight.DOIntensity(myLightIntestivity, 0.5f);
-        }
-
+        myLight.DOIntensity(myLightIntestivity, 0.5f).SetUpdate(true);
     }
-
 
     private void FadeOut()
     {
-
         rend.enabled = false;
-
 
         if (particle != null)
         {
             emission.enabled = false;
         }
 
-        if (myLight != null)
-        {
-            myLight.DOIntensity(0, 0.5f).OnComplete(DestroyMe);
-        }
-        else
-        {
-            DestroyMe();
-        }
+        if (myLight != null) myLight.DOIntensity(0, FadeOutSeconds).SetUpdate(true);
+
+        if (returnRoutine != null) StopCoroutine(returnRoutine);
+        returnRoutine = StartCoroutine(ReturnWhenFaded());
+    }
+
+    private IEnumerator ReturnWhenFaded()
+    {
+        yield return new WaitForSecondsRealtime(FadeOutSeconds);
+        returnRoutine = null;
+        DestroyMe();
     }
 
     private void DestroyMe()

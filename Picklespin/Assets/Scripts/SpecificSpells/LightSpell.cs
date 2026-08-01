@@ -13,7 +13,6 @@ public class LightSpell : MonoBehaviour
     private WaitForSeconds timeBeforeOut;
     [SerializeField] private Bullet bullet;
 
-
     void Awake()
     {
         timeBeforeOut = new WaitForSeconds(lightDuration);
@@ -31,6 +30,13 @@ public class LightSpell : MonoBehaviour
         myTransform.DOShakePosition(lightDuration, 0.1f, 5, 90, false, false, ShakeRandomnessMode.Harmonic);
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        myLight.DOKill();
+        myTransform.DOKill();
+        myTransform.localPosition = Vector3.zero;
+    }
 
     private void FadeIn()
     {
@@ -39,6 +45,7 @@ public class LightSpell : MonoBehaviour
 
     private void RunRoutine()
     {
+        if (!isActiveAndEnabled) return;
         StartCoroutine(WaitAndFadeOut());
     }
 
@@ -51,8 +58,12 @@ public class LightSpell : MonoBehaviour
 
     public void FadeOut()
     {
-            StopAllCoroutines();
-            myLight.DOColor(Color.black, 1).OnComplete(Die);
+        if (!isActiveAndEnabled) return;
+
+        StopAllCoroutines();
+
+        myLight.DOKill();
+        myLight.DOColor(Color.black, 1).OnComplete(Die);
     }
 
    private void Die()

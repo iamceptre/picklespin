@@ -15038,6 +15038,12 @@ GameObject:
   - component: {fileID: -9016218598823046184}
   - component: {fileID: 4632042321731720956}
   - component: {fileID: 2338245104682298501}
+  - component: {fileID: 6610000000000000101}
+  - component: {fileID: 6610000000000000102}
+  - component: {fileID: 6610000000000000103}
+  - component: {fileID: 6610000000000000104}
+  - component: {fileID: 6610000000000000105}
+  - component: {fileID: 6610000000000000106}
   m_Layer: 12
   m_Name: Spell_Bullet_Sin
   m_TagString: Untagged
@@ -15076,23 +15082,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellID: 1
-  spellName: Sin
-  damage: 10
-  useSpeedDamageMultiplier: 1
+  spell: 3
   magickaCost: 12
   speed: 150
   myCooldown: 0.5
-  castDuration: 0
   timeBeforeOff: 4
-  fadeOutLight: 0
-  isRanged: 1
-  rangeRadius: 6
-  aoeRequiresChargedBar: 1
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 129
-  explosionFX: {fileID: 3036575118500837913}
+  timeAfterImpact: 5
   shootSound:
     Guid:
       Data1: -517294522
@@ -15107,25 +15102,8 @@ MonoBehaviour:
       Data3: -645807224
       Data4: 1870522865
     Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_UI_SELECT
-  hitWall: {fileID: 0}
-  doesThisSpellSetOnFire: 0
-  handCastingPoint: {fileID: 0}
-  explosionSoundEmitter: {fileID: 3005831588898276106}
-  explosionReflectionsSoundEmitter: {fileID: 176874182128313843}
-  iWillBeCritical: 0
-  hitSomething: 0
-  _particleSystem:
-  - {fileID: 4712923549206713878}
-  - {fileID: 8312430218449341608}
-  - {fileID: 6409948739457110738}
-  - {fileID: 3036575118500837913}
-  _light: {fileID: 3909137637185279755}
   lightSpell: {fileID: 0}
-  rocketJumpForce: 4
-  rocketJumpUpwardsModifier: 1
-  decalLayerMask:
-    serializedVersion: 2
-    m_Bits: 17408
+  hitSomething: 0
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -15230,7 +15208,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 2
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 3
 --- !u!114 &9023279671805228162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15318,6 +15296,141 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 5.4
   OverrideMaxDistance: 70
+--- !u!114 &6610000000000000101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4d6e8c0b2f4a6d8e0c2a4d6e8c0b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  useSpeedDamageMultiplier: 1
+  iWillBeCritical: 0
+--- !u!114 &6610000000000000102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b5e7f9d1c3a5b7d9e1c3a5b7d9e1c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 6
+  requiresChargedBar: 1
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 8448
+--- !u!114 &6610000000000000103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6f8a0e2d4b6c8e0a2d4b6c8e0a2d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 4
+  upwardsModifier: 1
+  radius: 6
+  affectedLayers:
+    serializedVersion: 2
+    m_Bits: 8320
+--- !u!114 &6610000000000000104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d7a9b1f3e5c7d9f1b3e5c7d9f1b3e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionFX: {fileID: 3036575118500837913}
+  flightParticles:
+  - {fileID: 4712923549206713878}
+  - {fileID: 8312430218449341608}
+  - {fileID: 6409948739457110738}
+  - {fileID: 3036575118500837913}
+  spellLight: {fileID: 3909137637185279755}
+  fadeOutLight: 0
+  explosionSoundEmitter: {fileID: 3005831588898276106}
+  explosionReflectionsSoundEmitter: {fileID: 176874182128313843}
+  hitWall: {fileID: 0}
+--- !u!114 &6610000000000000105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8b0c2a4f6d8e0a2c4f6d8e0a2c4f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decalType: 0
+  decalLayerMask:
+    serializedVersion: 2
+    m_Bits: 17408
+--- !u!114 &6610000000000000106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f9c1d3b5a7e9f1c3d5b7a9e1f3c5d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castStart:
+    cameraShake:
+      strength: 0
+      rotationAmount: {x: 0.2, y: 0.2, z: 0.2}
+      numberOfShakes: 3
+      speed: 50
+      decay: 0.6
+      uiShakeModifier: 0
+    handStrength: 0
+    handDuration: 0.2
+    handVibrato: 10
+  shoot:
+    cameraShake:
+      strength: 1.1
+      rotationAmount: {x: 0.5, y: 0.5, z: 1.3}
+      numberOfShakes: 5
+      speed: 70
+      decay: 0.65
+      uiShakeModifier: 0
+    handStrength: 0.3
+    handDuration: 0.25
+    handVibrato: 30
+  impact:
+    cameraShake:
+      strength: 0.2
+      rotationAmount: {x: 0.2, y: 0.2, z: 0.2}
+      numberOfShakes: 3
+      speed: 50
+      decay: 0.6
+      uiShakeModifier: 0
+    handStrength: 0.05
+    handDuration: 0.2
+    handVibrato: 10
+  impactMaxDistance: 0
 --- !u!1 &8727596881338035344
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,10 +24,8 @@ public static class PlayerClasses
 
     public static bool MagickaIsHealth => Chosen is PlayerClassId.Vesper or PlayerClassId.Umbral;
 
-    // sprinting and jumping come out of the magicka pool (Ammo.SpendAsStamina)
     public static bool StaminaSharesMagicka => Chosen == PlayerClassId.Umbral;
 
-    // Umbral carries one spell and no inventory; -1 = the player picks freely
     public static int LockedSpellIndex { get; private set; } = -1;
 
     public const float ChargedBarThreshold = 0.5f;
@@ -44,7 +42,6 @@ public static class PlayerClasses
     public const float BlastfoolAirborneDamage = 0.7f;
     public const float BlastfoolRocketJumpDamage = 2f;
 
-
     public static float FlightDamageMultiplier
     {
         get
@@ -57,17 +54,22 @@ public static class PlayerClasses
         }
     }
 
-    public static float RecoilScale => Chosen == PlayerClassId.Blastfool ? 0.1f : 1f;
-
     public static bool PiercingProjectiles => Chosen == PlayerClassId.Bastion;
-    public static float SpellCooldownMultiplier => Chosen == PlayerClassId.Bastion ? 1.5f : 1f;
+    public static float SpellCooldownMultiplier => Chosen == PlayerClassId.Bastion ? 1.3f : 1f;
 
     public static bool LightSpellConverts => Chosen == PlayerClassId.Sanctus;
 
     public static float ProjectileDamageMultiplier => Chosen switch
     {
-        PlayerClassId.Bastion => 2f,
+        PlayerClassId.Bastion => 1.6f,
         PlayerClassId.Sanctus => 0.25f,
+        _ => 1f
+    };
+
+    public static float RecoilScale => Chosen switch
+    {
+        PlayerClassId.Blastfool => 0.1f,
+        PlayerClassId.Lightfoot => 0.5f,
         _ => 1f
     };
 
@@ -79,7 +81,6 @@ public static class PlayerClasses
         ApplyStatChanges(id);
         Changed?.Invoke();
     }
-
 
     private static void ApplyStatChanges(PlayerClassId id)
     {
@@ -108,11 +109,11 @@ public static class PlayerClasses
                 break;
 
             case PlayerClassId.Bastion:
-                if (PlayerHP.Instance) PlayerHP.Instance.MultiplyMaxHp(2f);
+                if (PlayerHP.Instance) PlayerHP.Instance.MultiplyMaxHp(1.8f);
                 if (PlayerMovement.Instance)
                 {
-                    PlayerMovement.Instance.MultiplyMaxSpeed(0.8f);
-                    PlayerMovement.Instance.MultiplyJumpPower(0.8f);
+                    PlayerMovement.Instance.MultiplyMaxSpeed(0.75f);
+                    PlayerMovement.Instance.MultiplyJumpPower(0.75f);
                 }
                 break;
         }

@@ -8,7 +8,7 @@ public class SpellDecalManager : MonoBehaviour
 
     [SerializeField] private List<DecalType> decalTypes;
 
-    private Dictionary<int, ObjectPool<SpellDecalDissolve>> decalPools = new Dictionary<int, ObjectPool<SpellDecalDissolve>>();
+    private readonly Dictionary<SpellDecalType, ObjectPool<SpellDecalDissolve>> decalPools = new();
 
     private void Awake()
     {
@@ -26,6 +26,14 @@ public class SpellDecalManager : MonoBehaviour
     {
         foreach (var decalType in decalTypes)
         {
+            if (decalType == null || !decalType.decalPrefab) continue;
+
+            if (decalPools.ContainsKey(decalType.decalType))
+            {
+                Debug.LogWarning($"{nameof(SpellDecalManager)}: two entries for {decalType.decalType} - keeping the first", this);
+                continue;
+            }
+
             var pool = new ObjectPool<SpellDecalDissolve>(
                 createFunc: () => CreateDecal(decalType.decalPrefab),
                 actionOnGet: (decal) => decal.gameObject.SetActive(true),
@@ -36,9 +44,9 @@ public class SpellDecalManager : MonoBehaviour
                 maxSize: decalType.pooledCount * 2
             );
 
-            decalPools.Add(decalType.spellID, pool);
+            decalPools.Add(decalType.decalType, pool);
 
-            PreInstantiateDecals(decalType.spellID, pool, decalType.pooledCount);
+            PreInstantiateDecals(pool, decalType.pooledCount);
         }
     }
 
@@ -48,7 +56,7 @@ public class SpellDecalManager : MonoBehaviour
         return decal;
     }
 
-    private void PreInstantiateDecals(int spellID, ObjectPool<SpellDecalDissolve> pool, int count)
+    private void PreInstantiateDecals(ObjectPool<SpellDecalDissolve> pool, int count)
     {
         var tempList = new SpellDecalDissolve[count];
 
@@ -63,26 +71,26 @@ public class SpellDecalManager : MonoBehaviour
         }
     }
 
-    public void SpawnDecal(Vector3 position, Quaternion rotation, int spellID, int hitTag)
+    public void SpawnDecal(Vector3 position, Quaternion rotation, SpellDecalType type, int hitTag)
     {
-        if (!decalPools.TryGetValue(spellID, out var pool)) return;
+        if (!decalPools.TryGetValue(type, out var pool)) return;
 
         var decal = pool.Get();
         if (decal == null) return;
 
         decal.transform.SetPositionAndRotation(position, rotation);
-        decal.Initialize((d) => ReturnDecal(spellID, d), hitTag);
+        decal.Initialize((d) => ReturnDecal(type, d), hitTag);
     }
 
-    private void ReturnDecal(int spellID, SpellDecalDissolve decal)
+    private void ReturnDecal(SpellDecalType type, SpellDecalDissolve decal)
     {
-        if (decalPools.TryGetValue(spellID, out ObjectPool<SpellDecalDissolve> pool))
+        if (decalPools.TryGetValue(type, out ObjectPool<SpellDecalDissolve> pool))
         {
             pool.Release(decal);
         }
         else
         {
-            Debug.LogWarning($"No decal pool found to return decal for spellID {spellID}.");
+            Debug.LogWarning($"No decal pool found to return a {type} decal.");
             Destroy(decal.gameObject);
         }
     }

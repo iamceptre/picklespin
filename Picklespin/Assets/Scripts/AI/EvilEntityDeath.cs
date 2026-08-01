@@ -7,12 +7,16 @@ public class EvilEntityDeath : MonoBehaviour
     [SerializeField] private UnityEvent deathEvent;
     [Tooltip("all auto-found on this object or its children if left empty")]
     [SerializeField] private AiReferences refs;
+    [SerializeField] private CameraShakeSettings deathShake = new()
+    {
+        rotationAmount = new Vector3(2.43f, 2.43f, 5f), numberOfShakes = 8, speed = 65f, decay = 0.55f, uiShakeModifier = 1f
+    };
+    [SerializeField, Tooltip("no death shake or screen flash past this distance from the camera; 0 = at any distance")]
+    private float reactionMaxDistance = 40f;
 
     private CameraShakeManagerV2 camShakeManager;
     private ScreenFlashTint screenFlashTint;
 
-    // Die() is reachable from Inspector events too, and nothing downstream is
-    // idempotent: a second StartDissolve() latches the dissolve material for good
     private bool died;
 
     private void Awake()
@@ -22,7 +26,7 @@ public class EvilEntityDeath : MonoBehaviour
 
     private void OnEnable()
     {
-        died = false; // pooled reuse
+        died = false;
     }
 
     private void Start()
@@ -30,7 +34,6 @@ public class EvilEntityDeath : MonoBehaviour
         camShakeManager = CameraShakeManagerV2.instance;
         screenFlashTint = ScreenFlashTint.instance;
     }
-
 
     public void Die()
     {
@@ -40,6 +43,8 @@ public class EvilEntityDeath : MonoBehaviour
         if (refs)
         {
             refs.DisableAllColliders();
+
+            if (refs.TryGetComponent(out ConvertedAlly ally)) ally.Revert();
 
             if (refs.stateManager) refs.stateManager.StopAI();
             if (refs.Vision) refs.Vision.ResetVisionState();
@@ -54,17 +59,27 @@ public class EvilEntityDeath : MonoBehaviour
             if (refs.Dissolver) refs.Dissolver.StartDissolve();
         }
 
-        if (screenFlashTint) screenFlashTint.Flash(6);
-        StartCoroutine(ShakeLater());
+        if (WithinReactionRange())
+        {
+            if (screenFlashTint) screenFlashTint.Flash(6);
+            StartCoroutine(ShakeLater());
+        }
 
         deathEvent.Invoke();
     }
 
+    private bool WithinReactionRange()
+    {
+        if (reactionMaxDistance <= 0f) return true;
+
+        var camera = CachedCameraMain.instance;
+        return !camera || Vector3.Distance(transform.position, camera.cachedTransform.position) <= reactionMaxDistance;
+    }
 
     private IEnumerator ShakeLater()
     {
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
-        if (camShakeManager) camShakeManager.ShakeSelected(6);
+        if (camShakeManager) camShakeManager.Shake(deathShake);
     }
 }

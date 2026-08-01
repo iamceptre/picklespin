@@ -3,7 +3,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-// the three player resources, in the order BarLightsAnimation numbers its bars
 public enum HudResource { Health = 0, Stamina = 1, Magicka = 2 }
 
 public class PlayerClassHud : MonoBehaviour
@@ -25,6 +24,11 @@ public class PlayerClassHud : MonoBehaviour
     [SerializeField, Tooltip("how long an icon takes to slide to its new row")]
     private float iconMoveDuration = 0.4f;
 
+    [Header("Bar light glow - one colour per bar type, set by hand for each")]
+    [SerializeField, Tooltip("FF7C7C")] private Color healthLightColor = new(1f, 0.4862745f, 0.4862745f);
+    [SerializeField, Tooltip("ADE78A")] private Color staminaLightColor = new(0.6784314f, 0.9058824f, 0.5411765f);
+    [SerializeField, Tooltip("8181FF")] private Color magickaLightColor = new(0.5058824f, 0.5058824f, 1f);
+
     [Header("Umbral")]
     [SerializeField, Tooltip("the magicka bar's fill and all three icons take this colour")]
     private Color umbralBarColor = new(0.06f, 0.05f, 0.08f, 1f);
@@ -32,6 +36,8 @@ public class PlayerClassHud : MonoBehaviour
     private Color umbralBackgroundColor = new(0.42f, 0.41f, 0.46f, 1f);
     [SerializeField, Tooltip("the BarEase damage ghost - must differ from the fill, or the trailing shadow reads as the bar itself lagging")]
     private Color umbralGhostColor = new(0.24f, 0.22f, 0.28f, 1f);
+    [SerializeField, Tooltip("the glow over the black bar - every resource Umbral spends flashes there")]
+    private Color umbralLightColor = new(0.7176471f, 0.6509804f, 0.9098039f);
     [SerializeField, Tooltip("the magicka bar's background graphics - auto-found from each slider's \"Background\" child if left empty")]
     private Graphic[] magickaBarBackgrounds;
 
@@ -40,6 +46,8 @@ public class PlayerClassHud : MonoBehaviour
     private GameObject speedIndicatorRoot;
     [SerializeField, Tooltip("hidden for Umbral, who carries a single spell")]
     private GameObject spellInventoryBarRoot;
+    [SerializeField, Tooltip("how long a piece takes to fade in when a class turns it on")]
+    private float fadeInDuration = 0.4f;
 
     private readonly List<Graphic> magickaFills = new();
     private readonly List<Color> magickaFillStartColors = new();
@@ -60,6 +68,50 @@ public class PlayerClassHud : MonoBehaviour
 
     private readonly Color[] resourceColors = new Color[IconCount];
     private readonly bool[] resourceColorKnown = new bool[IconCount];
+
+    private HudPiece healthBar;
+    private HudPiece staminaBar;
+    private HudPiece magickaBar;
+    private HudPiece speedIndicator;
+    private HudPiece spellInventoryBar;
+
+    private class HudPiece
+    {
+        private readonly GameObject root;
+        private readonly Canvas canvas;
+        private readonly CanvasGroup group;
+        private readonly Behaviour driver;
+        private bool visible;
+
+        public HudPiece(GameObject root)
+        {
+            this.root = root;
+            canvas = Ensure<Canvas>(root);
+            group = Ensure<CanvasGroup>(root);
+
+            driver = root.GetComponent<SpeedIndicator>();
+            visible = canvas.enabled;
+        }
+
+        private static T Ensure<T>(GameObject root) where T : Component =>
+            root.TryGetComponent(out T component) ? component : root.AddComponent<T>();
+
+        public void Set(bool show, float fadeDuration)
+        {
+            if (show == visible) return;
+            visible = show;
+
+            group.DOKill();
+
+            if (show && !root.activeSelf) root.SetActive(true);
+            canvas.enabled = show;
+            if (driver) driver.enabled = show;
+            if (!show) return;
+
+            group.alpha = 0f;
+            group.DOFade(1f, fadeDuration).SetUpdate(true);
+        }
+    }
 
     private void Awake()
     {
@@ -82,24 +134,30 @@ public class PlayerClassHud : MonoBehaviour
             resourceColorKnown[i] = true;
         }
 
+        healthBar = Build(healthBarRoot);
+        staminaBar = Build(staminaBarRoot);
+        magickaBar = Build(magickaBarRoot);
+        speedIndicator = Build(speedIndicatorRoot);
+        spellInventoryBar = Build(spellInventoryBarRoot);
+
         CacheMagickaFills();
     }
 
+    private static HudPiece Build(GameObject root) => root ? new HudPiece(root) : null;
+
     private void OnEnable() => PlayerClasses.Changed += Apply;
 
-    // a static event outlives the scene: never leave a destroyed HUD subscribed
     private void OnDisable() => PlayerClasses.Changed -= Apply;
 
-    // PlayerHP and Ammo assign their instances in Awake, and Apply talks to both
     private void Start() => Apply();
 
     public void Apply()
     {
         bool blackBar = PlayerClasses.Chosen == PlayerClassId.Umbral;
 
-        SetActive(healthBarRoot, !PlayerClasses.MagickaIsHealth);
-        SetActive(staminaBarRoot, !PlayerClasses.StaminaSharesMagicka);
-        SetActive(magickaBarRoot, true);
+        Show(healthBar, !PlayerClasses.MagickaIsHealth);
+        Show(staminaBar, !PlayerClasses.StaminaSharesMagicka);
+        Show(magickaBar, true);
 
         TintMagickaBar(blackBar);
 
@@ -113,18 +171,31 @@ public class PlayerClassHud : MonoBehaviour
             Color rowColor = iconRow[i] == Magicka ? magickaColor : iconStartColors[iconRow[i]];
             Tint(icons[i], rowColor, iconStartColors[i].a);
 
-            // Umbral's row is black with or without a palm icon to sample
             resourceColors[i] = rowColor;
             resourceColorKnown[i] = icons[iconRow[i]] || (iconRow[i] == Magicka && blackBar);
         }
 
         LayoutIcons();
 
-        SetActive(speedIndicatorRoot, PlayerClasses.SpeedDamageActive);
-        SetActive(spellInventoryBarRoot, PlayerClasses.LockedSpellIndex < 0);
+        Show(speedIndicator, PlayerClasses.SpeedDamageActive);
+        Show(spellInventoryBar, PlayerClasses.LockedSpellIndex < 0);
     }
 
-    // false when that row has no icon to sample: the caller keeps its own colour
+    private void Show(HudPiece piece, bool visible) => piece?.Set(visible, fadeInDuration);
+
+    public Color BarLightColor(HudResource bar)
+    {
+
+        if (bar == HudResource.Magicka && PlayerClasses.Chosen == PlayerClassId.Umbral) return umbralLightColor;
+
+        return bar switch
+        {
+            HudResource.Stamina => staminaLightColor,
+            HudResource.Magicka => magickaLightColor,
+            _ => healthLightColor
+        };
+    }
+
     public bool TryGetResourceColor(HudResource resource, out Color color)
     {
         int i = (int)resource;
@@ -137,8 +208,6 @@ public class PlayerClassHud : MonoBehaviour
         return true;
     }
 
-    // a row keeps its own icon and newcomers stack beside it; a bar whose icon left
-    // never gains one, so the two cases cannot collide
     private void LayoutIcons()
     {
         for (int row = 0; row < IconCount; row++)
@@ -163,7 +232,7 @@ public class PlayerClassHud : MonoBehaviour
         Vector2 target = rowAnchor + sharedRowOffset * placeInRow;
 
         rect.DOKill();
-        // unscaled: the class is taken from a menu that runs on unscaled time
+
         rect.DOAnchorPos(target, iconMoveDuration).SetEase(Ease.OutBack).SetUpdate(true);
     }
 
@@ -175,14 +244,12 @@ public class PlayerClassHud : MonoBehaviour
         {
             if (slider.fillRect && slider.fillRect.TryGetComponent(out Graphic fill))
             {
-                // the damage ghost must not take the fill's colour: two black bars on
-                // top of each other read as one bar lagging the pool
+
                 bool isGhost = slider.GetComponent<BarEase>();
                 (isGhost ? magickaGhostFills : magickaFills).Add(fill);
                 (isGhost ? magickaGhostStartColors : magickaFillStartColors).Add(fill.color);
             }
 
-            // "Background" is Unity's stock slider child; only used when nothing was wired
             if (magickaBarBackgrounds != null && magickaBarBackgrounds.Length > 0) continue;
             Transform background = slider.transform.Find("Background");
             if (background && background.TryGetComponent(out Graphic backgroundGraphic))
@@ -228,10 +295,5 @@ public class PlayerClassHud : MonoBehaviour
         if (!target) return;
         color.a = keepAlpha;
         target.color = color;
-    }
-
-    private static void SetActive(GameObject target, bool active)
-    {
-        if (target && target.activeSelf != active) target.SetActive(active);
     }
 }
