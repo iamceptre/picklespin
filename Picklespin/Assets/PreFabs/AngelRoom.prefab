@@ -24621,6 +24621,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1268036715842139914, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: m_Size.y
+      value: 3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1645630405786229440, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_Name
       value: Angel
@@ -24708,6 +24712,10 @@ PrefabInstance:
     - target: {fileID: 9043926049980674515, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181003478555100752, guid: e522aba46691f5b43b88ee97fbb33e9d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -6,7 +6,6 @@ public class AngelRingEyesOpenClose : MonoBehaviour
     [SerializeField] private Material closedEyeMaterial;
     private Material openEyeMaterial;
     [SerializeField] private Renderer[] eyeRends;
-    private Color closedMatColor;
     [SerializeField] private AngelEyeOpen angelEyeOpenManager;
 
     [SerializeField] private TrailRenderer[] ringTrails;
@@ -20,8 +19,6 @@ public class AngelRingEyesOpenClose : MonoBehaviour
         {
             openEyeMaterial = eyeRends[i].material;
         }
-
-        closedMatColor = closedEyeMaterial.color;
 
     }
 

@@ -11,6 +11,7 @@ public class SpawnAnAngelCheat : MonoBehaviour
     private void Start()
     {
         cheatFeedback = CheatActivatedFeedback.instance;
+        DevLog.Info($"{nameof(SpawnAnAngelCheat)} armed: Up Arrow + A forces an angel spawn", this);
     }
 
     void Update()

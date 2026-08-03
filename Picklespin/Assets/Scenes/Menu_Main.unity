@@ -9860,6 +9860,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f99b55d7413d7409e797a220c67c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 0}
+  fpsSlider: {fileID: 0}
+  sensitivitySlider: {fileID: 0}
   fovSlider: {fileID: 0}
   cameraBobSlider: {fileID: 0}
   screenShakeSlider: {fileID: 0}

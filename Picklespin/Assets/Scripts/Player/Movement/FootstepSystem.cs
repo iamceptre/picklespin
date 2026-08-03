@@ -9,7 +9,6 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerMovement playerMovement;
     public StudioEventEmitter footstepEmitter;
-    [SerializeField] private StudioEventEmitter clothEmitter;
     [SerializeField] private StudioEventEmitter evenFootstepLayerEmitter;
     [SerializeField] private StudioEventEmitter jumpEventEmitter;
 
@@ -38,7 +37,7 @@ public class FootstepSystem : MonoBehaviour
         }
         else
         {
-            Debug.LogError("CameraBob instance not found!");
+            DevLog.Error("CameraBob instance not found!");
         }
     }
 

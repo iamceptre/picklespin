@@ -94,7 +94,7 @@ public class Dash : MonoBehaviour
         if (!haveEverDashed)
         {
             haveEverDashed = true;
-            tipManager.Hide(7);
+            if (tipManager) tipManager.Hide(7);
         }
         isDashing = true;
         isWaitingForSecondClick = false;
@@ -148,11 +148,6 @@ public class Dash : MonoBehaviour
         ammoDisplay.Refresh(false);
         staminaBarDisplay.Refresh(false);
         ammo.MagickaChanged();
-    }
-
-    public void ShowDashTip()
-    {
-        tipManager.ShowAndHide(7);
     }
 
     public void MultiplyDashPower(float factor)

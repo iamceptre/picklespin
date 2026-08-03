@@ -16,12 +16,6 @@ public static class InputCompat
         return control != null && control.wasPressedThisFrame;
     }
 
-    public static bool GetKeyUp(KeyCode keyCode)
-    {
-        ButtonControl control = Resolve(keyCode);
-        return control != null && control.wasReleasedThisFrame;
-    }
-
     public static bool AnyKeyDown
     {
         get

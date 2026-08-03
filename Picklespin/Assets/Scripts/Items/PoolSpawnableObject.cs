@@ -3,22 +3,24 @@ using UnityEngine.Pool;
 
 public class PoolSpawnableObject : MonoBehaviour
 {
-    private PickupableBonusesSpawner pickupableBonusesSpawner;
+    private PickableBonusesSpawner pickableBonusesSpawner;
     private int myOccupiedWaypointIndex;
     private ObjectPool<PoolSpawnableObject> _pool;
 
     private bool released;
 
+    public int WaypointIndex => myOccupiedWaypointIndex;
+
     private void OnEnable() => released = false;
 
-    public void SetOccupiedWaypoint(int myWaypointIndex, PickupableBonusesSpawner spawnerScript)
+    public void SetOccupiedWaypoint(int myWaypointIndex, PickableBonusesSpawner spawnerScript)
     {
-        if (pickupableBonusesSpawner == null)
+        if (pickableBonusesSpawner == null)
         {
-            pickupableBonusesSpawner = spawnerScript;
+            pickableBonusesSpawner = spawnerScript;
         }
         myOccupiedWaypointIndex = myWaypointIndex;
-        pickupableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = true;
+        pickableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = true;
     }
 
     public void FreeUpSlot()
@@ -26,21 +28,22 @@ public class PoolSpawnableObject : MonoBehaviour
         if (released) return;
         released = true;
 
-        pickupableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
-        pickupableBonusesSpawner.howManyToSpawn++;
-        pickupableBonusesSpawner.howManyToSpawn = Mathf.Clamp(
-            pickupableBonusesSpawner.howManyToSpawn,
+        pickableBonusesSpawner.Forget(this);
+        pickableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
+        pickableBonusesSpawner.howManyToSpawn++;
+        pickableBonusesSpawner.howManyToSpawn = Mathf.Clamp(
+            pickableBonusesSpawner.howManyToSpawn,
             0,
-            pickupableBonusesSpawner.startingHowManyToSpawn
+            pickableBonusesSpawner.startingHowManyToSpawn
         );
 
         if (_pool != null) _pool.Release(this);
-        else pickupableBonusesSpawner.allPotionsPool.Release(this);
-        pickupableBonusesSpawner.avaliableSpawnPointsCount++;
-        pickupableBonusesSpawner.avaliableSpawnPointsCount = Mathf.Clamp(
-            pickupableBonusesSpawner.avaliableSpawnPointsCount,
+        else pickableBonusesSpawner.allPotionsPool.Release(this);
+        pickableBonusesSpawner.avaliableSpawnPointsCount++;
+        pickableBonusesSpawner.avaliableSpawnPointsCount = Mathf.Clamp(
+            pickableBonusesSpawner.avaliableSpawnPointsCount,
             0,
-            pickupableBonusesSpawner.spawnPoints.Length
+            pickableBonusesSpawner.spawnPoints.Length
         );
     }
 

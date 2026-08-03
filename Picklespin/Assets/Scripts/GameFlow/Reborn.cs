@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using FMODUnity;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -59,20 +58,10 @@ public class Reborn : MonoBehaviour
                 Time.timeScale = 1;
                 _ = DOTween.KillAll();
                 FMODResetManager.instance.ResetFMOD(false);
-                StartCoroutine(SetSceneAtEndOfFrame());
+                SetScene();
             });
             _ = myTween.SetUpdate(UpdateType.Normal, true);
         }
-    }
-
-    // scene unload only applies next frame, so scripts running later this frame
-    // (state ticks, eye/torch fades) can still spawn tweens whose targets die with
-    // the scene — kill again at end of frame or DOTween logs "Tween startup failed"
-    private IEnumerator SetSceneAtEndOfFrame()
-    {
-        yield return new WaitForEndOfFrame();
-        _ = DOTween.KillAll();
-        SetScene();
     }
 
     private void SetScene()

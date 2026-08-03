@@ -15981,7 +15981,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2707532075923604859}
-        m_TargetAssemblyTypeName: EnemyCounter_PerUnitComponent, Assembly-CSharp
+        m_TargetAssemblyTypeName: EnemyCounterPerUnitComponent, Assembly-CSharp
         m_MethodName: deCountMe
         m_Mode: 1
         m_Arguments:
@@ -21294,7 +21294,6 @@ MonoBehaviour:
   aiHealth: {fileID: 9088957210784467254}
   slider: {fileID: 263190420828383618}
   canvasFader: {fileID: 8506893838354737704}
-  alliedFillColor: {r: 1, g: 0.87, b: 0.55, a: 1}
 --- !u!114 &8506893838354737704
 MonoBehaviour:
   m_ObjectHideFlags: 0

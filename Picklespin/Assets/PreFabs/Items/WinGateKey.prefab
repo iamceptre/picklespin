@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7382659634028177984}
   - component: {fileID: 2569141863715250572}
   - component: {fileID: 120025150802992930}
-  - component: {fileID: 387723364033454137}
   - component: {fileID: 4214265944650665070}
   - component: {fileID: 7296072136351230666}
   - component: {fileID: 8959228563045662640}
@@ -140,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf5fb1d5834e9d47824471c44fb670c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  afterPickingUp: {fileID: 387723364033454137}
+  pickableItem: {fileID: 2569141863715250572}
   keyPickUpSound:
     Guid:
       Data1: -1363582052
@@ -149,23 +148,6 @@ MonoBehaviour:
       Data4: 1399644239
     Path: event:/ITEMS/KEY/KEY_PICKUP
   canvasToEnable: {fileID: 0}
---- !u!114 &387723364033454137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4043535874811966541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f4865ec34cb7b40bac5499360c081a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  afterPickingUpEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  isObjectPooled: 0
-  deactivateAfterPickup: 1
 --- !u!65 &4214265944650665070
 BoxCollider:
   m_ObjectHideFlags: 0

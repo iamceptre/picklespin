@@ -19,7 +19,7 @@ public class Attack : MonoBehaviour
     EventInstance pullupEventInstance;
     EventInstance spellcastInstance;
     public Bullet[] bulletPrefab;
-    public int selectedBulletIndex;
+    public SpellId selectedSpell;
     public float castCooldownTime = 0.1f;
     public bool castCooldownAllow = true;
     [SerializeField] UnlockedSpells unlockedSpells;
@@ -46,13 +46,13 @@ public class Attack : MonoBehaviour
 
     void Awake()
     {
-        SetCurrentBullet(selectedBulletIndex);
+        SetCurrentBullet(selectedSpell);
         if (instance != null && instance != this) Destroy(this); else instance = this;
     }
 
-    void SetCurrentBullet(int index)
+    void SetCurrentBullet(SpellId spell)
     {
-        currentBullet = bulletPrefab[index];
+        currentBullet = bulletPrefab[(int)spell];
         currentShake = currentBullet ? currentBullet.GetComponent<SpellCameraShake>() : null;
         currentCasting = currentBullet ? currentBullet.GetComponent<SpellCasting>() : null;
     }
@@ -136,33 +136,34 @@ public class Attack : MonoBehaviour
     void SuccesfulShoot()
     {
         handAnimator.SetTrigger("Spell_Shot_Quick");
-        playCastBlast.StopCastingParticles(selectedBulletIndex);
-        playCastBlast.Play(selectedBulletIndex);
+        playCastBlast.StopCastingParticles(selectedSpell);
+        playCastBlast.Play(selectedSpell);
         castCooldownTime = currentBullet.myCooldown * PlayerClasses.SpellCooldownMultiplier;
         ammo.ammo -= CurrentMagickaCost;
         ammoDisplay.Refresh(false);
         ammo.MagickaChanged();
         spellCooldown.StartCooldown(castCooldownTime);
-        spellProjectileSpawner.SpawnSpell(selectedBulletIndex);
+        spellProjectileSpawner.SpawnSpell(selectedSpell);
         SendShakeSignalShoot();
     }
 
-    public bool LockToSpell(int spellIndex)
+    public bool LockToSpell(SpellId spell)
     {
-        if (bulletPrefab == null || spellIndex < 0 || spellIndex >= bulletPrefab.Length || !bulletPrefab[spellIndex])
+        int slot = (int)spell;
+        if (bulletPrefab == null || slot < 0 || slot >= bulletPrefab.Length || !bulletPrefab[slot])
         {
-            Debug.LogError($"{nameof(Attack)}: no spell prefab at index {spellIndex} to lock to - keeping the normal inventory.", this);
+            DevLog.Error($"{nameof(Attack)}: no spell prefab for {spell} to lock to - keeping the normal inventory.", this);
             return false;
         }
 
-        SelectSpell(spellIndex);
+        SelectSpell(spell);
         return true;
     }
 
-    public void SelectSpell(int selectedSpell)
+    public void SelectSpell(SpellId spell)
     {
-        selectedBulletIndex = selectedSpell;
-        SetCurrentBullet(selectedBulletIndex);
+        selectedSpell = spell;
+        SetCurrentBullet(selectedSpell);
         changeSelectedSpell.Invoke();
         pullupEventInstance = RuntimeManager.CreateInstance(currentBullet.pullupSound);
         pullupEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -174,7 +175,7 @@ public class Attack : MonoBehaviour
         if (ammo.ammo >= CurrentMagickaCost)
         {
             spellCooldown.myCanvas.enabled = true;
-            playCastBlast.StartCastingParticles(selectedBulletIndex);
+            playCastBlast.StartCastingParticles(selectedSpell);
             PlayerMovement.Instance.SlowMeDown();
             handAnimator.SetTrigger("Spell_Casting");
             SendShakeSignalCastStart();
@@ -215,7 +216,7 @@ public class Attack : MonoBehaviour
         spellCooldown.myCanvas.enabled = false;
         castingSlider.value = 0;
         castingProgress = 0;
-        playCastBlast.StopCastingParticles(selectedBulletIndex);
+        playCastBlast.StopCastingParticles(selectedSpell);
         spellCooldown.DisableComponents();
         CancelCasting.Invoke();
         if (castingRoutine != null) StopCoroutine(castingRoutine);

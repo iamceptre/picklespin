@@ -6,7 +6,7 @@ public class AngelSpawner : MonoBehaviour
     private AngelMind[] angelMinds;
     private int _rand = 0;
 
-    private Helper_Arrow helperArrow;
+    private AngelPointerHelper pointerHelper;
 
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class AngelSpawner : MonoBehaviour
             angelMinds[i].SetActive(false);
         }
 
-        helperArrow = Helper_Arrow.Instance;
+        pointerHelper = AngelPointerHelper.Instance;
         SpawnAngel();
     }
 
@@ -42,7 +42,7 @@ public class AngelSpawner : MonoBehaviour
         }
 
         angelMinds[_rand].SetActive(true);
-        helperArrow.ShowArrow(angels[_rand].transform);
+        pointerHelper.PointTo(angels[_rand].transform);
     }
 
     bool CanSpawnAngel()

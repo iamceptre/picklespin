@@ -1,7 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 
-// Cast VFX and sound, indexed by spell ID. A spell need not appear in every array:
+// Cast VFX and sound, indexed by SpellId. A spell need not appear in every array:
 // a missing or short entry is skipped, so adding a spell here is optional.
 public class PlayCastBlast : MonoBehaviour
 {
@@ -25,54 +25,54 @@ public class PlayCastBlast : MonoBehaviour
         }
     }
 
-    public void Play(int spellID)
+    public void Play(SpellId spell)
     {
-        if (TryGet(castBlasts, spellID, out ParticleSystem blast)) blast.Play();
+        if (TryGet(castBlasts, (int)spell, out ParticleSystem blast)) blast.Play();
     }
 
-    public void StartCastingParticles(int spellID)
+    public void StartCastingParticles(SpellId spell)
     {
-        if (InRange(castingStartSound, spellID) && !castingStartSound[spellID].IsNull)
+        int slot = (int)spell;
+
+        if (InRange(castingStartSound, slot) && !castingStartSound[slot].IsNull)
         {
-            RuntimeManager.PlayOneShot(castingStartSound[spellID]);
+            RuntimeManager.PlayOneShot(castingStartSound[slot]);
         }
-        if (TryGet(castingParticles, spellID, out ParticleSystem particles))
+        if (TryGet(castingParticles, slot, out ParticleSystem particles))
         {
             particles.Clear();
             particles.Play();
         }
-        if (TryGet(castingSound, spellID, out StudioEventEmitter sound)) sound.Play();
-        if (TryGet(castingParticleSizeScript, spellID, out GetParticleSizeFromCastPercentage sizeScript))
+        if (TryGet(castingSound, slot, out StudioEventEmitter sound)) sound.Play();
+        if (TryGet(castingParticleSizeScript, slot, out GetParticleSizeFromCastPercentage sizeScript))
         {
             sizeScript.StartCoroutine(sizeScript.StartDoingShit());
         }
     }
 
-    public void StopCastingParticles(int spellID)
+    public void StopCastingParticles(SpellId spell)
     {
-        if (TryGet(castingParticles, spellID, out ParticleSystem particles))
+        int slot = (int)spell;
+
+        if (TryGet(castingParticles, slot, out ParticleSystem particles))
         {
-            if (TryGet(castingParticleSizeScript, spellID, out GetParticleSizeFromCastPercentage sizeScript))
+            if (TryGet(castingParticleSizeScript, slot, out GetParticleSizeFromCastPercentage sizeScript))
             {
                 sizeScript.castingLight.enabled = false;
             }
             particles.Stop();
         }
 
-        if (TryGet(castingSound, spellID, out StudioEventEmitter sound)) sound.Stop();
+        if (TryGet(castingSound, slot, out StudioEventEmitter sound)) sound.Stop();
     }
 
-    public void PlayCastingCompletedSound()
-    {
-    }
-
-    private static bool InRange(System.Array array, int spellID) =>
-        array != null && spellID >= 0 && spellID < array.Length;
+    private static bool InRange(System.Array array, int slot) =>
+        array != null && slot >= 0 && slot < array.Length;
 
     // Unity's null check, so a destroyed reference counts as "this spell has none"
-    private static bool TryGet<T>(T[] array, int spellID, out T value) where T : Object
+    private static bool TryGet<T>(T[] array, int slot, out T value) where T : Object
     {
-        value = InRange(array, spellID) ? array[spellID] : null;
+        value = InRange(array, slot) ? array[slot] : null;
         return value != null;
     }
 }

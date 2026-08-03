@@ -31,7 +31,6 @@ public class JumpLandSignals : MonoBehaviour
     private bool landed;
     private bool ignoreFirstLanding = true;
     private bool isFallingLongEnough;
-    private float lastLandCameraShakeStrenght;
 
     [Range(0, 0.5f)]
     [SerializeField] private float fallingTimerCooldown;
@@ -65,7 +64,6 @@ public class JumpLandSignals : MonoBehaviour
                 StartCoroutine(FallingTimer());
             }
             landed = false;
-            lastLandCameraShakeStrenght = Mathf.Clamp(speedometer.verticalVelocity * 0.4f, 0, 10);
         }
     }
 

@@ -6,13 +6,14 @@ public class SpawnItemsCheat : MonoBehaviour
 
     private CheatActivatedFeedback cheatActivatedFeedback;
     private SpellSpawner spellSpawner;
-    private PickupableBonusesSpawner pickupableBonusesSpawner;
+    private PickableBonusesSpawner pickableBonusesSpawner;
 
     private void Start()
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
         spellSpawner = SpellSpawner.instance;
-        pickupableBonusesSpawner = PickupableBonusesSpawner.instance;
+        pickableBonusesSpawner = PickableBonusesSpawner.instance;
+        DevLog.Info($"{nameof(SpawnItemsCheat)} armed: Up Arrow + L spawns a spell pickup, Up Arrow + B spawns 8 bonuses", this);
     }
 
     void Update()
@@ -28,7 +29,7 @@ public class SpawnItemsCheat : MonoBehaviour
 
             if (InputCompat.GetKeyDown(KeyCode.B))
             {
-                pickupableBonusesSpawner.SpawnBonuses(8);
+                pickableBonusesSpawner.SpawnBonuses(8);
                 cheatActivatedFeedback.Do("spawn bonuses");
             }
 

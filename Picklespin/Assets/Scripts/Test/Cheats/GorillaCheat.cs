@@ -14,6 +14,7 @@ public class GorillaCheat : MonoBehaviour
     private void Start()
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
+        DevLog.Info($"{nameof(GorillaCheat)} armed: type \"{targetWord}\" to wake the gorilla", this);
     }
 
     void Update()

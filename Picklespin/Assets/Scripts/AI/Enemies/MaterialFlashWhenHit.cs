@@ -1,0 +1,77 @@
+using System.Collections;
+using UnityEngine;
+
+public class MaterialFlashWhenHit : MonoBehaviour
+{
+    [SerializeField] Renderer rend;
+    [SerializeField] float flashDuration = 0.4f;
+
+   readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
+    readonly WaitForSeconds timeBeforeFadingOutFlash = new(0.05f);
+    readonly WaitForSeconds timeBeforeFadingOutHeadshotFlash = new(0.3f);
+
+    Coroutine currentFlashCoroutine;
+    Color whiteFlashColor = GameColors.Dimmed;
+    Color redFlashColor = GameColors.Health;
+   readonly float fadeOutSpeed = 1.6f;
+    Material materialInstance;
+
+    Color baseEmission = Color.black;
+
+    void Awake()
+    {
+        materialInstance = rend.material;
+    }
+
+    public void SetBaseEmission(Color color)
+    {
+        baseEmission = color;
+
+        if (currentFlashCoroutine == null) materialInstance.SetColor(emissionColor, baseEmission);
+    }
+
+    public void Flash()
+    {
+        StartFlash(whiteFlashColor, timeBeforeFadingOutFlash);
+    }
+
+    public void FlashHeadshot()
+    {
+        StartFlash(redFlashColor, timeBeforeFadingOutHeadshotFlash);
+    }
+
+    void StartFlash(Color flashColor, WaitForSeconds waitTime)
+    {
+        if (currentFlashCoroutine != null)
+            StopCoroutine(currentFlashCoroutine);
+        currentFlashCoroutine = StartCoroutine(FlashRoutine(flashColor, waitTime));
+    }
+
+    IEnumerator FlashRoutine(Color flashColor, WaitForSeconds waitTime)
+    {
+        materialInstance.SetColor(emissionColor, baseEmission + flashColor);
+        yield return waitTime;
+
+        float flashElapsed = flashDuration;
+        while (flashElapsed > 0)
+        {
+            float t = flashElapsed / flashDuration;
+            materialInstance.SetColor(emissionColor, baseEmission + flashColor * t);
+            flashElapsed -= Time.deltaTime * fadeOutSpeed;
+            yield return null;
+        }
+        materialInstance.SetColor(emissionColor, baseEmission);
+        currentFlashCoroutine = null;
+    }
+
+    public void ResetFlashState()
+    {
+        if (currentFlashCoroutine != null)
+        {
+            StopCoroutine(currentFlashCoroutine);
+            currentFlashCoroutine = null;
+        }
+        baseEmission = Color.black;
+        materialInstance.SetColor(emissionColor, Color.black);
+    }
+}

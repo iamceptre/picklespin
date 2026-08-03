@@ -25,6 +25,9 @@ public class PlayerClassCheat : MonoBehaviour
         GameObject go = new(nameof(PlayerClassCheat)) { hideFlags = HideFlags.HideInHierarchy };
         DontDestroyOnLoad(go);
         host = go.AddComponent<PlayerClassCheat>();
+
+        string words = string.Join(", ", System.Array.ConvertAll(classWords, entry => entry.Word));
+        DevLog.Info($"{nameof(PlayerClassCheat)} armed: type a class name to take it - {words}", host);
     }
 
     void Update()

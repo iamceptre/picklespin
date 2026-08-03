@@ -49,7 +49,7 @@ public class AudioSnapshotManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Duplicate snapshot key found: {data.key}");
+                DevLog.Warn($"Duplicate snapshot key found: {data.key}");
             }
         }
     }
@@ -59,7 +59,7 @@ public class AudioSnapshotManager : MonoBehaviour
 
         if (!snapshotDictionary.TryGetValue(key, out SnapshotData data))
         {
-            Debug.LogWarning($"Snapshot '{key}' not found in dictionary!");
+            DevLog.Warn($"Snapshot '{key}' not found in dictionary!");
             return;
         }
 
@@ -108,7 +108,7 @@ public class AudioSnapshotManager : MonoBehaviour
     {
         if (!snapshotDictionary.TryGetValue(key, out SnapshotData data) || !data.isExclusive)
         {
-            Debug.LogWarning($"Exclusive snapshot '{key}' not found or not marked exclusive!");
+            DevLog.Warn($"Exclusive snapshot '{key}' not found or not marked exclusive!");
             return;
         }
 

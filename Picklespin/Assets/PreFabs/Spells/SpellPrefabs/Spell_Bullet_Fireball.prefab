@@ -10100,7 +10100,6 @@ MonoBehaviour:
       Data3: 887744681
       Data4: 807212642
     Path: event:/SPELLS/FIREBALL/FIREBALL_UI_SELECT
-  lightSpell: {fileID: 0}
   hitSomething: 0
 --- !u!114 &1250395660635522415
 MonoBehaviour:
@@ -10230,7 +10229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
-  useSpeedDamageMultiplier: 0
   iWillBeCritical: 0
 --- !u!114 &6610000000000000102
 MonoBehaviour:

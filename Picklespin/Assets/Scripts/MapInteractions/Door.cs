@@ -163,7 +163,7 @@ public class Door : MonoBehaviour
         }
         else
         {
-            tipManager.Hide(0);
+            if (tipManager) tipManager.Hide(0);
             if (isOpened) CloseDoor(); else OpenDoor();
         }
     }
@@ -176,7 +176,7 @@ public class Door : MonoBehaviour
         playerInRange = true;
         if (!doorsInRange.Contains(this)) doorsInRange.Add(this);
         enabled = true;
-        if (!isLocked) tipManager.Show(0);
+        if (!isLocked && tipManager) tipManager.Show(0);
         StopAllCoroutines();
         StartCoroutine(CheckDoorRangeAndSight());
     }
@@ -205,7 +205,8 @@ public class Door : MonoBehaviour
         bool wasTargeted = false;
         while (playerInRange)
         {
-            yield return refreshRate;
+            //yield return refreshRate;
+            yield return null;
 
             if (DistanceToPlayer() > maxDistance)
             {

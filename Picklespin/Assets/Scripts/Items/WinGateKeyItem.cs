@@ -6,7 +6,7 @@ public class WinGateKeyItem : MonoBehaviour
     private RoundSystem roundSystem;
     private InventoryItemsBank inventory;
 
-    [SerializeField] private ItemAfterPickingUp afterPickingUp;
+    [SerializeField] private PickableItem pickableItem;
 
     [SerializeField] private EventReference keyPickUpSound;
 
@@ -28,7 +28,7 @@ public class WinGateKeyItem : MonoBehaviour
         canvasToEnable.enabled = true;
         escapeTimer.enabled = true;
         RuntimeManager.PlayOneShot(keyPickUpSound);
-        afterPickingUp.Pickup();
+        pickableItem.Pickup();
         roundSystem.enabled = false;
     }
 

@@ -15,6 +15,7 @@ public class UnityEventCheat : MonoBehaviour
     private void Start()
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
+        DevLog.Info($"{nameof(UnityEventCheat)} armed: Up Arrow + {cheatKey} fires \"{cheatName}\"", this);
     }
 
     void Update()

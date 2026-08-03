@@ -14,7 +14,11 @@ public class GameSpeedSlider : MonoBehaviour
         _canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    private void Start() => Show();
+    private void Start()
+    {
+        Show();
+        DevLog.Info($"{nameof(GameSpeedSlider)} is live: drag it to scale game speed up to 2x", this);
+    }
 
     public void ApplyNewSpeed()
     {

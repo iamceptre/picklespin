@@ -6,12 +6,15 @@ public class LowResourcePotionDrop : MonoBehaviour
     private const int Health = 0;
     private const int Stamina = 1;
     private const int Magicka = 2;
-    private const int PoolCount = 3;
+    private const int Umbral = 3;
+    private const int PoolCount = 4;
 
     [Header("One potion prefab per resource")]
     [SerializeField] private PoolSpawnableObject healthPotion;
     [SerializeField] private PoolSpawnableObject staminaPotion;
     [SerializeField] private PoolSpawnableObject magickaPotion;
+    [SerializeField, Tooltip("dropped instead of the three above while the Umbral class is held")]
+    private PoolSpawnableObject umbralPotion;
 
     [Header("Drop")]
     [SerializeField, Range(0f, 1f), Tooltip("share of the pool below which the drop is made")]
@@ -30,7 +33,8 @@ public class LowResourcePotionDrop : MonoBehaviour
     [SerializeField, Tooltip("viewport margin still counted as seen, so a small turn cannot reveal a spawn")]
     private float viewMargin = 0.1f;
 
-    private PickupableBonusesSpawner spawner;
+    private PickableBonusesSpawner spawner;
+    private RoundSystem roundSystem;
     private PoolSpawnableObject[] prefabs;
     private readonly ObjectPool<PoolSpawnableObject>[] pools = new ObjectPool<PoolSpawnableObject>[PoolCount];
     private readonly Vector3 buriedPosition = new(0f, -50f, 0f);
@@ -38,10 +42,10 @@ public class LowResourcePotionDrop : MonoBehaviour
 
     private void Start()
     {
-        spawner = PickupableBonusesSpawner.instance;
+        spawner = PickableBonusesSpawner.instance;
         if (!playerCamera) playerCamera = Camera.main;
 
-        prefabs = new[] { healthPotion, staminaPotion, magickaPotion };
+        prefabs = new[] { healthPotion, staminaPotion, magickaPotion, umbralPotion };
         for (int i = 0; i < PoolCount; i++)
         {
             if (!prefabs[i]) continue;
@@ -70,6 +74,8 @@ public class LowResourcePotionDrop : MonoBehaviour
     {
         if (Fraction(pool) >= threshold) return false;
 
+        if (!roundSystem.isCounting) return false;
+
         nextCheckTime = Time.time + dropCooldown;
         Drop(pool);
         return true;
@@ -86,8 +92,9 @@ public class LowResourcePotionDrop : MonoBehaviour
 
     private void Drop(int pool)
     {
-        if (pools[pool] == null) return;
-        spawner.ScatterSpawn(pools[pool].Get, potionsPerDrop, IsOutOfSight);
+        int source = PlayerClasses.Chosen == PlayerClassId.Umbral && pools[Umbral] != null ? Umbral : pool;
+        if (pools[source] == null) return;
+        spawner.ScatterSpawn(pools[source].Get, potionsPerDrop, IsOutOfSight);
     }
 
     private bool IsOutOfSight(Vector3 point)

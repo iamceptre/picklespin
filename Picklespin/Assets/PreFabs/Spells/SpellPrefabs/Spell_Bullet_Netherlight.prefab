@@ -19876,21 +19876,21 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3730440565517659764}
-  - component: {fileID: 6800567688136975266}
   - component: {fileID: 9094262283420263568}
   - component: {fileID: 2008492278484370580}
   - component: {fileID: 3294087684524820873}
   - component: {fileID: 3523914218313080419}
+  - component: {fileID: 6800567688136975266}
   - component: {fileID: 9023279671805228162}
   - component: {fileID: 5946519115442919475}
   - component: {fileID: -9016218598823046184}
   - component: {fileID: 4632042321731720956}
-  - component: {fileID: 2338245104682298501}
   - component: {fileID: 6610000000000000101}
   - component: {fileID: 6610000000000000103}
   - component: {fileID: 6610000000000000104}
   - component: {fileID: 6610000000000000105}
   - component: {fileID: 6610000000000000106}
+  - component: {fileID: 2338245104682298501}
   m_Layer: 12
   m_Name: Spell_Bullet_Netherlight
   m_TagString: Untagged
@@ -19918,39 +19918,6 @@ Transform:
   - {fileID: 3135732170723765606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6800567688136975266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114823094463480090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spell: 0
-  magickaCost: 12
-  speed: 65
-  myCooldown: 0.5
-  timeBeforeOff: 4
-  shootSound:
-    Guid:
-      Data1: -517294522
-      Data2: 1085733970
-      Data3: -1660154989
-      Data4: 283382226
-    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_SHOT
-  pullupSound:
-    Guid:
-      Data1: -997813149
-      Data2: 1273696267
-      Data3: -645807224
-      Data4: 1870522865
-    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_UI_SELECT
-  lightSpell: {fileID: 0}
-  hitSomething: 0
 --- !u!33 &9094262283420263568
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -20056,6 +20023,39 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &6800567688136975266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf8988eb3b173e47952f8d1f4dd6e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spell: 0
+  magickaCost: 12
+  speed: 65
+  myCooldown: 0.5
+  timeBeforeOff: 4
+  timeAfterImpact: 5
+  shootSound:
+    Guid:
+      Data1: -517294522
+      Data2: 1085733970
+      Data3: -1660154989
+      Data4: 283382226
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_SHOT
+  pullupSound:
+    Guid:
+      Data1: -997813149
+      Data2: 1273696267
+      Data3: -645807224
+      Data4: 1870522865
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_UI_SELECT
+  hitSomething: 0
 --- !u!114 &9023279671805228162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20065,7 +20065,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7114823094463480090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc18866f382c7434bb5e70f3cf75a54b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a3d5c19e84b26f4b90d7c3a15e8d2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   turbulenceIntensity: 50
@@ -20112,37 +20112,6 @@ MonoBehaviour:
   animationTime: 0.3
   startingValue: 1
   targetValue: 0.15
---- !u!114 &2338245104682298501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114823094463480090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 751821852
-      Data2: 1086113729
-      Data3: -1005995629
-      Data4: -24714783
-    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_FLYBY
-  Event: 
-  EventPlayTrigger: 11
-  EventStopTrigger: 12
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 5.4
-  OverrideMaxDistance: 70
 --- !u!114 &6610000000000000101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20156,7 +20125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  useSpeedDamageMultiplier: 1
   iWillBeCritical: 0
 --- !u!114 &6610000000000000103
 MonoBehaviour:
@@ -20260,6 +20228,37 @@ MonoBehaviour:
     handDuration: 0.2
     handVibrato: 10
   impactMaxDistance: 0
+--- !u!114 &2338245104682298501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114823094463480090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 751821852
+      Data2: 1086113729
+      Data3: -1005995629
+      Data4: -24714783
+    Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_FLYBY
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 5.4
+  OverrideMaxDistance: 70
 --- !u!1 &8727596881338035344
 GameObject:
   m_ObjectHideFlags: 0

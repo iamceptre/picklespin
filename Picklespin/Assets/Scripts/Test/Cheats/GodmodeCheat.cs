@@ -14,6 +14,7 @@ public class GodmodeCheat : MonoBehaviour
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
         playerHp = PlayerHP.Instance;
+        DevLog.Info($"{nameof(GodmodeCheat)} armed: type \"{targetWord}\" for invulnerability", this);
     }
 
     void Update()

@@ -15,9 +15,8 @@ public class AngelMind : MonoBehaviour
     private AngelTorchManager angelTorchManager;
     [SerializeField] private EventReference angelHealedSoundEvent;
     [SerializeField] private ParticleSystem healedParticles;
-    [SerializeField] private GiveExpToPlayer giveExpAfterHeal;
     [SerializeField] private BoxCollider scriptActivationTrigger;
-    private Helper_Arrow helperArrow;
+    private AngelPointerHelper pointerHelper;
     private AngelHealingMinigame minigame;
 
     [Header("Emmiter References")]
@@ -78,7 +77,7 @@ public class AngelMind : MonoBehaviour
     private void Start()
     {
         minigame = AngelHealingMinigame.Instance;
-        helperArrow = Helper_Arrow.Instance;
+        pointerHelper = AngelPointerHelper.Instance;
         playerEXP = PlayerEXP.instance;
         eyesManager.Close();
     }
@@ -92,7 +91,7 @@ public class AngelMind : MonoBehaviour
 
         angelRingsAnimator.SetTrigger("Healed");
 
-        helperArrow.HideArrow();
+        pointerHelper.Stop();
         lookAtPlayer.enabled = true;
 
         unhealedLoopEmmiter.Stop();

@@ -12,6 +12,8 @@ public class UnlockSpellCheat : MonoBehaviour
     private void Start()
     {
         cheatActivatedFeedback = CheatActivatedFeedback.instance;
+        DevLog.Info($"{nameof(UnlockSpellCheat)} armed: Up Arrow + 2 unlocks {SpellId.Fireball}, " +
+                    $"Up Arrow + 3 unlocks {SpellId.Light}, Up Arrow + M refills magicka", this);
     }
 
     void Update()
@@ -21,13 +23,13 @@ public class UnlockSpellCheat : MonoBehaviour
         {
             if (InputCompat.GetKeyDown(KeyCode.Alpha3))
             {
-                unlockedSpells.UnlockASpell(2);
+                unlockedSpells.UnlockASpell(SpellId.Light);
                 cheatActivatedFeedback.Do("unlock light spell");
             }
 
             if (InputCompat.GetKeyDown(KeyCode.Alpha2))
             {
-                unlockedSpells.UnlockASpell(1);
+                unlockedSpells.UnlockASpell(SpellId.Fireball);
                 cheatActivatedFeedback.Do("unlock fireball");
             }
 

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 960348548024483361}
   - component: {fileID: 8009280589245293343}
   - component: {fileID: 6610000000000000104}
+  - component: {fileID: -7491136343082320155}
   m_Layer: 0
   m_Name: Spell_Bullet_Light
   m_TagString: Untagged
@@ -73,7 +74,6 @@ MonoBehaviour:
       Data3: -645807224
       Data4: 1870522865
     Path: event:/SPELLS/PURPLE_SPELL/PURPLE_SPELL_UI_SELECT
-  lightSpell: {fileID: 8114817537685967492}
   hitSomething: 0
 --- !u!33 &7222242048214855591
 MeshFilter:
@@ -276,6 +276,20 @@ MonoBehaviour:
   explosionSoundEmitter: {fileID: 0}
   explosionReflectionsSoundEmitter: {fileID: 0}
   hitWall: {fileID: 0}
+--- !u!114 &-7491136343082320155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066149339659852106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3d5c19e84b26f4b90d7c3a15e8d2c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulletTurbulence
+  turbulenceIntensity: 25
+  turbulenceFrequency: 100
 --- !u!1 &4418377990134689853
 GameObject:
   m_ObjectHideFlags: 0
