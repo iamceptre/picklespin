@@ -14,7 +14,14 @@ public class ScrollTexture : MonoBehaviour
 
     private void Awake()
     {
-        materialInstance = GetComponent<Renderer>().material;
+        if (!TryGetComponent(out Renderer rend))
+        {
+            DevLog.Warn($"{nameof(ScrollTexture)} on {name} has no Renderer to scroll - disabling", this);
+            enabled = false;
+            return;
+        }
+
+        materialInstance = rend.material;
 
         if (randomUVoffsetAtEnable)
         {

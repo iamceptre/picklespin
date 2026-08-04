@@ -18,7 +18,7 @@ public class Door : MonoBehaviour
     private static readonly Vector3 rotationVector = new(0, 0, 90);
     private const float animationTime = 0.8f;
     private const float maxDistance = 7f;
-    private const float fallbackDistance = 4f;             // within this, aim is ignored entirely
+    private const float fallbackDistance = 3f;             // within this, aim is ignored entirely
     private const float aimRadius = 0.25f;
 
     private static readonly List<Door> doorsInRange = new();

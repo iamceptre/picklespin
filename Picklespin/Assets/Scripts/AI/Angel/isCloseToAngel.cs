@@ -6,7 +6,6 @@ public class isCloseToAngel : MonoBehaviour
 
     [SerializeField] private AngelHeal angelHeal;
     [SerializeField] private Canvas angelHPGUI;
-    [SerializeField] private AngelHealingMinigame minigame;
 
 
     private string triggerName = "AngelScriptAcivationTrigger";
@@ -17,7 +16,6 @@ public class isCloseToAngel : MonoBehaviour
     {
         if (other.gameObject.name == triggerName)
         {
-            minigame.boosted = false;
             angelHeal.enabled = true;
             angelHPGUI.enabled = true;
             // the player is in the room now - the spirit has nothing left to lead them to
@@ -29,7 +27,7 @@ public class isCloseToAngel : MonoBehaviour
     {
         if (other.gameObject.name == triggerName)
         {
-            if (angelHeal.healSpeedMultiplier == 0)
+            if (angelHeal.IsBoosting)
             {
                 StartCoroutine(waitUntilMinigameStops());
             }
@@ -49,13 +47,14 @@ public class isCloseToAngel : MonoBehaviour
 
     private IEnumerator waitUntilMinigameStops()
     {
-        while (angelHeal.healSpeedMultiplier == 0)
+        while (angelHeal.IsBoosting)
         {
             yield return null;
         }
         DisableMe();
         yield break;
     }
+
 
 
     private void DisableMe()

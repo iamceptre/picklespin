@@ -1,64 +1,78 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Pool;
 
 public class SpellSpawner : MonoBehaviour
 {
     public static SpellSpawner instance;
 
-    public int howManyToSpawn;
-    private int startingHowManyToSpawn;
+    [SerializeField, Tooltip("one pickup prefab per spell - every spawn, round or on request, comes from these")]
+    private SpellPickable[] spellPickups;
+    [SerializeField, Tooltip("the spells a round may drop - leave one out to make it reachable only through SpawnSpell")]
+    private SpellId[] roundRotation;
+    [SerializeField] private Transform[] spawnPoints;
 
-    [SerializeField] private SpellPickable[] spellsLo;
-
-    public Transform[] spawnPoints;
-    [HideInInspector] public bool[] isSpawnPointTaken;
-    [HideInInspector] public int avaliableSpawnPointsCount;
-
-    public ObjectPool<SpellPickable> spellsLoPool;
-
-    private int rrrandom;
+    private SpawnPoints points;
+    private readonly Dictionary<SpellId, ObjectPool<SpellPickable>> pools = new();
+    private readonly WaitForSeconds scatterTime = new(0.1f);
 
     private void Awake()
     {
         if (instance != null && instance != this)
         {
             Destroy(this);
-        }
-        else
-        {
-            instance = this;
+            return;
         }
 
-        if (howManyToSpawn > spawnPoints.Length)
-        {
-            howManyToSpawn = spawnPoints.Length;
-        }
+        instance = this;
+        points = new SpawnPoints(spawnPoints);
 
-        isSpawnPointTaken = new bool[spawnPoints.Length];
-        avaliableSpawnPointsCount = spawnPoints.Length;
-        startingHowManyToSpawn = howManyToSpawn;
+        for (int i = 0; i < spellPickups.Length; i++)
+        {
+            SpellPickable prefab = spellPickups[i];
+
+            if (!prefab || pools.ContainsKey(prefab.Spell)) continue;
+
+            pools.Add(prefab.Spell, CreatePool(prefab));
+        }
     }
 
     private void Start()
     {
-        spellsLoPool = new ObjectPool<SpellPickable>(CreateItem, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, spawnPoints.Length, spawnPoints.Length * 2);
-        PreInstantiate();
+        foreach (KeyValuePair<SpellId, ObjectPool<SpellPickable>> pool in pools)
+        {
+            pool.Value.Prewarm(InRoundRotation(pool.Key) ? spawnPoints.Length : 1);
+        }
     }
 
-    private void PreInstantiate()
+    private bool InRoundRotation(SpellId spell)
     {
-        var tempList = new SpellPickable[spawnPoints.Length];
-
-        for (int i = 0; i < spawnPoints.Length; i++)
+        for (int i = 0; i < roundRotation.Length; i++)
         {
-            tempList[i] = spellsLoPool.Get();
+            if (roundRotation[i] == spell) return true;
         }
 
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            spellsLoPool.Release(tempList[i]);
-        }
+        return false;
+    }
+
+    private ObjectPool<SpellPickable> CreatePool(SpellPickable prefab)
+    {
+        ObjectPool<SpellPickable> pool = null;
+
+        pool = new ObjectPool<SpellPickable>(
+            () =>
+            {
+                SpellPickable itemInstance = Instantiate(prefab);
+                itemInstance.SetPool(pool);
+                return itemInstance;
+            },
+            item => item.gameObject.SetActive(true),
+            item => item.gameObject.SetActive(false),
+            item => Destroy(item.gameObject),
+            false, spawnPoints.Length, spawnPoints.Length * 2);
+
+        return pool;
     }
 
     public void SpawnSpellsLo(int howManyToSpawn)
@@ -68,62 +82,33 @@ public class SpellSpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine(int howManyToSpawn)
     {
+        if (roundRotation.Length == 0)
+        {
+            DevLog.Warn($"{nameof(SpellSpawner)} has no spells in its round rotation", this);
+            yield break;
+        }
+
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            yield return new WaitForSeconds(i * 0.1f);
-            SpawnLo();
+            yield return scatterTime;
+
+            if (!SpawnSpell(roundRotation[Random.Range(0, roundRotation.Length)])) yield break;
         }
-        avaliableSpawnPointsCount -= howManyToSpawn;
-        ClampSpawnCount();
     }
 
-    private void SpawnLo()
+    public bool SpawnSpell(SpellId spell)
     {
-        SpellPickable spawned = spellsLoPool.Get();
-        spawned.SetOccupiedWaypoint(rrrandom, this);
-    }
-
-    private SpellPickable CreateItem()
-    {
-        SpellPickable itemInstance = Instantiate(spellsLo[Random.Range(0, spellsLo.Length)]);
-        itemInstance.SetPool(spellsLoPool);
-        return itemInstance;
-    }
-
-    private void OnGetFromPool(SpellPickable pooledItem)
-    {
-        int maxRange = spawnPoints.Length;
-        int minRange = 0;
-
-        if (avaliableSpawnPointsCount <= 0)
+        if (!pools.TryGetValue(spell, out ObjectPool<SpellPickable> pool))
         {
-            DevLog.Warn("No available spawn points.");
-            return;
+            DevLog.Warn($"{nameof(SpellSpawner)} has no pickup prefab for {spell}", this);
+            return false;
         }
 
-        do
-        {
-            rrrandom = Random.Range(minRange, maxRange);
-        }
-        while (isSpawnPointTaken[rrrandom]);
+        if (!points.TryReserve(out int point)) return false;
 
-        pooledItem.gameObject.SetActive(true);
-        pooledItem.transform.position = spawnPoints[rrrandom].position;
+        pool.Get().PlaceAt(points.PositionOf(point), point, this);
+        return true;
     }
 
-    private void OnReleaseToPool(SpellPickable pooledItem)
-    {
-        pooledItem.gameObject.SetActive(false);
-    }
-
-    private void OnDestroyPooledObject(SpellPickable pooledItem)
-    {
-        Destroy(pooledItem.gameObject);
-    }
-
-    public void ClampSpawnCount()
-    {
-        howManyToSpawn = startingHowManyToSpawn;
-        howManyToSpawn = Mathf.Clamp(howManyToSpawn, 0, avaliableSpawnPointsCount);
-    }
+    public void ReleasePoint(int point) => points.Release(point);
 }

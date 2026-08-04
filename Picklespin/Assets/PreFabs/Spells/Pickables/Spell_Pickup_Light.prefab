@@ -129,7 +129,8 @@ PrefabInstance:
       propertyPath: spell
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -9062121499984250984, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7301458962214470082, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}

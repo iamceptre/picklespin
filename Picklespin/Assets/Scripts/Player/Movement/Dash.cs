@@ -1,5 +1,6 @@
 using FMODUnity;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +27,7 @@ public class Dash : MonoBehaviour
     [SerializeField] InputActionReference moveAction;
 
     static readonly Collider[] overlapResults = new Collider[64];
+    static readonly HashSet<AiReferences> dashHitBuffer = new();
 
     private CharacterController characterController;
     private PlayerMovement playerMovement;
@@ -111,11 +113,20 @@ public class Dash : MonoBehaviour
             dashDirection = playerMovement.FlatWishDirection(moveAction.action.ReadValue<Vector2>());
         dashDirection.Normalize();
         int hitsCount = Physics.OverlapSphereNonAlloc(transform.position, dashEffectRadius, overlapResults, stunLayers);
+        int cutDamage = LightfootUpgrades.DashDamage;
+        dashHitBuffer.Clear();
         for (int i = 0; i < hitsCount; i++)
         {
 
             StopAiForAsec stopper = overlapResults[i].GetComponentInParent<StopAiForAsec>();
             if (stopper) stopper.StopMeForASec();
+
+            if (cutDamage <= 0) continue;
+
+            AiReferences refs = overlapResults[i].GetComponentInParent<AiReferences>();
+            if (!refs || refs.IsAngel || !dashHitBuffer.Add(refs)) continue;
+            if (ConvertedAlly.IsConverted(refs)) continue;
+            if (refs.Health && refs.Health.IsAlive) refs.Health.TakeQuietDamage(cutDamage);
         }
         float originalSpeed = playerMovement.speedMultiplier;
         float elapsed = 0f;

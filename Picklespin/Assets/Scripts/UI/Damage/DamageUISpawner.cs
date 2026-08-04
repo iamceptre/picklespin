@@ -7,6 +7,8 @@ public class DamageUISpawner : MonoBehaviour
 
     [SerializeField] private DamageUIV2 damageUi;
 
+    private const int PoolCapacity = 16;
+
     private ObjectPool<DamageUIV2> pool;
     private readonly Vector3 offset = new Vector3(0, 4, 0);
 
@@ -18,7 +20,12 @@ public class DamageUISpawner : MonoBehaviour
             return;
         }
         instance = this;
-        pool = new ObjectPool<DamageUIV2>(CreateItem, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, 16, 64);
+        pool = new ObjectPool<DamageUIV2>(CreateItem, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, false, PoolCapacity, PoolCapacity * 4);
+    }
+
+    private void Start()
+    {
+        pool.Prewarm(PoolCapacity);
     }
 
     public void Spawn(Vector3 whereIshouldGo, int howMuchDamageDealt, bool isCritical)

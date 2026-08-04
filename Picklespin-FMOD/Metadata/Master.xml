@@ -38,6 +38,9 @@
 		<property name="ratio">
 			<value>1.45000005</value>
 		</property>
+		<property name="attackTime">
+			<value>22</value>
+		</property>
 		<property name="releaseTime">
 			<value>180</value>
 		</property>

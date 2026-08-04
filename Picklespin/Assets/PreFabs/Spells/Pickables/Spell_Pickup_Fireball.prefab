@@ -9772,7 +9772,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2232153190932436150}
-  - component: {fileID: 782939569496759876}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -9800,20 +9799,6 @@ Transform:
   - {fileID: 5815785357386028430}
   m_Father: {fileID: 4312571889112881287}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &782939569496759876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6981389779398802056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d05b45c0779754438b6c9d526686b17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  height: 0.25
-  speed: 1
 --- !u!1 &7976620075623437790
 GameObject:
   m_ObjectHideFlags: 0
@@ -14662,69 +14647,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
---- !u!1 &9141262901476913909
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 791254381447315317}
-  - component: {fileID: 7915562815275918344}
-  m_Layer: 0
-  m_Name: PickupSoundEmitter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &791254381447315317
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9141262901476913909}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4312571889112881287}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7915562815275918344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9141262901476913909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1884099639
-      Data2: 1270478017
-      Data3: -584472389
-      Data4: 1677112915
-    Path: event:/SPELLS/FIREBALL/FIREBALL_PICKUP
-  Event: 
-  EventPlayTrigger: 0
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1001 &6812445907331209541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14733,6 +14655,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5355447892143751641, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/SPELLS/FIREBALL/FIREBALL_PICKUP
+      objectReference: {fileID: 0}
+    - target: {fileID: 5355447892143751641, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 1884099639
+      objectReference: {fileID: 0}
+    - target: {fileID: 5355447892143751641, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1270478017
+      objectReference: {fileID: 0}
+    - target: {fileID: 5355447892143751641, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -584472389
+      objectReference: {fileID: 0}
+    - target: {fileID: 5355447892143751641, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 1677112915
+      objectReference: {fileID: 0}
     - target: {fileID: 7301458962214470081, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
       propertyPath: m_Name
       value: Spell_Pickup_Fireball
@@ -14769,83 +14711,17 @@ PrefabInstance:
       propertyPath: spell
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7301458962214470087, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
-      propertyPath: mySound
-      value: 
-      objectReference: {fileID: 2361716839078369107}
-    - target: {fileID: 7301458962214470087, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
-      propertyPath: pickupSoundEmitter
-      value:
-      objectReference: {fileID: 7915562815275918344}
     m_RemovedComponents:
-    - {fileID: 2633391595515633283, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+    - {fileID: 7301458962214470084, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+    - {fileID: 7301458962214470083, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
+    - {fileID: -9062121499984250984, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7301458962214470082, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 791254381447315317}
-    - targetCorrespondingSourceObject: {fileID: 7301458962214470082, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2232153190932436150}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7301458962214470081, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -442128238072334790}
-    - targetCorrespondingSourceObject: {fileID: 7301458962214470081, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2361716839078369107}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
---- !u!1 &4312571889112881284 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7301458962214470081, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}
-  m_PrefabInstance: {fileID: 6812445907331209541}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-442128238072334790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312571889112881284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3359935cfcd71aa4b82fc8e4df523d90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollSpeedY: 0.2
-  scrollSpeedX: 0.25
-  randomUVoffsetAtEnable: 0
---- !u!114 &2361716839078369107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312571889112881284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1553581475
-      Data2: 1328516543
-      Data3: 1647672732
-      Data4: 1002143291
-    Path: event:/SPELLS/FIREBALL/FIREBALL_PICKUPABLE
-  Event: 
-  EventPlayTrigger: 0
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 3
-  OverrideMaxDistance: 40
 --- !u!4 &4312571889112881287 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7301458962214470082, guid: 5a2e8b71c94d3f640b8e1c7a26d95f38, type: 3}

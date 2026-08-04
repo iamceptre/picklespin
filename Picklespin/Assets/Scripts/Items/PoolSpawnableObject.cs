@@ -13,14 +13,10 @@ public class PoolSpawnableObject : MonoBehaviour
 
     private void OnEnable() => released = false;
 
-    public void SetOccupiedWaypoint(int myWaypointIndex, PickableBonusesSpawner spawnerScript)
+    public void OccupyPoint(int point, PickableBonusesSpawner spawnerScript)
     {
-        if (pickableBonusesSpawner == null)
-        {
-            pickableBonusesSpawner = spawnerScript;
-        }
-        myOccupiedWaypointIndex = myWaypointIndex;
-        pickableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = true;
+        pickableBonusesSpawner = spawnerScript;
+        myOccupiedWaypointIndex = point;
     }
 
     public void FreeUpSlot()
@@ -28,23 +24,10 @@ public class PoolSpawnableObject : MonoBehaviour
         if (released) return;
         released = true;
 
-        pickableBonusesSpawner.Forget(this);
-        pickableBonusesSpawner.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
-        pickableBonusesSpawner.howManyToSpawn++;
-        pickableBonusesSpawner.howManyToSpawn = Mathf.Clamp(
-            pickableBonusesSpawner.howManyToSpawn,
-            0,
-            pickableBonusesSpawner.startingHowManyToSpawn
-        );
+        pickableBonusesSpawner.ReleasePoint(this, myOccupiedWaypointIndex);
 
         if (_pool != null) _pool.Release(this);
         else pickableBonusesSpawner.allPotionsPool.Release(this);
-        pickableBonusesSpawner.avaliableSpawnPointsCount++;
-        pickableBonusesSpawner.avaliableSpawnPointsCount = Mathf.Clamp(
-            pickableBonusesSpawner.avaliableSpawnPointsCount,
-            0,
-            pickableBonusesSpawner.spawnPoints.Length
-        );
     }
 
     public void SetPool(ObjectPool<PoolSpawnableObject> pool)

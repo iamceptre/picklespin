@@ -118,17 +118,7 @@ public class PlayerClassMenu : AngelChoiceMenu
 
     protected override void AfterChoice() { }
 
-    protected override void OnClosed()
-    {
-        if (AngelWishMenu.Instance)
-        {
-            AngelWishMenu.Instance.AskForWish();
-
-            if (AngelWishMenu.Instance.IsAsking) return;
-        }
-
-        LockPlayerControls(false);
-    }
+    protected override void OnClosed() => HandOverToWishMenu();
 
     private SpellId? LockUmbralSpell()
     {

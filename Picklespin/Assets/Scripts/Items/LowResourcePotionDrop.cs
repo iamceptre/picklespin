@@ -57,6 +57,8 @@ public class LowResourcePotionDrop : MonoBehaviour
                 potion => { potion.gameObject.SetActive(false); potion.transform.position = buriedPosition; },
                 potion => Destroy(potion.gameObject),
                 true, potionsPerDrop, potionsPerDrop * 2);
+
+            pools[i].Prewarm(potionsPerDrop);
         }
 
         InvokeRepeating(nameof(CheckPools), checkInterval, checkInterval);

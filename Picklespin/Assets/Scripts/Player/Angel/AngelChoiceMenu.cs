@@ -13,6 +13,8 @@ public abstract class AngelChoiceMenu : MonoBehaviour
     [SerializeField] private string promptMessage = "Speak, and it shall be granted.";
     [SerializeField, Tooltip("optional - left empty means no sound")]
     private EventReference chosenSound;
+    [SerializeField, Tooltip("optional - played when a line is picked that cannot be taken, e.g. an upgrade there is not enough EXP for. The menu stays open")]
+    private EventReference deniedSound;
     [SerializeField, Tooltip("AudioSnapshotManager key held while the menu is up - the short key it is registered under, not the FMOD path; empty means no snapshot")]
     private string snapshotKey = "AngelChoice";
 
@@ -41,6 +43,12 @@ public abstract class AngelChoiceMenu : MonoBehaviour
     protected abstract string BuildLine(int slot);
 
     protected abstract void OnChosen(int slot);
+
+    protected virtual bool CanChoose(int slot) => true;
+
+    protected virtual void OnDenied(int slot) { }
+
+    protected void ShowDenialNote(string text) => ui.FadeInNote(text);
 
     protected virtual void AfterChoice() => LockPlayerControls(false);
 
@@ -149,6 +157,14 @@ public abstract class AngelChoiceMenu : MonoBehaviour
     {
         if (!IsAsking || ui.IsClosing || !ui.IsLineActive(slot)) return;
 
+        if (!CanChoose(slot))
+        {
+            ui.Deny(slot);
+            if (!deniedSound.IsNull) RuntimeManager.PlayOneShot(deniedSound);
+            OnDenied(slot);
+            return;
+        }
+
         IsAsking = false;
         ui.Hover(-1);
         OnChosen(slot);
@@ -191,6 +207,18 @@ public abstract class AngelChoiceMenu : MonoBehaviour
     }
 
     private void OnDestroy() => ReleaseSnapshot();
+
+    protected void HandOverToWishMenu()
+    {
+        if (AngelWishMenu.Instance)
+        {
+            AngelWishMenu.Instance.AskForWish();
+
+            if (AngelWishMenu.Instance.IsAsking) return;
+        }
+
+        LockPlayerControls(false);
+    }
 
     protected void LockPlayerControls(bool locked)
     {

@@ -474,6 +474,12 @@ public class PlayerMovement : MonoBehaviour
         fatigability *= factor;
     }
 
+    public void MultiplySpeedDamage(float factor)
+    {
+        minDamageMultiplier *= factor;
+        maxDamageMultiplier *= factor;
+    }
+
     public void MultiplyMaxStamina(float factor)
     {
         float gained = maxStamina * factor - maxStamina;

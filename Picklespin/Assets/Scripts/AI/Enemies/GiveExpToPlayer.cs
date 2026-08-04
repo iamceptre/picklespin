@@ -43,6 +43,7 @@ public class GiveExpToPlayer : MonoBehaviour
         manaSuckParticles.Emit(Mathf.Abs(statAmount));
         manaSuckParticles.Play();
         manaSuckParticles.transform.parent = null;
+        ClassUpgrades.OnEnemyKilled();
     }
 
     // GiveExp detaches the particles on death; pooled reuse reclaims them

@@ -12,6 +12,8 @@ public class SpellPickable : MonoBehaviour
     [SerializeField] private SpellId spell;
     private int myOccupiedWaypointIndex;
 
+    public SpellId Spell => spell;
+
     private const int PotionFlashCount = 3;
 
     private UnlockedSpells unlockedSpells;
@@ -40,6 +42,8 @@ public class SpellPickable : MonoBehaviour
         rend = GetComponent<Renderer>();
         particle = GetComponentInChildren<ParticleSystem>();
         myCollider = GetComponent<Collider>();
+        myLightRange = myLight.range;
+        myLightColor = myLight.color;
 
         if (particle != null)
         {
@@ -52,28 +56,26 @@ public class SpellPickable : MonoBehaviour
         handBop = HandBopAfterItemPickup.instance;
         unlockedSpells = UnlockedSpells.instance;
         screenFlashTint = ScreenFlashTint.instance;
-        myLightRange = myLight.range;
-        myLightColor = myLight.color;
-
-        if (mySound != null)
-        {
-            mySound.Play();
-        }
     }
 
     private void OnEnable()
     {
         myCollider.enabled = true;
+        if (rend != null) rend.enabled = true;
+        myLight.range = myLightRange;
+        myLight.color = myLightColor;
 
         if (particle != null)
         {
             emission.enabled = true;
         }
+    }
 
-        if (myLightRange != 0)
+    private void OnDisable()
+    {
+        if (mySound != null)
         {
-            myLight.range = myLightRange;
-            myLight.color = myLightColor;
+            mySound.Stop();
         }
     }
 
@@ -104,11 +106,7 @@ public class SpellPickable : MonoBehaviour
 
     private void FreeUpSpawnPoint()
     {
-        if (!spellSpawnerScript) return;
-
-        spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = false;
-        spellSpawnerScript.avaliableSpawnPointsCount++;
-        spellSpawnerScript.ClampSpawnCount();
+        if (spellSpawnerScript) spellSpawnerScript.ReleasePoint(myOccupiedWaypointIndex);
     }
 
     private void PoolReleaser()
@@ -120,7 +118,7 @@ public class SpellPickable : MonoBehaviour
     private void FadeOut()
     {
         myCollider.enabled = false;
-        rend.enabled = false;
+        if (rend != null) rend.enabled = false;
         if (particle != null)
         {
             emission.enabled = false;
@@ -138,15 +136,16 @@ public class SpellPickable : MonoBehaviour
         myLight.DOColor(Color.black, 0.3f).OnComplete(PoolReleaser);
     }
 
-    public void SetOccupiedWaypoint(int myWaypointIndex, SpellSpawner spawnerScript)
+    public void PlaceAt(Vector3 position, int point, SpellSpawner spawnerScript)
     {
-        if (spellSpawnerScript == null)
-        {
-            spellSpawnerScript = spawnerScript;
-        }
+        spellSpawnerScript = spawnerScript;
+        myOccupiedWaypointIndex = point;
+        transform.position = position;
 
-        myOccupiedWaypointIndex = myWaypointIndex;
-        spellSpawnerScript.isSpawnPointTaken[myOccupiedWaypointIndex] = true;
+        if (mySound != null)
+        {
+            mySound.Play();
+        }
     }
 
     public void SetPool(ObjectPool<SpellPickable> pool)

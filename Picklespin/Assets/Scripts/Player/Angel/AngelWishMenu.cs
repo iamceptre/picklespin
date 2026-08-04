@@ -265,8 +265,8 @@ public class AngelWishMenu : AngelChoiceMenu
             WishUpgrades.DisableRocketJumpSelfDamage,
             AllExcept(1, Blastfool),
             () => WishUpgrades.RocketJumpSelfDamage);
-        Add(WishCategory.RocketJump, "Double the blast", "Rocket jump force +100%",
-            () => WishUpgrades.MultiplyRocketJumpForce(2f),
+        Add(WishCategory.RocketJump, "Crank the blast", "Rocket jump force +50%",
+            () => WishUpgrades.MultiplyRocketJumpForce(1.5f),
             AllExcept(2, Blastfool));
 
         Add(WishCategory.Enemies, "Shackle their feet", "Enemy speed -20%",

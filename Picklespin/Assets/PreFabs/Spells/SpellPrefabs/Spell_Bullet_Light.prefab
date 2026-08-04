@@ -288,8 +288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3d5c19e84b26f4b90d7c3a15e8d2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletTurbulence
-  turbulenceIntensity: 25
-  turbulenceFrequency: 100
+  turbulenceIntensity: 5
+  turbulenceFrequency: 70
 --- !u!1 &4418377990134689853
 GameObject:
   m_ObjectHideFlags: 0

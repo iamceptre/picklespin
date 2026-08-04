@@ -28,17 +28,12 @@ public static class PlayerClasses
 
     public static SpellId? LockedSpell { get; private set; }
 
-    public const float ChargedBarThreshold = 0.5f;
     public static bool ChargedBarReady =>
         Ammo.instance && Ammo.instance.maxAmmo > 0 &&
-        (float)Ammo.instance.ammo / Ammo.instance.maxAmmo > ChargedBarThreshold;
+        (float)Ammo.instance.ammo / Ammo.instance.maxAmmo > UmbralUpgrades.ChargedBarThreshold;
 
     public static float RocketJumpForceMultiplier => Chosen == PlayerClassId.Blastfool ? 2.5f : 1f;
     public static float RocketJumpSelfDamageMultiplier => Chosen == PlayerClassId.Blastfool ? 2.2f : 1f;
-
-    public const float BlastfoolGroundedDamage = 0.2f;
-    public const float BlastfoolAirborneDamage = 0.7f;
-    public const float BlastfoolRocketJumpDamage = 2f;
 
     public static float FlightDamageMultiplier
     {
@@ -46,21 +41,22 @@ public static class PlayerClasses
         {
             if (Chosen != PlayerClassId.Blastfool) return 1f;
             var movement = PlayerMovement.Instance;
-            if (!movement) return BlastfoolGroundedDamage;
-            if (movement.IsRocketJumping) return BlastfoolRocketJumpDamage;
-            return movement.IsGroundedStable ? BlastfoolGroundedDamage : BlastfoolAirborneDamage;
+            if (!movement) return BlastfoolUpgrades.GroundedDamage;
+            if (movement.IsRocketJumping) return BlastfoolUpgrades.RocketJumpDamage;
+            return movement.IsGroundedStable ? BlastfoolUpgrades.GroundedDamage : BlastfoolUpgrades.AirborneDamage;
         }
     }
 
     public static bool PiercingProjectiles => Chosen == PlayerClassId.Bastion;
-    public static float SpellCooldownMultiplier => Chosen == PlayerClassId.Bastion ? 1.3f : 1f;
+    public static float SpellCooldownMultiplier =>
+        Chosen == PlayerClassId.Bastion ? BastionUpgrades.SpellCooldownMultiplier : 1f;
 
     public static bool LightSpellConverts => Chosen == PlayerClassId.Sanctus;
 
     public static float ProjectileDamageMultiplier => Chosen switch
     {
         PlayerClassId.Bastion => 1.6f,
-        PlayerClassId.Sanctus => 0.25f,
+        PlayerClassId.Sanctus => SanctusUpgrades.OwnDamageMultiplier,
         _ => 1f
     };
 
@@ -76,11 +72,11 @@ public static class PlayerClasses
         Chosen = id;
         LockedSpell = lockedSpell;
         WasOffered = true;
-        ApplyStatChanges(id);
+        ApplyClassEffects(id);
         Changed?.Invoke();
     }
 
-    private static void ApplyStatChanges(PlayerClassId id)
+    private static void ApplyClassEffects(PlayerClassId id)
     {
         switch (id)
         {
@@ -114,7 +110,17 @@ public static class PlayerClasses
                     PlayerMovement.Instance.MultiplyJumpPower(0.75f);
                 }
                 break;
+
+            case PlayerClassId.Sanctus:
+                DropLightPickup();
+                break;
         }
+    }
+
+    private static void DropLightPickup()
+    {
+        if (UnlockedSpells.instance && UnlockedSpells.instance.IsUnlocked(SpellId.Light)) return;
+        if (SpellSpawner.instance) SpellSpawner.instance.SpawnSpell(SpellId.Light);
     }
 
     public static void Skip()

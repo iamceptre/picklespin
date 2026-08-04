@@ -6,12 +6,7 @@ using UnityEngine.Pool;
 
 public class PickableBonusesSpawner : MonoBehaviour
 {
-    [Header("Singleton")]
     public static PickableBonusesSpawner instance { get; private set; }
-
-    [Header("Spawn Settings")]
-    public int howManyToSpawn;
-    [HideInInspector] public int startingHowManyToSpawn;
 
     [Header("Available Bonuses")]
     [SerializeField] private PoolSpawnableObject[] bonuses;
@@ -19,23 +14,19 @@ public class PickableBonusesSpawner : MonoBehaviour
     private PoolSpawnableObject umbralPotion;
 
     [Header("Spawn Points")]
-    public Transform[] spawnPoints;
-    [HideInInspector] public bool[] isSpawnPointTaken;
-    [HideInInspector] public int avaliableSpawnPointsCount;
+    [SerializeField] private Transform[] spawnPoints;
 
-    [Header("Object Pool")]
     public ObjectPool<PoolSpawnableObject> allPotionsPool;
     private ObjectPool<PoolSpawnableObject> umbralPool;
 
-    [Header("Instantiation")]
+    private SpawnPoints points;
+
     private readonly Vector3 initialSpawnPosition = new(0, -50, 0);
-
-    private Coroutine currentSpawnRoutine;
-
     private readonly WaitForSeconds scatterTime = new(0.05f);
-    private readonly List<int> freePointBuffer = new();
     private readonly List<PoolSpawnableObject> live = new();
     private readonly List<PoolSpawnableObject> swapBuffer = new();
+
+    private Coroutine currentSpawnRoutine;
     private bool liveIsUmbral;
 
     private static bool UmbralActive => PlayerClasses.Chosen == PlayerClassId.Umbral;
@@ -47,26 +38,25 @@ public class PickableBonusesSpawner : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         instance = this;
-
-        if (howManyToSpawn >= spawnPoints.Length)
-        {
-            howManyToSpawn = spawnPoints.Length - 1;
-            if (howManyToSpawn < 0) howManyToSpawn = 0;
-        }
-
-        startingHowManyToSpawn = howManyToSpawn;
-        isSpawnPointTaken = new bool[spawnPoints.Length];
-        avaliableSpawnPointsCount = spawnPoints.Length;
+        points = new SpawnPoints(spawnPoints);
     }
 
     private void Start()
     {
         allPotionsPool = CreatePool(CreateItem);
-        if (umbralPotion) umbralPool = CreatePool(CreateUmbralItem);
-        else DevLog.Warn($"{nameof(PickableBonusesSpawner)}: no umbral potion assigned - Umbral keeps the normal bonuses", this);
+        allPotionsPool.Prewarm(spawnPoints.Length);
 
-        PreInstantiate();
+        if (umbralPotion)
+        {
+            umbralPool = CreatePool(CreateUmbralItem);
+            umbralPool.Prewarm(spawnPoints.Length);
+        }
+        else
+        {
+            DevLog.Warn($"{nameof(PickableBonusesSpawner)}: no umbral potion assigned - Umbral keeps the normal bonuses", this);
+        }
     }
 
     private void OnEnable() => PlayerClasses.Changed += SwapLivePotions;
@@ -77,39 +67,22 @@ public class PickableBonusesSpawner : MonoBehaviour
     {
         return new ObjectPool<PoolSpawnableObject>(
             create,
-            OnGetFromPool,
-            OnReleaseToPool,
-            OnDestroyPooledObject,
+            item => item.gameObject.SetActive(true),
+            item =>
+            {
+                item.gameObject.SetActive(false);
+                item.transform.position = initialSpawnPosition;
+            },
+            item => Destroy(item.gameObject),
             true,
             spawnPoints.Length,
-            spawnPoints.Length * 2
-        );
-    }
-
-    private void PreInstantiate()
-    {
-        var tempList = new PoolSpawnableObject[spawnPoints.Length];
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            tempList[i] = allPotionsPool.Get();
-        }
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            allPotionsPool.Release(tempList[i]);
-        }
+            spawnPoints.Length * 2);
     }
 
     public void SpawnBonuses(int howManyToSpawn)
     {
-        if (currentSpawnRoutine != null)
-        {
-            StopCoroutine(currentSpawnRoutine);
-        }
-        if (howManyToSpawn >= spawnPoints.Length)
-        {
-            howManyToSpawn = spawnPoints.Length - 1;
-            if (howManyToSpawn < 0) howManyToSpawn = 0;
-        }
+        if (currentSpawnRoutine != null) StopCoroutine(currentSpawnRoutine);
+
         currentSpawnRoutine = ScatterSpawn(TakePotion, howManyToSpawn);
     }
 
@@ -126,28 +99,37 @@ public class PickableBonusesSpawner : MonoBehaviour
         {
             yield return scatterTime;
 
-            int index = PickFreePoint(pointIsUsable);
-            if (index < 0) break;
+            if (!points.TryReserve(out int point, pointIsUsable)) break;
 
             PoolSpawnableObject item = take();
-            if (!item) break;
 
-            Place(item, index);
+            if (!item)
+            {
+                points.Release(point);
+                break;
+            }
+
+            Place(item, point);
         }
 
         currentSpawnRoutine = null;
     }
 
-    private void Place(PoolSpawnableObject item, int index)
+    private void Place(PoolSpawnableObject item, int point)
     {
-        item.transform.position = spawnPoints[index].position;
-        item.SetOccupiedWaypoint(index, this);
-        avaliableSpawnPointsCount = Mathf.Max(0, avaliableSpawnPointsCount - 1);
+        points.Reserve(point);
+        item.transform.position = points.PositionOf(point);
+        item.OccupyPoint(point, this);
         live.Add(item);
+
         if (item.TryGetComponent(out PickableItem pickable)) pickable.StartFloating();
     }
 
-    public void Forget(PoolSpawnableObject item) => live.Remove(item);
+    public void ReleasePoint(PoolSpawnableObject item, int point)
+    {
+        live.Remove(item);
+        points.Release(point);
+    }
 
     private void SwapLivePotions()
     {
@@ -158,64 +140,31 @@ public class PickableBonusesSpawner : MonoBehaviour
 
         swapBuffer.Clear();
         swapBuffer.AddRange(live);
-        int spawnBudget = howManyToSpawn;
 
         foreach (PoolSpawnableObject taken in swapBuffer)
         {
-            int index = taken.WaypointIndex;
+            int point = taken.WaypointIndex;
             taken.FreeUpSlot();
 
             PoolSpawnableObject fresh = TakePotion();
+
             if (!fresh) continue;
 
-            Place(fresh, index);
+            Place(fresh, point);
         }
-
-        howManyToSpawn = spawnBudget;
-    }
-
-    private int PickFreePoint(Func<Vector3, bool> pointIsUsable)
-    {
-        freePointBuffer.Clear();
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            if (isSpawnPointTaken[i] || !spawnPoints[i]) continue;
-            if (pointIsUsable != null && !pointIsUsable(spawnPoints[i].position)) continue;
-            freePointBuffer.Add(i);
-        }
-
-        return freePointBuffer.Count == 0 ? -1 : freePointBuffer[UnityEngine.Random.Range(0, freePointBuffer.Count)];
     }
 
     private PoolSpawnableObject CreateItem()
     {
-        var prefab = bonuses[UnityEngine.Random.Range(0, bonuses.Length)];
-        var itemInstance = Instantiate(prefab, initialSpawnPosition, Quaternion.identity);
+        PoolSpawnableObject itemInstance = Instantiate(bonuses[UnityEngine.Random.Range(0, bonuses.Length)], initialSpawnPosition, Quaternion.identity);
         itemInstance.SetPool(allPotionsPool);
         return itemInstance;
     }
 
     private PoolSpawnableObject CreateUmbralItem()
     {
-        var itemInstance = Instantiate(umbralPotion, initialSpawnPosition, Quaternion.identity);
+        PoolSpawnableObject itemInstance = Instantiate(umbralPotion, initialSpawnPosition, Quaternion.identity);
         itemInstance.SetPool(umbralPool);
         return itemInstance;
     }
-
-    private void OnGetFromPool(PoolSpawnableObject pooledItem)
-    {
-        pooledItem.gameObject.SetActive(true);
-    }
-
-    private void OnReleaseToPool(PoolSpawnableObject pooledItem)
-    {
-        pooledItem.gameObject.SetActive(false);
-        pooledItem.transform.position = initialSpawnPosition;
-    }
-
-    private void OnDestroyPooledObject(PoolSpawnableObject pooledItem)
-    {
-        Destroy(pooledItem.gameObject);
-    }
-
 }

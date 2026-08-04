@@ -46,7 +46,7 @@ public class SpellDecalManager : MonoBehaviour
 
             decalPools.Add(decalType.decalType, pool);
 
-            PreInstantiateDecals(pool, decalType.pooledCount);
+            pool.Prewarm(decalType.pooledCount);
         }
     }
 
@@ -54,21 +54,6 @@ public class SpellDecalManager : MonoBehaviour
     {
         SpellDecalDissolve decal = Instantiate(prefab, transform);
         return decal;
-    }
-
-    private void PreInstantiateDecals(ObjectPool<SpellDecalDissolve> pool, int count)
-    {
-        var tempList = new SpellDecalDissolve[count];
-
-        for (int i = 0; i < count; i++)
-        {
-            tempList[i] = pool.Get();
-        }
-
-        for (int i = 0; i < count; i++)
-        {
-            pool.Release(tempList[i]);
-        }
     }
 
     public void SpawnDecal(Vector3 position, Quaternion rotation, SpellDecalType type, int hitTag)

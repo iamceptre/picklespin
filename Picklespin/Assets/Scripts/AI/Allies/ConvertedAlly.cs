@@ -43,12 +43,31 @@ public class ConvertedAlly : MonoBehaviour
             ally = target.gameObject.AddComponent<ConvertedAlly>();
         }
 
-        for (int i = active.Count - 1; i >= 0; i--)
+        MakeRoomFor(ally);
+        ally.Take(target);
+    }
+
+    private static void MakeRoomFor(ConvertedAlly incoming)
+    {
+        int limit = Mathf.Max(1, SanctusUpgrades.MaxAllies);
+        int others = 0;
+        for (int i = 0; i < active.Count; i++)
         {
-            if (active[i] && active[i] != ally) active[i].Revert();
+            if (active[i] && active[i] != incoming) others++;
         }
 
-        ally.Take(target);
+        for (int i = 0; i < active.Count && others >= limit;)
+        {
+            ConvertedAlly oldest = active[i];
+            if (!oldest || oldest == incoming)
+            {
+                i++;
+                continue;
+            }
+
+            oldest.Revert();
+            others--;
+        }
     }
 
     public static bool IsConverted(AiReferences candidate) =>
@@ -193,7 +212,7 @@ public class ConvertedAlly : MonoBehaviour
         if (refs.AttackPlayer) refs.AttackPlayer.PlayAttackOnOther();
         if (prey.MaterialFlash) prey.MaterialFlash.Flash();
 
-        if (prey.Health) prey.Health.TakeQuietDamage(StrikeDamage);
+        if (prey.Health) prey.Health.TakeQuietDamage(Mathf.RoundToInt(StrikeDamage * SanctusUpgrades.AllyStrikeMultiplier));
 
         if (prey.AttackPlayer) prey.AttackPlayer.Retaliate(refs);
     }

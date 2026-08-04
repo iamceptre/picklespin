@@ -10,6 +10,7 @@ public static class WishUpgrades
     public static float ExpGatherMultiplier { get; private set; } = 1f;
     public static float EnemySpeedMultiplier { get; private set; } = 1f;
     public static float RocketJumpForceMultiplier { get; private set; } = 1f;
+    public static float RocketJumpSelfDamageMultiplier { get; private set; } = 1f;
     public static bool RocketJumpSelfDamage { get; private set; } = true;
     public static float CriticalChanceBonus { get; private set; }
 
@@ -28,6 +29,7 @@ public static class WishUpgrades
     public static void MultiplyExpGather(float factor) => ExpGatherMultiplier *= factor;
     public static void MultiplyEnemySpeed(float factor) => EnemySpeedMultiplier *= factor;
     public static void MultiplyRocketJumpForce(float factor) => RocketJumpForceMultiplier *= factor;
+    public static void MultiplyRocketJumpSelfDamage(float factor) => RocketJumpSelfDamageMultiplier *= factor;
     public static void DisableRocketJumpSelfDamage() => RocketJumpSelfDamage = false;
     public static void AddCriticalChance(float amount) => CriticalChanceBonus += amount;
 
@@ -40,6 +42,7 @@ public static class WishUpgrades
         ExpGatherMultiplier = 1f;
         EnemySpeedMultiplier = 1f;
         RocketJumpForceMultiplier = 1f;
+        RocketJumpSelfDamageMultiplier = 1f;
         RocketJumpSelfDamage = true;
         CriticalChanceBonus = 0f;
         spellDamage.Clear();

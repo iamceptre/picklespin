@@ -545,7 +545,7 @@ MonoBehaviour:
   BankLoadType: 0
   AutomaticSampleLoading: 1
   EncryptionKey: 
-  ImportType: 1
+  ImportType: 0
   TargetAssetPath: FMODBanks
   TargetBankFolder: 
   EventLinkage: 0
@@ -575,7 +575,7 @@ MonoBehaviour:
   SharedLibraryTimeSinceStart: 0
   CurrentVersion: 131637
   HideSetupWizard: 1
-  LastEventReferenceScanVersion: 131622
+  LastEventReferenceScanVersion: 131637
   Platforms:
   - {fileID: -8151791781357783411}
   - {fileID: -5455847093450517296}

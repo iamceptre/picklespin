@@ -42,6 +42,8 @@ public class SpellDamage : MonoBehaviour
 
         if (weakPointHit) Headshot(refs);
         else refs.Health.TakeDamage(ScaledDamage(), false, wasLastHitCritical);
+
+        ClassUpgrades.OnSpellHit();
     }
 
     private void PlayHitSound(AiReferences refs)

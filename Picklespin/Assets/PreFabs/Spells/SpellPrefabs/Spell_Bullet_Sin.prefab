@@ -60,7 +60,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 2100000, guid: 9aa087ed79e8de64eaa6ebae8929e52f, type: 2}
+  - {fileID: 2100000, guid: 14e328586a89ce04280acb89f9115d9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,7 +104,7 @@ ParticleSystemRenderer:
   m_RotateWithStretchDirection: 1
   m_UseCustomVertexStreams: 1
   m_VertexStreams: 0003040508
-  m_UseCustomTrailVertexStreams: 0
+  m_UseCustomTrailVertexStreams: 1
   m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
@@ -304,7 +304,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4086,7 +4086,7 @@ ParticleSystem:
     minVertexDistance: 0.2
     textureMode: 0
     textureScale: {x: 1, y: 1}
-    ribbonCount: 1
+    ribbonCount: 2
     shadowBias: 0.5
     worldSpace: 0
     dieWithParticles: 1
@@ -4218,7 +4218,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 0}

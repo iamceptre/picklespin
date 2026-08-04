@@ -17,7 +17,6 @@ public class AngelMind : MonoBehaviour
     [SerializeField] private ParticleSystem healedParticles;
     [SerializeField] private BoxCollider scriptActivationTrigger;
     private AngelPointerHelper pointerHelper;
-    private AngelHealingMinigame minigame;
 
     [Header("Emmiter References")]
 
@@ -27,6 +26,10 @@ public class AngelMind : MonoBehaviour
     [Header("Logic")]
     public bool healed = false;
 
+    public bool BoostSpent { get; private set; }
+
+    public void SpendBoost() => BoostSpent = true;
+
     [Header("Spawner Logic and Refrences")]
     public bool isActive;
     private Collider _collider;
@@ -34,6 +37,8 @@ public class AngelMind : MonoBehaviour
     private AiHealth aiHealth;
 
     public bool IsDead => aiHealth && !aiHealth.IsAlive;
+
+    public AiHealth Health => aiHealth;
 
     [Header("Additional Event")]
     [SerializeField] private UnityEvent additionalHealedEvent;
@@ -86,7 +91,6 @@ public class AngelMind : MonoBehaviour
 
     private void Start()
     {
-        minigame = AngelHealingMinigame.Instance;
         pointerHelper = AngelPointerHelper.Instance;
         playerEXP = PlayerEXP.instance;
         eyesManager.Close();
@@ -116,7 +120,6 @@ public class AngelMind : MonoBehaviour
         // the three bars are no longer refilled here — a full restore is one of
         // the wishes AngelWishMenu offers once the angel asks
         scriptActivationTrigger.size = Vector3.zero;
-        minigame.RandomizeTurboAreaPosition();
         additionalHealedEvent.Invoke();
     }
 

@@ -49,7 +49,8 @@ public class SpellRocketJump : MonoBehaviour
             playerMove.AddExplosionJump(boostedForce * 2f, explosionCenter, radius);
             if (WishUpgrades.RocketJumpSelfDamage && playerHP)
             {
-                float selfDamage = force * proximityFactor * PlayerClasses.RocketJumpSelfDamageMultiplier;
+                float selfDamage = force * proximityFactor * PlayerClasses.RocketJumpSelfDamageMultiplier
+                                   * WishUpgrades.RocketJumpSelfDamageMultiplier;
                 playerHP.ModifyHP(Mathf.RoundToInt(selfDamage) * -2);
             }
         }

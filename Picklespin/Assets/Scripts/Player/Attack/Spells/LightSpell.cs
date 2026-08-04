@@ -14,6 +14,7 @@ public class LightSpell : MonoBehaviour, ISpellBehaviour
     [SerializeField] private Bullet bullet;
 
     private bool convertedThisFlight;
+    private bool hitNpc;
 
     void Awake()
     {
@@ -72,7 +73,7 @@ public class LightSpell : MonoBehaviour, ISpellBehaviour
 
     public bool InterceptHit(AiReferences refs, bool keepFlying)
     {
-        if (!keepFlying) FadeOut();
+        if (!keepFlying) hitNpc = true;
         if (!PlayerClasses.LightSpellConverts) return false;
 
         convertedThisFlight = true;
@@ -83,9 +84,14 @@ public class LightSpell : MonoBehaviour, ISpellBehaviour
     public void OnImpact(Vector3 point)
     {
         if (PlayerClasses.LightSpellConverts && !convertedThisFlight) ConvertedAlly.CommandAll(point);
+        if (hitNpc) bullet.ReturnToPool();
     }
 
-    public void ResetForFlight() => convertedThisFlight = false;
+    public void ResetForFlight()
+    {
+        convertedThisFlight = false;
+        hitNpc = false;
+    }
 
     public bool TryRetire()
     {

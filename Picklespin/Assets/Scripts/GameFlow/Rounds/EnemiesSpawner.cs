@@ -12,12 +12,15 @@ public class EnemiesSpawner : MonoBehaviour
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform[] waypointsToPass;
 
+    private const int PrewarmCount = 8;
+
     private static readonly WaitForSeconds spawnStagger = new(0.2f);
     private int spawnIndex;
     private float spawnPointOffset;
 
     private ObjectPool<GameObject> easyPool;
     private ObjectPool<GameObject> whitePool;
+    private Transform pooledRoot;
     private readonly Dictionary<GameObject, ObjectPool<GameObject>> instanceToPool = new();
 
     private void Awake()
@@ -29,8 +32,16 @@ public class EnemiesSpawner : MonoBehaviour
         }
         instance = this;
         spawnPointOffset = Random.value; // once per run, so the wave still spreads evenly
+        pooledRoot = new GameObject("PooledEnemies").transform;
+        pooledRoot.gameObject.SetActive(false); // never active in hierarchy, so nothing on a pooled enemy ever wakes
         easyPool = CreatePool(evilEntity);
         whitePool = CreatePool(evilEntityWhite);
+    }
+
+    private void Start()
+    {
+        easyPool.Prewarm(PrewarmCount);
+        whitePool.Prewarm(PrewarmCount);
     }
 
     private ObjectPool<GameObject> CreatePool(GameObject prefab)
@@ -39,8 +50,10 @@ public class EnemiesSpawner : MonoBehaviour
         pool = new ObjectPool<GameObject>(
             createFunc: () =>
             {
-                GameObject enemy = Instantiate(prefab);
+                GameObject enemy = Instantiate(prefab, pooledRoot); // born under a dead root, so nothing on it wakes yet
                 enemy.SetActive(false);
+                enemy.transform.SetParent(null, false);
+                SilentWarmup.Run(enemy);
                 instanceToPool.Add(enemy, pool);
                 return enemy;
             },

@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &130619891914727347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1612748399555884575}
+  - component: {fileID: 7690685484560996240}
+  m_Layer: 0
+  m_Name: PickableLoopSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1612748399555884575
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130619891914727347}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7301458962214470082}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7690685484560996240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130619891914727347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1553581475
+      Data2: 1328516543
+      Data3: 1647672732
+      Data4: 1002143291
+    Path: event:/SPELLS/FIREBALL/FIREBALL_PICKUPABLE
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 3
+  OverrideMaxDistance: 40
 --- !u!1 &3803652322639270136
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,6 +141,7 @@ GameObject:
   - component: {fileID: 7301458962214470086}
   - component: {fileID: 7301458962214470087}
   - component: {fileID: 2633391595515633283}
+  - component: {fileID: -9062121499984250984}
   m_Layer: 0
   m_Name: Spell_Pickup_Base
   m_TagString: Untagged
@@ -99,6 +163,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8337837548959728661}
+  - {fileID: 1612748399555884575}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7301458962214470083
@@ -218,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72ae6a489a94ae419e851668e01e3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySound: {fileID: 0}
+  mySound: {fileID: 7690685484560996240}
   pickupSoundEmitter: {fileID: 5355447892143751641}
   spell: 0
 --- !u!114 &2633391595515633283
@@ -233,5 +298,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d05b45c0779754438b6c9d526686b17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 0.1
+  height: 0.2
   speed: 1
+--- !u!114 &-9062121499984250984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7301458962214470081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3359935cfcd71aa4b82fc8e4df523d90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScrollTexture
+  scrollSpeedY: 3
+  scrollSpeedX: 0.5
+  randomUVoffsetAtEnable: 1
