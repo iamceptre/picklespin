@@ -64,7 +64,7 @@ Rounds are authored — use that: alternate pressure rounds and breather rounds,
 ## 5. Content
 
 ### 5.1 Second arena
-One combat scene makes every run visually identical. Even a geometry remix of Chruch_Arena with different lighting/fog (VolumetricFog + torch systems already exist) buys perceived content cheaply. Design around closed circuits where bhop speed can be maintained; add verticality for apex play.
+One combat scene makes every run visually identical. Even a geometry remix of Church_Arena with different lighting/fog (VolumetricFog + torch systems already exist) buys perceived content cheaply. Design around closed circuits where bhop speed can be maintained; add verticality for apex play.
 
 ### 5.2 Arena mutators
 Cheaper than new arenas: per-round or per-run modifiers (low gravity round, fog round, torch-out darkness round) wired through the same round `UnityEvent[]`.

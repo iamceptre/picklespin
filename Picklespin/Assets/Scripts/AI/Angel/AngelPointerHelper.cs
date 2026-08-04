@@ -32,6 +32,11 @@ public class AngelPointerHelper : MonoBehaviour
         if (helperSpirit) helperSpirit.ShowSpirit(angel);
     }
 
+    public void StopPointingAt(Transform target)
+    {
+        if (angel == target) Stop();
+    }
+
     public void Stop()
     {
         guiding = false;

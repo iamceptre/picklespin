@@ -11,46 +11,34 @@ public class ResetPlayerPrefs : MonoBehaviour
     [SerializeField] private Slider cameraBobSlider;
     [SerializeField] private Slider screenShakeSlider;
 
-    private const float DefaultVolume = 100f;
-    private const float DefaultFramerateLimit = 100f;
-    private const float DefaultSensitivity = 100f;
-    private const float DefaultFov = 100f;
-    private const float DefaultStrength = 100f; // slider units, 0-100
-
     public void Do()
     {
         PlayerPrefs.DeleteAll();
-
-        // these keys fall back to a *derived* value when missing, not a fixed default,
-        // so the real defaults have to be written back for the next read to reset them
-        PlayerPrefs.SetFloat("Volume", DefaultVolume);
-        PlayerPrefs.SetFloat("FramerateLimit", DefaultFramerateLimit);
-        PlayerPrefs.SetFloat("MouseSensitivity", DefaultSensitivity);
-        PlayerPrefs.SetFloat("BaseFOV", DefaultFov);
-        PlayerPrefs.SetFloat("CameraBobStrenght", DefaultStrength);
-        PlayerPrefs.SetFloat("ScreenShakeStrenght", DefaultStrength);
+        SettingsDefaults.WriteAll();
 
         // setting .value fires OnValueChanged, which re-applies live through the
         // existing slider wiring
-        if (volumeSlider) volumeSlider.value = DefaultVolume;
-        if (sensitivitySlider) sensitivitySlider.value = DefaultSensitivity;
-        if (fovSlider) fovSlider.value = DefaultFov;
-        if (cameraBobSlider) cameraBobSlider.value = DefaultStrength;
-        if (screenShakeSlider) screenShakeSlider.value = DefaultStrength;
+        if (volumeSlider) volumeSlider.value = SettingsDefaults.Volume;
+        if (sensitivitySlider) sensitivitySlider.value = SettingsDefaults.MouseSensitivity;
+        if (fovSlider) fovSlider.value = SettingsDefaults.BaseFov;
+        if (cameraBobSlider) cameraBobSlider.value = SettingsDefaults.CameraMotion;
+        if (screenShakeSlider) screenShakeSlider.value = SettingsDefaults.ScreenShake;
 
         // the fps slider doesn't apply live, so the limit is reapplied directly
-        if (fpsSlider) fpsSlider.value = DefaultFramerateLimit;
+        if (fpsSlider) fpsSlider.value = SettingsDefaults.FramerateLimit;
         if (FPSLimit.instance)
         {
-            FPSLimit.instance.framerateLimit = DefaultFramerateLimit;
+            FPSLimit.instance.framerateLimit = SettingsDefaults.FramerateLimit;
             FPSLimit.instance.SetFramerate();
         }
 
         // in case these systems are alive in this scene too (an in-game pause menu)
+        if (MouselookXY.instance) MouselookXY.instance.RestoreSensitivity();
         if (CameraBob.instance) CameraBob.instance.SetStrength(1f);
+        if (CameraSkewController.instance) CameraSkewController.instance.SetStrength(1f);
         if (DynamicFOV.instance)
         {
-            DynamicFOV.instance.SetBaseFOV(DefaultFov);
+            DynamicFOV.instance.SetBaseFOV(SettingsDefaults.BaseFov);
             DynamicFOV.instance.SetSpeedFovStrength(1f);
         }
         if (CameraShakeManagerV2.instance) CameraShakeManagerV2.instance.SetStrength(1f);

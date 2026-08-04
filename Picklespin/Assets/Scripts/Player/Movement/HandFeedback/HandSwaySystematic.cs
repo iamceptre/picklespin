@@ -7,7 +7,6 @@ public class HandSwaySystematic : MonoBehaviour
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform body;
     private MouselookXY mouselook;
-    private float mouseSensitivtyCached = 3;
 
     [Header("Rotation Sway (Mouse)")]
     [SerializeField] private float rotationSwayAmount = 5f;
@@ -37,7 +36,6 @@ public class HandSwaySystematic : MonoBehaviour
         _initialLocalRotation = transform.localRotation;
         _lastCameraPosition = mainCamera.position;
         mouselook = MouselookXY.instance;
-        mouseSensitivtyCached = mouselook.sensitivity;
     }
 
     void LateUpdate()
@@ -80,12 +78,10 @@ public class HandSwaySystematic : MonoBehaviour
             positionSmoothTime
         );
 
-        Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
-        float mouseX = lookDelta.x * mouseSensitivtyCached;
-        float mouseY = lookDelta.y * mouseSensitivtyCached;
+        Vector2 lookDelta = lookAction.action.ReadValue<Vector2>() * mouselook.sensitivity;
 
-        float rotX = -mouseY * rotationSwayAmount;
-        float rotY = mouseX * rotationSwayAmount;
+        float rotX = -lookDelta.y * rotationSwayAmount;
+        float rotY = lookDelta.x * rotationSwayAmount;
 
         rotX = Mathf.Clamp(rotX, -maxRotationAngle, maxRotationAngle);
         rotY = Mathf.Clamp(rotY, -maxRotationAngle, maxRotationAngle);

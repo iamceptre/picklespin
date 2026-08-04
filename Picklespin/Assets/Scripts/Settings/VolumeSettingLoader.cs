@@ -16,17 +16,8 @@ public class VolumeSettingLoader : MonoBehaviour
 
     private void Start()
     {
-        readenMasterVolume = PlayerPrefs.GetFloat("Volume") * 0.01f;
-
-        if (readenMasterVolume != 0)
-        {
-            LoadVolumeSetting(readenMasterVolume);
-        }
-        else
-        {
-            RefreshVolumeOutsidePlayerPrefs();
-        }
-
+        readenMasterVolume = PlayerPrefs.GetFloat(SettingsDefaults.VolumeKey, SettingsDefaults.Volume) * 0.01f;
+        LoadVolumeSetting(readenMasterVolume);
     }
 
     public void RefreshVolumeOutsidePlayerPrefs()

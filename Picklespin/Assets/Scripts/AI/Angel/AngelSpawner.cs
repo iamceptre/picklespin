@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class AngelSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] angels;
     private AngelMind[] angelMinds;
-    private int _rand = 0;
+    private int[] summonableIndices;
 
     private AngelPointerHelper pointerHelper;
 
@@ -12,6 +12,7 @@ public class AngelSpawner : MonoBehaviour
     {
          angels = GameObject.FindGameObjectsWithTag("Angel");
          angelMinds = new AngelMind[angels.Length];
+         summonableIndices = new int[angels.Length];
     }
 
     private void Start()
@@ -28,54 +29,49 @@ public class AngelSpawner : MonoBehaviour
 
     public void SpawnAngel()
     {
-
-        if (!CanSpawnAngel())
+        if (AnAngelIsStillWaiting())
         {
-            return; 
+            return;
         }
 
-        RandomizeAngelIndex();
+        int summonableCount = CollectSummonable();
 
-        while (angelMinds[_rand].isActive)
+        if (summonableCount == 0)
         {
-            RandomizeAngelIndex();
+            return;
         }
 
-        angelMinds[_rand].SetActive(true);
-        pointerHelper.PointTo(angels[_rand].transform);
+        int chosen = summonableIndices[Random.Range(0, summonableCount)];
+
+        angelMinds[chosen].SetActive(true);
+        pointerHelper.PointTo(angels[chosen].transform);
     }
 
-    bool CanSpawnAngel()
+    private bool AnAngelIsStillWaiting()
     {
-        bool allActive = true;
-
-        for (int i = 0; i < angels.Length; i++)
+        for (int i = 0; i < angelMinds.Length; i++)
         {
-            if (!angelMinds[i].isActive)
+            if (angelMinds[i].isActive && !angelMinds[i].healed && !angelMinds[i].IsDead)
             {
-                allActive = false;
-                break;
-            }
-        }
-        
-        if (allActive)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < angels.Length; i++)
-        {
-            if (angelMinds[i].isActive && !angelMinds[i].healed)
-            {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
-    private void RandomizeAngelIndex()
+    private int CollectSummonable()
     {
-        _rand = Random.Range(0, angels.Length);
+        int count = 0;
+
+        for (int i = 0; i < angelMinds.Length; i++)
+        {
+            if (!angelMinds[i].isActive && !angelMinds[i].IsDead)
+            {
+                summonableIndices[count++] = i;
+            }
+        }
+
+        return count;
     }
 }

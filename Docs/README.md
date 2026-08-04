@@ -21,7 +21,7 @@ Design backlog (not documentation): [Gameplay Ideas](gameplay-ideas.md).
 
 - `Picklespin/` — the Unity project. Open this folder in Unity Hub.
 - `Picklespin-FMOD/` — FMOD Studio project (`Picklespin.fspro`). Built banks land in `Picklespin/Assets/FMODBanks/`.
-- Scenes: `Assets/Scenes/Menu_Main.unity` and `Assets/Scenes/Chruch_Arena.unity` (the "Chruch" spelling is canonical — don't rename).
+- Scenes: `Assets/Scenes/Menu_Main.unity` and `Assets/Scenes/Church_Arena.unity`.
 - All gameplay code: `Assets/Scripts/`. Third-party: `Assets/Plugins/`.
 
 ## The 60-second architecture

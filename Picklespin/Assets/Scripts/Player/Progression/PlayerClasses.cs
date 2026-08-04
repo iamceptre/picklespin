@@ -33,10 +33,8 @@ public static class PlayerClasses
         Ammo.instance && Ammo.instance.maxAmmo > 0 &&
         (float)Ammo.instance.ammo / Ammo.instance.maxAmmo > ChargedBarThreshold;
 
-    public static float RocketJumpForceMultiplier => Chosen == PlayerClassId.Blastfool ? 3.5f : 1f;
-    public static float RocketJumpSelfDamageMultiplier => Chosen == PlayerClassId.Blastfool ? 2f : 1f;
-
-    public static float RocketJumpMinProximity => Chosen == PlayerClassId.Blastfool ? 0.75f : 0f;
+    public static float RocketJumpForceMultiplier => Chosen == PlayerClassId.Blastfool ? 2.5f : 1f;
+    public static float RocketJumpSelfDamageMultiplier => Chosen == PlayerClassId.Blastfool ? 2.2f : 1f;
 
     public const float BlastfoolGroundedDamage = 0.2f;
     public const float BlastfoolAirborneDamage = 0.7f;
@@ -68,7 +66,7 @@ public static class PlayerClasses
 
     public static float RecoilScale => Chosen switch
     {
-        PlayerClassId.Blastfool => 0.1f,
+        PlayerClassId.Blastfool => 0.2f,
         PlayerClassId.Lightfoot => 0.5f,
         _ => 1f
     };
@@ -105,7 +103,7 @@ public static class PlayerClasses
                 break;
 
             case PlayerClassId.Blastfool:
-                if (PlayerHP.Instance) PlayerHP.Instance.MultiplyMaxHp(0.5f);
+                if (PlayerHP.Instance) PlayerHP.Instance.MultiplyMaxHp(0.4f);
                 break;
 
             case PlayerClassId.Bastion:

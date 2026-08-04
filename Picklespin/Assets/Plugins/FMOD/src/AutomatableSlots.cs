@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine.Serialization;
 
 namespace FMODUnity

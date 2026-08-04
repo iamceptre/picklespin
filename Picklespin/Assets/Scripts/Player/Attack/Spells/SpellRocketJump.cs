@@ -46,8 +46,6 @@ public class SpellRocketJump : MonoBehaviour
             var distance = Vector3.Distance(playerMove.transform.position, explosionCenter);
             var proximityFactor = Mathf.Clamp01(1f - distance / radius);
 
-            if (proximityFactor < PlayerClasses.RocketJumpMinProximity) break;
-
             playerMove.AddExplosionJump(boostedForce * 2f, explosionCenter, radius);
             if (WishUpgrades.RocketJumpSelfDamage && playerHP)
             {

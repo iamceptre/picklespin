@@ -26,11 +26,7 @@ public class CameraShakeManagerV2 : MonoBehaviour
 
     private void Start()
     {
-
-        if (PlayerPrefs.HasKey("ScreenShakeStrenght"))
-        {
-            SetStrength(PlayerPrefs.GetFloat("ScreenShakeStrenght") * 0.01f);
-        }
+        SetStrength(PlayerPrefs.GetFloat(SettingsDefaults.ScreenShakeKey, SettingsDefaults.ScreenShake) * 0.01f);
     }
 
     public void SetStrength(float normalized) => strength = Mathf.Clamp01(normalized);

@@ -32,7 +32,7 @@ public class FPSLimit : MonoBehaviour
 
     private void LoadSavedSetting()
     {
-        framerateLimit = PlayerPrefs.GetFloat("FramerateLimit");
+        framerateLimit = PlayerPrefs.GetFloat(SettingsDefaults.FramerateLimitKey, SettingsDefaults.FramerateLimit);
     }
 
     public void SetFramerate()

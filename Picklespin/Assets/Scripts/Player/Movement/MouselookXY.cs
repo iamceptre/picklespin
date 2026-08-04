@@ -7,28 +7,28 @@ public class MouselookXY : MonoBehaviour
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private Transform body;
     [SerializeField] private Transform mainCamera;
-     public float sensitivity = 3 * 0.05f;
+
+    private const float SliderValueToSensitivity = 0.0015f;
+
+    public float sensitivity { get; private set; }
 
     float rotY;
     float rotX;
-    float startSensitivity;
 
     void Awake()
     {
-        if (instance && instance != this) Destroy(this);
-        else instance = this;
+        if (instance && instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        instance = this;
+        RestoreSensitivity();
     }
 
     void OnEnable() => lookAction.action.Enable();
     void OnDisable() => lookAction.action.Disable();
-
-    void Start()
-    {
-        sensitivity = PlayerPrefs.GetFloat("MouseSensitivity") * 0.06f * 0.05f;
-        startSensitivity = sensitivity;
-        rotY = 0f;
-        rotX = 0f;
-    }
 
     void Update()
     {
@@ -39,6 +39,7 @@ public class MouselookXY : MonoBehaviour
         body.rotation = Quaternion.Euler(0f, rotX, 0f);
     }
 
-    public void ZeroSensitivity() => sensitivity = 0;
-    public void RestoreSensitivity() => sensitivity = startSensitivity;
+    public void ZeroSensitivity() => sensitivity = 0f;
+
+    public void RestoreSensitivity() => sensitivity = PlayerPrefs.GetFloat(SettingsDefaults.MouseSensitivityKey, SettingsDefaults.MouseSensitivity) * SliderValueToSensitivity;
 }

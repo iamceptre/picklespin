@@ -25,7 +25,7 @@ Singleton on a HUD object (needs a `CanvasGroup` — the timer UI dims to 0.4 al
 
 Rounds are **data, not code** — each round is one entry in `RoundSystem.RoundEvent` (a `UnityEvent[]`):
 
-1. Select the RoundSystem object in `Chruch_Arena`, set **Round Duration** (seconds per round).
+1. Select the RoundSystem object in `Church_Arena`, set **Round Duration** (seconds per round).
 2. Size **Round Event** to the number of rounds. Entry *i* fires at the **start of round i+1**.
 3. Into each entry, drag scene objects and pick methods. The standard calls:
    - `EnemiesSpawner.SpawnEnemiesEasy(int)` / `SpawnEnemiesWhite(int)` — spawn a wave (staggered 0.2 s apart, golden-spiral scattered).

@@ -70,11 +70,7 @@ public class CameraBob : MonoBehaviour
 
         maxSpeedDiffReciprocal = 1f / (maxSpeed - minSpeed);
 
-        // "CameraBobStrenght" (sic) is the literal key on the options scene's slider
-        if (PlayerPrefs.HasKey("CameraBobStrenght"))
-        {
-            SetStrength(PlayerPrefs.GetFloat("CameraBobStrenght") * 0.01f);
-        }
+        SetStrength(PlayerPrefs.GetFloat(SettingsDefaults.CameraMotionKey, SettingsDefaults.CameraMotion) * 0.01f);
     }
 
     // footstep events keep firing at 0, so the FootstepSystem stays in sync

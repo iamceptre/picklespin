@@ -26,24 +26,24 @@ public class AngelMind : MonoBehaviour
 
     [Header("Logic")]
     public bool healed = false;
-    public bool isDead = false;
 
     [Header("Spawner Logic and Refrences")]
     public bool isActive;
     private Collider _collider;
     private BoxCollider _activationTrigger;
+    private AiHealth aiHealth;
+
+    public bool IsDead => aiHealth && !aiHealth.IsAlive;
 
     [Header("Additional Event")]
     [SerializeField] private UnityEvent additionalHealedEvent;
 
     public void SetActive(bool state)
     {
-        if (isActive)
+        if (isActive || IsDead)
         {
             return;
         }
-
-        unhealedLoopEmmiter.Play();
 
         for (int i = 0; i < additionalElements.Length; i++)
         {
@@ -58,6 +58,7 @@ public class AngelMind : MonoBehaviour
 
         if (state)
         {
+            unhealedLoopEmmiter.Play();
             torch.On();
         }
         else
@@ -72,6 +73,15 @@ public class AngelMind : MonoBehaviour
         _collider = GetComponent<SphereCollider>();
         angelTorchManager = GetComponent<AngelTorchManager>();
         _activationTrigger = GetComponentInChildren<BoxCollider>();
+        aiHealth = GetComponent<AiHealth>();
+        if (aiHealth) aiHealth.deathEvent.AddListener(HandleDeath);
+    }
+
+    private void HandleDeath()
+    {
+        isActive = false;
+        StopMySound();
+        if (pointerHelper) pointerHelper.StopPointingAt(transform);
     }
 
     private void Start()

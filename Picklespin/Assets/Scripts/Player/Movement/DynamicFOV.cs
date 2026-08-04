@@ -34,13 +34,8 @@ public class DynamicFOV : MonoBehaviour
     void Start()
     {
         speedometer = CharacterControllerVelocity.instance;
-        startingFOV = PlayerPrefs.HasKey("BaseFOV") ? PlayerPrefs.GetFloat("BaseFOV") : mainCam.fieldOfView;
-
-        // shared "camera motion" key, spelling included (sic) - see CameraBob
-        if (PlayerPrefs.HasKey("CameraBobStrenght"))
-        {
-            SetSpeedFovStrength(PlayerPrefs.GetFloat("CameraBobStrenght") * 0.01f);
-        }
+        startingFOV = PlayerPrefs.GetFloat(SettingsDefaults.BaseFovKey, SettingsDefaults.BaseFov);
+        SetSpeedFovStrength(PlayerPrefs.GetFloat(SettingsDefaults.CameraMotionKey, SettingsDefaults.CameraMotion) * 0.01f);
     }
 
     // Update eases toward it, so live slider changes blend in smoothly

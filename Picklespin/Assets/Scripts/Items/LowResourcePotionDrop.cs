@@ -43,6 +43,7 @@ public class LowResourcePotionDrop : MonoBehaviour
     private void Start()
     {
         spawner = PickableBonusesSpawner.instance;
+        roundSystem = RoundSystem.instance;
         if (!playerCamera) playerCamera = Camera.main;
 
         prefabs = new[] { healthPotion, staminaPotion, magickaPotion, umbralPotion };

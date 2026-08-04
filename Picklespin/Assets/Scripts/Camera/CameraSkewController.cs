@@ -28,11 +28,7 @@ public class CameraSkewController : MonoBehaviour
     {
         playerMovement = PlayerMovement.Instance;
 
-        // "CameraBobStrenght" (sic) matches the options scene slider's settingName key
-        if (PlayerPrefs.HasKey("CameraBobStrenght"))
-        {
-            SetStrength(PlayerPrefs.GetFloat("CameraBobStrenght") * 0.01f);
-        }
+        SetStrength(PlayerPrefs.GetFloat(SettingsDefaults.CameraMotionKey, SettingsDefaults.CameraMotion) * 0.01f);
     }
 
     public void SetStrength(float normalized)
