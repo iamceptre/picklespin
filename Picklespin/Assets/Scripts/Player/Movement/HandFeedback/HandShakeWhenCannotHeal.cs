@@ -2,28 +2,18 @@ using UnityEngine;
 
 public class HandShakeWhenCannotHeal : MonoBehaviour
 {
-    [SerializeField] private AngelHeal angelHeal;
     private Animator handAnimator;
 
     private void Start()
     {
         handAnimator = PublicPlayerHandAnimator.instance._animator;
     }
-    void Update()
-    {
-
-        if (InputCompat.GetKeyDown(KeyCode.Mouse1))
-        {
-            if (!angelHeal.enabled)
-            {
-                ShakeHand();
-            }
-        }
-        
-    }
 
     public void ShakeHand()
     {
-        handAnimator.SetTrigger("Hand_Fail");
+        Shake();
+        if (SpecialAbilitySystem.instance) SpecialAbilitySystem.instance.PlayLockFeedback();
     }
+
+    public void Shake() => handAnimator.SetTrigger("Hand_Fail");
 }

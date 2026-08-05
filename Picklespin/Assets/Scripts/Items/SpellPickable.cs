@@ -60,6 +60,7 @@ public class SpellPickable : MonoBehaviour
 
     private void OnEnable()
     {
+        SpellAvailability.PickupPlaced(spell);
         myCollider.enabled = true;
         if (rend != null) rend.enabled = true;
         myLight.range = myLightRange;
@@ -73,6 +74,7 @@ public class SpellPickable : MonoBehaviour
 
     private void OnDisable()
     {
+        SpellAvailability.PickupRemoved(spell);
         if (mySound != null)
         {
             mySound.Stop();

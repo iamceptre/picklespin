@@ -19,10 +19,13 @@ public class BarEase : MonoBehaviour
     private bool behind;
     private float holdUntilTime;
     private float easeSpeed;
+    private bool fillVisible;
+    private float hideFillTime;
 
     private void Awake()
     {
         me = GetComponent<Slider>();
+        fillVisible = easeFill.enabled;
     }
 
     private void Start() => ResetEase();
@@ -34,6 +37,7 @@ public class BarEase : MonoBehaviour
         if (currentValue >= me.value)
         {
             CatchUp(currentValue);
+            if (Time.time >= hideFillTime) SetFillVisible(false);
             return;
         }
 
@@ -43,7 +47,7 @@ public class BarEase : MonoBehaviour
         {
             behind = true;
             holdUntilTime = Time.time + easeDelay;
-            easeFill.enabled = true;
+            SetFillVisible(true);
         }
 
         if (Time.time < holdUntilTime) return;
@@ -63,9 +67,18 @@ public class BarEase : MonoBehaviour
     {
         me.value = value;
         targetValue = value;
+        // hiding lingers instead of firing here: a steady drain catches up every few
+        // frames, and toggling the fill Image re-dirties the canvas each flip
+        if (behind) hideFillTime = Time.time + easeDelay;
         behind = false;
         easeSpeed = 0f;
-        easeFill.enabled = false;
+    }
+
+    private void SetFillVisible(bool visible)
+    {
+        if (fillVisible == visible) return;
+        fillVisible = visible;
+        easeFill.enabled = visible;
     }
 
     // the death event disables this component, so pooled reuse has to switch it back on
@@ -74,5 +87,6 @@ public class BarEase : MonoBehaviour
         enabled = true;
         holdUntilTime = 0f;
         CatchUp(sliderToFollow.value);
+        SetFillVisible(false);
     }
 }

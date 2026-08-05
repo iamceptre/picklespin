@@ -9,6 +9,7 @@ public class SpellDecalManager : MonoBehaviour
     [SerializeField] private List<DecalType> decalTypes;
 
     private readonly Dictionary<SpellDecalType, ObjectPool<SpellDecalDissolve>> decalPools = new();
+    private readonly Dictionary<SpellDecalType, System.Action<SpellDecalDissolve>> returnCallbacks = new();
 
     private void Awake()
     {
@@ -45,6 +46,8 @@ public class SpellDecalManager : MonoBehaviour
             );
 
             decalPools.Add(decalType.decalType, pool);
+            SpellDecalType type = decalType.decalType;
+            returnCallbacks.Add(type, decal => ReturnDecal(type, decal));
 
             pool.Prewarm(decalType.pooledCount);
         }
@@ -64,7 +67,7 @@ public class SpellDecalManager : MonoBehaviour
         if (decal == null) return;
 
         decal.transform.SetPositionAndRotation(position, rotation);
-        decal.Initialize((d) => ReturnDecal(type, d), hitTag);
+        decal.Initialize(returnCallbacks[type], hitTag);
     }
 
     private void ReturnDecal(SpellDecalType type, SpellDecalDissolve decal)

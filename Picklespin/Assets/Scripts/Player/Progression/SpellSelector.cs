@@ -2,40 +2,34 @@ using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Spell switching. Scroll cycles through unlocked spells (locked ones are skipped),
-// digit keys jump directly and give locked feedback. The number of spells derives
-// from the spell arrays — adding a spell needs no changes here.
 public class SpellSelector : MonoBehaviour
 {
-    [SerializeField] EventReference spellLockedSoundEvent;
-    [SerializeField] InputActionReference scrollAction;
-    [SerializeField] InputActionReference attackAction;
-    [SerializeField] InputActionReference healAction;
+    [SerializeField] private EventReference spellLockedSoundEvent;
+    [SerializeField] private InputActionReference scrollAction;
+    [SerializeField] private InputActionReference attackAction;
+    [SerializeField] private InputActionReference healAction;
 
     private Attack attack;
     private UnlockedSpells unlockedSpells;
-    private InventoryBarSelectedSpell inventoryBar;
-    private int index;
-    private int spellCount;
+    private SpellInventoryBar bar;
     private float lastScrollValue;
 
-    void Start()
+    private void Start()
     {
         attack = Attack.instance;
         unlockedSpells = UnlockedSpells.instance;
-        inventoryBar = InventoryBarSelectedSpell.instance;
-        spellCount = Mathf.Min(unlockedSpells.SpellCount, attack.bulletPrefab.Length);
+        bar = SpellInventoryBar.instance;
     }
 
-    void Update()
+    private void Update()
     {
-        if (PlayerClasses.LockedSpell.HasValue) return; // Umbral has nothing to switch to
+        if (PlayerClasses.LockedSpell.HasValue) return;
         if (attackAction.action.IsPressed() || healAction.action.IsPressed()) return;
         HandleScroll();
         HandleDigitKeys();
     }
 
-    void HandleScroll()
+    private void HandleScroll()
     {
         float scroll = scrollAction.action.ReadValue<float>();
         if (scroll >= 0.5f && lastScrollValue < 0.5f) SelectNextUnlocked(+1);
@@ -43,49 +37,52 @@ public class SpellSelector : MonoBehaviour
         lastScrollValue = scroll;
     }
 
-    void HandleDigitKeys()
+    private void HandleDigitKeys()
     {
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
-        for (int i = 0; i < spellCount; i++)
+        int slotCount = bar.VisibleCount;
+        for (int i = 0; i < slotCount; i++)
         {
             if (keyboard[Key.Digit1 + i].wasPressedThisFrame)
             {
-                ChooseSpell(i);
+                ChooseSlot(i);
                 return;
             }
         }
     }
 
-    void SelectNextUnlocked(int direction)
+    private void SelectNextUnlocked(int direction)
     {
-        for (int step = 1; step < spellCount; step++)
+        int slotCount = bar.VisibleCount;
+        if (slotCount == 0) return;
+        int current = bar.SlotOf(attack.selectedSpell);
+        if (current < 0) current = 0;
+        for (int step = 1; step < slotCount; step++)
         {
-            int candidate = ((index + direction * step) % spellCount + spellCount) % spellCount;
-            if (unlockedSpells.IsUnlocked((SpellId)candidate))
+            int candidate = ((current + direction * step) % slotCount + slotCount) % slotCount;
+            if (unlockedSpells.IsUnlocked(bar.SpellAt(candidate)))
             {
-                ChooseSpell(candidate);
+                ChooseSlot(candidate);
                 return;
             }
         }
     }
 
-    void ChooseSpell(int newIndex)
+    private void ChooseSlot(int visibleSlot)
     {
-        index = newIndex;
-        SpellId spell = (SpellId)newIndex;
-        inventoryBar.NumberBump(spell);
+        SpellId spell = bar.SpellAt(visibleSlot);
+        bar.NumberBump(spell);
 
         if (unlockedSpells.IsUnlocked(spell))
         {
-            unlockedSpells.SelectingUnlockedAuraAnimation(spell);
             attack.SelectSpell(spell);
-            inventoryBar.SelectionChanged(spell);
+            bar.Select(spell);
         }
         else
         {
             RuntimeManager.PlayOneShot(spellLockedSoundEvent);
-            unlockedSpells.SpellLockedIconAnimation(spell);
+            bar.Deny(spell);
         }
     }
 }

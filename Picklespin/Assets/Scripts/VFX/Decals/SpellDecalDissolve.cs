@@ -23,6 +23,12 @@ public class SpellDecalDissolve : MonoBehaviour
     private float fadeDelay;
     private float fadeDuration;
     private Action<SpellDecalDissolve> onFadeComplete;
+    private Material decalMaterial;
+
+    private void Awake()
+    {
+        if (decalRenderer != null) decalMaterial = decalRenderer.material;
+    }
 
     public void Initialize(Action<SpellDecalDissolve> fadeCompleteCallback, int hitTagHash)
     {
@@ -72,11 +78,11 @@ public class SpellDecalDissolve : MonoBehaviour
 
     private void ResetDecal()
     {
-        if (decalRenderer != null)
+        if (decalMaterial != null)
         {
-            Color initialColor = decalRenderer.material.color;
+            Color initialColor = decalMaterial.color;
             initialColor.a = 1f;
-            decalRenderer.material.color = initialColor;
+            decalMaterial.color = initialColor;
         }
 
         for (int i = 0; i < particleSystems.Length; i++)
@@ -95,15 +101,11 @@ public class SpellDecalDissolve : MonoBehaviour
 
     private void StartFade()
     {
-        if (decalRenderer != null)
+        if (decalMaterial != null)
         {
-            Color targetColor = new Color(
-                decalRenderer.material.color.r,
-                decalRenderer.material.color.g,
-                decalRenderer.material.color.b,
-                0f
-            );
-            decalRenderer.material.DOColor(targetColor, fadeDuration).OnComplete(() =>
+            Color targetColor = decalMaterial.color;
+            targetColor.a = 0f;
+            decalMaterial.DOColor(targetColor, fadeDuration).OnComplete(() =>
             {
                 if (particleSpecialEffect) particleSpecialEffect.SetActive(false);
                 onFadeComplete?.Invoke(this);

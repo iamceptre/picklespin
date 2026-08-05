@@ -46,6 +46,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Tooltip("slide speed on ground steeper than the controller's slope limit")]
     private float steepSlopeSlideSpeed = 5f;
 
+    [Header("Grappling Hook")]
+    [SerializeField, Tooltip("distance from the target point that counts as arrival when the pull doesn't touch anything first")]
+    private float grappleArrivalDistance = 1f;
+
     [Header("Stamina & Fatigue")]
     public float stamina = 100;
     [Tooltip("raised permanently by the angel's stamina wish, so nothing may assume 100")]
@@ -108,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsGroundedStable => isGroundedStable;
     public bool IsRocketJumping { get; private set; }
+    public bool IsGrappling => grappling;
     public Vector3 MeasuredVelocity { get; private set; }
     public float HorizontalSpeed { get; private set; }
     public float SpeedDamageMultiplier { get; private set; } = 1f;
@@ -115,6 +120,9 @@ public class PlayerMovement : MonoBehaviour
     public float DamageSpeed { get; private set; }
 
     private Vector3 externalVelocity;
+    private bool grappling;
+    private Vector3 grappleTarget;
+    private float grappleSpeed;
 
     public void ReportExternalVelocity(Vector3 velocity) => externalVelocity = velocity;
 
@@ -209,47 +217,55 @@ public class PlayerMovement : MonoBehaviour
     void HandleMovement()
     {
         float dt = Time.deltaTime;
-        Vector3 wishVelocity = (forwardPointer.forward * rawInput.y + forwardPointer.right * rawInput.x)
-                               * (CurrentWishSpeed * speedMultiplier);
-        float wishSpeed = wishVelocity.magnitude;
-        Vector3 wishDir = wishSpeed > 0.001f ? wishVelocity / wishSpeed : Vector3.zero;
 
-        if (onWalkableGround)
+        if (grappling)
         {
-            moveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
-            if (wishSpeed > 0.001f)
-                wishDir = Vector3.ProjectOnPlane(wishDir, groundNormal).normalized;
-
-            if (Time.time <= jumpQueuedUntil || jumpAction.action.IsPressed())
-            {
-                jumpQueuedUntil = 0f;
-                Jump();
-            }
-            else
-            {
-                ApplyFriction(dt);
-                Accelerate(wishDir, wishSpeed, groundAcceleration, dt);
-            }
-        }
-        else if (isGroundedStable)
-        {
-            Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-            moveDirection = slideDirection * steepSlopeSlideSpeed
-                          + Vector3.ProjectOnPlane(wishVelocity, groundNormal) * 0.5f;
-
-            if (Time.time <= jumpQueuedUntil || jumpAction.action.IsPressed())
-            {
-                jumpQueuedUntil = 0f;
-                Jump();
-            }
+            UpdateGrapplePull();
         }
         else
         {
-            wishDir.y = 0;
-            if (wishDir.sqrMagnitude > 0.0001f) wishDir.Normalize();
-            Accelerate(wishDir, Mathf.Min(wishSpeed, airSpeedCap), airAcceleration, dt);
-            moveDirection.y -= gravity * dt;
-            ClampHorizontalSpeed(MaxHorizontalSpeed);
+            Vector3 wishVelocity = (forwardPointer.forward * rawInput.y + forwardPointer.right * rawInput.x)
+                                   * (CurrentWishSpeed * speedMultiplier);
+            float wishSpeed = wishVelocity.magnitude;
+            Vector3 wishDir = wishSpeed > 0.001f ? wishVelocity / wishSpeed : Vector3.zero;
+
+            if (onWalkableGround)
+            {
+                moveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
+                if (wishSpeed > 0.001f)
+                    wishDir = Vector3.ProjectOnPlane(wishDir, groundNormal).normalized;
+
+                if (Time.time <= jumpQueuedUntil || jumpAction.action.IsPressed())
+                {
+                    jumpQueuedUntil = 0f;
+                    Jump();
+                }
+                else
+                {
+                    ApplyFriction(dt);
+                    Accelerate(wishDir, wishSpeed, groundAcceleration, dt);
+                }
+            }
+            else if (isGroundedStable)
+            {
+                Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+                moveDirection = slideDirection * steepSlopeSlideSpeed
+                              + Vector3.ProjectOnPlane(wishVelocity, groundNormal) * 0.5f;
+
+                if (Time.time <= jumpQueuedUntil || jumpAction.action.IsPressed())
+                {
+                    jumpQueuedUntil = 0f;
+                    Jump();
+                }
+            }
+            else
+            {
+                wishDir.y = 0;
+                if (wishDir.sqrMagnitude > 0.0001f) wishDir.Normalize();
+                Accelerate(wishDir, Mathf.Min(wishSpeed, airSpeedCap), airAcceleration, dt);
+                moveDirection.y -= gravity * dt;
+                ClampHorizontalSpeed(MaxHorizontalSpeed);
+            }
         }
 
         if ((characterController.collisionFlags & CollisionFlags.Above) != 0 && moveDirection.y > 0)
@@ -367,6 +383,12 @@ public class PlayerMovement : MonoBehaviour
         if (!SharedStamina) staminaBarDisplay.Refresh(false);
     }
 
+    public void DrainStaminaAtSprintRate(float multiplier)
+    {
+        SpendStamina(Time.deltaTime * fatigability * multiplier);
+        if (!SharedStamina) staminaBarDisplay.Refresh(false);
+    }
+
     void StaminaRecovery()
     {
 
@@ -412,6 +434,41 @@ public class PlayerMovement : MonoBehaviour
         }
         footstepSystem.SendJumpSignal();
         camShakeManager.Shake(jumpShake);
+    }
+
+    void UpdateGrapplePull()
+    {
+        Vector3 toTarget = grappleTarget - transform.position;
+        float distance = toTarget.magnitude;
+        if (distance <= grappleArrivalDistance)
+        {
+            grappling = false;
+            return;
+        }
+        moveDirection = toTarget / distance * grappleSpeed;
+    }
+
+    public void StartGrapple(Vector3 targetPoint, float speed)
+    {
+        grappling = true;
+        grappleTarget = targetPoint;
+        grappleSpeed = speed;
+        airborneByImpulse = true;
+        IsRocketJumping = false;
+    }
+
+    public void UpdateGrappleTarget(Vector3 targetPoint)
+    {
+        if (grappling) grappleTarget = targetPoint;
+    }
+
+    public void StopGrapple() => grappling = false;
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (!grappling) return;
+        Vector3 toTarget = grappleTarget - transform.position;
+        if (Vector3.Dot(hit.normal, toTarget) < -0.1f * toTarget.magnitude) grappling = false;
     }
 
     public Vector3 FlatWishDirection(Vector2 input)

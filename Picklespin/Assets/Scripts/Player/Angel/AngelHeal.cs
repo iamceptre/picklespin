@@ -3,12 +3,10 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.InputSystem;
 
 public class AngelHeal : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private HandShakeWhenCannotHeal handShake;
     [SerializeField] private Animator handAnimator;
     [SerializeField] private Slider angelHPSlider;
     [SerializeField] private Canvas angelHPCanvas;
@@ -29,12 +27,10 @@ public class AngelHeal : MonoBehaviour
     [SerializeField] private float hpDrainPerSecond = 10f;
     [SerializeField] private int minimumHpWhileHealing = 10;
 
-    [Header("Input")]
-    [SerializeField] private InputActionReference healAction;
-
     private const float FullAngelHealth = 100f;
 
     public bool IsBoosting { get; private set; }
+    public bool CanHealNow => isAimingAtAngel && CanHeal();
 
     private AngelMind angel;
     private AngelPointerHelper pointerHelper;
@@ -62,20 +58,6 @@ public class AngelHeal : MonoBehaviour
         playerHP = PlayerHP.Instance;
     }
 
-    private void OnEnable()
-    {
-        healAction.action.performed += OnHealPerformed;
-        healAction.action.canceled += OnHealCanceled;
-        healAction.action.Enable();
-    }
-
-    private void OnDisable()
-    {
-        healAction.action.performed -= OnHealPerformed;
-        healAction.action.canceled -= OnHealCanceled;
-        healAction.action.Disable();
-    }
-
     private void Update()
     {
         if (IsBoosting) return;
@@ -91,17 +73,6 @@ public class AngelHeal : MonoBehaviour
 
         StopAiming();
         if (lookedAt) StartAiming(lookedAt);
-    }
-
-    private void OnHealPerformed(InputAction.CallbackContext ctx)
-    {
-        if (isAimingAtAngel && CanHeal()) StartHealing();
-        else handShake.ShakeHand();
-    }
-
-    private void OnHealCanceled(InputAction.CallbackContext ctx)
-    {
-        if (!IsBoosting) CancelHealing();
     }
 
     private bool CanHeal() => angel && aiHealth && !angel.healed && !angel.IsDead;
@@ -132,7 +103,7 @@ public class AngelHeal : MonoBehaviour
         CancelHealing();
     }
 
-    private void StartHealing()
+    public void StartHealing()
     {
         if (isHealing) return;
         healingBeamEmitter.Play();

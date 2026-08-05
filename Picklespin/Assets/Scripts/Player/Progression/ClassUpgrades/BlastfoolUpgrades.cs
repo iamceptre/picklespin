@@ -9,13 +9,19 @@ public static class BlastfoolUpgrades
     public static float AirborneDamage { get; private set; } = DefaultAirborneDamage;
     public const float RocketJumpDamage = 2f;
 
+    public static bool GrapplingHookUnlocked { get; private set; }
+
     public static readonly ClassUpgrade[] Levels =
     {
         new()
         {
             Name = "<b>Padded Bones</b>",
-            Effect = "Rocket-jump self-damage -50%",
-            Apply = () => WishUpgrades.MultiplyRocketJumpSelfDamage(0.5f)
+            Effect = "Rocket-jump self-damage -50%, unlocks the grappling hook",
+            Apply = () =>
+            {
+                WishUpgrades.MultiplyRocketJumpSelfDamage(0.5f);
+                GrapplingHookUnlocked = true;
+            }
         },
         new()
         {
@@ -43,5 +49,6 @@ public static class BlastfoolUpgrades
     {
         GroundedDamage = DefaultGroundedDamage;
         AirborneDamage = DefaultAirborneDamage;
+        GrapplingHookUnlocked = false;
     }
 }

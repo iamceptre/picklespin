@@ -6,7 +6,7 @@ using UnityEngine;
 public class AngelChoiceUi : MonoBehaviour
 {
     [Header("UI")]
-    [SerializeField] private Canvas menuCanvas;
+    public Canvas menuCanvas;
     [SerializeField] private CanvasGroup menuCanvasGroup;
     [SerializeField, Tooltip("the angel's question - optional")]
     private TMP_Text promptText;
@@ -42,13 +42,17 @@ public class AngelChoiceUi : MonoBehaviour
     private int hoveredSlot = -1;
     private Action closing;
 
+    public static AngelChoiceUi Instance { get; private set; }
+
     public string NameSeparator => nameSeparator;
     public int LineCount => optionLines == null ? 0 : optionLines.Length;
     public bool IsClosing => closing != null;
     public AngelChoiceMenu ActiveMenu { get; private set; }
+    public bool IsChoosing => ActiveMenu && ActiveMenu.IsAsking;
 
     private void Awake()
     {
+        Instance = this;
         CaptureLineDefaults();
         if (noteText) noteStartColor = Visible(noteText.color);
         HideNote();
