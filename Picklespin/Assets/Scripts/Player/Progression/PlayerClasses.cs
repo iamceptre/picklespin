@@ -86,10 +86,10 @@ public static class PlayerClasses
 
             case PlayerClassId.Lightfoot:
                 if (PlayerHP.Instance) PlayerHP.Instance.MultiplyMaxHp(0.5f);
+                if (PlayerMovement.Instance) PlayerMovement.Instance.MultiplyMaxSpeed(1.1f);
                 Dash dash = Dash.Instance;
                 if (dash)
                 {
-                    PlayerMovement.Instance.MultiplyMaxSpeed(1.1f);
                     dash.MultiplyDashPower(3f);
                     dash.MultiplyDashRadius(3f);
                 }

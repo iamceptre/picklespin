@@ -44,6 +44,9 @@ public class RoundSystem : MonoBehaviour
     private const float DimmedOpacity = 0.4f;
     private const float HalfPi = Mathf.PI * 0.5f;
     private const float TwoPi = Mathf.PI * 2f;
+    // how long both volumes may stay silent before the angel area is assumed left - the
+    // exit routes they do not cover are the rocket jump and the grapple
+    private const float AngelAreaGrace = 0.5f;
 
     private CanvasGroup timerCanvasGroup;
     private NewRoundDisplayText newRoundDisplayText;
@@ -58,6 +61,7 @@ public class RoundSystem : MonoBehaviour
     private bool angelHealed;
     private bool reportedInAngelArea;
     private bool reportedInArena;
+    private float angelAreaSilence;
 
     public bool PlayerInAngelArea { get; private set; }
 
@@ -105,11 +109,12 @@ public class RoundSystem : MonoBehaviour
 
     private void Update()
     {
-        ResolveAngelArea();
+        float deltaTime = Time.deltaTime;
+        ResolveAngelArea(deltaTime);
 
         if (isCounting && timer > 0f)
         {
-            timer -= Time.deltaTime * speedMultiplier;
+            timer -= deltaTime * speedMultiplier;
             if (timer < 0f) timer = 0f;
             roundTimerGUI.value = timer * inverseRoundDuration;
         }
@@ -121,7 +126,7 @@ public class RoundSystem : MonoBehaviour
 
         if (held)
         {
-            pulsePhase += Time.deltaTime * heldPulseSpeed;
+            pulsePhase += deltaTime * heldPulseSpeed;
             if (pulsePhase > TwoPi) pulsePhase -= TwoPi;
             roundText.alpha = heldPulseMinAlpha + (1f - heldPulseMinAlpha) * 0.5f * (1f + Mathf.Sin(pulsePhase));
             return;
@@ -136,15 +141,34 @@ public class RoundSystem : MonoBehaviour
 
     public void ReportPlayerInArena() => reportedInArena = true;
 
-    private void ResolveAngelArea()
+    private void ResolveAngelArea(float deltaTime)
     {
         bool inside = PlayerInAngelArea;
-        if (reportedInAngelArea) inside = true;
-        else if (reportedInArena) inside = false;
+
+        if (reportedInAngelArea)
+        {
+            inside = true;
+            angelAreaSilence = 0f;
+        }
+        else if (reportedInArena)
+        {
+            inside = false;
+        }
+        else if (inside)
+        {
+            // this flag blinds every enemy and voids every spell, so silence fails open
+            angelAreaSilence += deltaTime;
+            if (angelAreaSilence > AngelAreaGrace) inside = false;
+        }
 
         reportedInAngelArea = false;
         reportedInArena = false;
 
+        SetAngelArea(inside);
+    }
+
+    private void SetAngelArea(bool inside)
+    {
         if (inside == PlayerInAngelArea) return;
         PlayerInAngelArea = inside;
 
@@ -167,9 +191,12 @@ public class RoundSystem : MonoBehaviour
         if (!held && roundText) roundText.alpha = 1f;
     }
 
+    // disabling this component stops Update, and with it the only thing that clears the
+    // angel area - WinGateKeyItem does exactly that when the win key is taken
     private void OnDisable()
     {
         SetHeld(false);
+        SetAngelArea(false);
     }
 
     private void AdvanceRound()

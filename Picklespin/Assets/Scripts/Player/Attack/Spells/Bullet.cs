@@ -125,7 +125,11 @@ public class Bullet : MonoBehaviour
         if (!weakPointHit && !collider.CompareTag("NPC_Hitbox")) return;
 
         AiReferences refs = ResolveHitboxOwner(collider);
-        if (AngelArea.Shelters(refs)) return;
+        if (AngelArea.Shelters(refs))
+        {
+            ConsumeWithoutHit();
+            return;
+        }
 
         if (PlayerClasses.PiercingProjectiles)
         {
@@ -141,7 +145,13 @@ public class Bullet : MonoBehaviour
     {
         if (hitSomething) return;
 
-        if (AngelArea.PlayerInside && AngelArea.Shelters(collision.collider.GetComponentInParent<AiReferences>())) return;
+        // PlayerInside first: Shelters re-tests it, but only this guard keeps the parent
+        // walk off every wall, floor and prop the arena is made of
+        if (AngelArea.PlayerInside && AngelArea.Shelters(collision.collider.GetComponentInParent<AiReferences>()))
+        {
+            ConsumeWithoutHit();
+            return;
+        }
 
         collision.collider.TryGetComponent(out AiReferences refs);
 
@@ -185,6 +195,14 @@ public class Bullet : MonoBehaviour
         Explode(impactPoint);
         if (behaviour != null) behaviour.OnImpact(impactPoint);
         AfterExplosion();
+    }
+
+    // left alive, the shot would bounce off and explode on the next wall it finds
+    private void ConsumeWithoutHit()
+    {
+        hitSomething = true;
+        AfterExplosion();
+        Retire();
     }
 
     private static AiReferences ResolveHitboxOwner(Collider collider)

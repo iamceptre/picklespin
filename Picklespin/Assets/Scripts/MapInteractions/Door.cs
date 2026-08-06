@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
 using UnityEngine.InputSystem;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Door : MonoBehaviour
@@ -18,6 +17,8 @@ public class Door : MonoBehaviour
     private const float animationTime = 0.8f;
     private const float maxDistance = 7f;
     private const float fallbackDistance = 3f;             // within this, aim is ignored entirely
+    private const float maxDistanceSqr = maxDistance * maxDistance;
+    private const float fallbackDistanceSqr = fallbackDistance * fallbackDistance;
     private const float aimRadius = 0.25f;
 
     private static readonly List<Door> doorsInRange = new();
@@ -25,26 +26,27 @@ public class Door : MonoBehaviour
 
     private static Door resolvedTarget;
     private static int resolvedFrame = -1;
-    private static Door tipOwner;
+    private static bool crosshairHeld;
+    private static bool tipShown;
+
+    private static bool initialized;
+    private static Transform mainCamera;
+    private static Animator handAnimator;
+    private static TipManager tipManager;
+    private static CrosshairManager crosshair;
 
     [Header("Logic")]
     public bool isLocked;
     private bool isOpened;
     private bool canButtonBuffer = true;
-    private bool playerInRange;
-    private bool isTargeted;
-    private bool initialized;
 
     [Header("References")]
     [Tooltip("the solid (non-trigger) collider — auto-found if left empty")]
     [SerializeField] private Collider myCollider;
     [SerializeField] private InputActionReference interactAction;
 
-    private Transform mainCamera;
-    private Animator handAnimator;
-    private TipManager tipManager;
-    private CrosshairManager crosshair;
     private Vector3 startRot;
+    private float sqrDistanceToPlayer;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
@@ -52,7 +54,14 @@ public class Door : MonoBehaviour
         doorsInRange.Clear();
         resolvedTarget = null;
         resolvedFrame = -1;
-        tipOwner = null;
+        crosshairHeld = false;
+        tipShown = false;
+
+        initialized = false;
+        mainCamera = null;
+        handAnimator = null;
+        tipManager = null;
+        crosshair = null;
     }
 
     private void Awake()
@@ -75,7 +84,7 @@ public class Door : MonoBehaviour
 
     // the component starts disabled, so Start() would run after the OnTriggerEnter
     // that enabled it - initialisation is explicit instead
-    private void EnsureInitialized()
+    private static void EnsureInitialized()
     {
         if (initialized) return;
         initialized = true;
@@ -103,6 +112,12 @@ public class Door : MonoBehaviour
         // never Disable()d: the action asset is shared by every door
     }
 
+    private void Update()
+    {
+        CurrentTarget();
+        if (sqrDistanceToPlayer > maxDistanceSqr) LeaveRange();
+    }
+
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
         if (!canButtonBuffer) return;
@@ -116,48 +131,79 @@ public class Door : MonoBehaviour
         canButtonBuffer = true;
     }
 
-    // every door in range asks this every frame, and the press asks it too - resolving
-    // once a frame keeps the tip, the crosshair and the keypress on the same answer
+    // every door in range asks this every frame, and so does the press - resolving once
+    // costs one sweep a frame instead of one per door
     private static Door CurrentTarget()
     {
         if (resolvedFrame == Time.frameCount) return resolvedTarget;
         resolvedFrame = Time.frameCount;
+
         resolvedTarget = ResolveTarget();
+        UpdateFeedback();
         return resolvedTarget;
+    }
+
+    // re-read rather than latched on the transition: a door can be unlocked while the
+    // player already stands at it, and the tip has to start offering itself on its own
+    private static void UpdateFeedback()
+    {
+        bool wantsCrosshair = resolvedTarget;
+        if (wantsCrosshair != crosshairHeld)
+        {
+            crosshairHeld = wantsCrosshair;
+            if (crosshair)
+            {
+                if (wantsCrosshair) crosshair.ShowCrosshair(); else crosshair.HideCrosshair();
+            }
+        }
+
+        bool wantsTip = resolvedTarget && !resolvedTarget.isLocked;
+        if (wantsTip != tipShown)
+        {
+            tipShown = wantsTip;
+            if (tipManager)
+            {
+                if (wantsTip) tipManager.Show(0); else tipManager.Hide(0);
+            }
+        }
     }
 
     private static Door ResolveTarget()
     {
+        if (!mainCamera) return null;
+
         Door aimed = null, nearest = null;
         float bestAimDistance = float.MaxValue, bestNearDistance = float.MaxValue;
 
         foreach (Door door in doorsInRange)
         {
-            if (!door.myCollider || !door.mainCamera) continue;
+            if (!door.myCollider) continue;
+
+            float sqrDistance = door.MeasureDistance();
+            if (sqrDistance <= fallbackDistanceSqr && sqrDistance < bestNearDistance)
+            {
+                bestNearDistance = sqrDistance;
+                nearest = door;
+            }
 
             if (door.IsUnderCrosshair(out float aimDistance) && aimDistance < bestAimDistance)
             {
                 bestAimDistance = aimDistance;
                 aimed = door;
             }
-
-            float distance = door.DistanceToPlayer();
-            if (distance <= fallbackDistance && distance < bestNearDistance)
-            {
-                bestNearDistance = distance;
-                nearest = door;
-            }
         }
 
         return aimed ? aimed : nearest;
     }
 
-    private float DistanceToPlayer()
+    // stamped so the range check can read what the resolve already measured
+    private float MeasureDistance()
     {
         Vector3 camPos = mainCamera.position;
         // ClosestPoint returns the query point itself when it is inside the
         // collider, which yields 0 — exactly the "standing right at it" case
-        return Vector3.Distance(myCollider.ClosestPoint(camPos), camPos);
+        sqrDistanceToPlayer = (myCollider.ClosestPoint(camPos) - camPos).sqrMagnitude;
+        return sqrDistanceToPlayer;
     }
 
     private bool IsUnderCrosshair(out float distance)
@@ -195,11 +241,9 @@ public class Door : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         EnsureInitialized();
-        playerInRange = true;
         if (!doorsInRange.Contains(this)) doorsInRange.Add(this);
+        sqrDistanceToPlayer = 0f;
         enabled = true;
-        StopAllCoroutines();
-        StartCoroutine(CheckDoorRangeAndSight());
     }
 
     private void OnTriggerExit(Collider other)
@@ -209,67 +253,25 @@ public class Door : MonoBehaviour
 
     private void OnDestroy()
     {
-        doorsInRange.Remove(this);
-        ReleaseTip();
-        if (resolvedTarget == this) resolvedTarget = null;
+        Forget();
     }
 
     private void LeaveRange()
     {
-        playerInRange = false;
-        doorsInRange.Remove(this);
-        ReleaseTip();
-        SetTargeted(false);
+        Forget();
         enabled = false;
     }
 
-    private IEnumerator CheckDoorRangeAndSight()
+    // the feedback is only ever refreshed by a door still in range, so the last one out
+    // has to hand it back itself
+    private void Forget()
     {
-        while (playerInRange)
-        {
-            if (DistanceToPlayer() > maxDistance)
-            {
-                LeaveRange();
-                yield break;
-            }
+        doorsInRange.Remove(this);
+        if (resolvedTarget != this) return;
 
-            bool targeted = CurrentTarget() == this;
-            SetTargeted(targeted);
-            UpdateTip(targeted && !isLocked);
-
-            yield return null;
-        }
-    }
-
-    // the crosshair counts its users, so a door may only ever take one count back out
-    private void SetTargeted(bool targeted)
-    {
-        if (targeted == isTargeted) return;
-        isTargeted = targeted;
-
-        if (!crosshair) return;
-        if (targeted) crosshair.ShowCrosshair(); else crosshair.HideCrosshair();
-    }
-
-    // one tip, many doors: only the door showing it may hide it again
-    private void UpdateTip(bool wanted)
-    {
-        if (wanted)
-        {
-            if (tipOwner == this) return;
-            tipOwner = this;
-            if (tipManager) tipManager.Show(0);
-            return;
-        }
-
-        ReleaseTip();
-    }
-
-    private void ReleaseTip()
-    {
-        if (tipOwner != this) return;
-        tipOwner = null;
-        if (tipManager) tipManager.Hide(0);
+        resolvedTarget = null;
+        resolvedFrame = -1;
+        UpdateFeedback();
     }
 
     // state first, then feedback: the emitters ship unassigned on some prefabs, and

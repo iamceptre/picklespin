@@ -75,14 +75,14 @@ public class HeadshotLesson : MonoBehaviour
         enabled = true;
     }
 
+    // Begin arrives on a delay - a headshot before it must not spend a tip nobody saw
     private void Finish()
     {
-        if (taught) return;
-        taught = true;
-        enabled = false;
-
         if (!teaching) return;
+
+        taught = true;
         teaching = false;
+        enabled = false;
         SetMarkers(false);
         tip.HideTip();
     }
