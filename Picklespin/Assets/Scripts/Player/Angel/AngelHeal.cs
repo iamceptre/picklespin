@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using FMODUnity;
@@ -31,6 +32,7 @@ public class AngelHeal : MonoBehaviour
 
     public bool IsBoosting { get; private set; }
     public bool CanHealNow => isAimingAtAngel && CanHeal();
+    public event Action CanHealChanged;
 
     private AngelMind angel;
     private AngelPointerHelper pointerHelper;
@@ -40,11 +42,13 @@ public class AngelHeal : MonoBehaviour
     private CrosshairManager crosshair;
     private Ammo ammo;
     private PlayerHP playerHP;
+    private RoundSystem roundSystem;
     private IEnumerator healingRoutine;
     private AiHealth aiHealth;
     private Transform aimedAt;
     private bool isAimingAtAngel;
     private bool isHealing;
+    private bool canHealCached;
 
     private void Start()
     {
@@ -56,11 +60,16 @@ public class AngelHeal : MonoBehaviour
         screenFlashTint = ScreenFlashTint.instance;
         ammo = Ammo.instance;
         playerHP = PlayerHP.Instance;
+        roundSystem = RoundSystem.instance;
     }
 
     private void Update()
     {
-        if (IsBoosting) return;
+        if (IsBoosting)
+        {
+            RefreshCanHeal();
+            return;
+        }
 
         Transform lookedAt = null;
         if (Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, range, layersForRaycast)
@@ -69,10 +78,21 @@ public class AngelHeal : MonoBehaviour
             lookedAt = hit.transform;
         }
 
-        if (lookedAt == aimedAt) return;
+        if (lookedAt != aimedAt)
+        {
+            StopAiming();
+            if (lookedAt) StartAiming(lookedAt);
+        }
 
-        StopAiming();
-        if (lookedAt) StartAiming(lookedAt);
+        RefreshCanHeal();
+    }
+
+    private void RefreshCanHeal()
+    {
+        bool canHeal = CanHealNow;
+        if (canHeal == canHealCached) return;
+        canHealCached = canHeal;
+        CanHealChanged?.Invoke();
     }
 
     private bool CanHeal() => angel && aiHealth && !angel.healed && !angel.IsDead;
@@ -101,6 +121,7 @@ public class AngelHeal : MonoBehaviour
         if (tipManager) tipManager.Hide(1);
         crosshair.HideCrosshair();
         CancelHealing();
+        RefreshCanHeal();
     }
 
     public void StartHealing()
@@ -210,6 +231,7 @@ public class AngelHeal : MonoBehaviour
         screenFlashTint.Flash(5, 4);
 
         ClassUpgrades.CountAngelHealed();
+        if (roundSystem) roundSystem.AngelHealed();
         AskTheAngel();
     }
 

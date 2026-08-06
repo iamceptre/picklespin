@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class AngelSpawner : MonoBehaviour
 {
+    public static AngelSpawner instance;
+
     [SerializeField] private GameObject[] angels;
     private AngelMind[] angelMinds;
     private int[] summonableIndices;
@@ -10,6 +12,7 @@ public class AngelSpawner : MonoBehaviour
 
     private void Awake()
     {
+         instance = this;
          angels = GameObject.FindGameObjectsWithTag("Angel");
          angelMinds = new AngelMind[angels.Length];
          summonableIndices = new int[angels.Length];
@@ -47,7 +50,7 @@ public class AngelSpawner : MonoBehaviour
         pointerHelper.PointTo(angels[chosen].transform);
     }
 
-    private bool AnAngelIsStillWaiting()
+    public bool AnAngelIsStillWaiting()
     {
         for (int i = 0; i < angelMinds.Length; i++)
         {

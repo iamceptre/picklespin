@@ -5506,12 +5506,32 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 64233b9cdf5efce45a4ca477465680b8, type: 2}
+    - target: {fileID: 3590205204082857848, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590205204082857848, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: m_Size.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590205204082857848, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: m_Size.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590205204082857848, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: m_Center.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4043917402506409367, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4136347119202134635, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: _setOnFire
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659699592276808777, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: stunParticle
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5119848328657450359, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
@@ -5523,7 +5543,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5290907628487221130, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: EyeLight
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5290907628487221130, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
       propertyPath: setOnFire
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5290907628487221130, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
+      propertyPath: EyeRenderer
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5576000824764681535, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}
@@ -5737,7 +5765,6 @@ MonoBehaviour:
   eye: {fileID: 8599443921341447384}
   visibilitySource: {fileID: 0}
   aiHp: {fileID: 5903349569942675058}
-  tip: {fileID: 6377398423150146435}
 --- !u!114 &5903349569942675058 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9088957210784467254, guid: 408e396545f75e74a8ebe954795eba4f, type: 3}

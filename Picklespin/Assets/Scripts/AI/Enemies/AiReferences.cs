@@ -26,6 +26,7 @@ public class AiReferences : MonoBehaviour
     public EnemyCounterPerUnitComponent Counter;
 
     public bool IsAngel { get; private set; }
+    public float EyeLightBaseIntensity { get; private set; }
 
     [Header("Converted ally look - all optional, an empty one just stays as it is")]
     [Tooltip("the eye mesh: its material is swapped while Sanctus has this one on your side")]
@@ -65,6 +66,7 @@ public class AiReferences : MonoBehaviour
         if (!HpBarEase) HpBarEase = GetComponentInChildren<BarEase>(true);
         if (!Counter) Counter = GetComponentInChildren<EnemyCounterPerUnitComponent>(true);
         IsAngel = GetComponentInChildren<AngelMind>(true);
+        if (EyeLight) EyeLightBaseIntensity = EyeLight.intensity;
 
         allChildren = GetComponentsInChildren<Transform>(true);
         childInitialActive = new bool[allChildren.Length];
@@ -111,6 +113,7 @@ public class AiReferences : MonoBehaviour
         {
             if (allColliders[i]) allColliders[i].enabled = colliderInitialEnabled[i];
         }
+        if (EyeLight) EyeLight.intensity = EyeLightBaseIntensity;
         if (GiveExp) GiveExp.ResetExpParticles();
         if (aiPath)
         {

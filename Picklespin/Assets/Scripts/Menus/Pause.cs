@@ -40,7 +40,7 @@ public class Pause : MonoBehaviour
 
     private void OnPausePerformed(InputAction.CallbackContext ctx)
     {
-        if (AngelChoiceUi.Instance.menuCanvas.enabled) return;
+        if (AngelChoiceUi.Instance && AngelChoiceUi.Instance.IsOpen) return;
         if (!isPaused) PauseGame(); else UnpauseGame();
     }
 

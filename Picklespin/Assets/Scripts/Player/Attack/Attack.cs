@@ -156,18 +156,25 @@ public class Attack : MonoBehaviour
             return false;
         }
 
-        SelectSpell(spell);
-        return true;
+        return SelectSpell(spell);
     }
 
-    public void SelectSpell(SpellId spell)
+    public bool SelectSpell(SpellId spell)
     {
+        int slot = (int)spell;
+        if (bulletPrefab == null || slot < 0 || slot >= bulletPrefab.Length || !bulletPrefab[slot])
+        {
+            DevLog.Error($"{nameof(Attack)}: no spell prefab for {spell} - ignoring selection.", this);
+            return false;
+        }
+
         selectedSpell = spell;
         SetCurrentBullet(selectedSpell);
         changeSelectedSpell.Invoke();
         pullupEventInstance = RuntimeManager.CreateInstance(currentBullet.pullupSound);
         pullupEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         pullupEventInstance.start();
+        return true;
     }
 
     IEnumerator SpellCasting()

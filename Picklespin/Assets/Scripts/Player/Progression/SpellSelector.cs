@@ -76,8 +76,7 @@ public class SpellSelector : MonoBehaviour
 
         if (unlockedSpells.IsUnlocked(spell))
         {
-            attack.SelectSpell(spell);
-            bar.Select(spell);
+            if (attack.SelectSpell(spell)) bar.Select(spell);
         }
         else
         {

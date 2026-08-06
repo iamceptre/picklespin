@@ -45,6 +45,14 @@ public class PlayerClassHud : MonoBehaviour
     [SerializeField, Tooltip("how long a piece takes to fade in when a class turns it on")]
     private float fadeInDuration = 0.4f;
 
+    [Header("Change pulse - a piece breathes for a while after a class reshapes it")]
+    [SerializeField, Tooltip("how long a changed piece keeps pulsing")]
+    private float pulseDuration = 6f;
+    [SerializeField, Tooltip("alpha the bar dips to at the bottom of a pulse")]
+    private float pulseMinAlpha = 0.25f;
+    [SerializeField, Tooltip("seconds for one full dim-and-back pulse")]
+    private float pulsePeriod = 0.8f;
+
     private readonly List<Graphic> magickaFills = new();
     private readonly List<Color> magickaFillStartColors = new();
     private readonly List<Graphic> magickaGhostFills = new();
@@ -65,9 +73,10 @@ public class PlayerClassHud : MonoBehaviour
     private readonly Color[] resourceColors = new Color[IconCount];
     private readonly bool[] resourceColorKnown = new bool[IconCount];
 
-    private HudPiece healthBar;
-    private HudPiece staminaBar;
-    private HudPiece magickaBar;
+    private readonly HudPiece[] bars = new HudPiece[IconCount];
+    private readonly int[] barSignatures = new int[IconCount];
+    private bool signaturesKnown;
+
     private HudPiece speedIndicator;
     private HudPiece spellInventoryBar;
 
@@ -92,9 +101,9 @@ public class PlayerClassHud : MonoBehaviour
         private static T Ensure<T>(GameObject root) where T : Component =>
             root.TryGetComponent(out T component) ? component : root.AddComponent<T>();
 
-        public void Set(bool show, float fadeDuration)
+        public bool Set(bool show, float fadeDuration)
         {
-            if (show == visible) return;
+            if (show == visible) return false;
             visible = show;
 
             group.DOKill();
@@ -102,10 +111,27 @@ public class PlayerClassHud : MonoBehaviour
             if (show && !root.activeSelf) root.SetActive(true);
             canvas.enabled = show;
             if (driver) driver.enabled = show;
-            if (!show) return;
+            if (!show) return true;
 
             group.alpha = 0f;
             group.DOFade(1f, fadeDuration).SetUpdate(true);
+            return true;
+        }
+
+        public void Pulse(float duration, float minAlpha, float period, float fadeDuration)
+        {
+            if (!visible || duration <= 0f || period <= 0f) return;
+
+            group.DOKill();
+
+            int loops = Mathf.Max(2, Mathf.RoundToInt(duration / period) * 2);
+
+            Sequence pulse = DOTween.Sequence().SetTarget(group).SetUpdate(true);
+            if (group.alpha < 1f) pulse.Append(group.DOFade(1f, fadeDuration));
+            pulse.Append(group.DOFade(minAlpha, period * 0.5f)
+                .SetLoops(loops, LoopType.Yoyo)
+                .SetEase(Ease.InOutSine));
+            pulse.OnComplete(() => group.alpha = 1f);
         }
     }
 
@@ -130,9 +156,9 @@ public class PlayerClassHud : MonoBehaviour
             resourceColorKnown[i] = true;
         }
 
-        healthBar = Build(healthBarRoot);
-        staminaBar = Build(staminaBarRoot);
-        magickaBar = Build(magickaBarRoot);
+        bars[Health] = Build(healthBarRoot);
+        bars[Stamina] = Build(staminaBarRoot);
+        bars[Magicka] = Build(magickaBarRoot);
         speedIndicator = Build(speedIndicatorRoot);
         spellInventoryBar = Build(spellInventoryBarRoot);
 
@@ -151,9 +177,9 @@ public class PlayerClassHud : MonoBehaviour
     {
         bool blackBar = PlayerClasses.Chosen == PlayerClassId.Umbral;
 
-        Show(healthBar, !PlayerClasses.MagickaIsHealth);
-        Show(staminaBar, !PlayerClasses.StaminaSharesMagicka);
-        Show(magickaBar, true);
+        Show(bars[Health], !PlayerClasses.MagickaIsHealth);
+        Show(bars[Stamina], !PlayerClasses.StaminaSharesMagicka);
+        Show(bars[Magicka], true);
 
         TintMagickaBar(blackBar);
 
@@ -173,11 +199,42 @@ public class PlayerClassHud : MonoBehaviour
 
         LayoutIcons();
 
-        Show(speedIndicator, PlayerClasses.SpeedDamageActive);
+        bool announce = signaturesKnown && PlayerClasses.WasOffered;
+        signaturesKnown = true;
+
+        PulseChangedBars(blackBar, announce);
+
+        if (Show(speedIndicator, PlayerClasses.SpeedDamageActive) && announce) Pulse(speedIndicator);
         Show(spellInventoryBar, !PlayerClasses.LockedSpell.HasValue);
     }
 
-    private void Show(HudPiece piece, bool visible) => piece?.Set(visible, fadeInDuration);
+    private bool Show(HudPiece piece, bool visible) => piece != null && piece.Set(visible, fadeInDuration);
+
+    private void Pulse(HudPiece piece) =>
+        piece?.Pulse(pulseDuration, pulseMinAlpha, pulsePeriod, fadeInDuration);
+
+    private void PulseChangedBars(bool blackBar, bool announce)
+    {
+        for (int row = 0; row < IconCount; row++)
+        {
+            int signature = BarSignature(row, blackBar);
+            if (signature == barSignatures[row]) continue;
+
+            barSignatures[row] = signature;
+            if (announce) Pulse(bars[row]);
+        }
+    }
+
+    private int BarSignature(int row, bool blackBar)
+    {
+        int signature = 0;
+        for (int i = 0; i < IconCount; i++)
+        {
+            if (iconRow[i] == row) signature |= 1 << i;
+        }
+        if (row == Magicka && blackBar) signature |= 1 << IconCount;
+        return signature;
+    }
 
     public Color BarLightColor(HudResource bar)
     {

@@ -1,8 +1,10 @@
+using System;
+using System.Collections;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class GrapplingHook : MonoBehaviour
+public class GrapplingHook : MonoBehaviour, ISpecialAbility
 {
     [Header("References")]
     [SerializeField, Tooltip("the eye the line is cast from - auto-found from Camera.main if left empty")]
@@ -18,6 +20,8 @@ public class GrapplingHook : MonoBehaviour
     private float pullSpeed = 45f;
     [SerializeField, Tooltip("seconds before the hook can fire again (φ)")]
     private float cooldown = PhiMath.PHI;
+    [SerializeField, Tooltip("shorter cooldown after a throw that catches nothing - still long enough that a miss cannot be spammed (1/φ)")]
+    private float missCooldown = PhiMath.INV_PHI;
     [SerializeField, Tooltip("hard cap on the ride - if the hook point is not reached within this many seconds the line lets go (φ·2)")]
     private float maxPullSeconds = PhiMath.PHI * 2f;
     [SerializeField, Tooltip("range around the hook point on the NPC - the pull only has to carry the player this close for the touch hit to land")]
@@ -61,6 +65,14 @@ public class GrapplingHook : MonoBehaviour
     private bool pulling;
 
     public bool IsReady => !pulling && Time.time >= readyTime;
+    public event Action ReadinessChanged;
+
+    private Coroutine readyNotifyRoutine;
+
+    public SpecialAbilityId Id => SpecialAbilityId.GrapplingHook;
+    public bool IsUsable => BlastfoolUpgrades.GrapplingHookUnlocked && IsReady;
+    public bool TryUse() => TryFire();
+    public bool CancelUse() => CancelPull();
 
     public bool CancelPull()
     {
@@ -77,12 +89,33 @@ public class GrapplingHook : MonoBehaviour
 
     private void Start() => Resolve();
 
+    // the slot only learns the hook came back off cooldown from ReadinessChanged, so a
+    // wait interrupted by OnDisable has to be picked back up rather than dropped
+    private void OnEnable()
+    {
+        float remaining = readyTime - Time.time;
+        if (remaining > 0f)
+        {
+            readyNotifyRoutine = StartCoroutine(NotifyWhenReady(remaining));
+            return;
+        }
+
+        NotifyIfReady();
+    }
+
     private void OnDisable()
     {
+        if (readyNotifyRoutine != null)
+        {
+            StopCoroutine(readyNotifyRoutine);
+            readyNotifyRoutine = null;
+        }
+
         if (!pulling) return;
         pulling = false;
         if (playerMovement) playerMovement.StopGrapple();
         if (line) line.enabled = false;
+        NotifyIfReady();
     }
 
     private void PrepareLine()
@@ -126,6 +159,7 @@ public class GrapplingHook : MonoBehaviour
         if (!IsReady || !Resolve()) return false;
         if (!CastForHook(out RaycastHit hit))
         {
+            StartCooldown(missCooldown);
             if (!missSound.IsNull) RuntimeManager.PlayOneShot(missSound, mainCamera.position);
             return false;
         }
@@ -142,13 +176,33 @@ public class GrapplingHook : MonoBehaviour
         if (!hitSound.IsNull) RuntimeManager.PlayOneShot(hitSound, hit.point);
 
         anchorPoint = hit.point;
-        readyTime = Time.time + cooldown;
+        StartCooldown(cooldown);
         pullDeadline = Time.time + maxPullSeconds;
         pulling = true;
         line.enabled = true;
         DrawLine();
         playerMovement.StartGrapple(hit.point, pullSpeed);
         return true;
+    }
+
+    private void StartCooldown(float seconds)
+    {
+        readyTime = Time.time + seconds;
+
+        if (readyNotifyRoutine != null) StopCoroutine(readyNotifyRoutine);
+        readyNotifyRoutine = seconds > 0f ? StartCoroutine(NotifyWhenReady(seconds)) : null;
+    }
+
+    private IEnumerator NotifyWhenReady(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        readyNotifyRoutine = null;
+        NotifyIfReady();
+    }
+
+    private void NotifyIfReady()
+    {
+        if (IsReady) ReadinessChanged?.Invoke();
     }
 
     private void Update()
@@ -193,6 +247,7 @@ public class GrapplingHook : MonoBehaviour
         playerMovement.StopGrapple();
         pulling = false;
         line.enabled = false;
+        NotifyIfReady();
     }
 
     private void DrawLine()

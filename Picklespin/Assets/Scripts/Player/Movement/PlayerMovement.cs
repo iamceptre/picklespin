@@ -12,18 +12,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform forwardPointer;
 
     [Header("Movement Speeds")]
-    public float walkSpeed = 5;
-    public float runSpeed = 13;
+    public float walkSpeed = 5f;
+    public float runSpeed = 13f;
     public float crouchSpeed = 3;
     public float jumpPower = 6.5f;
     public float speedMultiplier = 1;
 
-    [Header("Quake Physics (φ-tuned)")]
-    [SerializeField, Tooltip("how fast you reach wish speed; φ⁵ ≈ 11.09 → snappy")]
-    private float groundAcceleration = 11.09f;
-    [SerializeField, Tooltip("ground drag; lower = icier; φ√φ ≈ 2.058 keeps momentum well")]
-    private float groundFriction = 2.058f;
-    [SerializeField, Tooltip("below this speed friction bites fully and you come to rest (φ)")]
+    [Header("Quake Physics")]
+    [SerializeField, Tooltip("how fast you reach wish speed")]
+    private float groundAcceleration = 11f;
+    [SerializeField, Tooltip("ground drag; lower = icier")]
+    private float groundFriction = 3f;
+    [SerializeField, Tooltip("below this speed friction bites fully and you come to rest")]
     private float frictionStopSpeed = PHI;
     [SerializeField, Tooltip("acceleration while airborne; φ⁴ ≈ 6.854")]
     private float airAcceleration = 6.854f;
@@ -69,6 +69,10 @@ public class PlayerMovement : MonoBehaviour
     private float maxDamageMultiplier = 2.5f;
     [SerializeField, Tooltip("speed at which maxDamageMultiplier is reached, as a multiple of MaxHorizontalSpeed (real speed is hard-clamped to MaxHorizontalSpeed, so keep this at 1 for the peak to be reachable)")]
     private float damageMultiplierSpeedCapScale = 1f;
+    [SerializeField, Tooltip("seconds the multiplier needs to catch up while speed rises - short enough to feel immediate, long enough to smooth the jitter out of the raw speed; 1/φ⁴ ≈ 0.146s")]
+    private float damageMultiplierRiseTime = 0.146f;
+    [SerializeField, Tooltip("seconds the multiplier needs to decay while speed drops, so losing momentum costs damage slowly; 1/φ ≈ 0.618s")]
+    private float damageMultiplierFallTime = 0.618f;
 
     [Header("Bhop Settings")]
     [SerializeField, Tooltip("grace period after landing where a jump keeps momentum; holding jump auto-hops; 1/φ³ ≈ 0.236s")]
@@ -77,9 +81,9 @@ public class PlayerMovement : MonoBehaviour
     private float bhopSpeedBonus = 0.4f;
 
     [Header("State & Movement")]
-    [Range(0, 2)] public int movementStateForFMOD = 1;
-    public bool anyMovementKeysPressed;
-    public Vector3 moveDirection = Vector3.zero;
+    [HideInInspector][Range(0, 2)] public int movementStateForFMOD = 1;
+    [HideInInspector] public bool anyMovementKeysPressed;
+    [HideInInspector] public Vector3 moveDirection = Vector3.zero;
 
     [Header("Input Actions")]
     [SerializeField] private InputActionReference moveAction;
@@ -119,6 +123,11 @@ public class PlayerMovement : MonoBehaviour
 
     public float DamageSpeed { get; private set; }
 
+    public float SpeedDamageT => Mathf.Clamp01((SpeedDamageMultiplier - minDamageMultiplier) * damageMultiplierRangeInverse);
+
+    private float damageMultiplierVelocity;
+    private float damageMultiplierRangeInverse;
+
     private Vector3 externalVelocity;
     private bool grappling;
     private Vector3 grappleTarget;
@@ -139,6 +148,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Instance && Instance != this) Destroy(this);
         else Instance = this;
+
+        SpeedDamageMultiplier = minDamageMultiplier;
+        damageMultiplierRangeInverse = maxDamageMultiplier > minDamageMultiplier ? 1f / (maxDamageMultiplier - minDamageMultiplier) : 0f;
     }
 
     void Start()
@@ -206,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
             touchingGround = characterController.isGrounded;
         }
 
-        if (airborneByImpulse && touchingGround && moveDirection.y <= 0.01f) airborneByImpulse = false;
+        if (airborneByImpulse && !grappling && touchingGround && moveDirection.y <= 0.01f) airborneByImpulse = false;
         isGroundedStable = touchingGround && !airborneByImpulse;
         if (isGroundedStable) IsRocketJumping = false;
         onWalkableGround = isGroundedStable && groundAngle <= characterController.slopeLimit + 0.01f;
@@ -280,8 +292,12 @@ public class PlayerMovement : MonoBehaviour
         Vector3 damageVelocity = moveDirection + externalVelocity;
         externalVelocity = Vector3.zero;
         DamageSpeed = new Vector2(damageVelocity.x, damageVelocity.z).magnitude;
-        SpeedDamageMultiplier = Mathf.Lerp(minDamageMultiplier, maxDamageMultiplier,
+        float damageMultiplierTarget = Mathf.Lerp(minDamageMultiplier, maxDamageMultiplier,
             Mathf.InverseLerp(walkSpeed, MaxHorizontalSpeed * damageMultiplierSpeedCapScale, DamageSpeed));
+        float smoothTime = damageMultiplierTarget > SpeedDamageMultiplier ? damageMultiplierRiseTime : damageMultiplierFallTime;
+        SpeedDamageMultiplier = Mathf.Clamp(
+            Mathf.SmoothDamp(SpeedDamageMultiplier, damageMultiplierTarget, ref damageMultiplierVelocity, smoothTime, Mathf.Infinity, dt),
+            minDamageMultiplier, maxDamageMultiplier);
 
         if (grounded && onWalkableGround) SnapToGround();
     }
@@ -377,11 +393,7 @@ public class PlayerMovement : MonoBehaviour
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MovementState", movementStateForFMOD);
     }
 
-    void StaminaDeplete()
-    {
-        SpendStamina(Time.deltaTime * fatigability);
-        if (!SharedStamina) staminaBarDisplay.Refresh(false);
-    }
+    void StaminaDeplete() => DrainStaminaAtSprintRate(1f);
 
     public void DrainStaminaAtSprintRate(float multiplier)
     {
@@ -445,7 +457,8 @@ public class PlayerMovement : MonoBehaviour
             grappling = false;
             return;
         }
-        moveDirection = toTarget / distance * grappleSpeed;
+        float scale = grappleSpeed / distance;
+        moveDirection = toTarget * scale;
     }
 
     public void StartGrapple(Vector3 targetPoint, float speed)

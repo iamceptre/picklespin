@@ -10,11 +10,14 @@ public class ResetPlayerPrefs : MonoBehaviour
     [SerializeField] private Slider fovSlider;
     [SerializeField] private Slider cameraBobSlider;
     [SerializeField] private Slider screenShakeSlider;
+    [SerializeField] private Toggle hardModeToggle;
 
     public void Do()
     {
         PlayerPrefs.DeleteAll();
         SettingsDefaults.WriteAll();
+        HardMode.Set(SettingsDefaults.HardMode != 0);
+        if (hardModeToggle) hardModeToggle.SetIsOnWithoutNotify(SettingsDefaults.HardMode != 0);
 
         // setting .value fires OnValueChanged, which re-applies live through the
         // existing slider wiring

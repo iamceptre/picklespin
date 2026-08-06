@@ -89,6 +89,7 @@ public static class PlayerClasses
                 Dash dash = Dash.Instance;
                 if (dash)
                 {
+                    PlayerMovement.Instance.MultiplyMaxSpeed(1.1f);
                     dash.MultiplyDashPower(3f);
                     dash.MultiplyDashRadius(3f);
                 }

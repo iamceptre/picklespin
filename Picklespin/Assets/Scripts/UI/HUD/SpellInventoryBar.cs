@@ -19,10 +19,10 @@ public class SpellInventoryBar : MonoBehaviour
 
     public int VisibleCount => visibleCount;
 
-    private SpellInventorySlot[] slots;
-    private bool[] slotShown;
-    private int[] visibleSpell;
-    private bool[] obtainable;
+    private SpellInventorySlot[] slotsBySpell;
+    private bool[] shownBySpell;
+    private int[] spellAtVisibleSlot;
+    private bool[] obtainableBySpell;
     private int visibleCount;
     private SpellId selectedSpell;
 
@@ -34,6 +34,7 @@ public class SpellInventoryBar : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
+            enabled = false;
             Destroy(this);
             return;
         }
@@ -44,21 +45,25 @@ public class SpellInventoryBar : MonoBehaviour
         slotBaseScale = templateRect.localScale;
         slotTemplate.gameObject.SetActive(false);
 
-        slots = new SpellInventorySlot[spellIcons.Length];
-        slotShown = new bool[spellIcons.Length];
-        visibleSpell = new int[spellIcons.Length];
-        obtainable = new bool[spellIcons.Length];
-        for (int i = 0; i < slots.Length; i++)
+        slotsBySpell = new SpellInventorySlot[spellIcons.Length];
+        shownBySpell = new bool[spellIcons.Length];
+        spellAtVisibleSlot = new int[spellIcons.Length];
+        obtainableBySpell = new bool[spellIcons.Length];
+        for (int spellIndex = 0; spellIndex < slotsBySpell.Length; spellIndex++)
         {
             SpellInventorySlot slot = Instantiate(slotTemplate, templateRect.parent);
             slot.gameObject.SetActive(true);
-            slot.Assign(spellIcons[i]);
+            slot.Assign(spellIcons[spellIndex]);
             slot.Group.alpha = 0f;
-            slots[i] = slot;
+            slotsBySpell[spellIndex] = slot;
         }
     }
 
-    private void OnEnable() => SpellAvailability.Changed += Refresh;
+    private void OnEnable()
+    {
+        SpellAvailability.Changed += Refresh;
+        if (unlockedSpells) unlockedSpells.Unlocked += OnSpellUnlocked;
+    }
 
     private void OnDisable()
     {
@@ -69,65 +74,66 @@ public class SpellInventoryBar : MonoBehaviour
     private void Start()
     {
         unlockedSpells = UnlockedSpells.instance;
+        unlockedSpells.Unlocked -= OnSpellUnlocked;
         unlockedSpells.Unlocked += OnSpellUnlocked;
         selectedSpell = Attack.instance ? Attack.instance.selectedSpell : SpellId.Netherlight;
         Refresh();
     }
 
-    public SpellId SpellAt(int visibleSlot) => (SpellId)visibleSpell[visibleSlot];
+    public SpellId SpellAt(int visibleSlot) => (SpellId)spellAtVisibleSlot[visibleSlot];
 
     public int SlotOf(SpellId spell)
     {
         int target = (int)spell;
         for (int v = 0; v < visibleCount; v++)
         {
-            if (visibleSpell[v] == target) return v;
+            if (spellAtVisibleSlot[v] == target) return v;
         }
         return -1;
     }
 
-    public void NumberBump(SpellId spell) => slots[(int)spell].NumberBump();
+    public void NumberBump(SpellId spell) => slotsBySpell[(int)spell].NumberBump();
 
     public void Select(SpellId spell)
     {
         selectedSpell = spell;
         for (int v = 0; v < visibleCount; v++)
         {
-            int i = visibleSpell[v];
-            slots[i].ApplyState(unlockedSpells.IsUnlocked((SpellId)i), i == (int)spell);
+            int spellIndex = spellAtVisibleSlot[v];
+            slotsBySpell[spellIndex].ApplyState(unlockedSpells.IsUnlocked((SpellId)spellIndex), spellIndex == (int)spell);
         }
-        slots[(int)spell].PlaySelectedAura();
+        slotsBySpell[(int)spell].PlaySelectedAura();
         MoveIndicator(0.1f);
     }
 
-    public void Deny(SpellId spell) => slots[(int)spell].PlayDeny();
+    public void Deny(SpellId spell) => slotsBySpell[(int)spell].PlayDeny();
 
     private void Refresh()
     {
-        if (slots == null || !unlockedSpells) return;
+        if (slotsBySpell == null || !unlockedSpells) return;
 
         visibleCount = 0;
-        for (int i = 0; i < slots.Length; i++)
+        for (int spellIndex = 0; spellIndex < slotsBySpell.Length; spellIndex++)
         {
-            obtainable[i] = SpellAvailability.IsObtainable((SpellId)i);
-            if (obtainable[i]) visibleSpell[visibleCount++] = i;
+            obtainableBySpell[spellIndex] = SpellAvailability.IsObtainable((SpellId)spellIndex);
+            if (obtainableBySpell[spellIndex]) spellAtVisibleSlot[visibleCount++] = spellIndex;
         }
 
-        for (int i = 0; i < slots.Length; i++)
+        for (int spellIndex = 0; spellIndex < slotsBySpell.Length; spellIndex++)
         {
-            if (!obtainable[i]) HideSlot(i);
+            if (!obtainableBySpell[spellIndex]) HideSlot(spellIndex);
         }
 
         for (int v = 0; v < visibleCount; v++)
         {
-            int i = visibleSpell[v];
-            SpellInventorySlot slot = slots[i];
+            int spellIndex = spellAtVisibleSlot[v];
+            SpellInventorySlot slot = slotsBySpell[spellIndex];
             slot.SetNumber(v + 1);
-            slot.ApplyState(unlockedSpells.IsUnlocked((SpellId)i), i == (int)selectedSpell);
+            slot.ApplyState(unlockedSpells.IsUnlocked((SpellId)spellIndex), spellIndex == (int)selectedSpell);
 
             Vector2 target = new(SlotX(v), rowY);
-            if (slotShown[i]) MoveSlot(slot, target);
-            else ShowSlot(i, target);
+            if (shownBySpell[spellIndex]) MoveSlot(slot, target);
+            else ShowSlot(spellIndex, target);
         }
 
         MoveIndicator(layoutTweenTime);
@@ -137,8 +143,8 @@ public class SpellInventoryBar : MonoBehaviour
 
     private void ShowSlot(int spellIndex, Vector2 target)
     {
-        slotShown[spellIndex] = true;
-        SpellInventorySlot slot = slots[spellIndex];
+        shownBySpell[spellIndex] = true;
+        SpellInventorySlot slot = slotsBySpell[spellIndex];
         slot.Rect.DOKill();
         slot.Rect.anchoredPosition = target;
         slot.Rect.localScale = slotBaseScale * 0.5f;
@@ -156,9 +162,9 @@ public class SpellInventoryBar : MonoBehaviour
 
     private void HideSlot(int spellIndex)
     {
-        if (!slotShown[spellIndex]) return;
-        slotShown[spellIndex] = false;
-        SpellInventorySlot slot = slots[spellIndex];
+        if (!shownBySpell[spellIndex]) return;
+        shownBySpell[spellIndex] = false;
+        SpellInventorySlot slot = slotsBySpell[spellIndex];
         slot.Rect.DOKill();
         slot.Group.DOKill();
         slot.Group.DOFade(0f, layoutTweenTime);
@@ -173,7 +179,7 @@ public class SpellInventoryBar : MonoBehaviour
         currentlySelectedSlotIndicator.DOAnchorPosX(SlotX(v), duration).SetEase(Ease.OutExpo);
     }
 
-    private void OnSpellUnlocked(SpellId spell) => slots[(int)spell].PlayUnlockFX();
+    private void OnSpellUnlocked(SpellId spell) => slotsBySpell[(int)spell].PlayUnlockFX();
 
 #if UNITY_EDITOR
     private void OnValidate()

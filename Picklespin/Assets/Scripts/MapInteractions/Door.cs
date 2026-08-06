@@ -14,7 +14,6 @@ public class Door : MonoBehaviour
     [SerializeField] private StudioEventEmitter doorCloseSound;
     [SerializeField] private StudioEventEmitter doorLockedSound;
 
-    private static readonly WaitForSeconds refreshRate = new(0.04f);
     private static readonly Vector3 rotationVector = new(0, 0, 90);
     private const float animationTime = 0.8f;
     private const float maxDistance = 7f;
@@ -24,11 +23,16 @@ public class Door : MonoBehaviour
     private static readonly List<Door> doorsInRange = new();
     private static readonly RaycastHit[] aimHits = new RaycastHit[8];
 
+    private static Door resolvedTarget;
+    private static int resolvedFrame = -1;
+    private static Door tipOwner;
+
     [Header("Logic")]
     public bool isLocked;
     private bool isOpened;
     private bool canButtonBuffer = true;
     private bool playerInRange;
+    private bool isTargeted;
     private bool initialized;
 
     [Header("References")]
@@ -41,6 +45,15 @@ public class Door : MonoBehaviour
     private TipManager tipManager;
     private CrosshairManager crosshair;
     private Vector3 startRot;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        doorsInRange.Clear();
+        resolvedTarget = null;
+        resolvedFrame = -1;
+        tipOwner = null;
+    }
 
     private void Awake()
     {
@@ -95,12 +108,22 @@ public class Door : MonoBehaviour
         if (!canButtonBuffer) return;
         canButtonBuffer = false;
 
-        if (ResolveTarget() == this) Interact();
+        if (CurrentTarget() == this) Interact();
     }
 
     private void OnInteractCanceled(InputAction.CallbackContext ctx)
     {
         canButtonBuffer = true;
+    }
+
+    // every door in range asks this every frame, and the press asks it too - resolving
+    // once a frame keeps the tip, the crosshair and the keypress on the same answer
+    private static Door CurrentTarget()
+    {
+        if (resolvedFrame == Time.frameCount) return resolvedTarget;
+        resolvedFrame = Time.frameCount;
+        resolvedTarget = ResolveTarget();
+        return resolvedTarget;
     }
 
     private static Door ResolveTarget()
@@ -163,7 +186,6 @@ public class Door : MonoBehaviour
         }
         else
         {
-            if (tipManager) tipManager.Hide(0);
             if (isOpened) CloseDoor(); else OpenDoor();
         }
     }
@@ -176,7 +198,6 @@ public class Door : MonoBehaviour
         playerInRange = true;
         if (!doorsInRange.Contains(this)) doorsInRange.Add(this);
         enabled = true;
-        if (!isLocked && tipManager) tipManager.Show(0);
         StopAllCoroutines();
         StartCoroutine(CheckDoorRangeAndSight());
     }
@@ -189,36 +210,66 @@ public class Door : MonoBehaviour
     private void OnDestroy()
     {
         doorsInRange.Remove(this);
+        ReleaseTip();
+        if (resolvedTarget == this) resolvedTarget = null;
     }
 
     private void LeaveRange()
     {
         playerInRange = false;
         doorsInRange.Remove(this);
-        if (tipManager) tipManager.Hide(0);
-        if (crosshair) crosshair.HideCrosshair();
+        ReleaseTip();
+        SetTargeted(false);
         enabled = false;
     }
 
     private IEnumerator CheckDoorRangeAndSight()
     {
-        bool wasTargeted = false;
         while (playerInRange)
         {
-            //yield return refreshRate;
-            yield return null;
-
             if (DistanceToPlayer() > maxDistance)
             {
                 LeaveRange();
                 yield break;
             }
 
-            bool isTargeted = ResolveTarget() == this;
-            if (isTargeted && !wasTargeted) crosshair.ShowCrosshair();
-            else if (!isTargeted && wasTargeted) crosshair.HideCrosshair();
-            wasTargeted = isTargeted;
+            bool targeted = CurrentTarget() == this;
+            SetTargeted(targeted);
+            UpdateTip(targeted && !isLocked);
+
+            yield return null;
         }
+    }
+
+    // the crosshair counts its users, so a door may only ever take one count back out
+    private void SetTargeted(bool targeted)
+    {
+        if (targeted == isTargeted) return;
+        isTargeted = targeted;
+
+        if (!crosshair) return;
+        if (targeted) crosshair.ShowCrosshair(); else crosshair.HideCrosshair();
+    }
+
+    // one tip, many doors: only the door showing it may hide it again
+    private void UpdateTip(bool wanted)
+    {
+        if (wanted)
+        {
+            if (tipOwner == this) return;
+            tipOwner = this;
+            if (tipManager) tipManager.Show(0);
+            return;
+        }
+
+        ReleaseTip();
+    }
+
+    private void ReleaseTip()
+    {
+        if (tipOwner != this) return;
+        tipOwner = null;
+        if (tipManager) tipManager.Hide(0);
     }
 
     // state first, then feedback: the emitters ship unassigned on some prefabs, and

@@ -39,6 +39,8 @@ public class CrosshairRecoilUI : MonoBehaviour
         }
 
         Vector3 currentScale = crosshairImage.localScale;
+        if (Mathf.Approximately(currentScale.x, targetScale)) return;
+
         Vector3 desiredScale = new(targetScale, targetScale, targetScale);
 
         crosshairImage.localScale = Vector3.Lerp(

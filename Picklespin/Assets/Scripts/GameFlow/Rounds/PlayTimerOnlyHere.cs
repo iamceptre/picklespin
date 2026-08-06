@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayTimerOnlyHere : MonoBehaviour
 {
@@ -9,12 +9,14 @@ public class PlayTimerOnlyHere : MonoBehaviour
     {
         roundSystem = RoundSystem.instance;
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void OnTriggerEnter(Collider other) => Report(other);
+
+    private void OnTriggerStay(Collider other) => Report(other);
+
+    private void Report(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            roundSystem.isCounting = true;
-        }
+        if (roundSystem && other.gameObject.CompareTag("Player")) roundSystem.ReportPlayerInArena();
     }
 
 }

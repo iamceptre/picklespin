@@ -20,7 +20,7 @@ public static class SpellAvailability
     private static bool GrantedByClass(SpellId spell)
     {
         if (PlayerClasses.LockedSpell == spell) return true;
-        return spell == SpellId.Light && PlayerClasses.Chosen == PlayerClassId.Sanctus;
+        return spell == SpellId.Light && PlayerClasses.LightSpellConverts;
     }
 
     public static void PickupPlaced(SpellId spell)

@@ -21,9 +21,13 @@ PrefabInstance:
       value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 1825327412384273683, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value:
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
       objectReference: {fileID: 2100000, guid: 6a261afcda980a64ca0431a956f60835, type: 2}
+    - target: {fileID: 6037732046696453049, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 6680809000139152427, guid: ab1a771b722909942a0bd1387f88b508, type: 3}
       propertyPath: m_Color.rgba
       value: 4278845703

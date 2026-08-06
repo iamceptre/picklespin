@@ -22,13 +22,19 @@ public class AngelPointerHelper : MonoBehaviour
 
     private void Start()
     {
-        helperSpirit = HelperSpirit.instance;
+        EnsureSpirit();
+    }
+
+    private void EnsureSpirit()
+    {
+        if (!helperSpirit) helperSpirit = HelperSpirit.instance;
     }
 
     public void PointTo(Transform target)
     {
         angel = target;
         guiding = true;
+        EnsureSpirit();
         if (helperSpirit) helperSpirit.ShowSpirit(angel);
     }
 
@@ -41,16 +47,19 @@ public class AngelPointerHelper : MonoBehaviour
     {
         guiding = false;
         angel = null;
+        EnsureSpirit();
         if (helperSpirit) helperSpirit.HideSpirit();
     }
 
     public void Pause()
     {
+        EnsureSpirit();
         if (helperSpirit) helperSpirit.HideSpirit();
     }
 
     public void Resume()
     {
+        EnsureSpirit();
         if (helperSpirit && guiding && angel) helperSpirit.ShowSpirit(angel);
     }
 }

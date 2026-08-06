@@ -18,6 +18,7 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
     [SerializeField] private float animationTime = 6;
 
     StringBuilder sb = new StringBuilder();
+    private int lastShownExp = -1;
 
 
     private void Awake()
@@ -56,14 +57,14 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
     
     void Update()
     {
-
         if (InputCompat.AnyKeyDown)
         {
             myTween.Kill();
             FinishedAnimating();
+            return;
         }
 
-        UpdateText();
+        if (currentlyAnimatedExp != lastShownExp) UpdateText();
     }
 
     private void FinishedAnimating()
@@ -78,6 +79,7 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 
     private void UpdateText()
     {
+        lastShownExp = currentlyAnimatedExp;
         sb.Clear();
         sb.Append("you gathered<br>");
         sb.Append(currentlyAnimatedExp);

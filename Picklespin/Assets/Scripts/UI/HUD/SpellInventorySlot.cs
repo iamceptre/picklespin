@@ -80,7 +80,8 @@ public class SpellInventorySlot : MonoBehaviour
 
     public void Assign(Sprite sprite) => icon.sprite = sprite;
 
-    public void SetNumber(int slotNumber) => number.text = digits[slotNumber - 1];
+    public void SetNumber(int slotNumber) =>
+        number.text = slotNumber >= 1 && slotNumber <= digits.Length ? digits[slotNumber - 1] : slotNumber.ToString();
 
     public void ApplyState(bool owned, bool selected)
     {
@@ -98,19 +99,9 @@ public class SpellInventorySlot : MonoBehaviour
         numberRect.DOLocalMoveY(numberStartY - 10, 0.1f).SetLoops(2, LoopType.Yoyo);
     }
 
-    public void PlayDeny()
-    {
-        BadgeFX.Play(lockBadge, lockBadgeRect, lockBadgeScale,
-            startScaleRatio: 0.625f, scaleTime: 0.7f,
-            peakAlpha: 1f, fadeInTime: 0.2f, fadeOutTime: 0.5f);
-    }
+    public void PlayDeny() => BadgeFX.PlayDeny(lockBadge, lockBadgeRect, lockBadgeScale);
 
-    public void PlaySelectedAura()
-    {
-        BadgeFX.Play(selectedAura, selectedAuraRect, selectedAuraScale,
-            startScaleRatio: 0.714f, scaleTime: 0.35f,
-            peakAlpha: 0.6f, fadeInTime: 0.1f, fadeOutTime: 0.3f);
-    }
+    public void PlaySelectedAura() => BadgeFX.PlaySelectedAura(selectedAura, selectedAuraRect, selectedAuraScale);
 
     public void PlayUnlockFX()
     {

@@ -72,17 +72,7 @@ public class SpecialAbilitySlot : MonoBehaviour
         }
     }
 
-    public void PlayDeny()
-    {
-        BadgeFX.Play(lockBadge, lockBadgeRect, lockBadgeScale,
-            startScaleRatio: 0.625f, scaleTime: 0.7f,
-            peakAlpha: 1f, fadeInTime: 0.2f, fadeOutTime: 0.5f);
-    }
+    public void PlayDeny() => BadgeFX.PlayDeny(lockBadge, lockBadgeRect, lockBadgeScale);
 
-    public void PlaySelectedAura()
-    {
-        BadgeFX.Play(selectedAura, selectedAuraRect, selectedAuraScale,
-            startScaleRatio: 0.714f, scaleTime: 0.35f,
-            peakAlpha: 0.6f, fadeInTime: 0.1f, fadeOutTime: 0.3f);
-    }
+    public void PlaySelectedAura() => BadgeFX.PlaySelectedAura(selectedAura, selectedAuraRect, selectedAuraScale);
 }

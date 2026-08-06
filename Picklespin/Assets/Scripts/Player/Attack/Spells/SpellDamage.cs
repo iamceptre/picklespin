@@ -70,6 +70,7 @@ public class SpellDamage : MonoBehaviour
         refs.Health.TakeDamage(ScaledDamage(), true, wasLastHitCritical);
         if (refs.HeadshotParticle) refs.HeadshotParticle.Play();
         if (refs.damageTakenEyeshot) refs.damageTakenEyeshot.Play();
+        HeadshotLesson.NotifyHeadshot();
     }
 
     private int ScaledDamage()

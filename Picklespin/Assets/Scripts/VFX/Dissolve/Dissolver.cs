@@ -8,33 +8,35 @@ public class Dissolver : MonoBehaviour
 
     [SerializeField] private Material deadMaterial;
     private float dissolveProgress; //0 is visible, 1 is not
-    private float ashDissolveProgress;
     [SerializeField] private Renderer myRenderer;
 
     [SerializeField][Range(0.01f, 3)] private float dissolveSpeed = 0.7f;
 
     [SerializeField] private bool destroyAfterDissolve = false;
 
+    [Tooltip("the look of the ash left behind - the shared field is filled with copies of it, this one never shows")]
     [SerializeField] private GameObject ashPile;
-    [SerializeField] private Renderer ashPileRenderer;
-    [SerializeField] private Transform ashPileTransform; //make it GetComponent after moving to pooling
-
 
     private static readonly int progress = Shader.PropertyToID("_DissolveAmount");
 
     private Material dissolveMaterialInstance;
-    private Material ashMaterialInstance;
     private Material aliveMaterial;
-    private Transform ashOriginalParent;
-    private Vector3 ashOriginalLocalPosition;
+    private int ashHandle = -1;
 
     private void Awake()
     {
-        if (ashPileTransform != null)
-        {
-            ashOriginalParent = ashPileTransform.parent;
-            ashOriginalLocalPosition = ashPileTransform.localPosition;
-        }
+        if (!ashPile) return;
+
+        AshPileField.Prewarm(ashPile);
+        if (ashPile.TryGetComponent(out Renderer templateRenderer)) templateRenderer.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        if (ashHandle < 0) return;
+
+        AshPileField.SetDissolve(ashHandle, 0);
+        ashHandle = -1;
     }
 
     public void StartDissolve()
@@ -56,16 +58,10 @@ public class Dissolver : MonoBehaviour
     {
         StopAllCoroutines();
         dissolveProgress = 0;
-        ashDissolveProgress = 0;
+        ashHandle = -1;
         if (aliveMaterial != null)
         {
             myRenderer.material = aliveMaterial;
-        }
-        if (ashPileTransform != null)
-        {
-            ashPileRenderer.enabled = false;
-            ashPileTransform.SetParent(ashOriginalParent, false);
-            ashPileTransform.localPosition = ashOriginalLocalPosition;
         }
     }
 
@@ -97,34 +93,28 @@ public class Dissolver : MonoBehaviour
 
     private void SpawnAshBeneath()
     {
+        //+ Vector3.up to make the raycast shoot from above the ground
+        if (!Physics.Raycast(transform.position + Vector3.up, -Vector3.up, out RaycastHit hit, Mathf.Infinity)) return;
 
-        Vector3 positionOffset = new Vector3(0, Random.Range(0.28f, 0.35f));
+        Vector3 positionOffset = new(0, Random.Range(0.28f, 0.35f));
+        ashHandle = AshPileField.Place(
+            hit.point + positionOffset,
+            Quaternion.Euler(0, Random.Range(0f, 360f), 0),
+            Random.Range(0.8f, 1.2f));
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up, -Vector3.up, out hit, Mathf.Infinity)) //+ Vector3.up to make the raycast shoot from above the ground
-        {
-            float randomY = Random.Range(0, 360);
-            ashPileRenderer.enabled = true;
-            ashPileTransform.position = hit.point + positionOffset;
-            ashPileTransform.rotation = Quaternion.Euler(0, randomY, 0);
-            float randomScale = Random.Range(0.8f, 1.2f);
-            ashPileTransform.localScale = new Vector3(randomScale, randomScale, randomScale);
-            ashDissolveProgress = 0;
-            ashPile.transform.SetParent(null, true);
-            StartCoroutine(UndissolveAsh());
-        }
+        if (ashHandle >= 0) StartCoroutine(UndissolveAsh());
     }
 
     private IEnumerator UndissolveAsh()
     {
-        if (ashMaterialInstance == null) ashMaterialInstance = ashPileRenderer.material;
-        ashDissolveProgress = 0.9f;
+        float ashDissolveProgress = AshPileField.HiddenAmount;
         while (ashDissolveProgress > 0)
         {
-            ashDissolveProgress = 0.9f - dissolveProgress; //mirrors the enemies dissolve
-            ashMaterialInstance.SetFloat(progress, ashDissolveProgress);
+            ashDissolveProgress = AshPileField.HiddenAmount - dissolveProgress; //mirrors the enemies dissolve
+            AshPileField.SetDissolve(ashHandle, ashDissolveProgress);
             yield return null;
         }
+        ashHandle = -1;
         yield break;
     }
 

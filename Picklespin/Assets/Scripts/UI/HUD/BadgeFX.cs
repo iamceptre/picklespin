@@ -33,4 +33,12 @@ public static class BadgeFX
             .OnComplete(() => badge.DOFade(0f, fadeOutTime)
             .OnComplete(() => badge.enabled = false));
     }
+
+    public static void PlayDeny(Image badge, RectTransform rect, Vector3 authoredScale) =>
+        Play(badge, rect, authoredScale, startScaleRatio: 0.625f, scaleTime: 0.7f,
+            peakAlpha: 1f, fadeInTime: 0.2f, fadeOutTime: 0.5f);
+
+    public static void PlaySelectedAura(Image badge, RectTransform rect, Vector3 authoredScale) =>
+        Play(badge, rect, authoredScale, startScaleRatio: 0.714f, scaleTime: 0.35f,
+            peakAlpha: 0.6f, fadeInTime: 0.1f, fadeOutTime: 0.3f);
 }

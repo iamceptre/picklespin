@@ -4892,7 +4892,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 2
-  m_Color: {r: 0.4392157, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.5669706, g: 0.5538003, b: 0.8962264, a: 1}
   m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
@@ -15264,11 +15264,11 @@ MonoBehaviour:
   - {fileID: 8312430218449341608}
   - {fileID: 6409948739457110738}
   - {fileID: 3036575118500837913}
-  spellLight: {fileID: 0}
+  spellLight: {fileID: 5317234955387641493}
   fadeOutLight: 0
   explosionSoundEmitter: {fileID: 3005831588898276106}
   explosionReflectionsSoundEmitter: {fileID: 176874182128313843}
-  hitWall: {fileID: 0}
+  hitWall: {fileID: 3005831588898276106}
 --- !u!114 &6610000000000000105
 MonoBehaviour:
   m_ObjectHideFlags: 0

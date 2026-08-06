@@ -47,11 +47,7 @@ public class HelperSpirit : MonoBehaviour
         }
         instance = this;
         if (!aiPath) TryGetComponent(out aiPath);
-    }
 
-    private void Start()
-    {
-        playerTransform = PublicPlayerTransform.Instance;
         refreshInterval = new WaitForSeconds(checkInterval);
         startingLightIntensity = spiritLight.intensity;
         startingTrailWidth = trailRenderer.widthMultiplier;
@@ -59,6 +55,16 @@ public class HelperSpirit : MonoBehaviour
         if (aiPath) baseSpeed = aiPath.maxSpeed;
 
         SetEffectsStrength(0f);
+    }
+
+    private void Start()
+    {
+        EnsurePlayer();
+    }
+
+    private void EnsurePlayer()
+    {
+        if (playerTransform == null) playerTransform = PublicPlayerTransform.Instance;
     }
 
     private void Update()
@@ -80,6 +86,7 @@ public class HelperSpirit : MonoBehaviour
 
     public void ShowSpirit(Transform target)
     {
+        EnsurePlayer();
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         fadeCoroutine = StartCoroutine(FadeInAndInit(target));
     }

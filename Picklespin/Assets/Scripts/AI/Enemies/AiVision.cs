@@ -57,6 +57,14 @@ public class AiVision : MonoBehaviour
 
     public void PerceptionCheck()
     {
+        if (AngelArea.PlayerInside)
+        {
+            seeingPlayer = false;
+            playerJustHitMe = false;
+            hitMeUntilTime = 0;
+            return;
+        }
+
         if (!playerRef)
         {
             ResolvePlayerRefs(); // the FSM can tick before Start on a scene-placed enemy
@@ -82,6 +90,7 @@ public class AiVision : MonoBehaviour
 
     public bool CanSeePlayer()
     {
+        if (AngelArea.PlayerInside) return false;
         if (!playerRef) return false;
         Vector3 toPlayer = playerRef.position - transform.position;
         return CanSeePlayer(toPlayer, toPlayer.magnitude);

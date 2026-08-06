@@ -1,3 +1,4 @@
+using System;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,21 +34,45 @@ public class SpecialAbilitySystem : MonoBehaviour
     private Sprite classIcon;
     private bool healOverriding;
     private bool shownUsable;
+    private ISpecialAbility[] abilitiesById;
 
     private void Awake()
     {
         if (instance != null && instance != this)
         {
+            enabled = false;
             Destroy(this);
             return;
         }
         instance = this;
+
+        abilitiesById = new ISpecialAbility[Enum.GetValues(typeof(SpecialAbilityId)).Length];
+        Register(grapplingHook);
+    }
+
+    private static bool IsAlive(ISpecialAbility ability) => ability is UnityEngine.Object obj ? obj : ability != null;
+
+    private void Register(ISpecialAbility ability)
+    {
+        if (IsAlive(ability)) abilitiesById[(int)ability.Id] = ability;
+    }
+
+    private ISpecialAbility CurrentAbility
+    {
+        get
+        {
+            if ((int)currentAbility >= abilitiesById.Length) return null;
+            ISpecialAbility ability = abilitiesById[(int)currentAbility];
+            return IsAlive(ability) ? ability : null;
+        }
     }
 
     private void OnEnable()
     {
         PlayerClasses.Changed += RefreshClassIcon;
         ClassUpgrades.LevelChanged += RefreshClassIcon;
+        if (angelHeal) angelHeal.CanHealChanged += OnRelevantStateChanged;
+        if (grapplingHook) grapplingHook.ReadinessChanged += OnRelevantStateChanged;
         useAction.action.performed += OnUsePerformed;
         useAction.action.canceled += OnUseCanceled;
         useAction.action.Enable();
@@ -57,6 +82,8 @@ public class SpecialAbilitySystem : MonoBehaviour
     {
         PlayerClasses.Changed -= RefreshClassIcon;
         ClassUpgrades.LevelChanged -= RefreshClassIcon;
+        if (angelHeal) angelHeal.CanHealChanged -= OnRelevantStateChanged;
+        if (grapplingHook) grapplingHook.ReadinessChanged -= OnRelevantStateChanged;
         useAction.action.performed -= OnUsePerformed;
         useAction.action.canceled -= OnUseCanceled;
         useAction.action.Disable();
@@ -68,13 +95,13 @@ public class SpecialAbilitySystem : MonoBehaviour
         RefreshClassIcon();
     }
 
-    private void Update() => Refresh(false);
+    private void OnRelevantStateChanged() => Refresh(false);
 
     private void OnUsePerformed(InputAction.CallbackContext ctx)
     {
         if (Time.timeScale == 0f || (attack && !attack.enabled)) return;
 
-        if (grapplingHook && grapplingHook.CancelPull()) return;
+        if (CurrentAbility != null && CurrentAbility.CancelUse()) return;
 
         if (angelHeal && angelHeal.CanHealNow)
         {
@@ -107,13 +134,14 @@ public class SpecialAbilitySystem : MonoBehaviour
     {
         if (!AbilityUsable)
         {
-            if (handShake) handShake.ShakeHand();
-            else PlayLockFeedback();
+            if (handShake) handShake.Shake();
+            PlayLockFeedback();
             return;
         }
 
-        if (TryUseClassAbility()) PlayUsedFeedback();
+        if (CurrentAbility.TryUse()) PlayUsedFeedback();
         else if (handShake) handShake.Shake();
+        Refresh(false);
     }
 
     public void PlayLockFeedback()
@@ -124,17 +152,7 @@ public class SpecialAbilitySystem : MonoBehaviour
 
     public void PlayUsedFeedback() => slot.PlaySelectedAura();
 
-    private bool AbilityUsable => currentAbility switch
-    {
-        SpecialAbilityId.GrapplingHook => BlastfoolUpgrades.GrapplingHookUnlocked && grapplingHook && grapplingHook.IsReady,
-        _ => false
-    };
-
-    private bool TryUseClassAbility() => currentAbility switch
-    {
-        SpecialAbilityId.GrapplingHook => grapplingHook.TryFire(),
-        _ => false
-    };
+    private bool AbilityUsable => CurrentAbility != null && CurrentAbility.IsUsable;
 
     private void RefreshClassIcon()
     {

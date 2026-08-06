@@ -124,30 +124,36 @@ public class Bullet : MonoBehaviour
         bool weakPointHit = collider.CompareTag("Hitbox_Head");
         if (!weakPointHit && !collider.CompareTag("NPC_Hitbox")) return;
 
+        AiReferences refs = ResolveHitboxOwner(collider);
+        if (AngelArea.Shelters(refs)) return;
+
         if (PlayerClasses.PiercingProjectiles)
         {
-            Pierce(ResolveHitboxOwner(collider), weakPointHit);
+            Pierce(refs, weakPointHit);
             return;
         }
 
         hitSomething = true;
-        GeneralAfterHit(collider, weakPointHit);
+        GeneralAfterHit(collider, refs, weakPointHit);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (hitSomething) return;
 
-        if (PlayerClasses.PiercingProjectiles && collision.collider.TryGetComponent(out AiReferences pierceTarget))
+        if (AngelArea.PlayerInside && AngelArea.Shelters(collision.collider.GetComponentInParent<AiReferences>())) return;
+
+        collision.collider.TryGetComponent(out AiReferences refs);
+
+        if (PlayerClasses.PiercingProjectiles && refs)
         {
-            Pierce(pierceTarget, false);
+            Pierce(refs, false);
             return;
         }
 
         hitSomething = true;
         ArmImpactTimer();
         Vector3 impactPoint = collision.GetContact(0).point;
-        collision.collider.TryGetComponent(out AiReferences refs);
         if (areaOfEffect) areaOfEffect.Burst(refs, impactPoint);
 
         if (refs)
@@ -166,12 +172,11 @@ public class Bullet : MonoBehaviour
         AfterExplosion();
     }
 
-    private void GeneralAfterHit(Collider collider, bool weakPointHit)
+    private void GeneralAfterHit(Collider collider, AiReferences refs, bool weakPointHit)
     {
         ArmImpactTimer();
         Vector3 impactPoint = collider.transform.position;
 
-        AiReferences refs = ResolveHitboxOwner(collider);
         if (areaOfEffect) areaOfEffect.Burst(refs, impactPoint);
 
         if (refs) ApplyHit(refs, weakPointHit);
@@ -195,11 +200,18 @@ public class Bullet : MonoBehaviour
             ApplyHit(refs, weakPointHit, keepFlying: true);
         }
 
+        KeepFlying();
+    }
+
+    private void KeepFlying()
+    {
         if (pierceVelocity.sqrMagnitude > 0f) _rigidbody.linearVelocity = pierceVelocity;
     }
 
     public void ApplyHit(AiReferences refs, bool weakPointHit, bool keepFlying = false)
     {
+        if (AngelArea.Shelters(refs)) return;
+
         if (!keepFlying) _collider.enabled = false;
         if (!refs.Health) return;
 

@@ -9,11 +9,5 @@ public class HandShakeWhenCannotHeal : MonoBehaviour
         handAnimator = PublicPlayerHandAnimator.instance._animator;
     }
 
-    public void ShakeHand()
-    {
-        Shake();
-        if (SpecialAbilitySystem.instance) SpecialAbilitySystem.instance.PlayLockFeedback();
-    }
-
     public void Shake() => handAnimator.SetTrigger("Hand_Fail");
 }

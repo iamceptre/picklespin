@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// The shadow bar trailing a real one. The hold starts when it *falls behind*, not
-// on every change - a continuous drain would otherwise re-arm it every frame and
-// the shadow would never move at all.
 [RequireComponent(typeof(Slider))]
 public class BarEase : MonoBehaviour
 {
@@ -52,8 +49,6 @@ public class BarEase : MonoBehaviour
 
         if (Time.time < holdUntilTime) return;
 
-        // the rate is latched and only re-armed when the gap outgrows it, which keeps
-        // a continuously draining bar trailing at a steady distance
         float duration = Mathf.Max(easeDuration, 0.0001f);
         float gap = me.value - targetValue;
         if (easeSpeed <= 0f || gap > easeSpeed * duration) easeSpeed = gap / duration;
@@ -67,8 +62,6 @@ public class BarEase : MonoBehaviour
     {
         me.value = value;
         targetValue = value;
-        // hiding lingers instead of firing here: a steady drain catches up every few
-        // frames, and toggling the fill Image re-dirties the canvas each flip
         if (behind) hideFillTime = Time.time + easeDelay;
         behind = false;
         easeSpeed = 0f;
@@ -81,7 +74,6 @@ public class BarEase : MonoBehaviour
         easeFill.enabled = visible;
     }
 
-    // the death event disables this component, so pooled reuse has to switch it back on
     public void ResetEase()
     {
         enabled = true;

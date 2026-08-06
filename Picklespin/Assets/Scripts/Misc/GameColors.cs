@@ -11,6 +11,8 @@ public static class GameColors
     public static readonly Color StaminaBright = new(0.4778f, 0.7842f, 0.2474f);
     public static readonly Color MagickaBright = new(0.5981f, 0.6709f, 0.9548f);
     public static readonly Color UmbralBright = new(0.8282f, 0.5621f, 0.9551f);
+    public static readonly Color UmbralSurge = new(1f, 0.4207f, 0.9314f);
+    public static readonly Color UmbralOverload = new(1f, 0.8534f, 1f);
 
     public static readonly Color Fireball = new(0.9629f, 0.6581f, 0.2835f);
     public static readonly Color Critical = new(1f, 0.8268f, 0.2071f);
