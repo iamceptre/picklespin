@@ -5083,7 +5083,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
+      scalar: 1
       minScalar: 0.3
       maxCurve:
         serializedVersion: 2
@@ -5255,7 +5255,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 3
-      minScalar: 5
+      minScalar: 6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -15260,11 +15260,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionFX: {fileID: 3036575118500837913}
   flightParticles:
-  - {fileID: 4712923549206713878}
   - {fileID: 8312430218449341608}
   - {fileID: 6409948739457110738}
-  - {fileID: 3036575118500837913}
-  spellLight: {fileID: 5317234955387641493}
+  spellLight: {fileID: 0}
   fadeOutLight: 0
   explosionSoundEmitter: {fileID: 3005831588898276106}
   explosionReflectionsSoundEmitter: {fileID: 176874182128313843}
