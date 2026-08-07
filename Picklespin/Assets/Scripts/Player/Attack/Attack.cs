@@ -26,6 +26,7 @@ public class Attack : MonoBehaviour
     [SerializeField] SpellCooldown spellCooldown;
     [SerializeField] NoManaLightAnimation noManaLightAnimation;
     public float castingProgress = 0;
+    public bool IsCasting { get; private set; }
 
     float CurrentCastDuration => currentCasting ? currentCasting.Duration * WishUpgrades.CastDurationMultiplier : 0f;
     int CurrentMagickaCost => currentBullet
@@ -40,9 +41,10 @@ public class Attack : MonoBehaviour
     SpellCasting currentCasting;
     [SerializeField] InputActionReference primaryAction;
     [SerializeField] InputActionReference secondaryAction;
-    bool isPrimaryPressed;
-    bool isSecondaryPressed;
     Coroutine castingRoutine;
+
+    bool PrimaryHeld => primaryAction.action.IsPressed();
+    bool SecondaryHeld => secondaryAction.action.IsPressed();
 
     void Awake()
     {
@@ -69,48 +71,26 @@ public class Attack : MonoBehaviour
     void OnEnable()
     {
         primaryAction.action.performed += OnPrimaryPerformed;
-        primaryAction.action.canceled += OnPrimaryCanceled;
         primaryAction.action.Enable();
-        secondaryAction.action.performed += OnSecondaryPerformed;
-        secondaryAction.action.canceled += OnSecondaryCanceled;
         secondaryAction.action.Enable();
     }
 
     void OnDisable()
     {
+        IsCasting = false;
         primaryAction.action.performed -= OnPrimaryPerformed;
-        primaryAction.action.canceled -= OnPrimaryCanceled;
         primaryAction.action.Disable();
-        secondaryAction.action.performed -= OnSecondaryPerformed;
-        secondaryAction.action.canceled -= OnSecondaryCanceled;
-        secondaryAction.action.Disable();
     }
 
     void OnPrimaryPerformed(InputAction.CallbackContext ctx)
     {
-        isPrimaryPressed = true;
         if (!castCooldownAllow) return;
         if (CurrentCastDuration == 0) TryShoot();
-        else if (!isSecondaryPressed)
+        else if (!SecondaryHeld)
         {
             ClearCasting();
             castingRoutine = StartCoroutine(SpellCasting());
         }
-    }
-
-    void OnPrimaryCanceled(InputAction.CallbackContext ctx)
-    {
-        isPrimaryPressed = false;
-    }
-
-    void OnSecondaryPerformed(InputAction.CallbackContext ctx)
-    {
-        isSecondaryPressed = true;
-    }
-
-    void OnSecondaryCanceled(InputAction.CallbackContext ctx)
-    {
-        isSecondaryPressed = false;
     }
 
     public bool CooldownReady => castCooldownAllow;
@@ -181,6 +161,7 @@ public class Attack : MonoBehaviour
     {
         if (ammo.ammo >= CurrentMagickaCost)
         {
+            IsCasting = true;
             spellCooldown.myCanvas.enabled = true;
             playCastBlast.StartCastingParticles(selectedSpell);
             PlayerMovement.Instance.SlowMeDown();
@@ -189,7 +170,7 @@ public class Attack : MonoBehaviour
             float castDuration = CurrentCastDuration;
             while (castingProgress < castDuration)
             {
-                if (!isPrimaryPressed || isSecondaryPressed)
+                if (!PrimaryHeld || SecondaryHeld)
                 {
                     handAnimator.SetTrigger("Spell_Casting_Stop");
                     ClearCasting();
@@ -200,9 +181,9 @@ public class Attack : MonoBehaviour
                 yield return null;
             }
             castingCompleted.Invoke();
-            while (isPrimaryPressed)
+            while (PrimaryHeld)
             {
-                if (isSecondaryPressed)
+                if (SecondaryHeld)
                 {
                     handAnimator.SetTrigger("Spell_Casting_Stop");
                     ClearCasting();
@@ -218,6 +199,7 @@ public class Attack : MonoBehaviour
 
     void ClearCasting()
     {
+        IsCasting = false;
         PlayerMovement.Instance.SpeedMeBackUp();
         handAnimator.ResetTrigger("Spell_Casting");
         spellCooldown.myCanvas.enabled = false;

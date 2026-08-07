@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// The methods stay in every build so the buttons wired to them still resolve; only the bodies
+// are stripped, or a release build logs a missing-listener error every time one is pressed.
 public class GameSpeedSlider : MonoBehaviour
 {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -20,17 +22,21 @@ public class GameSpeedSlider : MonoBehaviour
         DevLog.Info($"{nameof(GameSpeedSlider)} is live: drag it to scale game speed up to 2x", this);
     }
 
+#endif
+
     public void ApplyNewSpeed()
     {
-        Time.timeScale = me.value*2;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        Time.timeScale = me.value * 2f;
+#endif
     }
 
     public void Show()
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
-    }
-
 #endif
+    }
 }

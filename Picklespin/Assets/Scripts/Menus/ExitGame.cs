@@ -4,24 +4,22 @@ using UnityEngine.UI;
 
 public class ExitGame : MonoBehaviour
 {
+    private readonly WaitForEndOfFrame waitFrame = new();
 
-    private WaitForEndOfFrame waitFrame = new WaitForEndOfFrame();
-    void Start()
-    {
-        StartCoroutine(Surprise());
-    }
+    private void Start() => StartCoroutine(Surprise());
 
     private IEnumerator Surprise()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
         //SURPRISE MOTHERFUCKER!
         yield return waitFrame;
         yield return waitFrame;
         yield return waitFrame;
-        Image me = gameObject.GetComponent<Image>();
-        me.color = Color.black;
-        Application.Quit();
-    }
 
+        if (TryGetComponent(out Image me)) me.color = Color.black;
+
+        SceneFlow.Quit();
+    }
 }

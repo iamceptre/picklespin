@@ -18,12 +18,8 @@ public abstract class AngelChoiceMenu : MonoBehaviour
     [SerializeField, Tooltip("AudioSnapshotManager key held while the menu is up - the short key it is registered under, not the FMOD path; empty means no snapshot")]
     private string snapshotKey = "AngelChoice";
 
-    [Header("Controls locked while choosing (auto-found if left empty)")]
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private Attack attack;
-    [SerializeField] private SpellSelector spellSelector;
-    [SerializeField] private Dash dash;
-    [SerializeField] private MouselookXY mouselook;
+    private Attack attack;
+    private Dash dash;
 
     private static readonly Dictionary<string, int> snapshotHolders = new();
     private bool holdsSnapshot;
@@ -72,11 +68,8 @@ public abstract class AngelChoiceMenu : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (!playerMovement) playerMovement = PlayerMovement.Instance;
-        if (!attack) attack = Attack.instance;
-        if (!spellSelector) spellSelector = FindFirstObjectByType<SpellSelector>();
-        if (!dash) dash = FindFirstObjectByType<Dash>();
-        if (!mouselook) mouselook = MouselookXY.instance;
+        attack = Attack.instance;
+        dash = Dash.Instance;
     }
 
     private void Update()
@@ -126,6 +119,7 @@ public abstract class AngelChoiceMenu : MonoBehaviour
         WriteLines();
 
         IsAsking = true;
+        PauseGate.Block(this);
         LockPlayerControls(true);
         HoldSnapshot();
 
@@ -177,6 +171,7 @@ public abstract class AngelChoiceMenu : MonoBehaviour
     {
         OnClosed();
         ReleaseSnapshot();
+        PauseGate.Release(this);
     }
 
     private void HoldSnapshot()
@@ -206,29 +201,18 @@ public abstract class AngelChoiceMenu : MonoBehaviour
         }
     }
 
-    private void OnDestroy() => ReleaseSnapshot();
+    private void OnDestroy()
+    {
+        ReleaseSnapshot();
+        PauseGate.Release(this);
+    }
 
     protected void HandOverToWishMenu()
     {
-        if (AngelWishMenu.Instance)
-        {
-            AngelWishMenu.Instance.AskForWish();
-
-            if (AngelWishMenu.Instance.IsAsking) return;
-        }
+        if (AngelWishMenu.Instance) AngelWishMenu.Instance.AskForWish();
 
         LockPlayerControls(false);
     }
 
-    protected void LockPlayerControls(bool locked)
-    {
-        if (playerMovement) playerMovement.enabled = !locked;
-        if (attack) attack.enabled = !locked;
-        if (spellSelector) spellSelector.enabled = !locked;
-        if (dash) dash.enabled = !locked;
-        if (mouselook) mouselook.enabled = !locked;
-
-        Cursor.lockState = locked ? CursorLockMode.Confined : CursorLockMode.Locked;
-        Cursor.visible = locked;
-    }
+    protected void LockPlayerControls(bool locked) => PlayerControlLock.Set(this, locked);
 }

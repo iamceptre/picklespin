@@ -4,14 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(TipDisplay))]
 public class HeadshotLesson : MonoBehaviour
 {
-    private const float Tau = 6.2831855f;
+    private const float Tau = 6.28f;
 
     private static readonly List<HeadshotMarker> markers = new();
     private static HeadshotLesson instance;
     private static bool teaching;
     private static bool taught;
 
-    [Tooltip("how many times a second an enemy eye marker pulses while the tip is up")]
+    [Tooltip("how fast the marker glow churns while the tip is up")]
     [SerializeField] private float pulsesPerSecond = 2f;
     [Tooltip("the colour a marker reaches at the top of a pulse - its alpha is the peak alpha")]
     [SerializeField] private Color peakColor = Color.red;
@@ -21,8 +21,8 @@ public class HeadshotLesson : MonoBehaviour
     private TipDisplay tip;
     private Color pulse;
     private float angularSpeed;
-    private float halfAlphaSpan;
     private float phase;
+    private float time;
 
     public static bool Teaching => teaching;
 
@@ -65,9 +65,9 @@ public class HeadshotLesson : MonoBehaviour
         if (taught || teaching) return;
 
         teaching = true;
-        phase = 0f;
+        time = 0f;
+        phase = Random.Range(0f, Tau);
         angularSpeed = pulsesPerSecond * Tau;
-        halfAlphaSpan = (peakColor.a - troughAlpha) * 0.5f;
         pulse = peakColor;
         SetMarkers(true);
 
@@ -89,9 +89,14 @@ public class HeadshotLesson : MonoBehaviour
 
     private void Update()
     {
-        phase += Time.deltaTime * angularSpeed;
-        if (phase > Tau) phase -= Tau;
-        pulse.a = troughAlpha + halfAlphaSpan * (1f + Mathf.Sin(phase));
+        time += Time.deltaTime * angularSpeed;
+
+        float waveA = Mathf.Sin(time + phase);
+        float waveB = Mathf.Sin(time * PhiMath.PHI);
+        float waveC = Mathf.Sin(time * PhiMath.PHI4 + phase);
+        float wave = 0.5f + 0.2f * (waveA + waveB) + 0.1f * waveB * waveC;
+
+        pulse.a = Mathf.Lerp(troughAlpha, peakColor.a, wave);
 
         List<HeadshotMarker> pulsing = markers;
         int count = pulsing.Count;

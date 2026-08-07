@@ -55,8 +55,12 @@ public class PlayerBarDisplay : MonoBehaviour
 
     public void SetContinuousValue(float value, float maxValue) => Snap();
 
+    // a bar whose class has folded it away has never woken, so it has nothing to snap and no
+    // slider to snap it on - the systems behind it go on pushing at it either way
     private void Snap()
     {
+        if (!slider) return;
+
         float fraction = Fraction;
         slider.value = fraction * slider.maxValue;
         velocity = 0f;

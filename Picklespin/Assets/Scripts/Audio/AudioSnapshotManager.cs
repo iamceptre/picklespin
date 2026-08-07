@@ -128,6 +128,7 @@ public class AudioSnapshotManager : MonoBehaviour
     private void OnDestroy()
     {
         Clear();
+        if (Instance == this) Instance = null;
     }
 
     public void Clear()

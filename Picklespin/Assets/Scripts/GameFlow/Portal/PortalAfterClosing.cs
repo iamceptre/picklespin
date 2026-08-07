@@ -18,16 +18,15 @@ public class PortalAfterClosing : MonoBehaviour
     private ColorGrading ppColorGrading;
 
     private Pause pause;
-    [SerializeField] private Canvas PortalClosedScreen;
+    [SerializeField] private GameObject portalClosedScreen;
+    private MenuScreen failScreen;
 
     private AudioSnapshotManager audioSnapshotManager;
 
-    [SerializeField] private CanvasGroup[] canvasToFadeout;
-    [SerializeField] private Image screenTint;
     [SerializeField] private Image crosshair;
 
-    [SerializeField] private CanvasGroup failedScreenCanvasGroup;
-    private Tween myTween;
+    [SerializeField][Tooltip("seconds the tint takes to swallow the screen once the fail page is up - match it to that page's entry on ScreenTint")]
+    private float blackoutDuration = 2f;
 
     private void Awake()
     {
@@ -40,6 +39,7 @@ public class PortalAfterClosing : MonoBehaviour
             instance = this;
         }
         myCollider = GetComponent<BoxCollider>();
+        failScreen = MenuScreen.Of(portalClosedScreen);
     }
 
     private void Start()
@@ -52,10 +52,12 @@ public class PortalAfterClosing : MonoBehaviour
 
     public void PortalClosed()
     {
+        if (pause) pause.UnpauseGame();
+        PauseGate.Block(this);
+
         myCollider.enabled = false;
         crosshair.enabled = false;
         playerHp.godMode = true;
-        FadeOutCanvas();
         audioSnapshotManager.EnableSnapshot("Portal_Closed");
         TurnOffEmissions();
         StartCoroutine(ActivateFailScreen());
@@ -66,14 +68,6 @@ public class PortalAfterClosing : MonoBehaviour
             portalLight.DOKill();
             portalLight.enabled = false;
         });
-    }
-
-    private void FadeOutCanvas()
-    {
-        foreach (var canvas in canvasToFadeout)
-        {
-            canvas.DOFade(0, 1);
-        }
     }
 
     private void TurnOffEmissions()
@@ -111,25 +105,19 @@ public class PortalAfterClosing : MonoBehaviour
         }
     }
 
-    private void BlackOutScreen()
-    {
-        Tween myTween = screenTint.DOColor(Color.black, 2).OnComplete(() =>
-        {
-            pause.PauseGamePortalClosedFail();
-        });
-        myTween.SetUpdate(UpdateType.Normal, true);
-    }
-
+    // the page brings the tint with it - ScreenTint darkens to whatever the fail page asks for,
+    // over its own listed time, and the run only stops once that has swallowed the screen
     private IEnumerator ActivateFailScreen()
     {
         yield return new WaitForSeconds(1);
-        PortalClosedScreen.enabled = true;
-        PortalClosedScreen.gameObject.SetActive(true); 
-        myTween = failedScreenCanvasGroup.DOFade(1, 2).OnComplete(() =>
-        {
-            BlackOutScreen();
-        });
-        myTween.SetUpdate(UpdateType.Normal, true);
+
+        if (failScreen) failScreen.Open();
+        else DevLog.Error($"{nameof(PortalAfterClosing)}: no portal closed screen wired in - the run ends on a black screen with nothing on it", this);
+
+        yield return new WaitForSecondsRealtime(blackoutDuration);
+
+        if (pause) pause.PauseGamePortalClosedFail();
+        else DevLog.Error($"{nameof(PortalAfterClosing)}: no {nameof(Pause)} in the scene - the clock never stops", this);
     }
 
 }

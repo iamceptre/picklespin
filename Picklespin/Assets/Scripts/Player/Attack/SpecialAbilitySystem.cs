@@ -103,6 +103,8 @@ public class SpecialAbilitySystem : MonoBehaviour
 
         if (CurrentAbility != null && CurrentAbility.CancelUse()) return;
 
+        if (attack && attack.IsCasting) return;
+
         if (angelHeal && angelHeal.CanHealNow)
         {
             angelHeal.StartHealing();

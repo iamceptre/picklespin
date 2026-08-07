@@ -1,98 +1,61 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadSelectedScene : MonoBehaviour
 {
-    public int selectedSceneIndex;
-    [SerializeField] Slider loadingBar;
+    // a held-back load reports 0.9 when it is done and waiting for activation
+    private const float readyProgress = 0.9f;
+    private const float progressToFraction = 1f / readyProgress;
+
+    [SerializeField, Tooltip("build index of the scene this button goes to")]
+    private int selectedSceneIndex;
+
+    [Header("Loading bar - without one the scene is loaded outright")]
+    [SerializeField] private Slider loadingBar;
     [SerializeField] private Canvas loadingBarCanvas;
     [SerializeField] private TMP_Text loadingText;
 
-    private FMODResetManager fmodResetManager;
-    private AudioSnapshotManager audioSnapshotManager;
-
-    [SerializeField] private FadeOutImageOnEnable fadeInVeins;
+    [SerializeField, Tooltip("optional - the new scene is held back until this has finished fading in")]
+    private FadeOutImageOnEnable fadeInVeins;
     [SerializeField] private GameObject fadeInGroup;
-
-    private bool clickable = true;
-
-    private void Start()
-    {
-        fmodResetManager = FMODResetManager.instance;
-        audioSnapshotManager = AudioSnapshotManager.Instance;
-    }
-
-
 
     public void Do()
     {
-        if (clickable)
+        if (SceneFlow.IsLeaving) return;
+
+        if (!loadingBar)
         {
-            clickable = false;
-            if (fmodResetManager != null)
-                fmodResetManager.ResetFMOD(false);
-
-            if (audioSnapshotManager != null)
-                audioSnapshotManager.Clear();
-
-            if (loadingBar == null)
-            {
-                SwitchScene();
-            }
-            else
-            {
-                StartCoroutine(LoadNewGameWithBar());
-            }
-
+            SceneFlow.Load(selectedSceneIndex);
+            return;
         }
+
+        StartCoroutine(LoadWithBar());
     }
 
-    private void SwitchScene()
+    private IEnumerator LoadWithBar()
     {
-        DG.Tweening.DOTween.KillAll();
-        SceneManager.LoadScene(selectedSceneIndex);
+        AsyncOperation operation = SceneFlow.LoadAsync(selectedSceneIndex);
+        if (operation == null) yield break;
 
-    }
+        if (loadingBarCanvas) loadingBarCanvas.enabled = true;
+        if (fadeInGroup) fadeInGroup.SetActive(true);
 
-    private IEnumerator LoadNewGameWithBar()
-    {
-        DG.Tweening.DOTween.KillAll();
-        loadingBarCanvas.enabled = true;
-        yield return new WaitForEndOfFrame();
-        AsyncOperation operation = SceneManager.LoadSceneAsync(selectedSceneIndex);
-        operation.allowSceneActivation = false;
-
-        Time.timeScale = 1.0f;
-
-        if (fadeInVeins != null)
+        while (operation.progress < readyProgress || (fadeInVeins && !fadeInVeins.fadedIn))
         {
-            fadeInGroup.SetActive(true);
-            while (operation.progress < 0.9f || !fadeInVeins.fadedIn)
-            {
-                Loader(operation);
-                yield return null;
-            }
-        }
-        else
-        {
-            while (operation.progress < 0.9f)
-            {
-                Loader(operation);
-                yield return null;
-            }
+            ShowProgress(operation.progress);
+            yield return null;
         }
 
-        clickable = true;
+        ShowProgress(readyProgress);
         operation.allowSceneActivation = true;
     }
 
-    private void Loader(AsyncOperation operation)
+    private void ShowProgress(float rawProgress)
     {
-        float progress = Mathf.Clamp01(operation.progress / .9f);
+        float progress = Mathf.Clamp01(rawProgress * progressToFraction);
         loadingBar.value = progress;
-        loadingText.text = (int)(100 * progress) + "%";
+        if (loadingText) loadingText.text = (int)(100f * progress) + "%";
     }
 }

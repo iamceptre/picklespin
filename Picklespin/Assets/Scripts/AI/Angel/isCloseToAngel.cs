@@ -5,7 +5,6 @@ public class isCloseToAngel : MonoBehaviour
 {
 
     [SerializeField] private AngelHeal angelHeal;
-    [SerializeField] private Canvas angelHPGUI;
 
 
     private string triggerName = "AngelScriptAcivationTrigger";
@@ -17,7 +16,6 @@ public class isCloseToAngel : MonoBehaviour
         if (other.gameObject.name == triggerName)
         {
             angelHeal.enabled = true;
-            angelHPGUI.enabled = true;
             // the player is in the room now - the spirit has nothing left to lead them to
             if (AngelPointerHelper.Instance) AngelPointerHelper.Instance.Pause();
         }

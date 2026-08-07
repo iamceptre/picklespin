@@ -1,11 +1,12 @@
 using UnityEngine;
 
+// Runs in Awake so a MenuScreen on the same Canvas reads the closed state as its starting page.
+// The GameObject stays active - a disabled Canvas already costs nothing, and turning the object
+// off would stop whatever has to answer when the page is asked to open again.
 public class DisableOnStart : MonoBehaviour
 {
-    void Start()
+    private void Awake()
     {
-        gameObject.GetComponent<Canvas>().enabled = false;
-        gameObject.SetActive(false);
+        if (TryGetComponent(out Canvas canvas)) canvas.enabled = false;
     }
-
 }

@@ -3,13 +3,13 @@ using DG.Tweening;
 using TMPro;
 using System.Text;
 
-public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
+public class ExpGatheredDisplayFinalScreen : MenuScreenPart
 {
-
     private TMP_Text _text;
     [HideInInspector] public int currentlyAnimatedExp = 0;
-    [SerializeField] private CanvasGroup[] _canvasGroup;
-    [SerializeField] private GameObject inputPrompt;
+
+    [SerializeField][Tooltip("armed once the count has finished, so the prompt cannot be pressed mid-tally")]
+    private Reborn inputPrompt;
 
     [SerializeField] private PlayerLevelDisplayFinalScreen playerLevelDisplayFinalScreen;
 
@@ -17,45 +17,41 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 
     [SerializeField] private float animationTime = 6;
 
-    StringBuilder sb = new StringBuilder();
+    private readonly StringBuilder sb = new();
     private int lastShownExp = -1;
 
-
-    private void Awake()
+    protected override void Awake()
     {
         _text = GetComponent<TMP_Text>();
 
-        for (int i = 0; i < _canvasGroup.Length; i++)
-        {
-            _canvasGroup[i].alpha = 0;
-            _canvasGroup[i].gameObject.SetActive(false);
-        }
+        if (inputPrompt) inputPrompt.HoldUntilArmed();
+        else DevLog.Error($"{nameof(ExpGatheredDisplayFinalScreen)}: no reborn prompt wired in - the win screen counts up and then offers no way out", this);
+
+        if (!playerLevelDisplayFinalScreen) DevLog.Error($"{nameof(ExpGatheredDisplayFinalScreen)}: no level display wired in", this);
+
+        base.Awake();
     }
 
-
-    void Start()
+    protected override void PageOpened()
     {
-        Attack.instance.enabled = false;
-        MouselookXY.instance.enabled = false;
+        base.PageOpened();
 
-       Tween slowdown = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.2f).SetEase(Ease.OutExpo).OnComplete(() =>
-        {
-            Time.timeScale = 0;
-        });
-
-        slowdown.SetUpdate(UpdateType.Normal, true);
-
-
-        myTween = DOTween.To(() => currentlyAnimatedExp, x => currentlyAnimatedExp = x, PlayerEXP.instance.playerExpAmount, animationTime).SetEase(Ease.InOutSine).OnComplete(() =>
-        {
-            FinishedAnimating();
-        });
-
-        myTween.SetUpdate(UpdateType.Normal, true);
+        myTween.Kill();
+        myTween = DOTween.To(() => currentlyAnimatedExp, x => currentlyAnimatedExp = x, PlayerEXP.instance.playerExpAmount, animationTime)
+                         .SetEase(Ease.InOutSine)
+                         .SetUpdate(UpdateType.Normal, true)
+                         .SetLink(gameObject)
+                         .OnComplete(FinishedAnimating);
     }
 
-    
-    void Update()
+    protected override void PageClosed()
+    {
+        base.PageClosed();
+
+        myTween.Kill();
+    }
+
+    private void Update()
     {
         if (InputCompat.AnyKeyDown)
         {
@@ -69,10 +65,9 @@ public class ExpGatheredDisplayFinalScreen : MonoBehaviour //THIS SHIT DOES SHIT
 
     private void FinishedAnimating()
     {
-        //save the exp somewhere
         currentlyAnimatedExp = PlayerEXP.instance.playerExpAmount;
         UpdateText();
-        inputPrompt.SetActive(true);
+        inputPrompt.Arm();
         playerLevelDisplayFinalScreen.FinishedAnimating();
         enabled = false;
     }

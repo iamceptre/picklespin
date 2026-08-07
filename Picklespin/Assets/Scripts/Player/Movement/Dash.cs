@@ -75,7 +75,7 @@ public class Dash : MonoBehaviour
     void Update()
     {
 
-        if (isDashing || (attack && !attack.CooldownReady)) return;
+        if (isDashing || (attack && (!attack.CooldownReady || attack.IsCasting))) return;
         Vector2 moveValue = moveAction.action.ReadValue<Vector2>();
         if (dashAction.action.triggered && moveValue.sqrMagnitude > MoveDeadzone)
         {

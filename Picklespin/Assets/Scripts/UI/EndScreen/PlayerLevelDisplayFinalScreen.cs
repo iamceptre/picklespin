@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerLevelDisplayFinalScreen : MonoBehaviour
+public class PlayerLevelDisplayFinalScreen : MenuScreenPart
 {
     private TMP_Text _text;
     private PlayerEXP playerExp;
@@ -15,14 +15,18 @@ public class PlayerLevelDisplayFinalScreen : MonoBehaviour
 
     private readonly StringBuilder sb = new();
 
-    private void Awake()
+    protected override void Awake()
     {
         _text = GetComponent<TMP_Text>();
         _slider = GetComponentInChildren<Slider>();
+
+        base.Awake();
     }
 
-    void Start()
+    protected override void PageOpened()
     {
+        base.PageOpened();
+
         playerExp = PlayerEXP.instance;
         currentlyShownLevel = playerExp.PlayerLevelStarting;
         UpdateText();
